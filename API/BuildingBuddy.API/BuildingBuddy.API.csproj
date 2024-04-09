@@ -12,6 +12,12 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="DataAccess\DbContexts\" />
+    <Folder Include="DataAccess\Repositories\Implementation\" />
+    <Folder Include="DataAccess\Repositories\Interface\" />
+    <Folder Include="Models\Domain\" />
+    <Folder Include="Models\Dtos\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
