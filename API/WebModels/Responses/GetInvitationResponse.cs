@@ -9,7 +9,7 @@ public class GetInvitationResponse
     public string Email { get; set; }
     public StatusEnumResponse Status { get; set; }
     public DateTime ExpirationDate { get; set; }
-
+    
     public GetInvitationResponse(Invitation invitationWithData)
     {
         Id = invitationWithData.Id;
@@ -19,4 +19,18 @@ public class GetInvitationResponse
         ExpirationDate = invitationWithData.ExpirationDate;
         
     }
+    
+    public override bool Equals(object obj)
+    {
+        var other = obj as GetInvitationResponse;
+
+        if (other == null) return false;
+
+        return Id == other.Id &&
+               Firstname == other.Firstname &&
+               Email == other.Email &&
+               Status == other.Status &&
+               ExpirationDate == other.ExpirationDate;
+    }
+    
 }
