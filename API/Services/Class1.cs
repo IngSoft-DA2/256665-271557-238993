@@ -1,4 +1,4 @@
-﻿namespace Domain;
+﻿namespace Services;
 
 public class Class1
 {
