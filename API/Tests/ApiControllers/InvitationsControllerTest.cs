@@ -51,5 +51,25 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedInvitations.SequenceEqual(controllerResponseValueCasted));
     }
+
+    [TestMethod]
+    public void GetAllInvitationsWhenDbIsBroken_ShouldReturnA500StatusCode()
+    {
+        Mock<IInvitationAdapter> invitationAdapter = new Mock<IInvitationAdapter>(MockBehavior.Strict);
+        invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).
+            Throws(new Exception("Database Broken"));
+        StatusCodeResult expectedControllerResponse = new StatusCodeResult(500);
+        
+        _invitationsController = new InvitationsController(invitationAdapter.Object);
+        IActionResult controllerResponse = _invitationsController.GetAllInvitations();
+        invitationAdapter.VerifyAll();
+        
+        ObjectResult controllerResponseCasted = controllerResponse as ObjectResult;
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        
+    }
+    
+    
     
 }
