@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapters;
 using Microsoft.AspNetCore.Mvc;
@@ -89,7 +90,7 @@ public class InvitationsControllerTest
     #region Get Invitation By Id
 
     [TestMethod]
-    public void GivenAnIdInvitation_ShouldReturnInvitation()
+    public void GivenInvitationId_ShouldReturnItsInvitation()
     {
         Guid idFromRoute = _expectedInvitation.Id;
         OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedInvitation);
@@ -110,10 +111,10 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void GivenAnInvitationIdThatIsNotRegistered_ShouldReturnNotFound()
+    public void GivenInvitationIdThatIsNotInDb_ShouldReturnNotFound()
     {
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
-            .Throws(new Exception("Invitation was not found, reload the page"));
+            .Throws(new ObjectNotFoundException());
 
         NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
 

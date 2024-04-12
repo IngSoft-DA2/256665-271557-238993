@@ -31,6 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Adapters\Adapters.csproj" />
       <ProjectReference Include="..\BuildingBuddy.API\BuildingBuddy.API.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\IAdapters\IAdapters.csproj" />

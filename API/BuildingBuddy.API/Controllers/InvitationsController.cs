@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapters;
 using Microsoft.AspNetCore.Mvc;
 using WebModels.Responses;
@@ -37,9 +38,9 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_invitationAdapter.GetInvitationById(idOfInvitation));
             }
-            catch (Exception e)
+            catch (ObjectNotFoundException)
             {
-                return NotFound(e.Message);
+                return NotFound("Invitation was not found, reload the page");
             }
             
         }
