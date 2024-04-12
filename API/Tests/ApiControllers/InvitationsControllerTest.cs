@@ -11,28 +11,35 @@ public class InvitationsControllerTest
 {
     private InvitationsController _invitationsController;
     private Mock<IInvitationAdapter> _invitationAdapter;
+    private GetInvitationResponse _expectedInvitation;
 
+    #region TestInitialize
 
     [TestInitialize]
     public void Initialize()
     {
         _invitationAdapter = new Mock<IInvitationAdapter>(MockBehavior.Strict);
         _invitationsController = new InvitationsController(_invitationAdapter.Object);
+        _expectedInvitation = new GetInvitationResponse()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Michael",
+            Email = "michael@gmail.com",
+            Status = StatusEnumResponse.Pending,
+            ExpirationDate = DateTime.MaxValue
+        };
     }
-    
+
+    #endregion
+
+    #region Get All Invitations
+
     [TestMethod]
     public void GetAllInvitations_ShouldReturnAllInvitations()
     {
         IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>()
         {
-            new GetInvitationResponse()
-            {
-                Id = Guid.NewGuid(),
-                Firstname = "Michael",
-                Email = "michael@gmail.com",
-                Status = StatusEnumResponse.Pending,
-                ExpirationDate = DateTime.MaxValue
-            },
+            _expectedInvitation,
             new GetInvitationResponse()
             {
                 Id = Guid.NewGuid(),
@@ -51,10 +58,13 @@ public class InvitationsControllerTest
         IActionResult controllerResponse = _invitationsController.GetAllInvitations();
         _invitationAdapter.VerifyAll();
 
-        OkObjectResult controllerResponseCasted = controllerResponse as OkObjectResult;
-        List<GetInvitationResponse> controllerResponseValueCasted =
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        List<GetInvitationResponse>? controllerResponseValueCasted =
             controllerResponseCasted.Value as List<GetInvitationResponse>;
-
+        Assert.IsNotNull(controllerResponseValueCasted);
+        
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedInvitations.SequenceEqual(controllerResponseValueCasted));
     }
@@ -62,40 +72,44 @@ public class InvitationsControllerTest
     [TestMethod]
     public void GetAllInvitationsWhenDbIsBroken_ShouldReturnA500StatusCode()
     {
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).
-            Throws(new Exception("Database Broken"));
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Throws(new Exception("Database Broken"));
         StatusCodeResult expectedControllerResponse = new StatusCodeResult(500);
-        
+
         IActionResult controllerResponse = _invitationsController.GetAllInvitations();
         _invitationAdapter.VerifyAll();
 
-        ObjectResult controllerResponseCasted = controllerResponse as ObjectResult;
-
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+
+    #endregion
+
+    #region Get Invitation By Id
 
     [TestMethod]
     public void GivenAnIdInvitation_ShouldReturnInvitation()
     {
-        GetInvitationResponse expectedInvitation = new GetInvitationResponse
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "Michael",
-            Email = "michael@gmail.com",
-            Status = StatusEnumResponse.Pending,
-            ExpirationDate = DateTime.MaxValue
-        };
-        Guid idFromRoute = expectedInvitation.Id;
+        Guid idFromRoute = _expectedInvitation.Id;
+        OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedInvitation);
 
-        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitation);
-        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(idFromRoute)).Returns(expectedInvitation);
-        
+        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(idFromRoute)).Returns(_expectedInvitation);
+
         IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
         _invitationAdapter.VerifyAll();
         
-        OkObjectResult controllerResponseCasted = controllerResponse as OkObjectResult;
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
         
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.IsTrue(expectedInvitation.Equals(controllerResponseCasted.Value));
+        GetInvitationResponse? controllerValueCasted = controllerResponseCasted.Value as GetInvitationResponse;
+        Assert.IsNotNull(controllerValueCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(_expectedInvitation.Equals(controllerValueCasted));
     }
+    
+    
+
+    #endregion
 }
