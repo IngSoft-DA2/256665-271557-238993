@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -32,7 +33,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BuildingBuddy.API\BuildingBuddy.API.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\IServices\IServices.csproj" />
+      <ProjectReference Include="..\IAdapters\IAdapters.csproj" />
       <ProjectReference Include="..\WebModels\WebModels.csproj" />
     </ItemGroup>
 

@@ -5,15 +5,13 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBuddy.API", "BuildingBuddy.API\BuildingBuddy.API.csproj", "{E779AEBD-6815-4CFE-9887-989A52919FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBuddyApiTest", "BuildingBuddyApiTest\BuildingBuddyApiTest.csproj", "{B4FC8EBB-3FB5-4EB1-96F0-6A0011854B6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B4FC8EBB-3FB5-4EB1-96F0-6A0011854B6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{B940E10A-412D-4594-AE10-6AA960AFCB01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebModels", "WebModels\WebModels.csproj", "{BEA92223-A43F-4F01-B8B8-48AFA4EFB63B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{7EC30CDD-983F-474C-9F3F-B9A27BC4DB7C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IServices", "IServices\IServices.csproj", "{19B8C205-60D5-49C3-9DF2-1EF7B3968E82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IAdapters", "IAdapters\IAdapters.csproj", "{B8D33E8D-65C5-4F10-96E1-D05040EA310A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,13 +38,9 @@ Global
 		{BEA92223-A43F-4F01-B8B8-48AFA4EFB63B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEA92223-A43F-4F01-B8B8-48AFA4EFB63B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEA92223-A43F-4F01-B8B8-48AFA4EFB63B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EC30CDD-983F-474C-9F3F-B9A27BC4DB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EC30CDD-983F-474C-9F3F-B9A27BC4DB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EC30CDD-983F-474C-9F3F-B9A27BC4DB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EC30CDD-983F-474C-9F3F-B9A27BC4DB7C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19B8C205-60D5-49C3-9DF2-1EF7B3968E82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19B8C205-60D5-49C3-9DF2-1EF7B3968E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19B8C205-60D5-49C3-9DF2-1EF7B3968E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19B8C205-60D5-49C3-9DF2-1EF7B3968E82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8D33E8D-65C5-4F10-96E1-D05040EA310A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D33E8D-65C5-4F10-96E1-D05040EA310A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D33E8D-65C5-4F10-96E1-D05040EA310A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D33E8D-65C5-4F10-96E1-D05040EA310A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

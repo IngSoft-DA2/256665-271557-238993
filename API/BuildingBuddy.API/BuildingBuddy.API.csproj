@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IServices\IServices.csproj" />
+    <ProjectReference Include="..\IAdapters\IAdapters.csproj" />
     <ProjectReference Include="..\WebModels\WebModels.csproj" />
   </ItemGroup>
 

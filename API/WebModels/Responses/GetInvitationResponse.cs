@@ -1,4 +1,3 @@
-using Domain;
 
 namespace WebModels.Responses;
 
@@ -10,27 +9,20 @@ public class GetInvitationResponse
     public StatusEnumResponse Status { get; set; }
     public DateTime ExpirationDate { get; set; }
     
-    public GetInvitationResponse(Invitation invitationWithData)
+    public override bool Equals(object objectToCompare)
     {
-        Id = invitationWithData.Id;
-        Firstname = invitationWithData.Firstname;
-        Email = invitationWithData.Email;
-        Status = (StatusEnumResponse)invitationWithData.Status;
-        ExpirationDate = invitationWithData.ExpirationDate;
+        GetInvitationResponse? toCompare = objectToCompare as GetInvitationResponse;
         
-    }
-    
-    public override bool Equals(object obj)
-    {
-        var other = obj as GetInvitationResponse;
+        if (toCompare is null)
+        {
+            return false;
+        }
 
-        if (other == null) return false;
-
-        return Id == other.Id &&
-               Firstname == other.Firstname &&
-               Email == other.Email &&
-               Status == other.Status &&
-               ExpirationDate == other.ExpirationDate;
+        return Id == toCompare.Id &&
+               Firstname == toCompare.Firstname &&
+               Email == toCompare.Email &&
+               Status == toCompare.Status &&
+               ExpirationDate == toCompare.ExpirationDate;
     }
     
 }
