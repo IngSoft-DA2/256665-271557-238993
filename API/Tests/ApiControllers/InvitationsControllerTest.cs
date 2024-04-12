@@ -73,4 +73,29 @@ public class InvitationsControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+
+    [TestMethod]
+    public void GivenAnIdInvitation_ShouldReturnInvitation()
+    {
+        GetInvitationResponse expectedInvitation = new GetInvitationResponse
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Michael",
+            Email = "michael@gmail.com",
+            Status = StatusEnumResponse.Pending,
+            ExpirationDate = DateTime.MaxValue
+        };
+        Guid idFromRoute = expectedInvitation.Id;
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitation);
+        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(idFromRoute)).Returns(expectedInvitation);
+        
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
+        _invitationAdapter.VerifyAll();
+        
+        OkObjectResult controllerResponseCasted = controllerResponse as OkObjectResult;
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedInvitation.Equals(controllerResponseCasted.Value));
+    }
 }

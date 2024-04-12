@@ -4,7 +4,7 @@ using WebModels.Responses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class InvitationsController : ControllerBase
     {
@@ -27,6 +27,13 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public IActionResult GetInvitationById([FromRoute] Guid idOfInvitation)
+        {
+            return Ok(_invitationAdapter.GetInvitationById(idOfInvitation));
         }
     }
 }
