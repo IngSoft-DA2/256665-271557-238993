@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.Responses;
 
-namespace Tests.ApiControllers;
+namespace Test.ApiControllers;
 
 [TestClass]
 public class InvitationsControllerTest
@@ -14,6 +14,8 @@ public class InvitationsControllerTest
     private InvitationsController _invitationsController;
     private Mock<IInvitationAdapter> _invitationAdapter;
     private GetInvitationResponse _expectedInvitation;
+    private Guid _idFromRoute;
+    private ObjectResult _expectedControllerResponse;
 
     #region TestInitialize
 
@@ -30,6 +32,9 @@ public class InvitationsControllerTest
             Status = StatusEnumResponse.Pending,
             ExpirationDate = DateTime.MaxValue
         };
+        _idFromRoute = Guid.NewGuid();
+        _expectedControllerResponse = new ObjectResult("Internal Server Error");
+        _expectedControllerResponse.StatusCode = 500;
     }
 
     #endregion
@@ -75,7 +80,6 @@ public class InvitationsControllerTest
     public void GetAllInvitationsWhenDbIsBroken_ShouldReturnA500StatusCode()
     {
         _invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Throws(new Exception("Database Broken"));
-        StatusCodeResult expectedControllerResponse = new StatusCodeResult(500);
 
         IActionResult controllerResponse = _invitationsController.GetAllInvitations();
         _invitationAdapter.VerifyAll();
@@ -83,7 +87,8 @@ public class InvitationsControllerTest
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
 
         Assert.IsNotNull(controllerResponseCasted);
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
     #endregion
@@ -93,12 +98,11 @@ public class InvitationsControllerTest
     [TestMethod]
     public void GivenInvitationId_ShouldReturnItsInvitation()
     {
-        Guid idFromRoute = _expectedInvitation.Id;
         OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedInvitation);
 
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>())).Returns(_expectedInvitation);
 
-        IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(_idFromRoute);
         _invitationAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
@@ -119,8 +123,7 @@ public class InvitationsControllerTest
 
         NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
 
-        Guid idFromRoute = _expectedInvitation.Id;
-        IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(_idFromRoute);
         _invitationAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -136,18 +139,14 @@ public class InvitationsControllerTest
     {
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
             .Throws(new Exception("Database Broken"));
-        Guid idFromRoute = _expectedInvitation.Id;
 
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-        
-        IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
-        
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(_idFromRoute);
+
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
     #endregion
