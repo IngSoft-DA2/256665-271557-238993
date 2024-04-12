@@ -12,9 +12,9 @@ public class InvitationsControllerTest
     private InvitationsController _invitationsController;
 
     [TestMethod]
-    public void GetAllInvitationsEndpoint_ShouldReturnAllInvitations()
+    public void GetAllInvitations_ShouldReturnAllInvitations()
     {
-        List<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>()
+        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>()
         {
             new GetInvitationResponse()
             {
@@ -35,7 +35,7 @@ public class InvitationsControllerTest
         };
 
         Mock<IInvitationAdapter> invitationAdapter = new Mock<IInvitationAdapter>(MockBehavior.Strict);
-        invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Returns(expectedInvitations);
+        invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Returns(expectedInvitations.ToList());
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitations);
 
@@ -51,4 +51,5 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedInvitations.SequenceEqual(controllerResponseValueCasted));
     }
+    
 }

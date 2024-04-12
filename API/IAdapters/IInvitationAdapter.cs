@@ -4,5 +4,5 @@ namespace IAdapters;
 
 public interface IInvitationAdapter
 {
-    public ICollection<GetInvitationResponse> GetAllInvitations();
+    public IEnumerable<GetInvitationResponse> GetAllInvitations();
 }

@@ -12,12 +12,9 @@ public class GetInvitationResponse
     public override bool Equals(object objectToCompare)
     {
         GetInvitationResponse? toCompare = objectToCompare as GetInvitationResponse;
-        
-        if (toCompare is null)
-        {
-            return false;
-        }
 
+        if (toCompare is null) return false;
+        
         return Id == toCompare.Id &&
                Firstname == toCompare.Firstname &&
                Email == toCompare.Email &&
