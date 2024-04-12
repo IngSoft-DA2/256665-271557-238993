@@ -60,11 +60,11 @@ public class InvitationsControllerTest
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         List<GetInvitationResponse>? controllerResponseValueCasted =
             controllerResponseCasted.Value as List<GetInvitationResponse>;
         Assert.IsNotNull(controllerResponseValueCasted);
-        
+
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedInvitations.SequenceEqual(controllerResponseValueCasted));
     }
@@ -79,7 +79,7 @@ public class InvitationsControllerTest
         _invitationAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        
+
         Assert.IsNotNull(controllerResponseCasted);
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
@@ -98,16 +98,36 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
         _invitationAdapter.VerifyAll();
-        
+
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         GetInvitationResponse? controllerValueCasted = controllerResponseCasted.Value as GetInvitationResponse;
         Assert.IsNotNull(controllerValueCasted);
-        
+
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(_expectedInvitation.Equals(controllerValueCasted));
     }
-    
+
+    [TestMethod]
+    public void GivenAnInvitationIdThatIsNotRegistered_ShouldReturnNotFound()
+    {
+        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
+            .Throws(new Exception("Invitation was not found, reload the page"));
+
+        NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
+
+        Guid idFromRoute = _expectedInvitation.Id;
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
+        _invitationAdapter.VerifyAll();
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(controllerResponseCasted.Value,expectedResponse.Value);
+        Assert.AreEqual(expectedResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+
     #endregion
 }

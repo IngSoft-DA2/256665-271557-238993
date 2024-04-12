@@ -33,7 +33,15 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult GetInvitationById([FromRoute] Guid idOfInvitation)
         {
-            return Ok(_invitationAdapter.GetInvitationById(idOfInvitation));
+            try
+            {
+                return Ok(_invitationAdapter.GetInvitationById(idOfInvitation));
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
+            
         }
     }
 }
