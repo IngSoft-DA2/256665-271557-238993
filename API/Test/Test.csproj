@@ -31,11 +31,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Adapters\Adapters.csproj" />
+      <ProjectReference Include="..\Adapter\Adapter.csproj" />
       <ProjectReference Include="..\BuildingBuddy.API\BuildingBuddy.API.csproj" />
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\IAdapters\IAdapters.csproj" />
-      <ProjectReference Include="..\WebModels\WebModels.csproj" />
+      <ProjectReference Include="..\IAdapter\IAdapter.csproj" />
+      <ProjectReference Include="..\WebModel\WebModel.csproj" />
     </ItemGroup>
 
 </Project>

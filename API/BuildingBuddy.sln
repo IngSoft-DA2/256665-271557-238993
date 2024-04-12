@@ -5,15 +5,15 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBuddy.API", "BuildingBuddy.API\BuildingBuddy.API.csproj", "{E779AEBD-6815-4CFE-9887-989A52919FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B4FC8EBB-3FB5-4EB1-96F0-6A0011854B6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{B4FC8EBB-3FB5-4EB1-96F0-6A0011854B6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{B940E10A-412D-4594-AE10-6AA960AFCB01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebModels", "WebModels\WebModels.csproj", "{BEA92223-A43F-4F01-B8B8-48AFA4EFB63B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebModel", "WebModel\WebModel.csproj", "{BEA92223-A43F-4F01-B8B8-48AFA4EFB63B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IAdapters", "IAdapters\IAdapters.csproj", "{B8D33E8D-65C5-4F10-96E1-D05040EA310A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IAdapter", "IAdapter\IAdapter.csproj", "{B8D33E8D-65C5-4F10-96E1-D05040EA310A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapters", "Adapters\Adapters.csproj", "{4454949C-E170-48D8-9464-C66F879D03CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter", "Adapter\Adapter.csproj", "{4454949C-E170-48D8-9464-C66F879D03CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

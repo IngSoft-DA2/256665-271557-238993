@@ -4,14 +4,11 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>IAdapters</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\WebModel\WebModel.csproj" />
     </ItemGroup>
 
 </Project>

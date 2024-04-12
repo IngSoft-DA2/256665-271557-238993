@@ -1,6 +1,6 @@
 using WebModels.Responses;
 
-namespace IAdapters;
+namespace IAdapter;
 
 public interface IInvitationAdapter
 {

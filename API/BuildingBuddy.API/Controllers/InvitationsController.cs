@@ -1,7 +1,6 @@
 using Adapter.CustomExceptions;
-using IAdapters;
+using IAdapter;
 using Microsoft.AspNetCore.Mvc;
-using WebModels.Responses;
 
 namespace BuildingBuddy.API.Controllers
 {

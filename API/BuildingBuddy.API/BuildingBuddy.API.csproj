@@ -24,9 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Adapters\Adapters.csproj" />
-    <ProjectReference Include="..\IAdapters\IAdapters.csproj" />
-    <ProjectReference Include="..\WebModels\WebModels.csproj" />
+    <ProjectReference Include="..\Adapter\Adapter.csproj" />
+    <ProjectReference Include="..\IAdapter\IAdapter.csproj" />
+    <ProjectReference Include="..\WebModel\WebModel.csproj" />
   </ItemGroup>
 
 </Project>

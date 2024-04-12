@@ -1,6 +1,6 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
-using IAdapters;
+using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModels.Responses;
