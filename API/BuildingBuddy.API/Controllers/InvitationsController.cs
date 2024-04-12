@@ -30,7 +30,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpGet]
-        [Route("{id:Guid}")]
+        [Route("{idOfInvitation:Guid}")]
         public IActionResult GetInvitationById([FromRoute] Guid idOfInvitation)
         {
             try
