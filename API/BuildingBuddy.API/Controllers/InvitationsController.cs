@@ -24,7 +24,8 @@ namespace BuildingBuddy.API.Controllers
             }
             catch (Exception exceptionCaught)
             {
-                return StatusCode(500, exceptionCaught.Message);
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

@@ -10,7 +10,16 @@ namespace Tests.ApiControllers;
 public class InvitationsControllerTest
 {
     private InvitationsController _invitationsController;
+    private Mock<IInvitationAdapter> _invitationAdapter;
 
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _invitationAdapter = new Mock<IInvitationAdapter>(MockBehavior.Strict);
+        _invitationsController = new InvitationsController(_invitationAdapter.Object);
+    }
+    
     [TestMethod]
     public void GetAllInvitations_ShouldReturnAllInvitations()
     {
@@ -34,18 +43,16 @@ public class InvitationsControllerTest
             }
         };
 
-        Mock<IInvitationAdapter> invitationAdapter = new Mock<IInvitationAdapter>(MockBehavior.Strict);
-        invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Returns(expectedInvitations.ToList());
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Returns(expectedInvitations.ToList());
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitations);
 
 
-        _invitationsController = new InvitationsController(invitationAdapter.Object);
         IActionResult controllerResponse = _invitationsController.GetAllInvitations();
-        invitationAdapter.VerifyAll();
+        _invitationAdapter.VerifyAll();
 
         OkObjectResult controllerResponseCasted = controllerResponse as OkObjectResult;
-        List<GetInvitationResponse> controllerResponseValueCasted = 
+        List<GetInvitationResponse> controllerResponseValueCasted =
             controllerResponseCasted.Value as List<GetInvitationResponse>;
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
@@ -55,21 +62,15 @@ public class InvitationsControllerTest
     [TestMethod]
     public void GetAllInvitationsWhenDbIsBroken_ShouldReturnA500StatusCode()
     {
-        Mock<IInvitationAdapter> invitationAdapter = new Mock<IInvitationAdapter>(MockBehavior.Strict);
-        invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).
             Throws(new Exception("Database Broken"));
         StatusCodeResult expectedControllerResponse = new StatusCodeResult(500);
         
-        _invitationsController = new InvitationsController(invitationAdapter.Object);
         IActionResult controllerResponse = _invitationsController.GetAllInvitations();
-        invitationAdapter.VerifyAll();
-        
+        _invitationAdapter.VerifyAll();
+
         ObjectResult controllerResponseCasted = controllerResponse as ObjectResult;
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-    
-    
-    
 }
