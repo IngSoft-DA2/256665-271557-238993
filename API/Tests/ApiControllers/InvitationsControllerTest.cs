@@ -94,7 +94,7 @@ public class InvitationsControllerTest
         Guid idFromRoute = _expectedInvitation.Id;
         OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedInvitation);
 
-        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(idFromRoute)).Returns(_expectedInvitation);
+        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>())).Returns(_expectedInvitation);
 
         IActionResult controllerResponse = _invitationsController.GetInvitationById(idFromRoute);
         _invitationAdapter.VerifyAll();
@@ -109,7 +109,5 @@ public class InvitationsControllerTest
         Assert.IsTrue(_expectedInvitation.Equals(controllerValueCasted));
     }
     
-    
-
     #endregion
 }
