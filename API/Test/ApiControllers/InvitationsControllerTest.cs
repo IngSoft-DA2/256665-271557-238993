@@ -11,13 +11,13 @@ namespace Test.ApiControllers;
 [TestClass]
 public class InvitationsControllerTest
 {
+    #region TestInitialize
+
     private InvitationsController _invitationsController;
     private Mock<IInvitationAdapter> _invitationAdapter;
     private GetInvitationResponse _expectedInvitation;
     private Guid _idFromRoute;
     private ObjectResult _expectedControllerResponse;
-
-    #region TestInitialize
 
     [TestInitialize]
     public void Initialize()
