@@ -159,6 +159,8 @@ public class InvitationsControllerTest
 
     #endregion
 
+    #region Create Invitation
+
     [TestMethod]
     public void GivenCorrectCreateInvitationRequest_ShouldCreateTheInvitation()
     {
@@ -200,14 +202,14 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
         _invitationAdapter.VerifyAll();
-        
+
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
+
     [TestMethod]
     public void GivenCreateInvitationRequestWhenDbIsBroken_ShouldReturn500StatusCode()
     {
@@ -219,12 +221,13 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
         _invitationAdapter.VerifyAll();
-        
+
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(controllerResponseCasted.Value,expectedControllerResponse.Value);
-        Assert.AreEqual(controllerResponseCasted.StatusCode,expectedControllerResponse.StatusCode);
+
+        Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
+        Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
     }
-    
+
+    #endregion
 }
