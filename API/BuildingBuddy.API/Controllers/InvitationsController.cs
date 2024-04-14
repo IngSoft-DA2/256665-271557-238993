@@ -53,7 +53,7 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult CreateInvitation(CreateInvitationRequest request)
         {
             return CreatedAtAction(nameof(CreateInvitation),
-                new {id = _invitationAdapter.CreateInvitation(request).Guid},
+                new {id = _invitationAdapter.CreateInvitation(request).Id},
                 _invitationAdapter.CreateInvitation(request));
         }
     }

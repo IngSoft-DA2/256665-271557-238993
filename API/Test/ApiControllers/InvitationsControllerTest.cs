@@ -156,21 +156,21 @@ public class InvitationsControllerTest
     {
         CreateInvitationRequest request = new CreateInvitationRequest
         {
-            Firstname = "Jhon",
+            Firstname = "John",
             Email = "jhon@gmail.com",
             ExpirationDate = DateTime.MaxValue
         };
 
         CreateInvitationResponse expectedResponse = new CreateInvitationResponse
         {
-            Guid = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             Status = StatusEnumResponse.Pending
         };
 
-        CreatedAtActionResult expectedControllerResponse = 
-            new CreatedAtActionResult("CreateInvitation","CreateInvitation"
-                ,expectedResponse.Guid,expectedResponse);
-        
+        CreatedAtActionResult expectedControllerResponse =
+            new CreatedAtActionResult("CreateInvitation", "CreateInvitation"
+                , expectedResponse.Id, expectedResponse);
+
         _invitationAdapter.Setup(adapter =>
             adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>())).Returns(expectedResponse);
 
@@ -178,12 +178,13 @@ public class InvitationsControllerTest
         IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
         _invitationAdapter.VerifyAll();
 
-        CreatedAtActionResult controllerResponseCasted = controllerResponse as CreatedAtActionResult;
-        
-        CreateInvitationResponse controllerResponseValue = controllerResponseCasted.Value as CreateInvitationResponse;
-        
-        Assert.AreEqual(expectedResponse.Guid,controllerResponseValue.Guid);
-        Assert.AreEqual(expectedResponse.Status,controllerResponseValue.Status);
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        CreateInvitationResponse? controllerResponseValue = controllerResponseCasted.Value as CreateInvitationResponse;
+        Assert.IsNotNull(controllerResponseValue);
+
+        Assert.IsTrue(expectedResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 }
