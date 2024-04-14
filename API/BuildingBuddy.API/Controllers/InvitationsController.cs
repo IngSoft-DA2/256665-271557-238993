@@ -52,8 +52,15 @@ namespace BuildingBuddy.API.Controllers
 
         public IActionResult CreateInvitation(CreateInvitationRequest request)
         {
-            CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
-            return CreatedAtAction(nameof(CreateInvitation),new {id = response.Id},response);
+            try
+            {
+                CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
+                return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
+            }
+            catch (Exception exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }
