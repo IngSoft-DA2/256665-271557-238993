@@ -187,4 +187,5 @@ public class InvitationsControllerTest
         Assert.IsTrue(expectedResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+    
 }
