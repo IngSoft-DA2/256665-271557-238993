@@ -193,7 +193,7 @@ public class InvitationsControllerTest
     public void GivenCreateInvitationRequestWithErrors_ShouldReturn400BadRequest()
     {
         request.Firstname = "";
-        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(request))
+        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
             .Throws(new Exception("Firstname cannot be empty"));
 
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
@@ -206,4 +206,5 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
 }
