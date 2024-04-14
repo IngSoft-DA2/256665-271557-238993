@@ -208,6 +208,7 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    [TestMethod]
     public void GivenCreateInvitationRequest_WhenCreating_AnInternalErrorHappens_ShouldReturn500StatusCode()
     {
         CreateInvitationRequest request = new CreateInvitationRequest
@@ -221,13 +222,12 @@ public class InvitationsControllerTest
         expectedControllerResponse.StatusCode = 500;
 
         _invitationAdapter.Setup(adapter => adapter.CreateInvitation(request))
-            .Throws(new Exception("An specific error on the server"));
+            .Throws(new Exception(""));
 
         IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
+        
         Assert.AreEqual(controllerResponseCasted.Value,expectedControllerResponse.Value);
         Assert.AreEqual(controllerResponseCasted.StatusCode,expectedControllerResponse.StatusCode);
     }
