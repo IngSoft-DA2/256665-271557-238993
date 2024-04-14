@@ -18,6 +18,7 @@ public class InvitationsControllerTest
     private GetInvitationResponse _expectedInvitation;
     private Guid _idFromRoute;
     private ObjectResult _expectedControllerResponse;
+    private CreateInvitationRequest request;
 
     [TestInitialize]
     public void Initialize()
@@ -35,6 +36,13 @@ public class InvitationsControllerTest
         _idFromRoute = Guid.NewGuid();
         _expectedControllerResponse = new ObjectResult("Internal Server Error");
         _expectedControllerResponse.StatusCode = 500;
+
+        request = new CreateInvitationRequest
+        {
+            Firstname = "",
+            Email = "michael@gmail.com",
+            ExpirationDate = DateTime.MaxValue
+        };
     }
 
     #endregion
@@ -154,13 +162,6 @@ public class InvitationsControllerTest
     [TestMethod]
     public void GivenCreateInvitationRequest_ShouldCreateTheInvitation()
     {
-        CreateInvitationRequest request = new CreateInvitationRequest
-        {
-            Firstname = "John",
-            Email = "jhon@gmail.com",
-            ExpirationDate = DateTime.MaxValue
-        };
-
         CreateInvitationResponse expectedResponse = new CreateInvitationResponse
         {
             Id = Guid.NewGuid(),
@@ -187,19 +188,13 @@ public class InvitationsControllerTest
         Assert.IsTrue(expectedResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-    
+
     [TestMethod]
     public void GivenCreateInvitationRequestWithErrors_ShouldReturn400BadRequest()
     {
-        CreateInvitationRequest request = new CreateInvitationRequest
-        {
-            Firstname = "",
-            Email = "michael@gmail.com",
-            ExpirationDate = DateTime.MaxValue
-        };
-
-        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(request)).
-            Throws(new Exception("Firstname cannot be empty"));
+        request.Firstname = "";
+        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(request))
+            .Throws(new Exception("Firstname cannot be empty"));
 
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
 
@@ -208,9 +203,7 @@ public class InvitationsControllerTest
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
-
-
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
