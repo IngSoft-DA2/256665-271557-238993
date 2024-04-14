@@ -194,7 +194,7 @@ public class InvitationsControllerTest
     {
         request.Firstname = "";
         _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
-            .Throws(new Exception("Firstname cannot be empty"));
+            .Throws(new ObjectErrorException("Firstname cannot be empty"));
 
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
 
@@ -208,5 +208,28 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    public void GivenCreateInvitationRequest_WhenCreating_AnInternalErrorHappens_ShouldReturn500StatusCode()
+    {
+        CreateInvitationRequest request = new CreateInvitationRequest
+        {
+            Firstname = "michael",
+            Email = "michael@gmail.com",
+            ExpirationDate = DateTime.MaxValue
+        };
+
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(request))
+            .Throws(new Exception("An specific error on the server"));
+
+        IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(controllerResponseCasted.Value,expectedControllerResponse.Value);
+        Assert.AreEqual(controllerResponseCasted.StatusCode,expectedControllerResponse.StatusCode);
+    }
     
 }
