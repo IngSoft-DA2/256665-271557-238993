@@ -29,6 +29,7 @@ public class InvitationsControllerTest
         {
             Id = Guid.NewGuid(),
             Firstname = "Michael",
+            Lastname = "De santa",
             Email = "michael@gmail.com",
             Status = StatusEnumResponse.Pending,
             ExpirationDate = DateTime.MaxValue
@@ -39,7 +40,8 @@ public class InvitationsControllerTest
 
         request = new CreateInvitationRequest
         {
-            Firstname = "",
+            Firstname = "Michael",
+            Lastname = "De santa",
             Email = "michael@gmail.com",
             ExpirationDate = DateTime.MaxValue
         };
@@ -59,6 +61,7 @@ public class InvitationsControllerTest
             {
                 Id = Guid.NewGuid(),
                 Firstname = "John",
+                Lastname = "Scott",
                 Email = "jhon@gmail.com",
                 Status = StatusEnumResponse.Accepted,
                 ExpirationDate = DateTime.MaxValue
@@ -244,12 +247,13 @@ public class InvitationsControllerTest
         NoContentResult expectedControllerResponse = new NoContentResult();
 
         _invitationAdapter.Setup(adapter =>
-                adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()));
+            adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()));
 
         IActionResult controllerResponse = _invitationsController.UpdateInvitation(idOfInvitationToUpd, request);
         _invitationAdapter.VerifyAll();
 
-        NoContentResult controllerResponseCasted = controllerResponse as NoContentResult;
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
