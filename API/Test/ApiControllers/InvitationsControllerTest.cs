@@ -1,9 +1,9 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModel.Requests;
 using WebModels.Responses;
 
 namespace Test.ApiControllers;
@@ -150,4 +150,40 @@ public class InvitationsControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void GivenCreateInvitationRequest_ShouldCreateTheInvitation()
+    {
+        CreateInvitationRequest request = new CreateInvitationRequest
+        {
+            Firstname = "Jhon",
+            Email = "jhon@gmail.com",
+            ExpirationDate = DateTime.MaxValue
+        };
+
+        CreateInvitationResponse expectedResponse = new CreateInvitationResponse
+        {
+            Guid = Guid.NewGuid(),
+            Status = StatusEnumResponse.Pending
+        };
+
+        CreatedAtActionResult expectedControllerResponse = 
+            new CreatedAtActionResult("CreateInvitation","CreateInvitation"
+                ,expectedResponse.Guid,expectedResponse);
+        
+        _invitationAdapter.Setup(adapter =>
+            adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>())).Returns(expectedResponse);
+
+
+        IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
+        _invitationAdapter.VerifyAll();
+
+        CreatedAtActionResult controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        
+        CreateInvitationResponse controllerResponseValue = controllerResponseCasted.Value as CreateInvitationResponse;
+        
+        Assert.AreEqual(expectedResponse.Guid,controllerResponseValue.Guid);
+        Assert.AreEqual(expectedResponse.Status,controllerResponseValue.Status);
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
 }

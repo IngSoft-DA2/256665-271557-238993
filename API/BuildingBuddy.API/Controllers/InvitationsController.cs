@@ -1,6 +1,8 @@
 using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests;
+using WebModels.Responses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -46,6 +48,13 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        public IActionResult CreateInvitation(CreateInvitationRequest request)
+        {
+            return CreatedAtAction(nameof(CreateInvitation),
+                new {id = _invitationAdapter.CreateInvitation(request).Guid},
+                _invitationAdapter.CreateInvitation(request));
         }
     }
 }
