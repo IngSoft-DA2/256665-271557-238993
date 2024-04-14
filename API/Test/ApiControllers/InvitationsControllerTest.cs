@@ -199,12 +199,14 @@ public class InvitationsControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
 
         IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
-
+        _invitationAdapter.VerifyAll();
+        
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
     
 }
