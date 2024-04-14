@@ -104,7 +104,7 @@ public class InvitationsControllerTest
     #region Get Invitation By Id
 
     [TestMethod]
-    public void GivenInvitationId_ShouldReturnItsInvitation()
+    public void GivenCorrectInvitationId_ShouldReturnItsInvitation()
     {
         OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedInvitation);
 
@@ -160,7 +160,7 @@ public class InvitationsControllerTest
     #endregion
 
     [TestMethod]
-    public void GivenCreateInvitationRequest_ShouldCreateTheInvitation()
+    public void GivenCorrectCreateInvitationRequest_ShouldCreateTheInvitation()
     {
         CreateInvitationResponse expectedResponse = new CreateInvitationResponse
         {
@@ -209,24 +209,19 @@ public class InvitationsControllerTest
     }
     
     [TestMethod]
-    public void GivenCreateInvitationRequest_WhenCreating_AnInternalErrorHappens_ShouldReturn500StatusCode()
+    public void GivenCreateInvitationRequestWhenDbIsBroken_ShouldReturn500StatusCode()
     {
-        CreateInvitationRequest request = new CreateInvitationRequest
-        {
-            Firstname = "michael",
-            Email = "michael@gmail.com",
-            ExpirationDate = DateTime.MaxValue
-        };
-
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(request))
-            .Throws(new Exception(""));
+        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
+            .Throws(new Exception("An specific error on the server"));
 
         IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
-
+        _invitationAdapter.VerifyAll();
+        
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
         
         Assert.AreEqual(controllerResponseCasted.Value,expectedControllerResponse.Value);
         Assert.AreEqual(controllerResponseCasted.StatusCode,expectedControllerResponse.StatusCode);
