@@ -68,5 +68,13 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpPut]
+        [Route("id:Guid")]
+        public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
+        {
+            _invitationAdapter.UpdateInvitation(id, request);
+            return NoContent();
+        }
     }
 }

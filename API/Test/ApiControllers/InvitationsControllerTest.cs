@@ -230,5 +230,27 @@ public class InvitationsControllerTest
     }
 
     #endregion
-    
+
+    [TestMethod]
+    public void GivenCorrectUpdateInvitationRequest_ShouldUpdateTheInvitation()
+    {
+        UpdateInvitationRequest request = new UpdateInvitationRequest
+        {
+            Status = StatusEnumRequest.Accepted,
+            ExpirationDate = DateTime.MaxValue
+        };
+        Guid idOfInvitationToUpd = Guid.NewGuid();
+
+        NoContentResult expectedControllerResponse = new NoContentResult();
+
+        _invitationAdapter.Setup(adapter =>
+                adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()));
+
+        IActionResult controllerResponse = _invitationsController.UpdateInvitation(idOfInvitationToUpd, request);
+        _invitationAdapter.VerifyAll();
+
+        NoContentResult controllerResponseCasted = controllerResponse as NoContentResult;
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
 }
