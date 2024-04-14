@@ -49,8 +49,9 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-
-        public IActionResult CreateInvitation(CreateInvitationRequest request)
+        
+        [HttpPost]
+        public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
             try
             {
