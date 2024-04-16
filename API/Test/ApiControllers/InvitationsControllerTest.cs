@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests;
 using WebModels.Responses;
+using Guid = System.Guid;
 
 namespace Test.ApiControllers;
 
@@ -18,7 +19,6 @@ public class InvitationsControllerTest
     private GetInvitationResponse _expectedInvitation;
     private Guid _idFromRoute;
     private ObjectResult _expectedControllerResponse;
-    private CreateInvitationRequest request;
 
     [TestInitialize]
     public void Initialize()
@@ -37,14 +37,6 @@ public class InvitationsControllerTest
         _idFromRoute = Guid.NewGuid();
         _expectedControllerResponse = new ObjectResult("Internal Server Error");
         _expectedControllerResponse.StatusCode = 500;
-
-        request = new CreateInvitationRequest
-        {
-            Firstname = "Michael",
-            Lastname = "De santa",
-            Email = "michael@gmail.com",
-            ExpirationDate = DateTime.MaxValue
-        };
     }
 
     #endregion
@@ -52,7 +44,7 @@ public class InvitationsControllerTest
     #region Get All Invitations
 
     [TestMethod]
-    public void GetAllInvitations_ShouldReturnAllInvitations()
+    public void GetAllInvitations_200CodeIsReturned()
     {
         IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>()
         {
@@ -88,7 +80,7 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void GetAllInvitationsWhenDbIsBroken_ShouldReturnA500StatusCode()
+    public void GetAllInvitations_500StatusCodeIsReturned()
     {
         _invitationAdapter.Setup(adapter => adapter.GetAllInvitations()).Throws(new Exception("Database Broken"));
 
@@ -107,11 +99,11 @@ public class InvitationsControllerTest
     #region Get Invitation By Id
 
     [TestMethod]
-    public void GivenCorrectInvitationId_ShouldReturnItsInvitation()
+    public void GetInvitationByIdRequest_OkIsReturned()
     {
         OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedInvitation);
 
-        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>())).Returns(_expectedInvitation);
+        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(_idFromRoute)).Returns(_expectedInvitation);
 
         IActionResult controllerResponse = _invitationsController.GetInvitationById(_idFromRoute);
         _invitationAdapter.VerifyAll();
@@ -127,14 +119,14 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void GivenInvitationIdThatIsNotInDb_ShouldReturnNotFound()
+    public void GetInvitationByIdRequest_NotFoundIsReturned()
     {
+        NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
+        
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundException());
-
-        NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
-
-        IActionResult controllerResponse = _invitationsController.GetInvitationById(_idFromRoute);
+        
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(It.IsAny<Guid>());
         _invitationAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -146,12 +138,12 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void WhenTryingToGetAnInvitationViaId_DatabaseWasBroken_SoItShouldReturn500StatusCode()
+    public void GetInvitationByIdRequest_500StatusCodeIsReturned()
     {
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
             .Throws(new Exception("Database Broken"));
 
-        IActionResult controllerResponse = _invitationsController.GetInvitationById(_idFromRoute);
+        IActionResult controllerResponse = _invitationsController.GetInvitationById(It.IsAny<Guid>());
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -165,7 +157,7 @@ public class InvitationsControllerTest
     #region Create Invitation
 
     [TestMethod]
-    public void GivenCorrectCreateInvitationRequest_ShouldCreateTheInvitation()
+    public void CreateInvitationRequest_OkIsReturned()
     {
         CreateInvitationResponse expectedResponse = new CreateInvitationResponse
         {
@@ -180,8 +172,7 @@ public class InvitationsControllerTest
         _invitationAdapter.Setup(adapter =>
             adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>())).Returns(expectedResponse);
 
-
-        IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
+        IActionResult controllerResponse = _invitationsController.CreateInvitation(It.IsAny<CreateInvitationRequest>());
         _invitationAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -195,15 +186,14 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void GivenCreateInvitationRequestWithErrors_ShouldReturn400BadRequest()
+    public void CreateInvitationRequest_BadRequestIsReturned()
     {
-        request.Firstname = "";
         _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
             .Throws(new ObjectErrorException("Firstname cannot be empty"));
 
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
 
-        IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
+        IActionResult controllerResponse = _invitationsController.CreateInvitation(It.IsAny<CreateInvitationRequest>());
         _invitationAdapter.VerifyAll();
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
@@ -213,8 +203,9 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
+
     [TestMethod]
-    public void GivenCreateInvitationRequestWhenDbIsBroken_ShouldReturn500StatusCode()
+    public void CreateInvitationRequest_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
@@ -222,7 +213,7 @@ public class InvitationsControllerTest
         _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
             .Throws(new Exception("An specific error on the server"));
 
-        IActionResult controllerResponse = _invitationsController.CreateInvitation(request);
+        IActionResult controllerResponse = _invitationsController.CreateInvitation(It.IsAny<CreateInvitationRequest>());
         _invitationAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
@@ -235,21 +226,15 @@ public class InvitationsControllerTest
     #endregion
 
     [TestMethod]
-    public void GivenCorrectUpdateInvitationRequest_ShouldUpdateTheInvitation()
+    public void GivenUpdateInvitationRequest_ShouldUpdateTheInvitation()
     {
-        UpdateInvitationRequest request = new UpdateInvitationRequest
-        {
-            Status = StatusEnumRequest.Accepted,
-            ExpirationDate = DateTime.MaxValue
-        };
-        Guid idOfInvitationToUpd = Guid.NewGuid();
-
         NoContentResult expectedControllerResponse = new NoContentResult();
 
         _invitationAdapter.Setup(adapter =>
             adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()));
 
-        IActionResult controllerResponse = _invitationsController.UpdateInvitation(idOfInvitationToUpd, request);
+        IActionResult controllerResponse =
+            _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
         _invitationAdapter.VerifyAll();
 
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
@@ -259,28 +244,23 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void GivenUpdateInvitationRequestTryingToUpdAInvitationThatIsNotInDb_ShouldThrowNotFound()
+    public void GivenUpdateInvitationRequest_ShouldThrowNotFound()
     {
-        NotFoundResult expectedControllerResponse = new NotFoundResult();
-        Guid idOfInvitationToUpd = Guid.NewGuid();
-
-        UpdateInvitationRequest request = new UpdateInvitationRequest
-        {
-            Status = StatusEnumRequest.Accepted,
-            ExpirationDate = DateTime.MaxValue
-        };
+        NotFoundObjectResult expectedControllerResponse =
+            new NotFoundObjectResult("The specific invitation was not found in Database");
 
         _invitationAdapter.Setup(adapter =>
                 adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
             .Throws(new ObjectNotFoundException());
 
-        IActionResult controllerResponse = _invitationsController.UpdateInvitation(idOfInvitationToUpd, request);
+        IActionResult controllerResponse = _invitationsController
+            .UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
         _invitationAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
