@@ -257,4 +257,30 @@ public class InvitationsControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+
+    [TestMethod]
+    public void GivenUpdateInvitationRequestTryingToUpdAInvitationThatIsNotInDb_ShouldThrowNotFound()
+    {
+        NotFoundResult expectedControllerResponse = new NotFoundResult();
+        Guid idOfInvitationToUpd = Guid.NewGuid();
+
+        UpdateInvitationRequest request = new UpdateInvitationRequest
+        {
+            Status = StatusEnumRequest.Accepted,
+            ExpirationDate = DateTime.MaxValue
+        };
+
+        _invitationAdapter.Setup(adapter =>
+                adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
+            .Throws(new ObjectNotFoundException());
+
+        IActionResult controllerResponse = _invitationsController.UpdateInvitation(idOfInvitationToUpd, request);
+        _invitationAdapter.VerifyAll();
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
 }

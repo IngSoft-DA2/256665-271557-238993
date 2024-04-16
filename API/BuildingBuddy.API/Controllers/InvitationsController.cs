@@ -73,8 +73,16 @@ namespace BuildingBuddy.API.Controllers
         [Route("id:Guid")]
         public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
         {
-            _invitationAdapter.UpdateInvitation(id, request);
-            return NoContent();
+            try
+            {
+                _invitationAdapter.UpdateInvitation(id, request);
+                return NoContent();
+            }
+            catch (ObjectNotFoundException exception)
+            {
+                return NotFound("The specific invitation was not found in Database");
+            }
+        
         }
     }
 }
