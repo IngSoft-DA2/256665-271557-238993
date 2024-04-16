@@ -78,9 +78,13 @@ namespace BuildingBuddy.API.Controllers
                 _invitationAdapter.UpdateInvitation(id, request);
                 return NoContent();
             }
-            catch (ObjectNotFoundException exception)
+            catch (ObjectNotFoundException)
             {
                 return NotFound("The specific invitation was not found in Database");
+            }
+            catch (ObjectErrorException exception)
+            {
+                return BadRequest(exception.Message);
             }
         
         }

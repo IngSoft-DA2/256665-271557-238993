@@ -122,10 +122,10 @@ public class InvitationsControllerTest
     public void GetInvitationByIdRequest_NotFoundIsReturned()
     {
         NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
-        
+
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundException());
-        
+
         IActionResult controllerResponse = _invitationsController.GetInvitationById(It.IsAny<Guid>());
         _invitationAdapter.VerifyAll();
 
@@ -267,7 +267,19 @@ public class InvitationsControllerTest
     [TestMethod]
     public void UpdateInvitationRequest_BadRequestIsReturned()
     {
-        
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific Error");
+
+        _invitationAdapter.Setup(adapter =>
+                adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
+            .Throws(new ObjectErrorException("Specific Error"));
+
+        IActionResult controllerResponse =
+            _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
+
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
 }
