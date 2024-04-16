@@ -225,6 +225,8 @@ public class InvitationsControllerTest
 
     #endregion
 
+    #region Update Invitation
+
     [TestMethod]
     public void UpdateInvitationRequest_NoContentIsReturned()
     {
@@ -282,4 +284,27 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    [TestMethod]
+    public void UpdateInvitationRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _invitationAdapter
+            .Setup(adapter => adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
+            .Throws(new Exception("Unknown Error"));
+
+        IActionResult controllerResponse =
+            _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    #endregion
+    
 }

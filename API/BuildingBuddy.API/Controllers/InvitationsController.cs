@@ -82,9 +82,14 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("The specific invitation was not found in Database");
             }
-            catch (ObjectErrorException exception)
+            catch (ObjectErrorException exceptionCaught)
             {
-                return BadRequest(exception.Message);
+                return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         
         }
