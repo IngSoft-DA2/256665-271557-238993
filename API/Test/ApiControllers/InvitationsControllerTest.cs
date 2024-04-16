@@ -226,7 +226,7 @@ public class InvitationsControllerTest
     #endregion
 
     [TestMethod]
-    public void GivenUpdateInvitationRequest_ShouldUpdateTheInvitation()
+    public void UpdateInvitationRequest_NoContentIsReturned()
     {
         NoContentResult expectedControllerResponse = new NoContentResult();
 
@@ -244,7 +244,7 @@ public class InvitationsControllerTest
     }
 
     [TestMethod]
-    public void GivenUpdateInvitationRequest_ShouldThrowNotFound()
+    public void UpdateInvitationRequest_NotFoundIsReturned()
     {
         NotFoundObjectResult expectedControllerResponse =
             new NotFoundObjectResult("The specific invitation was not found in Database");
@@ -263,4 +263,11 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    [TestMethod]
+    public void UpdateInvitationRequest_BadRequestIsReturned()
+    {
+        
+    }
+    
 }
