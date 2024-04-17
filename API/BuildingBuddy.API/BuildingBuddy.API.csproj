@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Adapter\Adapter.csproj" />
     <ProjectReference Include="..\IAdapter\IAdapter.csproj" />
     <ProjectReference Include="..\WebModel\WebModel.csproj" />
