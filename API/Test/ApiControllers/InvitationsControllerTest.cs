@@ -307,6 +307,8 @@ public class InvitationsControllerTest
 
     #endregion
 
+    #region Delete Invitation
+
     [TestMethod]
     public void DeleteInvitationRequest_NoContentIsReturned()
     {
@@ -376,4 +378,6 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
 }
