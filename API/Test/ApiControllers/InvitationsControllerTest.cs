@@ -12,7 +12,7 @@ namespace Test.ApiControllers;
 [TestClass]
 public class InvitationsControllerTest
 {
-    #region TestInitialize
+    #region Test Initialize
 
     private InvitationsController _invitationsController;
     private Mock<IInvitationAdapter> _invitationAdapter;
@@ -145,6 +145,8 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse = _invitationsController.GetInvitationById(It.IsAny<Guid>());
 
+        _invitationAdapter.VerifyAll();
+        
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
@@ -237,8 +239,9 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse =
             _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
-        _invitationAdapter.VerifyAll();
-
+        
+        _invitationAdapter.Verify(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()), Times.Once());
+        
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
         Assert.IsNotNull(controllerResponseCasted);
 
@@ -277,6 +280,7 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse =
             _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
+        _invitationAdapter.VerifyAll();
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -297,6 +301,7 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse =
             _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
+        _invitationAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -318,6 +323,8 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
 
+        _invitationAdapter.Verify(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()), Times.Once());
+
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
         Assert.IsNotNull(controllerResponseCasted);
 
@@ -335,6 +342,7 @@ public class InvitationsControllerTest
             .Throws(new ObjectNotFoundException());
 
         IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+        _invitationAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -352,6 +360,7 @@ public class InvitationsControllerTest
             .Throws(new ObjectErrorException("Some specific error"));
 
         IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+        _invitationAdapter.VerifyAll();
 
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
@@ -371,6 +380,7 @@ public class InvitationsControllerTest
             .Throws(new Exception("Some specific internal error"));
 
         IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+        _invitationAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
