@@ -127,6 +127,25 @@ public class CategoryControllerTest
         Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
     }
 
+    [TestMethod]
+    public void GetCategoryByIdRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _categoryAdapter.Setup(adapter => adapter.GetCategoryById(It.IsAny<Guid>()))
+            .Throws(new Exception("Some specific error"));
+
+        IActionResult controllerResponse = _categoryController.GetCategoryById(It.IsAny<Guid>());
+        _categoryAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+    }
+
     #endregion
 
     #region Create Category

@@ -59,6 +59,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("Category was not found in database");
             }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
             
         }
     }
