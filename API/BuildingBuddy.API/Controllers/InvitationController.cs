@@ -7,7 +7,7 @@ using WebModel.Responses.InvitationResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
     {
@@ -33,12 +33,12 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpGet]
-        [Route("{idOfInvitation:Guid}")]
-        public IActionResult GetInvitationById([FromRoute] Guid idOfInvitation)
+        [Route("{id:Guid}")]
+        public IActionResult GetInvitationById([FromRoute] Guid id)
         {
             try
             {
-                return Ok(_invitationAdapter.GetInvitationById(idOfInvitation));
+                return Ok(_invitationAdapter.GetInvitationById(id));
             }
             catch (ObjectNotFoundException)
             {
@@ -71,7 +71,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpPut]
-        [Route("id:Guid")]
+        [Route("{id:Guid}")]
         public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
         {
             try
@@ -96,12 +96,12 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpDelete]
-        [Route("id:Guid")]
-        public IActionResult DeleteInvitation([FromRoute] Guid idOfInvitationToDelete)
+        [Route("{id:Guid}")]
+        public IActionResult DeleteInvitation([FromRoute] Guid id)
         {
             try
             {
-                _invitationAdapter.DeleteInvitation(idOfInvitationToDelete);
+                _invitationAdapter.DeleteInvitation(id);
                 return NoContent();
             }
             catch (ObjectNotFoundException)

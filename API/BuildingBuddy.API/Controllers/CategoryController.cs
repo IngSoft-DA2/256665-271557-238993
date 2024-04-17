@@ -5,7 +5,7 @@ using WebModel.Requests.CategoryRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -15,6 +15,7 @@ namespace BuildingBuddy.API.Controllers
         {
             _categoryAdapter = categoryAdapter;
         }
+        [HttpGet]
         public IActionResult GetAllCategories()
         {
             try
@@ -27,26 +28,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-
-        [HttpPost]
-        public IActionResult CreateCategory([FromBody] CreateCategoryRequest categoryToCreate)
-        {
-            try
-            {
-                return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
-            }
-            catch (ObjectErrorException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
-            
-        }
-    
+        
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetCategoryById([FromRoute] Guid id)
@@ -58,6 +40,25 @@ namespace BuildingBuddy.API.Controllers
             catch (ObjectNotFoundException)
             {
                 return NotFound("Category was not found in database");
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+            
+        }
+
+        [HttpPost]
+        public IActionResult CreateCategory([FromBody] CreateCategoryRequest categoryToCreate)
+        {
+            try
+            {
+                return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
             }
             catch (Exception exceptionCaught)
             {
