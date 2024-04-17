@@ -51,7 +51,15 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult GetCategoryById([FromRoute] Guid id)
         {
-            return Ok(_categoryAdapter.GetCategoryById(id));
+            try
+            {
+                return Ok(_categoryAdapter.GetCategoryById(id));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Category was not found in database");
+            }
+            
         }
     }
 }

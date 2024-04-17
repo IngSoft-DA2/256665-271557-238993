@@ -97,7 +97,8 @@ public class CategoryControllerTest
             .Returns(categoryFoundInDb);
 
         IActionResult controllerResponse = _categoryController.GetCategoryById(categoryFoundInDb.Id);
-
+        _categoryAdapter.VerifyAll();
+        
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
@@ -106,6 +107,24 @@ public class CategoryControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(categoryFoundInDb.Equals(controllerValue));
+    }
+
+    [TestMethod]
+    public void GetCategoryByIdRequest_NotFoundIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Category was not found in database");
+
+        _categoryAdapter.Setup(adapter => adapter.GetCategoryById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundException());
+
+        IActionResult controllerResponse = _categoryController.GetCategoryById(It.IsAny<Guid>());
+        _categoryAdapter.VerifyAll();
+        
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
     }
 
     #endregion
