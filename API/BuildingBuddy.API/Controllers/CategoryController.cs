@@ -1,6 +1,8 @@
 using IAdapter;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.CategoryRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -25,7 +27,12 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-            
+        }
+
+        [HttpPost]
+        public IActionResult CreateCategory([FromBody] CreateCategoryRequest categoryToCreate)
+        {
+            return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
         }
     }
 }
