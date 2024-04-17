@@ -111,6 +111,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return BadRequest(exceptionCaught.Message);
             }
+            catch (Exception internalException)
+            {
+                Console.WriteLine(internalException.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
          
         }
     }

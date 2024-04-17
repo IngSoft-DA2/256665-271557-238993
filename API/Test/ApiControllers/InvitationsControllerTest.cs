@@ -284,7 +284,7 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
+
     [TestMethod]
     public void UpdateInvitationRequest_500StatusCodeIsReturned()
     {
@@ -321,8 +321,8 @@ public class InvitationsControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-    
-    
+
+
     [TestMethod]
     public void DeleteInvitationRequest_NotFoundIsReturned()
     {
@@ -340,7 +340,7 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
+
     [TestMethod]
     public void DeleteInvitationRequest_BadRequestIsReturned()
     {
@@ -350,17 +350,30 @@ public class InvitationsControllerTest
             .Throws(new ObjectErrorException("Some specific error"));
 
         IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
-    
-    
+
+
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-    
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
-    
-    
+    [TestMethod]
+    public void DeleteInvitationRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
 
+        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
+            .Throws(new Exception("Some specific internal error"));
 
+        IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 }
