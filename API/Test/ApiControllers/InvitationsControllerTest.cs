@@ -284,7 +284,7 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-
+    
     [TestMethod]
     public void UpdateInvitationRequest_500StatusCodeIsReturned()
     {
@@ -306,5 +306,21 @@ public class InvitationsControllerTest
     }
 
     #endregion
-    
+
+    [TestMethod]
+    public void DeleteInvitationRequest_NoContentIsReturned()
+    {
+        NoContentResult expectedControllerResponse = new NoContentResult();
+
+        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()));
+
+        IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+
+
 }

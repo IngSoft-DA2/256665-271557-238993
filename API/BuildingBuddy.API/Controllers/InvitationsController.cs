@@ -93,5 +93,13 @@ namespace BuildingBuddy.API.Controllers
             }
         
         }
+
+        [HttpDelete]
+        [Route("id:Guid")]
+        public IActionResult DeleteInvitation([FromRoute] Guid idOfInvitationToDelete)
+        {
+         _invitationAdapter.DeleteInvitation(idOfInvitationToDelete);
+         return NoContent();
+        }
     }
 }
