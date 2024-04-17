@@ -1,4 +1,3 @@
-using IAdapter;
 
 var builder = WebApplication.CreateBuilder(args);
 

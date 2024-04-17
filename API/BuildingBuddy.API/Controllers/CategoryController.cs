@@ -1,13 +1,11 @@
 using Adapter.CustomExceptions;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.CategoryRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -17,6 +15,7 @@ namespace BuildingBuddy.API.Controllers
         {
             _categoryAdapter = categoryAdapter;
         }
+        [HttpGet]
         public IActionResult GetAllCategories()
         {
             try
@@ -28,6 +27,26 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+        
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public IActionResult GetCategoryById([FromRoute] Guid id)
+        {
+            try
+            {
+                return Ok(_categoryAdapter.GetCategoryById(id));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Category was not found in database");
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+            
         }
 
         [HttpPost]
