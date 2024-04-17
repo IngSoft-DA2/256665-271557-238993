@@ -341,6 +341,25 @@ public class InvitationsControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    [TestMethod]
+    public void DeleteInvitationRequest_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Some specific error");
+
+        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
+            .Throws(new ObjectErrorException("Some specific error"));
+
+        IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+    
+    
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+    
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+    }
+
+    
     
 
 

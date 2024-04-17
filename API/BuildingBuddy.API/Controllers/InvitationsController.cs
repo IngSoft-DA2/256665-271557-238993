@@ -107,6 +107,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("Invitation to delete was not found");
             }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
          
         }
     }
