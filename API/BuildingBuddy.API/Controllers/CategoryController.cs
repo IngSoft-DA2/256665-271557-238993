@@ -7,13 +7,13 @@ using WebModel.Requests.CategoryRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
         private ICategoryAdapter _categoryAdapter;
 
-        public CategoryController(ICategoryAdapter categoryAdapter)
+        public CategoryController(ICategoryAdapter categoryAdapterg)
         {
             _categoryAdapter = categoryAdapter;
         }
