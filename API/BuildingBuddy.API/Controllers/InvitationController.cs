@@ -2,7 +2,8 @@ using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests;
-using WebModels.Responses;
+using WebModel.Requests.InvitationRequests;
+using WebModel.Responses.InvitationResponses;
 
 namespace BuildingBuddy.API.Controllers
 {

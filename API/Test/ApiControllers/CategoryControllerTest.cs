@@ -7,7 +7,6 @@ using Moq;
 using WebModel.Requests;
 using WebModel.Requests.CategoryRequests;
 using WebModel.Responses.CategoryResponses;
-using WebModels.Responses;
 using Guid = System.Guid;
 
 namespace Test.ApiControllers;
@@ -81,6 +80,7 @@ public class CategoryControllerTest
 
     #endregion
 
+    #region Create Category
 
     [TestMethod]
     public void CreateCategoryRequest_OkIsReturned()
@@ -144,4 +144,6 @@ public class CategoryControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
 }

@@ -4,7 +4,8 @@ using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests;
-using WebModels.Responses;
+using WebModel.Requests.InvitationRequests;
+using WebModel.Responses.InvitationResponses;
 using Guid = System.Guid;
 
 namespace Test.ApiControllers;
