@@ -1,5 +1,5 @@
 
-namespace WebModels.Responses;
+namespace WebModel.Responses.InvitationResponses;
 
 public class GetInvitationResponse
 {

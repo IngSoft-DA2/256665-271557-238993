@@ -2,17 +2,18 @@ using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests;
-using WebModels.Responses;
+using WebModel.Requests.InvitationRequests;
+using WebModel.Responses.InvitationResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class InvitationsController : ControllerBase
+    public class InvitationController : ControllerBase
     {
         private readonly IInvitationAdapter _invitationAdapter;
 
-        public InvitationsController(IInvitationAdapter invitationAdapter)
+        public InvitationController(IInvitationAdapter invitationAdapter)
         {
             _invitationAdapter = invitationAdapter;
         }
