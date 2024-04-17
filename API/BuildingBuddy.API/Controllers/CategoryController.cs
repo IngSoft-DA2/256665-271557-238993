@@ -1,7 +1,5 @@
 using Adapter.CustomExceptions;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.CategoryRequests;
 
@@ -13,7 +11,7 @@ namespace BuildingBuddy.API.Controllers
     {
         private ICategoryAdapter _categoryAdapter;
 
-        public CategoryController(ICategoryAdapter categoryAdapterg)
+        public CategoryController(ICategoryAdapter categoryAdapter)
         {
             _categoryAdapter = categoryAdapter;
         }
@@ -47,6 +45,13 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
             
+        }
+    
+        [HttpGet]
+        [Route("{id:Guid}")]
+        public IActionResult GetCategoryById([FromRoute] Guid id)
+        {
+            return Ok(_categoryAdapter.GetCategoryById(id));
         }
     }
 }

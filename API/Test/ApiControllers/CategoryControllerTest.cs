@@ -80,6 +80,36 @@ public class CategoryControllerTest
 
     #endregion
 
+    #region Get Category By Id
+
+    [TestMethod]
+    public void GetCategoryByIdRequest_OkIsReturned()
+    {
+        GetCategoryResponse categoryFoundInDb = new GetCategoryResponse
+        {
+            Id = Guid.NewGuid(),
+            Name = "Plumber"
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(categoryFoundInDb.Id);
+
+        _categoryAdapter.Setup(adapter => adapter.GetCategoryById(categoryFoundInDb.Id))
+            .Returns(categoryFoundInDb);
+
+        IActionResult controllerResponse = _categoryController.GetCategoryById(categoryFoundInDb.Id);
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        GetCategoryResponse? controllerValue = controllerResponseCasted.Value as GetCategoryResponse;
+        Assert.IsNotNull(controllerValue);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(categoryFoundInDb.Equals(controllerValue));
+    }
+
+    #endregion
+
     #region Create Category
 
     [TestMethod]
