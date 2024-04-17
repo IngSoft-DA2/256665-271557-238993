@@ -321,6 +321,27 @@ public class InvitationsControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+    
+    
+    [TestMethod]
+    public void DeleteInvitationRequest_NotFoundIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse =
+            new NotFoundObjectResult("Invitation to delete was not found");
+
+        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundException());
+
+        IActionResult controllerResponse = _invitationsController.DeleteInvitation(It.IsAny<Guid>());
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    
 
 
 }

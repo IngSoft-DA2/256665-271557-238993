@@ -98,8 +98,16 @@ namespace BuildingBuddy.API.Controllers
         [Route("id:Guid")]
         public IActionResult DeleteInvitation([FromRoute] Guid idOfInvitationToDelete)
         {
-         _invitationAdapter.DeleteInvitation(idOfInvitationToDelete);
-         return NoContent();
+            try
+            {
+                _invitationAdapter.DeleteInvitation(idOfInvitationToDelete);
+                return NoContent();
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Invitation to delete was not found");
+            }
+         
         }
     }
 }
