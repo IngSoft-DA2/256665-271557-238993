@@ -49,13 +49,14 @@ namespace Test.ApiControllers
             flatAdapter.VerifyAll();
 
             OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
 
             List<GetFlatResponse>? controllerResponseValueCasted =
                 controllerResponseCasted.Value as List<GetFlatResponse>;
             Assert.IsNotNull(controllerResponseValueCasted);
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-            Assert.IsTrue(controllerResponseValueCasted.First().Floor.Equals(controllerResponseValueCasted.First().Floor));
+            Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(controllerResponseValueCasted));
 
 
         }

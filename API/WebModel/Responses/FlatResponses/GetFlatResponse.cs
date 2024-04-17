@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebModel.Responses.OwnerResponses;
+using WebModels.Responses;
 
 namespace WebModel.Responses.FlatResponses
 {
@@ -16,6 +17,20 @@ namespace WebModel.Responses.FlatResponses
         public OwnerResponse Owner { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
+
+        public override bool Equals(object objectToCompare)
+        {
+            GetFlatResponse? toCompare = objectToCompare as GetFlatResponse;
+
+            if (toCompare is null) return false;
+
+            return Id == toCompare.Id &&
+                   Floor == toCompare.Floor &&
+                   RoomNumber == toCompare.RoomNumber &&
+                   Owner == toCompare.Owner &&
+                   TotalBaths == toCompare.TotalBaths    &&
+                   TotalRooms == toCompare.TotalRooms;
+        }
 
 
 
