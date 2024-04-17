@@ -16,7 +16,16 @@ namespace BuildingBuddy.API.Controllers
         }
         public IActionResult GetAllCategories()
         {
-            return Ok(_categoryAdapter.GetAllCategories());
+            try
+            {
+                return Ok(_categoryAdapter.GetAllCategories());
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+            
         }
     }
 }

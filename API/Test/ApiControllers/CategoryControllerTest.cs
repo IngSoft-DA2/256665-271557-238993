@@ -46,5 +46,27 @@ public class CategoryControllerTest
    Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedControllerResponseValue.SequenceEqual(controllerResponseValueCasted));
     }
+
+    [TestMethod]
+    public void GetAllCategoriesRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        Mock<ICategoryAdapter> _categoryAdapter = new Mock<ICategoryAdapter>(MockBehavior.Strict);
+        _categoryAdapter.Setup(adapter => adapter.GetAllCategories()).Throws(new Exception("Specific Internal Error"));
+
+        CategoryController _categoryController = new CategoryController(_categoryAdapter.Object);
+
+        IActionResult controllerResponse = _categoryController.GetAllCategories();
+        _categoryAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+
+    }
     
 }
