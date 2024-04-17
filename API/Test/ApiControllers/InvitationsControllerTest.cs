@@ -146,7 +146,7 @@ public class InvitationsControllerTest
         IActionResult controllerResponse = _invitationsController.GetInvitationById(It.IsAny<Guid>());
 
         _invitationAdapter.VerifyAll();
-        
+
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
@@ -239,9 +239,10 @@ public class InvitationsControllerTest
 
         IActionResult controllerResponse =
             _invitationsController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
-        
-        _invitationAdapter.Verify(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()), Times.Once());
-        
+
+        _invitationAdapter.Verify(
+            adapter => adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()), Times.Once());
+
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
         Assert.IsNotNull(controllerResponseCasted);
 
