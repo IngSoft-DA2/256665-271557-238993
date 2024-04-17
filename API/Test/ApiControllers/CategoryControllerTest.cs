@@ -106,4 +106,23 @@ public class CategoryControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerValue.Id, controllerValueResponse.Id);
     }
+
+    [TestMethod]
+    public void CreateCategoryRequest_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("An specific Error");
+
+        _categoryAdapter.Setup(adapter => adapter.CreateCategory(It.IsAny<CreateCategoryRequest>()))
+            .Throws(new ObjectErrorException("An specific Error"));
+
+        IActionResult controllerResponse = _categoryController.CreateCategory(It.IsAny<CreateCategoryRequest>());
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+
+    }
 }

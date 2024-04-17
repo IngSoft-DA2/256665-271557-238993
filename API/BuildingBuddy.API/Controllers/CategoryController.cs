@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -32,7 +33,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateCategory([FromBody] CreateCategoryRequest categoryToCreate)
         {
-            return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
+            try
+            {
+                return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
+            
         }
     }
 }
