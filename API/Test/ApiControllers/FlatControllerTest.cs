@@ -24,6 +24,7 @@ namespace Test.ApiControllers
             {
                 new GetFlatResponse()
                 {
+                    Id = Guid.NewGuid(),
                     Floor = 1,
                     RoomNumber = 102,
                     Owner = new OwnerResponse()
