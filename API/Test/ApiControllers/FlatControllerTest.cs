@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 using WebModels.Responses;
@@ -90,5 +91,32 @@ namespace Test.ApiControllers
         }
 
         #endregion
+
+        [TestMethod]
+        public void CreateFlatRequest_OkIsReturned()
+        {
+            CreateFlatResponse expectedAdapterResponse = new CreateFlatResponse()
+            {
+                Id = Guid.NewGuid()
+            };
+
+            OkObjectResult expectedControllerResponse = new OkObjectResult(expectedAdapterResponse);
+
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>())).Returns(expectedAdapterResponse);
+
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+
+            _flatAdapter.VerifyAll();
+
+            OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            CreateFlatResponse? controllerResponseValueCasted =
+                controllerResponseCasted.Value as CreateFlatResponse;
+            Assert.IsNotNull(controllerResponseValueCasted);
+
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.IsTrue(controllerResponseValueCasted.Id.Equals(controllerResponseValueCasted.Id));
+        }
     }
 }

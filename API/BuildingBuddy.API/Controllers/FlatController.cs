@@ -25,5 +25,11 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpGet]
+        public IActionResult CreateFlat([FromBody] Guid idOfBuilding)
+        {
+            return Ok(_flatAdapter.CreateFlat(idOfBuilding));
+        }
     }
 }
