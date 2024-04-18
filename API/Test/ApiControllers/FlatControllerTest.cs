@@ -18,6 +18,7 @@ namespace Test.ApiControllers
     [TestClass]
     public class FlatControllerTest
     {
+        #region Initilizing aspects
         private Mock<IFlatAdapter> _flatAdapter;
         private FlatController _flatController;
 
@@ -28,7 +29,9 @@ namespace Test.ApiControllers
             _flatController = new FlatController(_flatAdapter.Object);
         }
 
-        #region GetAllFlats Tests
+        #endregion
+
+        #region GetAllFlats
 
         [TestMethod]
         public void GetAllFlats_OkIsReturned()
@@ -93,6 +96,7 @@ namespace Test.ApiControllers
 
         #endregion
 
+        #region  CreateFlat
         [TestMethod]
         public void CreateFlatRequest_OkIsReturned()
         {
@@ -136,5 +140,7 @@ namespace Test.ApiControllers
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         }
+
+        #endregion
     }
 }
