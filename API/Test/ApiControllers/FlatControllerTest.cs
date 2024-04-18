@@ -12,7 +12,7 @@ using WebModel.Requests;
 using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
-using WebModels.Responses;
+using WebModel.Responses;
 
 namespace Test.ApiControllers
 {
