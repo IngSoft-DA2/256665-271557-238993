@@ -26,6 +26,8 @@ namespace Test.ApiControllers
             _flatController = new FlatController(_flatAdapter.Object);
         }
 
+        #region GetAllFlats Tests
+
         [TestMethod]
         public void GetAllFlats_OkIsReturned()
         {
@@ -86,5 +88,7 @@ namespace Test.ApiControllers
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
             Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         }
+
+        #endregion
     }
 }

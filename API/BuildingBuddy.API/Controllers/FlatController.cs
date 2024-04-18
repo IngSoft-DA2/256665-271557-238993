@@ -11,6 +11,8 @@ namespace BuildingBuddy.API.Controllers
         {
             _flatAdapter = flatAdapter;
         }
+
+        [HttpGet]
         public IActionResult GetAllFlats()
         {
             try
