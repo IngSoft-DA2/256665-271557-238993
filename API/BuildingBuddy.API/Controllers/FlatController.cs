@@ -6,12 +6,18 @@ namespace BuildingBuddy.API.Controllers
 {
     public class FlatController : Controller
     {
+        #region Constructor and atributes
+
         private readonly IFlatAdapter _flatAdapter;
 
         public FlatController(IFlatAdapter flatAdapter)
         {
             _flatAdapter = flatAdapter;
         }
+
+        #endregion
+
+        #region GetAllFlats
 
         [HttpGet]
         public IActionResult GetAllFlats()
@@ -26,6 +32,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        #endregion
+
+        #region CreateFlat
 
         [HttpPost]
         public IActionResult CreateFlat([FromBody] Guid idOfBuilding)
@@ -44,5 +54,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        #endregion
     }
 }
