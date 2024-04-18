@@ -58,8 +58,27 @@ namespace Test.ApiControllers
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
             Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(controllerResponseValueCasted));
+        }
 
+        [TestMethod]
+        public void GetAllFlats_500StatusCodeIsReturned()
+        {
+            ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+            expectedControllerResponse.StatusCode = 500;
 
+            Mock<IFlatAdapter> flatAdapter = new Mock<IFlatAdapter>(MockBehavior.Strict);
+            flatAdapter.Setup(adapter => adapter.GetAllFlats()).Throws(new Exception("Something went wrong"));
+
+            FlatController flatController = new FlatController(flatAdapter.Object);
+
+            IActionResult controllerResponse = flatController.GetAllFlats();
+
+            flatAdapter.VerifyAll();
+
+            ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         }
     }
 }
