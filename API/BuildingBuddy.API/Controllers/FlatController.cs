@@ -1,4 +1,5 @@
-﻿using IAdapter;
+﻿using Adapter.CustomExceptions;
+using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingBuddy.API.Controllers
@@ -29,7 +30,14 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult CreateFlat([FromBody] Guid idOfBuilding)
         {
-            return Ok(_flatAdapter.CreateFlat(idOfBuilding));
+            try
+            {
+                return Ok(_flatAdapter.CreateFlat(idOfBuilding));
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }

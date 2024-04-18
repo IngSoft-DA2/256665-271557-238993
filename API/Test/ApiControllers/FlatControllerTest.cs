@@ -1,4 +1,5 @@
-﻿using BuildingBuddy.API.Controllers;
+﻿using Adapter.CustomExceptions;
+using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -117,6 +118,23 @@ namespace Test.ApiControllers
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
             Assert.IsTrue(controllerResponseValueCasted.Id.Equals(controllerResponseValueCasted.Id));
+        }
+
+        [TestMethod]
+        public void CreateFlatRequest_BadRequestIsReturned()
+        {
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>())).Throws(new ObjectErrorException("Owner can't be null"));
+
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+
+            BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Owner can't be null");
+
+            _flatAdapter.VerifyAll();
+
+            BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         }
     }
 }
