@@ -1,4 +1,4 @@
-namespace WebModel.Requests;
+namespace WebModel.Requests.InvitationRequests;
 
 public class UpdateInvitationRequest
 {

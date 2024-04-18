@@ -1,5 +1,6 @@
 using WebModel.Requests;
-using WebModels.Responses;
+using WebModel.Requests.InvitationRequests;
+using WebModel.Responses.InvitationResponses;
 
 namespace IAdapter;
 
