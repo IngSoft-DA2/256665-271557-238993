@@ -16,6 +16,15 @@ namespace Test.ApiControllers
     [TestClass]
     public class FlatControllerTest
     {
+        private Mock<IFlatAdapter> _flatAdapter;
+        private FlatController _flatController;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _flatAdapter = new Mock<IFlatAdapter>(MockBehavior.Strict);
+            _flatController = new FlatController(_flatAdapter.Object);
+        }
 
         [TestMethod]
         public void GetAllFlats_OkIsReturned()
@@ -40,14 +49,11 @@ namespace Test.ApiControllers
 
             OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlats);
 
-            Mock<IFlatAdapter> flatAdapter = new Mock<IFlatAdapter>(MockBehavior.Strict);
-            flatAdapter.Setup(adapter => adapter.GetAllFlats()).Returns(expectedFlats);
+            _flatAdapter.Setup(adapter => adapter.GetAllFlats()).Returns(expectedFlats);
 
-            FlatController flatController = new FlatController(flatAdapter.Object);
+            IActionResult controllerResponse = _flatController.GetAllFlats();
 
-            IActionResult controllerResponse = flatController.GetAllFlats();
-
-            flatAdapter.VerifyAll();
+            _flatAdapter.VerifyAll();
 
             OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
             Assert.IsNotNull(controllerResponseCasted);
@@ -66,19 +72,19 @@ namespace Test.ApiControllers
             ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
             expectedControllerResponse.StatusCode = 500;
 
-            Mock<IFlatAdapter> flatAdapter = new Mock<IFlatAdapter>(MockBehavior.Strict);
-            flatAdapter.Setup(adapter => adapter.GetAllFlats()).Throws(new Exception("Something went wrong"));
+            _flatAdapter.Setup(adapter => adapter.GetAllFlats()).Throws(new Exception("Something went wrong"));
 
-            FlatController flatController = new FlatController(flatAdapter.Object);
+            FlatController flatController = new FlatController(_flatAdapter.Object);
 
             IActionResult controllerResponse = flatController.GetAllFlats();
 
-            flatAdapter.VerifyAll();
+            _flatAdapter.VerifyAll();
 
             ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
             Assert.IsNotNull(controllerResponseCasted);
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         }
     }
 }
