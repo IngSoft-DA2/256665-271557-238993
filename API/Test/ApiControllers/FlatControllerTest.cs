@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebModel.Requests;
 using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
@@ -139,6 +140,26 @@ namespace Test.ApiControllers
             Assert.IsNotNull(controllerResponseCasted);
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        }
+
+        [TestMethod]
+        public void CreateFlatRequest_500StatusCodeIsReturned()
+        {
+            ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+            expectedControllerResponse.StatusCode = 500;
+
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>()))
+                .Throws(new Exception("An specific error on the server"));
+
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+            _flatAdapter.VerifyAll();
+
+            ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
+            Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
+
         }
 
         #endregion

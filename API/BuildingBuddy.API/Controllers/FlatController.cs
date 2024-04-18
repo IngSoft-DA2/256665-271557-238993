@@ -27,7 +27,7 @@ namespace BuildingBuddy.API.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult CreateFlat([FromBody] Guid idOfBuilding)
         {
             try
@@ -37,6 +37,11 @@ namespace BuildingBuddy.API.Controllers
             catch (ObjectErrorException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }
