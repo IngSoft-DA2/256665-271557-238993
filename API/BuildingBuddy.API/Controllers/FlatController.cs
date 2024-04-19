@@ -1,6 +1,7 @@
 ﻿using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -38,11 +39,11 @@ namespace BuildingBuddy.API.Controllers
         #region CreateFlat
 
         [HttpPost]
-        public IActionResult CreateFlat([FromBody] Guid idOfBuilding)
+        public IActionResult CreateFlat([FromBody] CreateFlatRequest flatToCreate)
         {
             try
             {
-                return Ok(_flatAdapter.CreateFlat(idOfBuilding));
+                return Ok(_flatAdapter.CreateFlat(flatToCreate));
             }
             catch (ObjectErrorException exceptionCaught)
             {
