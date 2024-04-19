@@ -4,6 +4,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 using WebModel.Responses;
+using WebModel.Responses.MaintenanceRequestResponses;
 
 namespace Test.ApiControllers
 {
@@ -51,6 +53,7 @@ namespace Test.ApiControllers
                         Email =         "barrywhite@gmail.com",
                     },
                     TotalRooms = 3,
+                    MaintenanceRequests = new List<MaintenanceRequestResponse>(),
                     TotalBaths = 2
                 }
             };

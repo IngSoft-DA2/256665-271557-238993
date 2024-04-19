@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebModel.Responses.OwnerResponses;
 using WebModel.Responses;
+using WebModel.Responses.MaintenanceRequestResponses;
 
 namespace WebModel.Responses.FlatResponses
 {
@@ -17,6 +18,7 @@ namespace WebModel.Responses.FlatResponses
         public OwnerResponse Owner { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
+        public IEnumerable<MaintenanceRequestResponse> MaintenanceRequests { get; set; }
 
         public override bool Equals(object objectToCompare)
         {
@@ -29,6 +31,7 @@ namespace WebModel.Responses.FlatResponses
                    RoomNumber == toCompare.RoomNumber &&
                    Owner == toCompare.Owner &&
                    TotalBaths == toCompare.TotalBaths &&
+                   MaintenanceRequests.SequenceEqual(toCompare.MaintenanceRequests) &&
                    TotalRooms == toCompare.TotalRooms;
         }
 
