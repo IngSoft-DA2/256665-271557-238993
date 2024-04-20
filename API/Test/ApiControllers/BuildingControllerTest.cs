@@ -264,6 +264,8 @@ public class BuildingControllerTest
 
 
         IActionResult controllerResponse = _buildingController.CreateBuilding(createBuildingRequest);
+        _buildingAdapter.VerifyAll();
+
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -284,6 +286,7 @@ public class BuildingControllerTest
             .Throws(new ObjectErrorException("Specific error message"));
 
         IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
+        _buildingAdapter.VerifyAll();
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -302,6 +305,7 @@ public class BuildingControllerTest
             .Throws(new Exception("Unknown error"));
 
         IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
+        _buildingAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
