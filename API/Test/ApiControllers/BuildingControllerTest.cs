@@ -412,33 +412,34 @@ public class BuildingControllerTest
     public void DeleteBuildingRequest_NoContentIsReturned()
     {
         NoContentResult expectedControllerResponse = new NoContentResult();
-        
+
         _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()));
-        
+
         IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
-        Assert.IsNotNull(controllerResponse);
-        
+        _buildingAdapter.Verify(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()), Times.Once());
+
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-    
+
     [TestMethod]
-public void DeleteBuildingRequest_NotFoundIsReturned()
+    public void DeleteBuildingRequest_NotFoundIsReturned()
     {
-        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Building was not found in database");
-        
-        _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
-        
+        NotFoundObjectResult expectedControllerResponse =
+            new NotFoundObjectResult("Building was not found in database");
+
+        _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundException());
+
         IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
-        Assert.IsNotNull(controllerResponse);
-        
+        _buildingAdapter.Verify(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()), Times.Once());
+
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
 }
