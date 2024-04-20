@@ -196,5 +196,25 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+    
+    [TestMethod]
+    public void UpdateOwner_InternalServerErrorIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>())).Throws(new Exception("Something went wrong"));
+        
+        IActionResult controllerResponse = _ownerController.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
+        
+        _ownerAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
 
 }
