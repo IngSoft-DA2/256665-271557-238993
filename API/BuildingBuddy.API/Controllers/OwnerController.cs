@@ -1,6 +1,8 @@
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.OwnerRequests;
+using WebModel.Responses.OwnerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -35,6 +37,18 @@ namespace BuildingBuddy.API.Controllers
             }
         }
 
+        #endregion
+        
+        #region CreateOwner
+        
+        [HttpPost]
+        public IActionResult CreateOwner([FromBody] CreateOwnerRequest createOwnerRequest)
+        {
+            CreateOwnerResponse response = _ownerAdapter.CreateOwner(createOwnerRequest);
+            return CreatedAtAction(nameof(CreateOwner), new { id = response.Id }, response);
+
+        }
+        
         #endregion
 
     }

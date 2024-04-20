@@ -2,6 +2,7 @@
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.OwnerResponses;
 
 namespace Test.ApiControllers;
@@ -72,4 +73,33 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    [TestMethod]
+    public void CreateOwner_CreatedAtActionIsReturned()
+    {
+        CreateOwnerResponse expectedOwner = new CreateOwnerResponse()
+        {
+            Id = Guid.NewGuid()
+        };
+        
+        CreatedAtActionResult expectedControllerResponse =
+            new CreatedAtActionResult("CreateOwner", "CreateOwner"
+                , expectedOwner.Id, expectedOwner);
+        
+        _ownerAdapter.Setup(adapter => adapter.CreateOwner(It.IsAny<CreateOwnerRequest>())).Returns(expectedOwner);
+        
+        IActionResult controllerResponse = _ownerController.CreateOwner(It.IsAny<CreateOwnerRequest>());
+        
+        _ownerAdapter.VerifyAll();
+        
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+
+
+    }
+
 }
