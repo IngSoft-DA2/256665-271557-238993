@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,8 +45,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateOwner([FromBody] CreateOwnerRequest createOwnerRequest)
         {
-            CreateOwnerResponse response = _ownerAdapter.CreateOwner(createOwnerRequest);
-            return CreatedAtAction(nameof(CreateOwner), new { id = response.Id }, response);
+            try
+            {
+                CreateOwnerResponse response = _ownerAdapter.CreateOwner(createOwnerRequest);
+                return CreatedAtAction(nameof(CreateOwner), new { id = response.Id }, response);
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
 
         }
         
