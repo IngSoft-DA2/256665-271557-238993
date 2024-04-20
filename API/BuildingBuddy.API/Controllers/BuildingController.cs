@@ -100,7 +100,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpDelete]
-        [Route("{buildingId}:Guid")]
+        [Route("{buildingId:Guid}")]
         public IActionResult DeleteBuilding([FromRoute] Guid buildingId)
         {
             try
@@ -118,7 +118,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         //This must be done by the one of us that will make maintenace.
         // [HttpPost]
         // [Route("{buildingId:Guid}/maintenanceRequests")]
