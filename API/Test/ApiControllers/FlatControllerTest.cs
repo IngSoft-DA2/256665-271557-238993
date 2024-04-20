@@ -22,6 +22,7 @@ namespace Test.ApiControllers
     public class FlatControllerTest
     {
         #region Initilizing aspects
+
         private Mock<IFlatAdapter> _flatAdapter;
         private FlatController _flatController;
 
@@ -50,7 +51,7 @@ namespace Test.ApiControllers
                     {
                         Name = "Barry",
                         Lastname = "White",
-                        Email =         "barrywhite@gmail.com",
+                        Email = "barrywhite@gmail.com",
                     },
                     TotalRooms = 3,
                     TotalBaths = 2,
@@ -100,7 +101,8 @@ namespace Test.ApiControllers
 
         #endregion
 
-        #region  CreateFlat
+        #region CreateFlat
+
         [TestMethod]
         public void CreateFlatRequest_OkIsReturned()
         {
@@ -111,7 +113,8 @@ namespace Test.ApiControllers
 
             OkObjectResult expectedControllerResponse = new OkObjectResult(expectedAdapterResponse);
 
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>())).Returns(expectedAdapterResponse);
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
+                .Returns(expectedAdapterResponse);
 
             IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
 
@@ -125,13 +128,14 @@ namespace Test.ApiControllers
             Assert.IsNotNull(controllerResponseValueCasted);
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-            Assert.AreEqual(controllerResponseValueCasted.Id,controllerResponseValueCasted.Id);
+            Assert.AreEqual(controllerResponseValueCasted.Id, controllerResponseValueCasted.Id);
         }
 
         [TestMethod]
         public void CreateFlatRequest_BadRequestIsReturned()
         {
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>())).Throws(new ObjectErrorException("Owner can't be null"));
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
+                .Throws(new ObjectErrorException("Owner can't be null"));
 
             IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
 
@@ -163,13 +167,11 @@ namespace Test.ApiControllers
 
             Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
-
         }
 
         #endregion
 
         [TestMethod]
-
         public void GetFlatById_OkIsReturned()
         {
             GetFlatResponse expectedFlat = new GetFlatResponse()
@@ -186,24 +188,24 @@ namespace Test.ApiControllers
                 HasTerrace = true
             };
             _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>())).Returns(expectedFlat);
-            
+
             OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlat);
-            
+
             IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
-            
+
             _flatAdapter.VerifyAll();
-            
+
             OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
-            
+
             Assert.IsNotNull(controllerResponseCasted);
-            
+
             GetFlatResponse? controllerResponseValueCasted = controllerResponseCasted.Value as GetFlatResponse;
-            
+
             Assert.IsNotNull(controllerResponseValueCasted);
-            
+
             Assert.AreEqual(expectedFlat, controllerResponseValueCasted);
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
         }
-
+        
     }
 }

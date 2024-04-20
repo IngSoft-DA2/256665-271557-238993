@@ -1,11 +1,14 @@
-﻿using Adapter.CustomExceptions;
+using Adapter.CustomExceptions;
 using IAdapter;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    public class FlatController : Controller
+    [Route("api/v1/flats")]
+    [ApiController]
+    public class FlatController : ControllerBase
     {
         #region Constructor and atributes
 
@@ -13,7 +16,7 @@ namespace BuildingBuddy.API.Controllers
 
         public FlatController(IFlatAdapter flatAdapter)
         {
-            _flatAdapter = flatAdapter; 
+            _flatAdapter = flatAdapter;
         }
 
         #endregion
@@ -35,15 +38,22 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-        
+
         #region GetFlatById
-        
-        [HttpGet("{id}")]
-        public IActionResult GetFlatById(Guid idOfFlatToFind)
+
+        [HttpGet("{idOfFlatToFind}")]
+        public IActionResult GetFlatById([FromRoute] Guid idOfFlatToFind)
         {
-            return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
+            try
+            {
+                return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
+            }
+            catch (ObjectNotFoundException exceptionCaught)
+            {
+                return NotFound("Flat was not found, reload the page");
+            }
         }
-        
+
         #endregion
 
         #region CreateFlat
