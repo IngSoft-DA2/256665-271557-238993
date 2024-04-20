@@ -4,6 +4,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests.BuildingRequests;
+using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Requests.FlatRequests;
 using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.BuildingResponses;
@@ -233,7 +234,10 @@ public class BuildingControllerTest
                 Latitude = 1.2345,
                 Longitude = 1.2345
             },
-            ConstructionCompany = "Company 1",
+            ConstructionCompany = new CreateConstructionCompanyRequest
+            {
+                Name = "Construction company 1"
+            },
             CommonExpenses = 300,
             Flats = new[]
             {
