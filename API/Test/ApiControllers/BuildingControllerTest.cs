@@ -272,7 +272,7 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(response.Id, controllerValue.Id);
     }
-    
+
     [TestMethod]
     public void CreateBuildingRequest_BadRequestIsReturned()
     {
@@ -284,6 +284,24 @@ public class BuildingControllerTest
         IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    [TestMethod]
+    public void CreateBuildingRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _buildingAdapter.Setup(adapter => adapter.CreateBuilding(It.IsAny<CreateBuildingRequest>()))
+            .Throws(new Exception("Unknown error"));
+
+        IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);

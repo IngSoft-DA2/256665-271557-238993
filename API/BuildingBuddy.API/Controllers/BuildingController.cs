@@ -82,7 +82,6 @@ namespace BuildingBuddy.API.Controllers
 
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
         {
-
             try
             {
                 CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
@@ -91,6 +90,11 @@ namespace BuildingBuddy.API.Controllers
             catch (ObjectErrorException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }
