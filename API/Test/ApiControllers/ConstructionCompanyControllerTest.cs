@@ -9,6 +9,16 @@ namespace Test.ApiControllers;
 [TestClass]
 public class ConstructionCompanyControllerTest
 {
+    private Mock<IConstructionCompanyAdapter> _constructionCompanyAdapter;
+    private ConstructionCompanyController _constructionCompanyController;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _constructionCompanyAdapter = new Mock<IConstructionCompanyAdapter>(MockBehavior.Strict);
+        _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyAdapter.Object);
+    }
+    
     [TestMethod]
     public void GetAllConstructionCompanies_OkIsReturned()
     {
@@ -21,14 +31,12 @@ public class ConstructionCompanyControllerTest
         };
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompanies);
-
-        Mock<IConstructionCompanyAdapter> constructionCompanyAdapter = new Mock<IConstructionCompanyAdapter>(MockBehavior.Strict);
-        constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Returns(expectedConstructionCompanies);
         
-        ConstructionCompanyController constructionCompanyController = new ConstructionCompanyController(constructionCompanyAdapter.Object);
-        IActionResult controllerResponse = constructionCompanyController.GetConstructionCompanies();
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Returns(expectedConstructionCompanies);
+        
+        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanies();
 
-        constructionCompanyAdapter.VerifyAll();
+        _constructionCompanyAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -47,14 +55,11 @@ public class ConstructionCompanyControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
         
-        Mock<IConstructionCompanyAdapter> constructionCompanyAdapter = new Mock<IConstructionCompanyAdapter>(MockBehavior.Strict);
-        constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Throws(new Exception("Something went wrong"));
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Throws(new Exception("Something went wrong"));
 
-        ConstructionCompanyController constructionCompanyController = new ConstructionCompanyController(constructionCompanyAdapter.Object);
+        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanies();
 
-        IActionResult controllerResponse = constructionCompanyController.GetConstructionCompanies();
-
-        constructionCompanyAdapter.VerifyAll();
+        _constructionCompanyAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
