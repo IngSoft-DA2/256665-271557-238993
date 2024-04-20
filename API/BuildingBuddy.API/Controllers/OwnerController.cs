@@ -78,6 +78,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 return BadRequest(exceptionCaught.Message);
             }
+            catch(ObjectNotFoundException exceptionCaught)
+            {
+                return NotFound("The specific owner was not found in Database");
+            }
         }
         
         #endregion
