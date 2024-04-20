@@ -183,12 +183,27 @@ public class BuildingControllerTest
         
         Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+    }
 
+    [TestMethod]
+    public void GetBuildById_500StatusCodeIsReturned()
+    {
         
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
 
+        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>()))
+            .Throws(new Exception("Unknown error"));
 
-
-
+        IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
+        _buildingAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+        
     }
     
     
