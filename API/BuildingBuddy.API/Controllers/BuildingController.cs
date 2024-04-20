@@ -38,7 +38,15 @@ namespace BuildingBuddy.API.Controllers
         [Route("{buildingId:Guid}")]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
-            return Ok(_buildingAdapter.GetBuildingById(buildingId));
+            try
+            {
+                return Ok(_buildingAdapter.GetBuildingById(buildingId));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Building was not found in database");
+            }
+            
         }
     }
 }

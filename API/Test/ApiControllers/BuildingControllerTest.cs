@@ -1,6 +1,7 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Responses.BuildingResponses;
@@ -164,8 +165,34 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedBuildingValue.Equals(controllerValue));
     }
+
+    [TestMethod]
+    public void GetBuildingById_NotFoundIsReturned()
+    {
+
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Building was not found in database");
+
+        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundException());
+
+        IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
+        _buildingAdapter.VerifyAll();
+        
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+
+        
+
+
+
+
+    }
+    
+    
+    
+    
 }
-
-
-
 
