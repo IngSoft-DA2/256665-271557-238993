@@ -2,6 +2,7 @@ using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.BuildingRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -51,6 +52,23 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [HttpPut]
+        [Route("{buildingId:Guid}")]
+        public IActionResult UpdateBuilding([FromRoute] Guid buildingId,
+            [FromBody] UpdateBuildingRequest buildingWithUpdates)
+        {
+            try
+            {
+                _buildingAdapter.UpdateBuilding(buildingId, buildingWithUpdates);
+                return NoContent();
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Building was not found in database");
+            }
+         
         }
     }
 }

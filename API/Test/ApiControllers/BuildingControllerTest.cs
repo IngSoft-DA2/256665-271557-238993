@@ -3,6 +3,8 @@ using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModel.Requests.BuildingRequests;
+using WebModel.Requests.InvitationRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
@@ -206,4 +208,45 @@ public class BuildingControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void UpdateBuildingById_OkIsReturned()
+    {
+        NoContentResult expectedControllerResponse = new NoContentResult();
+
+        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()));
+
+        IActionResult controllerResponse =
+            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+
+        _buildingAdapter.Verify(
+            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+
+    [TestMethod]
+    public void UpdateBuildingById_NotFoundIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse =
+            new NotFoundObjectResult("Building was not found in database");
+
+        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+            .Throws(new ObjectNotFoundException());
+
+        IActionResult controllerResponse =
+            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+
+        _buildingAdapter.Verify(
+            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 }
