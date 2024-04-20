@@ -47,20 +47,23 @@ public class BuildingControllerTest
                 },
                 ConstructionCompany = "Company 1",
                 CommonExpenses = 300,
-                Flats = new GetFlatResponse()
+                Flats = new[]
                 {
-                    Floor = 1,
-                    RoomNumber = 102,
-                    Owner = new OwnerResponse
+                    new GetFlatResponse()
                     {
-                        Id = Guid.NewGuid(),
-                        Name = "Owner Name",
-                        Lastname = "Owner Lastname",
-                        Email = "owner@gmail.com"
-                    },
-                    TotalRooms = 4,
-                    TotalBaths = 2,
-                    HasTerrace = true
+                        Floor = 1,
+                        RoomNumber = 102,
+                        Owner = new OwnerResponse
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = "Owner Name",
+                            Lastname = "Owner Lastname",
+                            Email = "owner@gmail.com"
+                        },
+                        TotalRooms = 4,
+                        TotalBaths = 2,
+                        HasTerrace = true
+                    }
                 }
             }
         };
@@ -137,34 +140,39 @@ public class BuildingControllerTest
             },
             ConstructionCompany = "Construction Company 1",
             CommonExpenses = 1000,
-            Flats = new GetFlatResponse()
+            Flats = new[]
             {
-                Floor = 1,
-                RoomNumber = 102,
-                Owner = new OwnerResponse()
+                new GetFlatResponse()
                 {
-                    Name = "Owner name",
-                    Lastname = "Owner lastname",
-                    Email = "owner@gmail.com"
-                },
-                TotalRooms = 2,
-                TotalBaths = 1,
-                HasTerrace = true
+                    Floor = 1,
+                    RoomNumber = 102,
+                    Owner = new OwnerResponse()
+                    {
+                        Name = "Owner name",
+                        Lastname = "Owner lastname",
+                        Email = "owner@gmail.com"
+                    },
+                    TotalRooms = 2,
+                    TotalBaths = 1,
+                    HasTerrace = true
+                }
             }
         };
+
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedBuildingValue);
-
-        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuildingValue);
-
+        
+        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>())).Returns(
+            expectedBuildingValue);
+        
         IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
-
+        
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-
+        
         GetBuildingResponse? controllerValue = controllerResponseCasted.Value as GetBuildingResponse;
         Assert.IsNotNull(controllerValue);
-
+        
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedBuildingValue.Equals(controllerValue));
     }
@@ -216,7 +224,8 @@ public class BuildingControllerTest
     {
         NoContentResult expectedControllerResponse = new NoContentResult();
 
-        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()));
+        _buildingAdapter.Setup(adapter =>
+            adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()));
 
         IActionResult controllerResponse =
             _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
@@ -236,7 +245,8 @@ public class BuildingControllerTest
         NotFoundObjectResult expectedControllerResponse =
             new NotFoundObjectResult("Building was not found in database");
 
-        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+        _buildingAdapter.Setup(adapter =>
+                adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
             .Throws(new ObjectNotFoundException());
 
         IActionResult controllerResponse =
@@ -257,7 +267,8 @@ public class BuildingControllerTest
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
 
-        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+        _buildingAdapter.Setup(adapter =>
+                adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
             .Throws(new ObjectErrorException("Specific error message"));
 
         IActionResult controllerResponse =
@@ -279,7 +290,8 @@ public class BuildingControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+        _buildingAdapter.Setup(adapter =>
+                adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
             .Throws(new Exception("Unknown error"));
 
         IActionResult controllerResponse =

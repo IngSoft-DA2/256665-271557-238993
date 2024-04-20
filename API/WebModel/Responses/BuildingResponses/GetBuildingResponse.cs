@@ -10,7 +10,7 @@ public class GetBuildingResponse
     public LocationResponse Location { get; set; }
     public string ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
-    public GetFlatResponse Flats { get; set; }
+    public IEnumerable<GetFlatResponse> Flats { get; set; }
 
     public override bool Equals(object? toCompare)
     {
