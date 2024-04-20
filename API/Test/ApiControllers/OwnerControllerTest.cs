@@ -140,4 +140,23 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 
+    [TestMethod]
+    public void UpdateOwner_NoContentIsReturned()
+    {
+        NoContentResult expectedControllerResponse = new NoContentResult();
+        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>()));
+        
+        IActionResult controllerResponse = _ownerController.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
+        
+        _ownerAdapter.Verify(
+            adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>()), Times.Once());
+            
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+
+    }
+
 }
