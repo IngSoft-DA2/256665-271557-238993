@@ -209,6 +209,8 @@ public class BuildingControllerTest
 
     #endregion
 
+    #region Update Building By Id
+
     [TestMethod]
     public void UpdateBuildingById_OkIsReturned()
     {
@@ -282,15 +284,16 @@ public class BuildingControllerTest
 
         IActionResult controllerResponse =
             _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
-        
+
         _buildingAdapter.Verify(
             adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-            
     }
+
+    #endregion
 }
