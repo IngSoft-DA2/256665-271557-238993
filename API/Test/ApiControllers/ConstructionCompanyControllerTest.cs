@@ -7,7 +7,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace Test.ApiControllers;
 
 [TestClass]
-public class ConstructionCompanyTest
+public class ConstructionCompanyControllerTest
 {
     [TestMethod]
     public void GetAllConstructionCompanies_OkIsReturned()
@@ -39,5 +39,27 @@ public class ConstructionCompanyTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedConstructionCompanies));
+    }
+    
+    [TestMethod]
+    public void GetAllConstructionCompanies_InternalServerErrorIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        Mock<IConstructionCompanyAdapter> constructionCompanyAdapter = new Mock<IConstructionCompanyAdapter>(MockBehavior.Strict);
+        constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Throws(new Exception("Something went wrong"));
+
+        ConstructionCompanyController constructionCompanyController = new ConstructionCompanyController(constructionCompanyAdapter.Object);
+
+        IActionResult controllerResponse = constructionCompanyController.GetConstructionCompanies();
+
+        constructionCompanyAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }

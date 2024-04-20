@@ -24,7 +24,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetConstructionCompanies()
         {
-            return Ok(_constructionCompanyAdapter.GetConstructionCompanies());
+            try
+            {
+                return Ok(_constructionCompanyAdapter.GetConstructionCompanies());
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         #endregion
