@@ -7,7 +7,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/constructionCompany")]
+    [Route("api/v1/constructionCompanies")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
     {
@@ -40,6 +40,8 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
         
+        #region CreateConstructionCompany
+        
         [HttpPost]
         public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
@@ -59,5 +61,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
     }
 }

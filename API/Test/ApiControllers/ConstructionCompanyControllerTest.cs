@@ -11,6 +11,8 @@ namespace Test.ApiControllers;
 [TestClass]
 public class ConstructionCompanyControllerTest
 {
+    #region Initilizing aspects
+    
     private Mock<IConstructionCompanyAdapter> _constructionCompanyAdapter;
     private ConstructionCompanyController _constructionCompanyController;
 
@@ -21,8 +23,12 @@ public class ConstructionCompanyControllerTest
         _constructionCompanyController = new ConstructionCompanyController(_constructionCompanyAdapter.Object);
     }
     
+    #endregion
+
+    #region GetConstructionCompanies
+    
     [TestMethod]
-    public void GetAllConstructionCompanies_OkIsReturned()
+    public void GetConstructionCompanies_OkIsReturned()
     {
         IEnumerable<ConstructionCompanyResponse> expectedConstructionCompanies = new List<ConstructionCompanyResponse>()
         {
@@ -69,6 +75,10 @@ public class ConstructionCompanyControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    #endregion
+
+    #region CreaterConstructionCompany
     
     [TestMethod]
     public void CreateConstructionCompany_CreatedAtActionIsReturned()
@@ -136,4 +146,6 @@ public class ConstructionCompanyControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    #endregion
 }
