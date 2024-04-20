@@ -408,6 +408,8 @@ public class BuildingControllerTest
 
     #endregion
 
+    #region Delete Building By Id
+
     [TestMethod]
     public void DeleteBuildingRequest_NoContentIsReturned()
     {
@@ -461,4 +463,6 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
 }

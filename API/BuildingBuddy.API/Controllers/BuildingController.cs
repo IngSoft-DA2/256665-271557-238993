@@ -118,5 +118,14 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        //This must be done by the one of us that will make maintenace.
+        // [HttpPost]
+        // [Route("{buildingId:Guid}/maintenanceRequests")]
+        // public IActionResult CreateMaintenaceRequest([FromRoute] Guid buildingId,
+        //     [FromBody] CreateMaintenanceRequestRequest request)
+        // {
+        //     return Ok();
+        // }
     }
 }
