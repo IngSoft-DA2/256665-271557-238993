@@ -9,6 +9,18 @@ namespace Test.ApiControllers;
 [TestClass]
 public class OwnerControllerTest
 {
+    
+    private Mock<IOwnerAdapter> _ownerAdapter;
+    private OwnerController _ownerController;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        _ownerAdapter = new Mock<IOwnerAdapter>(MockBehavior.Strict);
+        _ownerController = new OwnerController(_ownerAdapter.Object);
+    }
+    
+    
     [TestMethod]
     public void GetOwners_OkIsReturned()
     {
@@ -25,13 +37,11 @@ public class OwnerControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedOwners);
         
-        Mock<IOwnerAdapter> ownerAdapter = new Mock<IOwnerAdapter>(MockBehavior.Strict);
-        ownerAdapter.Setup(adapter => adapter.GetOwners()).Returns(expectedOwners);
+        _ownerAdapter.Setup(adapter => adapter.GetOwners()).Returns(expectedOwners);
         
-        OwnerController ownerController = new OwnerController(ownerAdapter.Object);
-        IActionResult controllerResponse = ownerController.GetOwners();
+        IActionResult controllerResponse = _ownerController.GetOwners();
 
-        ownerAdapter.VerifyAll();
+        _ownerAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -50,13 +60,11 @@ public class OwnerControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
         
-        Mock<IOwnerAdapter> ownerAdapter = new Mock<IOwnerAdapter>(MockBehavior.Strict);
-        ownerAdapter.Setup(adapter => adapter.GetOwners()).Throws(new Exception("Something went wrong"));
+        _ownerAdapter.Setup(adapter => adapter.GetOwners()).Throws(new Exception("Something went wrong"));
         
-        OwnerController ownerController = new OwnerController(ownerAdapter.Object);
-        IActionResult controllerResponse = ownerController.GetOwners();
+        IActionResult controllerResponse = _ownerController.GetOwners();
 
-        ownerAdapter.VerifyAll();
+        _ownerAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
