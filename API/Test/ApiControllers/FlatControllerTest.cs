@@ -206,6 +206,24 @@ namespace Test.ApiControllers
             Assert.AreEqual(expectedFlat, controllerResponseValueCasted);
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
         }
-        
+
+        [TestMethod]
+        public void GetFlatById_NotFoundIsReturned()
+        {
+            NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Flat was not found, reload the page");
+
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
+                .Throws(new ObjectNotFoundException());
+
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            _flatAdapter.VerifyAll();
+
+            NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(controllerResponseCasted.Value, expectedResponse.Value);
+            Assert.AreEqual(expectedResponse.StatusCode, controllerResponseCasted.StatusCode);
+        }
     }
 }
