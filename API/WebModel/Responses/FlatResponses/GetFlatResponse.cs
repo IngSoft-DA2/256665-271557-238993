@@ -14,7 +14,7 @@ namespace WebModel.Responses.FlatResponses
         public Guid Id { get; set; }
         public int Floor { get; set; }
         public int RoomNumber { get; set; }
-        public OwnerResponse Owner { get; set; }
+        public GetOwnerAssignedResponse GetOwnerAssigned { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
         public bool HasTerrace { get; set; }
@@ -28,7 +28,7 @@ namespace WebModel.Responses.FlatResponses
             return Id == toCompare.Id &&
                    Floor == toCompare.Floor &&
                    RoomNumber == toCompare.RoomNumber &&
-                   Owner == toCompare.Owner &&
+                   GetOwnerAssigned == toCompare.GetOwnerAssigned &&
                    TotalBaths == toCompare.TotalBaths &&
                    TotalRooms == toCompare.TotalRooms &&
                    HasTerrace == toCompare.HasTerrace;

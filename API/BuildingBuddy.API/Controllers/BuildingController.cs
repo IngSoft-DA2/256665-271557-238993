@@ -3,6 +3,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.BuildingRequests;
+using WebModel.Responses.BuildingResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -77,6 +78,12 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
+        {
+            CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
+            return CreatedAtAction(nameof(CreateBuilding), new { id = response.Id }, response);
         }
     }
 }

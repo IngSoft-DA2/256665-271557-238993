@@ -44,7 +44,7 @@ namespace Test.ApiControllers
                     Id = Guid.NewGuid(),
                     Floor = 1,
                     RoomNumber = 102,
-                    Owner = new OwnerResponse()
+                    GetOwnerAssigned = new GetOwnerAssignedResponse()
                     {
                         Name = "Barry",
                         Lastname = "White",

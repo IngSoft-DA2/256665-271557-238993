@@ -4,7 +4,8 @@ using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests.BuildingRequests;
-using WebModel.Requests.InvitationRequests;
+using WebModel.Requests.FlatRequests;
+using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
@@ -53,7 +54,7 @@ public class BuildingControllerTest
                     {
                         Floor = 1,
                         RoomNumber = 102,
-                        Owner = new OwnerResponse
+                        GetOwnerAssigned = new GetOwnerAssignedResponse
                         {
                             Id = Guid.NewGuid(),
                             Name = "Owner Name",
@@ -146,8 +147,9 @@ public class BuildingControllerTest
                 {
                     Floor = 1,
                     RoomNumber = 102,
-                    Owner = new OwnerResponse()
+                    GetOwnerAssigned = new GetOwnerAssignedResponse()
                     {
+                        Id = Guid.NewGuid(),
                         Name = "Owner name",
                         Lastname = "Owner lastname",
                         Email = "owner@gmail.com"
@@ -160,19 +162,19 @@ public class BuildingControllerTest
         };
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedBuildingValue);
-        
+
         _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>())).Returns(
             expectedBuildingValue);
-        
+
         IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
-        
+
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         GetBuildingResponse? controllerValue = controllerResponseCasted.Value as GetBuildingResponse;
         Assert.IsNotNull(controllerValue);
-        
+
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedBuildingValue.Equals(controllerValue));
     }
@@ -216,6 +218,61 @@ public class BuildingControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void CreateBuildingRequest_OkIsReturned()
+    {
+        CreateBuildingRequest createBuildingRequest = new CreateBuildingRequest()
+        {
+            Name = "Building 1",
+            Address = "North Avenue",
+            Location = new LocationRequest()
+            {
+                Latitude = 1.2345,
+                Longitude = 1.2345
+            },
+            ConstructionCompany = "Company 1",
+            CommonExpenses = 300,
+            Flats = new[]
+            {
+                new CreateFlatRequest
+                {
+                    Floor = 1,
+                    RoomNumber = 102,
+                    Owner = new AssignOwnerToFlatRequest()
+                    {
+                        Id = Guid.NewGuid()
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+
+        CreateBuildingResponse response = new CreateBuildingResponse
+        {
+            Id = Guid.NewGuid()
+        };
+
+        CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateBuilding", "CreateBuilding",
+            response.Id, response);
+
+        _buildingAdapter.Setup(adapter => adapter.CreateBuilding(It.IsAny<CreateBuildingRequest>())).Returns(response);
+
+
+        IActionResult controllerResponse = _buildingController.CreateBuilding(createBuildingRequest);
+
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        CreateBuildingResponse? controllerValue = controllerResponseCasted.Value as CreateBuildingResponse;
+        Assert.IsNotNull(controllerValue);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(response.Id, controllerValue.Id);
+    }
+
 
     #region Update Building By Id
 
