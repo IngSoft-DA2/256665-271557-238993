@@ -53,8 +53,8 @@ namespace Test.ApiControllers
                         Email =         "barrywhite@gmail.com",
                     },
                     TotalRooms = 3,
-                    MaintenanceRequests = new List<MaintenanceRequestResponse>(),
-                    TotalBaths = 2
+                    TotalBaths = 2,
+                    HasTerrace = true
                 }
             };
 
@@ -167,5 +167,43 @@ namespace Test.ApiControllers
         }
 
         #endregion
+
+        [TestMethod]
+
+        public void GetFlatById_OkIsReturned()
+        {
+            GetFlatResponse expectedFlat = new GetFlatResponse()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 1,
+                RoomNumber = 102,
+                Owner = new OwnerResponse()
+                {
+                    Name = "Barry",
+                    Lastname = "White",
+                    Email = "barrywhite@gmail.com"
+                },
+                HasTerrace = true
+            };
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>())).Returns(expectedFlat);
+            
+            OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlat);
+            
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            
+            _flatAdapter.VerifyAll();
+            
+            OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+            
+            Assert.IsNotNull(controllerResponseCasted);
+            
+            GetFlatResponse? controllerResponseValueCasted = controllerResponseCasted.Value as GetFlatResponse;
+            
+            Assert.IsNotNull(controllerResponseValueCasted);
+            
+            Assert.AreEqual(expectedFlat, controllerResponseValueCasted);
+            Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
+        }
+
     }
 }

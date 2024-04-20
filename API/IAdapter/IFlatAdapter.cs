@@ -12,5 +12,6 @@ namespace IAdapter
     {
         public IEnumerable<GetFlatResponse> GetAllFlats();
         public CreateFlatResponse CreateFlat(CreateFlatRequest flatToCreate);
+        public GetFlatResponse GetFlatById(Guid flatId);
     }
 }

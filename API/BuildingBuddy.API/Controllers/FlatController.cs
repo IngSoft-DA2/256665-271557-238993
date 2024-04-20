@@ -13,7 +13,7 @@ namespace BuildingBuddy.API.Controllers
 
         public FlatController(IFlatAdapter flatAdapter)
         {
-            _flatAdapter = flatAdapter;
+            _flatAdapter = flatAdapter; 
         }
 
         #endregion
@@ -34,6 +34,16 @@ namespace BuildingBuddy.API.Controllers
             }
         }
 
+        #endregion
+        
+        #region GetFlatById
+        
+        [HttpGet("{id}")]
+        public IActionResult GetFlatById(Guid idOfFlatToFind)
+        {
+            return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
+        }
+        
         #endregion
 
         #region CreateFlat

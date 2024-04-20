@@ -15,5 +15,6 @@ namespace WebModel.Requests.FlatRequests
         public OwnerRequest Owner { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
+        public bool HasTerrace { get; set; }
     }
 }

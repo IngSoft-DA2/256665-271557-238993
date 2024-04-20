@@ -18,8 +18,8 @@ namespace WebModel.Responses.FlatResponses
         public OwnerResponse Owner { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
-        public IEnumerable<MaintenanceRequestResponse> MaintenanceRequests { get; set; }
-
+        public bool HasTerrace { get; set; }
+        
         public override bool Equals(object objectToCompare)
         {
             GetFlatResponse? toCompare = objectToCompare as GetFlatResponse;
@@ -31,7 +31,7 @@ namespace WebModel.Responses.FlatResponses
                    RoomNumber == toCompare.RoomNumber &&
                    Owner == toCompare.Owner &&
                    TotalBaths == toCompare.TotalBaths &&
-                   MaintenanceRequests.SequenceEqual(toCompare.MaintenanceRequests) &&
+                   HasTerrace == toCompare.HasTerrace &&
                    TotalRooms == toCompare.TotalRooms;
         }
 
