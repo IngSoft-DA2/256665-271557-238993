@@ -11,6 +11,7 @@ namespace Test.ApiControllers;
 [TestClass]
 public class OwnerControllerTest
 {
+    #region  Initialize
     
     private Mock<IOwnerAdapter> _ownerAdapter;
     private OwnerController _ownerController;
@@ -22,7 +23,10 @@ public class OwnerControllerTest
         _ownerController = new OwnerController(_ownerAdapter.Object);
     }
     
-    
+    #endregion
+
+    #region GetOwners
+
     [TestMethod]
     public void GetOwners_OkIsReturned()
     {
@@ -75,6 +79,10 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
+    #endregion
+    
+    #region CreateOwner
+    
     [TestMethod]
     public void CreateOwner_CreatedAtActionIsReturned()
     {
@@ -139,6 +147,10 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+    
+    #endregion
+    
+    #region UpdateOwner
 
     [TestMethod]
     public void UpdateOwner_NoContentIsReturned()
@@ -216,5 +228,7 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
+    
+    #endregion
 
 }
