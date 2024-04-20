@@ -17,7 +17,7 @@ namespace WebModel.Responses.OwnerResponses
 
         public override bool Equals(object objectToCompare)
         {
-            OwnerResponse? toCompare = objectToCompare as OwnerResponse;
+            OwnerResponse? toCompare = objectToCompare as OwnerResponse;        
 
             if (toCompare is null) return false;
 

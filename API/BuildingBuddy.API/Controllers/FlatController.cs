@@ -1,10 +1,14 @@
-﻿using Adapter.CustomExceptions;
+using Adapter.CustomExceptions;
 using IAdapter;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    public class FlatController : Controller
+    [Route("api/v1/flats")]
+    [ApiController]
+    public class FlatController : ControllerBase
     {
         #region Constructor and atributes
 
@@ -35,14 +39,36 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region CreateFlat
+        #region GetFlatById
 
-        [HttpPost]
-        public IActionResult CreateFlat([FromBody] Guid idOfBuilding)
+        [HttpGet("{idOfFlatToFind}")]
+        public IActionResult GetFlatById([FromRoute] Guid idOfFlatToFind)
         {
             try
             {
-                return Ok(_flatAdapter.CreateFlat(idOfBuilding));
+                return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
+            }
+            catch (ObjectNotFoundException exceptionCaught)
+            {
+                return NotFound("Flat was not found, reload the page");
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        #endregion
+
+        #region CreateFlat
+
+        [HttpPost]
+        public IActionResult CreateFlat([FromBody] CreateFlatRequest flatToCreate)
+        {
+            try
+            {
+                return Ok(_flatAdapter.CreateFlat(flatToCreate));
             }
             catch (ObjectErrorException exceptionCaught)
             {

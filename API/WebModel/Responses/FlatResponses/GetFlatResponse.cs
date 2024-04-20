@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebModel.Responses.OwnerResponses;
 using WebModel.Responses;
+using WebModel.Responses.MaintenanceRequestResponses;
 
 namespace WebModel.Responses.FlatResponses
 {
@@ -17,7 +18,8 @@ namespace WebModel.Responses.FlatResponses
         public OwnerResponse Owner { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
-
+        public bool HasTerrace { get; set; }
+        
         public override bool Equals(object objectToCompare)
         {
             GetFlatResponse? toCompare = objectToCompare as GetFlatResponse;
@@ -29,6 +31,7 @@ namespace WebModel.Responses.FlatResponses
                    RoomNumber == toCompare.RoomNumber &&
                    Owner == toCompare.Owner &&
                    TotalBaths == toCompare.TotalBaths &&
+                   HasTerrace == toCompare.HasTerrace &&
                    TotalRooms == toCompare.TotalRooms;
         }
 
