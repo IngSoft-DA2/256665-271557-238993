@@ -10,11 +10,11 @@ namespace BuildingBuddy.API.Controllers
     public class BuildingController : ControllerBase
     {
         private readonly IBuildingAdapter _buildingAdapter;
+
         public BuildingController(IBuildingAdapter buildingAdapter)
         {
             _buildingAdapter = buildingAdapter;
         }
-
 
         [HttpGet]
         public IActionResult GetBuildings([FromQuery] Guid userId)
@@ -32,7 +32,13 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-            
+        }
+
+        [HttpGet]
+        [Route("{buildingId:Guid}")]
+        public IActionResult GetBuildingById([FromRoute] Guid buildingId)
+        {
+            return Ok(_buildingAdapter.GetBuildingById(buildingId));
         }
     }
 }

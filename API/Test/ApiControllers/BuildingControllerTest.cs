@@ -15,12 +15,18 @@ public class BuildingControllerTest
     private Mock<IBuildingAdapter> _buildingAdapter;
     private BuildingController _buildingController;
 
+    #region Initialization
+
     [TestInitialize]
     public void Initialize()
     {
         _buildingAdapter = new Mock<IBuildingAdapter>(MockBehavior.Strict);
         _buildingController = new BuildingController(_buildingAdapter.Object);
     }
+
+    #endregion
+
+    #region Get Buildings
 
     [TestMethod]
     public void GetBuildings_OkIsReturned()
@@ -31,7 +37,7 @@ public class BuildingControllerTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Building 1",
-                Direction = "North Avenue",
+                Address = "North Avenue",
                 Location = new LocationResponse()
                 {
                     Latitude = 1.2345,
@@ -110,4 +116,56 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
+
+    [TestMethod]
+    public void GetBuildingById_OkIsReturned()
+    {
+        GetBuildingResponse expectedBuildingValue = new GetBuildingResponse()
+        {
+            Name = "Building 1",
+            Address = "North Avenue",
+            Location = new LocationResponse
+            {
+                Latitude = 1.023,
+                Longitude = 1.12
+            },
+            ConstructionCompany = "Construction Company 1",
+            CommonExpenses = 1000,
+            Flats = new GetFlatResponse()
+            {
+                Floor = 1,
+                RoomNumber = 102,
+                Owner = new OwnerResponse()
+                {
+                    Name = "Owner name",
+                    Lastname = "Owner lastname",
+                    Email = "owner@gmail.com"
+                },
+                TotalRooms = 2,
+                TotalBaths = 1,
+                HasTerrace = true
+            }
+        };
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedBuildingValue);
+
+        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuildingValue);
+
+        IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
+        _buildingAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        GetBuildingResponse? controllerValue = controllerResponseCasted.Value as GetBuildingResponse;
+        Assert.IsNotNull(controllerValue);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedBuildingValue.Equals(controllerValue));
+    }
 }
+
+
+
+

@@ -6,7 +6,7 @@ public class GetBuildingResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Direction { get; set; }
+    public string Address { get; set; }
     public LocationResponse Location { get; set; }
     public string ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
@@ -20,7 +20,7 @@ public class GetBuildingResponse
 
         return Id == buildingToCompare.Id
                && Name == buildingToCompare.Name
-               && Direction == buildingToCompare.Direction
+               && Address == buildingToCompare.Address
                && Location.Latitude == buildingToCompare.Location.Latitude
                && Location.Longitude == buildingToCompare.Location.Longitude
                && ConstructionCompany == buildingToCompare.ConstructionCompany

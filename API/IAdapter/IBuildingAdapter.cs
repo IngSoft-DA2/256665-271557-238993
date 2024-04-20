@@ -7,4 +7,5 @@ public interface IBuildingAdapter
 {
 
     public IEnumerable<GetBuildingResponse> GetBuildings(Guid userId);
+    public GetBuildingResponse GetBuildingById(Guid buildingId);
 }
