@@ -162,6 +162,24 @@ namespace Test.ApiControllers
 
         }
 
+        [TestMethod]
+        public void CreateFlatRequest_NotFoundIsReturned()
+        {
+            NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Owner was not found in database");
+            
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>()))
+                .Throws(new ObjectNotFoundException());
+            
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+            _flatAdapter.VerifyAll();
+            
+            NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+            
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        }
+
         #endregion
     }
 }
