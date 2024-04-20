@@ -112,6 +112,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("Building was not found in database");
             }
+            catch (Exception exceptionCaugth)
+            {
+                Console.WriteLine(exceptionCaugth.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }
