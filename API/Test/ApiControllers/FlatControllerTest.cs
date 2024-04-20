@@ -171,6 +171,7 @@ namespace Test.ApiControllers
 
         #endregion
 
+        #region GetFlatById
         [TestMethod]
         public void GetFlatById_OkIsReturned()
         {
@@ -244,5 +245,6 @@ namespace Test.ApiControllers
             Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
         }
+        #endregion
     }
 }
