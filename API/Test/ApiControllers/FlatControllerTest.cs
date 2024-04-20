@@ -225,5 +225,24 @@ namespace Test.ApiControllers
             Assert.AreEqual(controllerResponseCasted.Value, expectedResponse.Value);
             Assert.AreEqual(expectedResponse.StatusCode, controllerResponseCasted.StatusCode);
         }
+        
+        [TestMethod]
+        public void GetFlatById_500StatusCodeIsReturned()
+        {
+            ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+            expectedControllerResponse.StatusCode = 500;
+
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
+                .Throws(new Exception("An specific error on the server"));
+
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            _flatAdapter.VerifyAll();
+
+            ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
+            Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
+        }
     }
 }

@@ -52,6 +52,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("Flat was not found, reload the page");
             }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         #endregion
