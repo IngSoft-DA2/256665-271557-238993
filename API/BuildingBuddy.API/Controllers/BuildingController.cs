@@ -103,8 +103,15 @@ namespace BuildingBuddy.API.Controllers
         [Route("{buildingId}:Guid")]
         public IActionResult DeleteBuilding([FromRoute] Guid buildingId)
         {
-            _buildingAdapter.DeleteBuilding(buildingId);
-            return NoContent();
+            try
+            {
+                _buildingAdapter.DeleteBuilding(buildingId);
+                return NoContent();
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Building was not found in database");
+            }
         }
     }
 }
