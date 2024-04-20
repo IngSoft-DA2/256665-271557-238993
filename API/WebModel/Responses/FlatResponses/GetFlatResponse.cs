@@ -17,6 +17,7 @@ namespace WebModel.Responses.FlatResponses
         public OwnerResponse Owner { get; set; }
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
+        public bool HasTerrace { get; set; }
 
         public override bool Equals(object objectToCompare)
         {
@@ -29,10 +30,8 @@ namespace WebModel.Responses.FlatResponses
                    RoomNumber == toCompare.RoomNumber &&
                    Owner == toCompare.Owner &&
                    TotalBaths == toCompare.TotalBaths &&
-                   TotalRooms == toCompare.TotalRooms;
+                   TotalRooms == toCompare.TotalRooms &&
+                   HasTerrace == toCompare.HasTerrace;
         }
-
-
-
     }
 }
