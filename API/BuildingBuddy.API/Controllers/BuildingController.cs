@@ -80,6 +80,7 @@ namespace BuildingBuddy.API.Controllers
             }
         }
 
+        [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
         {
             try
@@ -96,6 +97,14 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [HttpDelete]
+        [Route("{buildingId}:Guid")]
+        public IActionResult DeleteBuilding([FromRoute] Guid buildingId)
+        {
+            _buildingAdapter.DeleteBuilding(buildingId);
+            return NoContent();
         }
     }
 }

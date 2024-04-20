@@ -407,4 +407,20 @@ public class BuildingControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void DeleteBuildingRequest_NoContentIsReturned()
+    {
+        NoContentResult expectedControllerResponse = new NoContentResult();
+        
+        _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()));
+        
+        IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
+        Assert.IsNotNull(controllerResponse);
+        
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+    }
 }

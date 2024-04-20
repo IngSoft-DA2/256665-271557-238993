@@ -12,4 +12,5 @@ public interface IBuildingAdapter
     public GetBuildingResponse GetBuildingById(Guid buildingId);
     public void UpdateBuilding(Guid idOfBuilding, UpdateBuildingRequest buildingWithUpdates);
     public CreateBuildingResponse CreateBuilding(CreateBuildingRequest buildingToCreate);
+    public void  DeleteBuilding(Guid buildingId);
 }
