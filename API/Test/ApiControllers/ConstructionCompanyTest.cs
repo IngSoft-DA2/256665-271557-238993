@@ -38,5 +38,6 @@ public class ConstructionCompanyTest
         Assert.IsNotNull(controllerResponseValueCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedConstructionCompanies));
     }
 }
