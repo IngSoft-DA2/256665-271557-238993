@@ -272,6 +272,23 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(response.Id, controllerValue.Id);
     }
+    
+    [TestMethod]
+    public void CreateBuildingRequest_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
+
+        _buildingAdapter.Setup(adapter => adapter.CreateBuilding(It.IsAny<CreateBuildingRequest>()))
+            .Throws(new ObjectErrorException("Specific error message"));
+
+        IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
+
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 
 
     #region Update Building By Id

@@ -82,8 +82,16 @@ namespace BuildingBuddy.API.Controllers
 
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
         {
-            CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
-            return CreatedAtAction(nameof(CreateBuilding), new { id = response.Id }, response);
+
+            try
+            {
+                CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
+                return CreatedAtAction(nameof(CreateBuilding), new { id = response.Id }, response);
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }
