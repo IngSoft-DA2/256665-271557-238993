@@ -22,7 +22,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region GetAllFlats
-
+        //INCLUIR EN BUILDING Y QUITAR DE AQUI
         [HttpGet]
         public IActionResult GetAllFlats()
         {
@@ -61,6 +61,7 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
+        //INCLUIR EN BUILDING Y QUITAR DE AQUI
         #region CreateFlat
 
         [HttpPost]

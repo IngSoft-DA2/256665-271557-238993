@@ -3,7 +3,7 @@ using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModel.Requests;
+using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Test.ApiControllers;

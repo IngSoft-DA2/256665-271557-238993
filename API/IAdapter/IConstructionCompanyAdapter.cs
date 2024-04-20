@@ -1,4 +1,4 @@
-﻿using WebModel.Requests;
+﻿using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace IAdapter;
