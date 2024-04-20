@@ -3,6 +3,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests;
+using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -44,7 +45,9 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                return Ok(_constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest));
+                CreateConstructionCompanyResponse response = _constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest);
+                
+                return CreatedAtAction(nameof(CreateConstructionCompany), new { id = response.Id }, response);
             }
             catch (ObjectErrorException exceptionCaught)
             {

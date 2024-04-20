@@ -71,14 +71,16 @@ public class ConstructionCompanyControllerTest
     }
     
     [TestMethod]
-    public void CreateConstructionCompany_OkIsReturned()
+    public void CreateConstructionCompany_CreatedAtActionIsReturned()
     {
         CreateConstructionCompanyResponse expectedConstructionCompany = new CreateConstructionCompanyResponse()
         {
             Id = Guid.NewGuid()
         };
 
-        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompany);
+        CreatedAtActionResult expectedControllerResponse =
+            new CreatedAtActionResult("CreateConstructionCompany", "CreateConstructionCompany"
+                , expectedConstructionCompany.Id, expectedConstructionCompany);
         
         _constructionCompanyAdapter.Setup(adapter => adapter.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>())).Returns(expectedConstructionCompany);
         
@@ -86,7 +88,8 @@ public class ConstructionCompanyControllerTest
 
         _constructionCompanyAdapter.VerifyAll();
 
-        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        
         Assert.IsNotNull(controllerResponseCasted);
 
         CreateConstructionCompanyResponse? controllerResponseValueCasted =
