@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetBuildings([FromQuery] Guid userId)
         {
-            return Ok(_buildingAdapter.GetBuildings(userId));
+            try
+            {
+                return Ok(_buildingAdapter.GetBuildings(userId));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("User id was not found in database");
+            }
+            
         }
     }
 }
