@@ -1,9 +1,9 @@
 using Adapter.CustomExceptions;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Responses.ConstructionCompanyResponses;
+
 
 namespace BuildingBuddy.API.Controllers
 {

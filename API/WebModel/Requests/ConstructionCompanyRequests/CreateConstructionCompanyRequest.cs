@@ -1,4 +1,4 @@
-﻿namespace WebModel.Requests.ConstructionCompanyRequests;
+namespace WebModel.Requests.ConstructionCompanyRequests;
 
 public class CreateConstructionCompanyRequest
 {

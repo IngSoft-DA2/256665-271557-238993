@@ -47,7 +47,7 @@ namespace Test.ApiControllers
                     Id = Guid.NewGuid(),
                     Floor = 1,
                     RoomNumber = 102,
-                    Owner = new OwnerResponse()
+                    GetOwnerAssigned = new GetOwnerAssignedResponse()
                     {
                         Name = "Barry",
                         Lastname = "White",
@@ -169,6 +169,24 @@ namespace Test.ApiControllers
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
         }
 
+        [TestMethod]
+        public void CreateFlatRequest_NotFoundIsReturned()
+        {
+            NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Owner was not found in database");
+            
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
+                .Throws(new ObjectNotFoundException());
+            
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
+            _flatAdapter.VerifyAll();
+            
+            NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+            
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        }
+
         #endregion
 
         #region GetFlatById
@@ -180,7 +198,7 @@ namespace Test.ApiControllers
                 Id = Guid.NewGuid(),
                 Floor = 1,
                 RoomNumber = 102,
-                Owner = new OwnerResponse()
+                GetOwnerAssigned = new GetOwnerAssignedResponse()
                 {
                     Name = "Barry",
                     Lastname = "White",

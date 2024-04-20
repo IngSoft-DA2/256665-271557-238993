@@ -30,10 +30,11 @@ public class ConstructionCompanyControllerTest
     [TestMethod]
     public void GetConstructionCompanies_OkIsReturned()
     {
-        IEnumerable<ConstructionCompanyResponse> expectedConstructionCompanies = new List<ConstructionCompanyResponse>()
+        IEnumerable<GetConstructionCompanyResponse> expectedConstructionCompanies = new List<GetConstructionCompanyResponse>()
         {
-            new ConstructionCompanyResponse()
+            new GetConstructionCompanyResponse()
             {
+                Id = Guid.NewGuid(),
                 Name = "Construction Company 1"
             }
         };
@@ -49,8 +50,8 @@ public class ConstructionCompanyControllerTest
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
-        List<ConstructionCompanyResponse>? controllerResponseValueCasted =
-            controllerResponseCasted.Value as List<ConstructionCompanyResponse>;
+        List<GetConstructionCompanyResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetConstructionCompanyResponse>;
         Assert.IsNotNull(controllerResponseValueCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);

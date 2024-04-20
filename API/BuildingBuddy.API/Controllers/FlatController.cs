@@ -75,6 +75,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 return BadRequest(exceptionCaught.Message);
             }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Owner was not found in database");
+            }
             catch (Exception exceptionCaught)
             {
                 Console.WriteLine(exceptionCaught.Message);

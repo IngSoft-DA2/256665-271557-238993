@@ -30,9 +30,9 @@ public class OwnerControllerTest
     [TestMethod]
     public void GetOwners_OkIsReturned()
     {
-        IEnumerable<OwnerResponse> expectedOwners = new List<OwnerResponse>()
+        IEnumerable<GetOwnerResponse> expectedOwners = new List<GetOwnerResponse>()
         {
-            new OwnerResponse()
+            new GetOwnerResponse()
             {
                 Id = Guid.NewGuid(),
                 Name = "myOwner",
@@ -52,8 +52,8 @@ public class OwnerControllerTest
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
-        List<OwnerResponse>? controllerResponseValueCasted =
-            controllerResponseCasted.Value as List<OwnerResponse>;
+        List<GetOwnerResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetOwnerResponse>;
         Assert.IsNotNull(controllerResponseValueCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);

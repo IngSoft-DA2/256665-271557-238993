@@ -1,4 +1,4 @@
-﻿namespace WebModel.Responses.ConstructionCompanyResponses;
+namespace WebModel.Responses.ConstructionCompanyResponses;
 
 public class CreateConstructionCompanyResponse
 {
