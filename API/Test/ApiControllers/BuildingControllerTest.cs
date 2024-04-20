@@ -1,7 +1,6 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Responses.BuildingResponses;
@@ -120,6 +119,8 @@ public class BuildingControllerTest
 
     #endregion
 
+    #region Get Building By Id
+
     [TestMethod]
     public void GetBuildingById_OkIsReturned()
     {
@@ -158,37 +159,36 @@ public class BuildingControllerTest
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         GetBuildingResponse? controllerValue = controllerResponseCasted.Value as GetBuildingResponse;
         Assert.IsNotNull(controllerValue);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedBuildingValue.Equals(controllerValue));
     }
 
     [TestMethod]
     public void GetBuildingById_NotFoundIsReturned()
     {
-
-        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Building was not found in database");
+        NotFoundObjectResult expectedControllerResponse =
+            new NotFoundObjectResult("Building was not found in database");
 
         _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundException());
 
         IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
-        
+
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
     [TestMethod]
     public void GetBuildById_500StatusCodeIsReturned()
     {
-        
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
@@ -197,17 +197,13 @@ public class BuildingControllerTest
 
         IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
-        
+
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
-        
-    }
-    
-    
-    
-    
-}
 
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    #endregion
+}
