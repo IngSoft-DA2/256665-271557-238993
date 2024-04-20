@@ -12,6 +12,16 @@ namespace Test.ApiControllers;
 [TestClass]
 public class BuildingControllerTest
 {
+    private Mock<IBuildingAdapter> _buildingAdapter;
+    private BuildingController _buildingController;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _buildingAdapter = new Mock<IBuildingAdapter>(MockBehavior.Strict);
+        _buildingController = new BuildingController(_buildingAdapter.Object);
+    }
+
     [TestMethod]
     public void GetBuildings_OkIsReturned()
     {
@@ -48,13 +58,10 @@ public class BuildingControllerTest
         };
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedBuildings);
 
-        Mock<IBuildingAdapter> buildingAdapter = new Mock<IBuildingAdapter>(MockBehavior.Strict);
-        buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
-
-        BuildingController buildingController = new BuildingController(buildingAdapter.Object);
-
-        IActionResult controllerResponse = buildingController.GetBuildings(It.IsAny<Guid>());
-        buildingAdapter.VerifyAll();
+        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
+        
+        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        _buildingAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         IEnumerable<GetBuildingResponse> controllerResponseValue =
@@ -72,19 +79,16 @@ public class BuildingControllerTest
 
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("User id was not found in database");
-
-        Mock<IBuildingAdapter> buildingAdapter = new Mock<IBuildingAdapter>(MockBehavior.Strict);
-        buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
-
-        BuildingController buildingController = new BuildingController(buildingAdapter.Object);
-
-        IActionResult controllerResponse = buildingController.GetBuildings(It.IsAny<Guid>());
         
+        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+        
+        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        _buildingAdapter.VerifyAll();
+
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
-        
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
