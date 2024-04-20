@@ -69,8 +69,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateOwner([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
         {
-            _ownerAdapter.UpdateOwner(id, updateOwnerRequest);
-            return NoContent();
+            try
+            {
+                _ownerAdapter.UpdateOwner(id, updateOwnerRequest);
+                return NoContent();
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
         
         #endregion

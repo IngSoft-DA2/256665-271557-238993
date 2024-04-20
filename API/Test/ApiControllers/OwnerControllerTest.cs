@@ -158,5 +158,24 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
 
     }
+    
+    [TestMethod]
+    public void UpdateOwner_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error on property");
+        
+        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>())).Throws(new ObjectErrorException("Error on property"));
+        
+        IActionResult controllerResponse = _ownerController.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
+        
+        _ownerAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
 
 }
