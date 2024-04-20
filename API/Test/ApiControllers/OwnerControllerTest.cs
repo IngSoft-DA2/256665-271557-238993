@@ -43,4 +43,25 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedOwners));
     }
+    
+    [TestMethod]
+    public void GetOwners_InternalServerErrorIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        Mock<IOwnerAdapter> ownerAdapter = new Mock<IOwnerAdapter>(MockBehavior.Strict);
+        ownerAdapter.Setup(adapter => adapter.GetOwners()).Throws(new Exception("Something went wrong"));
+        
+        OwnerController ownerController = new OwnerController(ownerAdapter.Object);
+        IActionResult controllerResponse = ownerController.GetOwners();
+
+        ownerAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 }

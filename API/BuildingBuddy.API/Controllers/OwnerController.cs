@@ -24,7 +24,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetOwners()
         {
-            return Ok(_ownerAdapter.GetOwners());
+            try
+            {
+                return Ok(_ownerAdapter.GetOwners());
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         #endregion
