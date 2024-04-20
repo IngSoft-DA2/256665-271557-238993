@@ -219,6 +219,8 @@ public class BuildingControllerTest
 
     #endregion
 
+    #region Create Building
+
     [TestMethod]
     public void CreateBuildingRequest_OkIsReturned()
     {
@@ -308,6 +310,7 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
+    #endregion
 
     #region Update Building By Id
 
