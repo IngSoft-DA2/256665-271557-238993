@@ -1,6 +1,7 @@
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -36,5 +37,11 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
+        
+        [HttpPost]
+        public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
+        {
+            return Ok(_constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest));
+        }
     }
 }

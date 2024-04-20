@@ -2,6 +2,7 @@
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModel.Requests;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Test.ApiControllers;
@@ -66,5 +67,32 @@ public class ConstructionCompanyControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void CreateConstructionCompany_OkIsReturned()
+    {
+        CreateConstructionCompanyResponse expectedConstructionCompany = new CreateConstructionCompanyResponse()
+        {
+            Id = Guid.NewGuid()
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompany);
+        
+        _constructionCompanyAdapter.Setup(adapter => adapter.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>())).Returns(expectedConstructionCompany);
+        
+        IActionResult controllerResponse = _constructionCompanyController.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>());
+
+        _constructionCompanyAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        CreateConstructionCompanyResponse? controllerResponseValueCasted =
+            controllerResponseCasted.Value as CreateConstructionCompanyResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedConstructionCompany.Id, controllerResponseValueCasted.Id);
     }
 }
