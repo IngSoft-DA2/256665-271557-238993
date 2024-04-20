@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,6 @@ public class AdministratorControllerTest
         CreatedAtActionResult expectedControllerResponse =
             new CreatedAtActionResult("CreateAdministrator", "CreateAdministrator"
                 , expectedValue.Id, expectedValue);
-
         Mock<IAdministratorAdapter> administratorAdapter = new Mock<IAdministratorAdapter>(MockBehavior.Strict);
         administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
             .Returns(expectedValue);
@@ -38,5 +38,25 @@ public class AdministratorControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedValue.Id, value.Id);
+    }
+
+    [TestMethod]
+    public void CreateAdministratorRequest_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
+        
+        Mock<IAdministratorAdapter> administratorAdapter = new Mock<IAdministratorAdapter>(MockBehavior.Strict);
+        administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
+            .Throws(new ObjectErrorException("Specific error message"));
+        
+        AdministratorController controller = new AdministratorController(administratorAdapter.Object);
+        
+        IActionResult controllerResponse = controller.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
+        administratorAdapter.VerifyAll();
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 }

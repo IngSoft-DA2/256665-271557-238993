@@ -23,8 +23,17 @@ namespace BuildingBuddy.API.Controllers
 
         public IActionResult CreateAdministrator(CreateAdministratorRequest request)
         {
-            CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(request);
-            return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
+            try
+            {
+                CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(request);
+                return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
+       
+            
         }
     }
 }
