@@ -249,4 +249,27 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    [TestMethod]
+    public void UpdateBuildingById_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
+
+        _buildingAdapter.Setup(adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+            .Throws(new ObjectErrorException("Specific error message"));
+
+        IActionResult controllerResponse =
+            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+
+        _buildingAdapter.Verify(
+            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+
+    }
+
 }

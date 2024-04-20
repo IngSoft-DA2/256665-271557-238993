@@ -68,7 +68,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("Building was not found in database");
             }
-         
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }
