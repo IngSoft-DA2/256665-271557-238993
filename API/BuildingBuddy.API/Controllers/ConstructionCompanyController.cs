@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,14 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
-            return Ok(_constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest));
+            try
+            {
+                return Ok(_constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest));
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }
