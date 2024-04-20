@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 
 namespace IAdapter
@@ -10,6 +11,7 @@ namespace IAdapter
     public interface IFlatAdapter
     {
         public IEnumerable<GetFlatResponse> GetAllFlats();
-        public CreateFlatResponse CreateFlat(Guid idOfBuilding);
+        public CreateFlatResponse CreateFlat(CreateFlatRequest flatToCreate);
+        public GetFlatResponse GetFlatById(Guid flatId);
     }
 }

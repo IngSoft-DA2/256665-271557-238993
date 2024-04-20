@@ -8,7 +8,7 @@ using WebModel.Responses.FlatResponses;
 
 namespace WebModel.Responses.OwnerResponses
 {
-    public class GetOwnerAssignedResponse
+    public class GetOwnerResponse
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -17,7 +17,7 @@ namespace WebModel.Responses.OwnerResponses
 
         public override bool Equals(object objectToCompare)
         {
-            GetOwnerAssignedResponse? toCompare = objectToCompare as GetOwnerAssignedResponse;
+            GetOwnerResponse? toCompare = objectToCompare as GetOwnerResponse;
             if (toCompare is null) return false;
 
             return

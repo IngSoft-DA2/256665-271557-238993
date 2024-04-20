@@ -4,6 +4,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 using WebModel.Responses;
+using WebModel.Responses.MaintenanceRequestResponses;
 
 namespace Test.ApiControllers
 {
@@ -20,6 +22,7 @@ namespace Test.ApiControllers
     public class FlatControllerTest
     {
         #region Initilizing aspects
+
         private Mock<IFlatAdapter> _flatAdapter;
         private FlatController _flatController;
 
@@ -48,10 +51,11 @@ namespace Test.ApiControllers
                     {
                         Name = "Barry",
                         Lastname = "White",
-                        Email =         "barrywhite@gmail.com",
+                        Email = "barrywhite@gmail.com",
                     },
                     TotalRooms = 3,
-                    TotalBaths = 2
+                    TotalBaths = 2,
+                    HasTerrace = true
                 }
             };
 
@@ -97,7 +101,8 @@ namespace Test.ApiControllers
 
         #endregion
 
-        #region  CreateFlat
+        #region CreateFlat
+
         [TestMethod]
         public void CreateFlatRequest_OkIsReturned()
         {
@@ -108,9 +113,10 @@ namespace Test.ApiControllers
 
             OkObjectResult expectedControllerResponse = new OkObjectResult(expectedAdapterResponse);
 
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>())).Returns(expectedAdapterResponse);
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
+                .Returns(expectedAdapterResponse);
 
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
 
             _flatAdapter.VerifyAll();
 
@@ -122,15 +128,16 @@ namespace Test.ApiControllers
             Assert.IsNotNull(controllerResponseValueCasted);
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-            Assert.IsTrue(controllerResponseValueCasted.Id.Equals(controllerResponseValueCasted.Id));
+            Assert.AreEqual(controllerResponseValueCasted.Id, controllerResponseValueCasted.Id);
         }
 
         [TestMethod]
         public void CreateFlatRequest_BadRequestIsReturned()
         {
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>())).Throws(new ObjectErrorException("Owner can't be null"));
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
+                .Throws(new ObjectErrorException("Owner can't be null"));
 
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
 
             BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Owner can't be null");
 
@@ -140,6 +147,7 @@ namespace Test.ApiControllers
             Assert.IsNotNull(controllerResponseCasted);
 
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         }
 
         [TestMethod]
@@ -148,10 +156,10 @@ namespace Test.ApiControllers
             ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
             expectedControllerResponse.StatusCode = 500;
 
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>()))
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
                 .Throws(new Exception("An specific error on the server"));
 
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
             _flatAdapter.VerifyAll();
 
             ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
@@ -159,7 +167,6 @@ namespace Test.ApiControllers
 
             Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
-
         }
 
         [TestMethod]
@@ -167,10 +174,10 @@ namespace Test.ApiControllers
         {
             NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Owner was not found in database");
             
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<Guid>()))
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
                 .Throws(new ObjectNotFoundException());
             
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
             _flatAdapter.VerifyAll();
             
             NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -180,6 +187,82 @@ namespace Test.ApiControllers
             Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         }
 
+        #endregion
+
+        #region GetFlatById
+        [TestMethod]
+        public void GetFlatById_OkIsReturned()
+        {
+            GetFlatResponse expectedFlat = new GetFlatResponse()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 1,
+                RoomNumber = 102,
+                GetOwnerAssigned = new GetOwnerAssignedResponse()
+                {
+                    Name = "Barry",
+                    Lastname = "White",
+                    Email = "barrywhite@gmail.com"
+                },
+                HasTerrace = true
+            };
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>())).Returns(expectedFlat);
+
+            OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlat);
+
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+
+            _flatAdapter.VerifyAll();
+
+            OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+
+            Assert.IsNotNull(controllerResponseCasted);
+
+            GetFlatResponse? controllerResponseValueCasted = controllerResponseCasted.Value as GetFlatResponse;
+
+            Assert.IsNotNull(controllerResponseValueCasted);
+
+            Assert.AreEqual(expectedFlat, controllerResponseValueCasted);
+            Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
+        }
+
+        [TestMethod]
+        public void GetFlatById_NotFoundIsReturned()
+        {
+            NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Flat was not found, reload the page");
+
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
+                .Throws(new ObjectNotFoundException());
+
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            _flatAdapter.VerifyAll();
+
+            NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(controllerResponseCasted.Value, expectedResponse.Value);
+            Assert.AreEqual(expectedResponse.StatusCode, controllerResponseCasted.StatusCode);
+        }
+        
+        [TestMethod]
+        public void GetFlatById_500StatusCodeIsReturned()
+        {
+            ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+            expectedControllerResponse.StatusCode = 500;
+
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
+                .Throws(new Exception("An specific error on the server"));
+
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            _flatAdapter.VerifyAll();
+
+            ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
+            Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
+        }
         #endregion
     }
 }
