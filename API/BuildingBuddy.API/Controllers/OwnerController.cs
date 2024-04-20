@@ -64,7 +64,7 @@ namespace BuildingBuddy.API.Controllers
         
         #endregion
         
-        #region ModifyOwner
+        #region UpdateOwner
         
         [HttpPut("{id}")]
         public IActionResult UpdateOwner([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
