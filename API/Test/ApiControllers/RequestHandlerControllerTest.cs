@@ -12,9 +12,10 @@ namespace Test.ApiControllers;
 [TestClass]
 public class RequestHandlerControllerTest
 {
+    #region Initialize
+
     private Mock<IRequestHandlerAdapter> _requestHandlerAdapter;
     private RequestHandlerController _requestHandlerController;
-
 
     [TestInitialize]
     public void Initialize()
@@ -22,6 +23,10 @@ public class RequestHandlerControllerTest
         _requestHandlerAdapter = new Mock<IRequestHandlerAdapter>();
         _requestHandlerController = new RequestHandlerController(_requestHandlerAdapter.Object);
     }
+
+    #endregion
+
+    #region Create Request Handler Request
 
     [TestMethod]
     public void CreateRequestHandlerRequest_CreatedAtActionIsReturned()
@@ -87,4 +92,6 @@ public class RequestHandlerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
 }
