@@ -18,7 +18,16 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetAllManagers()
         {
-           return Ok(_managerAdapter.GetAllManagers());
+            try
+            {
+                return Ok(_managerAdapter.GetAllManagers());
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+           
         }
     }
 }

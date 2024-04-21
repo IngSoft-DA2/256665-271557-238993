@@ -44,7 +44,26 @@ public class ManagerControllerTest
 
 
     }
-    
-    
+
+    [TestMethod]
+    public void GetManagerRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        Mock<IManagerAdapter> managerAdapter = new Mock<IManagerAdapter>(MockBehavior.Strict);
+        managerAdapter.Setup(adapter => adapter.GetAllManagers()).Throws(new Exception("Unknown error"));
+
+        ManagerController managerController = new ManagerController(managerAdapter.Object);
+
+        IActionResult controllerResponse = managerController.GetAllManagers();
+        managerAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+    }
     
 }
