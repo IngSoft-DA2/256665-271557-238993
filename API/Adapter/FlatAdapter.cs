@@ -81,5 +81,9 @@ public class FlatAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }
