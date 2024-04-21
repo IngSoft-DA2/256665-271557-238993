@@ -137,10 +137,21 @@ public class FlatAdapterTest
 
         _flatService.Setup(service => service.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Returns(expectedServiceResponse);
-        
-        GetFlatResponse adapterResponse = _flatAdapter.GetFlatById(It.IsAny<Guid>(),It.IsAny<Guid>());
+
+        GetFlatResponse adapterResponse = _flatAdapter.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>());
         _flatService.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
+
+    [TestMethod]
+    public void GetFlatById_ThrowsObjectErrorNotFoundAdapterException()
+    {
+        _flatService.Setup(service => service.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>_flatAdapter.GetFlatById(It.IsAny<Guid>(),
+            It.IsAny<Guid>()));
+        _flatService.VerifyAll();
     }
 }
