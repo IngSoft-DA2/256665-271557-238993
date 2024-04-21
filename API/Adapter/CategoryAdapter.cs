@@ -43,17 +43,13 @@ public class CategoryAdapter
 
     #endregion
 
+    #region Get Category By Id
     public GetCategoryResponse GetCategoryById(Guid idOfCategoryToFind)
     {
         try
         {
             Category category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
-            GetCategoryResponse categoryResponse = new GetCategoryResponse
-            {
-                Id = category.Id,
-                Name = category.Name
-            };
-
+            GetCategoryResponse categoryResponse = new GetCategoryResponse { Id = category.Id, Name = category.Name };
             return categoryResponse;
         }
         catch (ObjectNotFoundServiceException)
@@ -65,23 +61,21 @@ public class CategoryAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Create Category
 
     public CreateCategoryResponse CreateCategory(CreateCategoryRequest categoryToCreate)
     {
         try
         {
-            Category category = new Category
-            {
-                Name = categoryToCreate.Name
-            };
+            Category category = new Category { Name = categoryToCreate.Name };
 
             category = _categoryServiceLogic.CreateCategory(category);
 
-            CreateCategoryResponse categoryResponse = new CreateCategoryResponse
-            {
-                Id = category.Id,
-            };
-
+            CreateCategoryResponse categoryResponse = new CreateCategoryResponse { Id = category.Id, };
+            
             return categoryResponse;
         }
         catch (ObjectErrorServiceException exceptionCaught)
@@ -93,4 +87,6 @@ public class CategoryAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }

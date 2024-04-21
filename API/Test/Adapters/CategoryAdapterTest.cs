@@ -120,6 +120,8 @@ public class CategoryAdapterTest
     
     #endregion
     
+    #region Create Category
+    
     [TestMethod]
     public void CreateCategory_ShouldConvertFromRequestToResponse()
     {
@@ -147,7 +149,7 @@ public class CategoryAdapterTest
     {
         CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
         {
-            Name = ""
+            Name = "Electrician"
         };
         
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
@@ -159,14 +161,11 @@ public class CategoryAdapterTest
     [TestMethod]
     public void CreateCategory_ShouldThrowException()
     {
-        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
-        {
-            Name = "Electrician"
-        };
-        
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Throws(new Exception("Something went wrong"));
         
-        Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
+        Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(It.IsAny<CreateCategoryRequest>()));
     }
+    
+    #endregion
     
 }
