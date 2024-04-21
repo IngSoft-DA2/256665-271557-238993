@@ -125,7 +125,7 @@ public class InvitationControllerTest
         NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
 
         _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _invitationController.GetInvitationById(It.IsAny<Guid>());
         _invitationAdapter.VerifyAll();
@@ -192,7 +192,7 @@ public class InvitationControllerTest
     public void CreateInvitationRequest_BadRequestIsReturned()
     {
         _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
-            .Throws(new ObjectErrorException("Firstname cannot be empty"));
+            .Throws(new ObjectErrorAdapterException("Firstname cannot be empty"));
 
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
 
@@ -258,7 +258,7 @@ public class InvitationControllerTest
 
         _invitationAdapter.Setup(adapter =>
                 adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _invitationController
             .UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
@@ -278,7 +278,7 @@ public class InvitationControllerTest
 
         _invitationAdapter.Setup(adapter =>
                 adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
-            .Throws(new ObjectErrorException("Specific Error"));
+            .Throws(new ObjectErrorAdapterException("Specific Error"));
 
         IActionResult controllerResponse =
             _invitationController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
@@ -341,7 +341,7 @@ public class InvitationControllerTest
             new NotFoundObjectResult("Invitation to delete was not found");
 
         _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _invitationController.DeleteInvitation(It.IsAny<Guid>());
         _invitationAdapter.VerifyAll();
@@ -359,7 +359,7 @@ public class InvitationControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Some specific error");
 
         _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
-            .Throws(new ObjectErrorException("Some specific error"));
+            .Throws(new ObjectErrorAdapterException("Some specific error"));
 
         IActionResult controllerResponse = _invitationController.DeleteInvitation(It.IsAny<Guid>());
         _invitationAdapter.VerifyAll();

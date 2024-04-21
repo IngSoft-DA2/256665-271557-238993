@@ -40,7 +40,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_invitationAdapter.GetInvitationById(id));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Invitation was not found, reload the page");
             }
@@ -59,7 +59,7 @@ namespace BuildingBuddy.API.Controllers
                 CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
                 return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -79,11 +79,11 @@ namespace BuildingBuddy.API.Controllers
                 _invitationAdapter.UpdateInvitation(id, request);
                 return NoContent();
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("The specific invitation was not found in Database");
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -104,11 +104,11 @@ namespace BuildingBuddy.API.Controllers
                 _invitationAdapter.DeleteInvitation(id);
                 return NoContent();
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Invitation to delete was not found");
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }

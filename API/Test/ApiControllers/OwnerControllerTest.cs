@@ -114,7 +114,7 @@ public class OwnerControllerTest
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error on property");
         
-        _ownerAdapter.Setup(adapter => adapter.CreateOwner(It.IsAny<CreateOwnerRequest>())).Throws(new ObjectErrorException("Error on property"));
+        _ownerAdapter.Setup(adapter => adapter.CreateOwner(It.IsAny<CreateOwnerRequest>())).Throws(new ObjectErrorAdapterException("Error on property"));
         
         IActionResult controllerResponse = _ownerController.CreateOwner(It.IsAny<CreateOwnerRequest>());
         
@@ -176,7 +176,7 @@ public class OwnerControllerTest
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error on property");
         
-        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>())).Throws(new ObjectErrorException("Error on property"));
+        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>())).Throws(new ObjectErrorAdapterException("Error on property"));
         
         IActionResult controllerResponse = _ownerController.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
         
@@ -195,7 +195,7 @@ public class OwnerControllerTest
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("The specific owner was not found in Database");
         
-        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>())).Throws(new ObjectNotFoundException());
+        _ownerAdapter.Setup(adapter => adapter.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>())).Throws(new ObjectNotFoundAdapterException());
         
         IActionResult controllerResponse = _ownerController.UpdateOwner(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
         

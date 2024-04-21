@@ -32,7 +32,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_buildingAdapter.GetAllBuildings(userId));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("User id was not found in database");
             }
@@ -55,7 +55,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_buildingAdapter.GetBuildingById(buildingId));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Building was not found in database");
             }
@@ -80,11 +80,11 @@ namespace BuildingBuddy.API.Controllers
                 _buildingAdapter.UpdateBuilding(buildingId, buildingWithUpdates);
                 return NoContent();
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Building was not found in database");
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -107,7 +107,7 @@ namespace BuildingBuddy.API.Controllers
                 CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
                 return CreatedAtAction(nameof(CreateBuilding), new { id = response.Id }, response);
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -131,7 +131,7 @@ namespace BuildingBuddy.API.Controllers
                 _buildingAdapter.DeleteBuilding(buildingId);
                 return NoContent();
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Building was not found in database");
             }

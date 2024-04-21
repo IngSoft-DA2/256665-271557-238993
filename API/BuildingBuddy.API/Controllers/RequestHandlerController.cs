@@ -27,7 +27,7 @@ namespace BuildingBuddy.API.Controllers
                 return CreatedAtAction(nameof(CreateRequestHandler),
                     new { id = response.Id }, response);
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }

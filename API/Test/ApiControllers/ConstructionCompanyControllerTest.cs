@@ -116,7 +116,7 @@ public class ConstructionCompanyControllerTest
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Something went wrong");
         
-        _constructionCompanyAdapter.Setup(adapter => adapter.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>())).Throws(new ObjectErrorException("Something went wrong"));
+        _constructionCompanyAdapter.Setup(adapter => adapter.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>())).Throws(new ObjectErrorAdapterException("Something went wrong"));
 
         IActionResult controllerResponse = _constructionCompanyController.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>());
 

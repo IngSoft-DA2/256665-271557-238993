@@ -39,7 +39,7 @@ namespace BuildingBuddy.API.Controllers
                 _managerAdapter.DeleteManagerById(managerId);
                 return NoContent();
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Manager was not found in database");
             }

@@ -93,7 +93,7 @@ public class BuildingControllerTest
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("User id was not found in database");
 
-        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
@@ -187,7 +187,7 @@ public class BuildingControllerTest
             new NotFoundObjectResult("Building was not found in database");
 
         _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
@@ -287,7 +287,7 @@ public class BuildingControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
 
         _buildingAdapter.Setup(adapter => adapter.CreateBuilding(It.IsAny<CreateBuildingRequest>()))
-            .Throws(new ObjectErrorException("Specific error message"));
+            .Throws(new ObjectErrorAdapterException("Specific error message"));
 
         IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
         _buildingAdapter.VerifyAll();
@@ -350,7 +350,7 @@ public class BuildingControllerTest
 
         _buildingAdapter.Setup(adapter =>
                 adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse =
             _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
@@ -372,7 +372,7 @@ public class BuildingControllerTest
 
         _buildingAdapter.Setup(adapter =>
                 adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
-            .Throws(new ObjectErrorException("Specific error message"));
+            .Throws(new ObjectErrorAdapterException("Specific error message"));
 
         IActionResult controllerResponse =
             _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
@@ -437,7 +437,7 @@ public class BuildingControllerTest
             new NotFoundObjectResult("Building was not found in database");
 
         _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();

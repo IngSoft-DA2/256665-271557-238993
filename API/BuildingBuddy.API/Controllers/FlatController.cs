@@ -30,7 +30,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
             }
-            catch (ObjectNotFoundException exceptionCaught)
+            catch (ObjectNotFoundAdapterException exceptionCaught)
             {
                 return NotFound("Flat was not found, reload the page");
             }
@@ -52,11 +52,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_flatAdapter.CreateFlat(flatToCreate));
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Owner was not found in database");
             }
