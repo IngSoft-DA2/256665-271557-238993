@@ -40,7 +40,14 @@ namespace BuildingBuddy.API.Controllers
         
         public IActionResult GetRequestsByJanitor([FromQuery] Guid janitorId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByJanitor)
         {
-            return Ok(_reportAdapter.GetRequestsByJanitor(janitorId, getMaintenanceReportRequestByJanitor));
+            try{
+                return Ok(_reportAdapter.GetRequestsByJanitor(janitorId, getMaintenanceReportRequestByJanitor));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }
