@@ -41,7 +41,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetFlatById
 
-        [HttpGet("{idOfFlatToFind}")]
+        [HttpGet("{id:Guid}")]
         public IActionResult GetFlatById([FromRoute] Guid idOfFlatToFind)
         {
             try
@@ -60,8 +60,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-
-        //INCLUIR EN BUILDING Y QUITAR DE AQUI
+        
         #region CreateFlat
 
         [HttpPost]

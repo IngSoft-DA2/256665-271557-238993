@@ -7,7 +7,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/constructionCompanies")]
+    [Route("api/v1/construction-companies")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
     {
