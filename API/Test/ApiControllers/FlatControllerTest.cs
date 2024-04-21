@@ -3,18 +3,9 @@ using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebModel.Requests;
 using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
-using WebModel.Responses;
-using WebModel.Responses.MaintenanceRequestResponses;
 
 namespace Test.ApiControllers
 {
@@ -62,7 +53,7 @@ namespace Test.ApiControllers
             OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlats);
 
             _flatAdapter.Setup(adapter => adapter.GetAllFlats(It.IsAny<Guid>())).Returns(expectedFlats);
-            
+
             IActionResult controllerResponse = _flatController.GetAllFlats(It.IsAny<Guid>());
 
             _flatAdapter.VerifyAll();
@@ -207,11 +198,12 @@ namespace Test.ApiControllers
                 },
                 HasTerrace = true
             };
-            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>())).Returns(expectedFlat);
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(expectedFlat);
 
             OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlat);
 
-            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>());
 
             _flatAdapter.VerifyAll();
 
@@ -232,10 +224,10 @@ namespace Test.ApiControllers
         {
             NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Flat was not found, reload the page");
 
-            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Throws(new ObjectNotFoundAdapterException());
 
-            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>());
             _flatAdapter.VerifyAll();
 
             NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -252,10 +244,10 @@ namespace Test.ApiControllers
             ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
             expectedControllerResponse.StatusCode = 500;
 
-            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
+            _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Throws(new Exception("An specific error on the server"));
 
-            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
+            IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>());
             _flatAdapter.VerifyAll();
 
             ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;

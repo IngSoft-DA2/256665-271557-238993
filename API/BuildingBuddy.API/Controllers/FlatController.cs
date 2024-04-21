@@ -44,11 +44,11 @@ namespace BuildingBuddy.API.Controllers
         #region GetFlatById
 
         [HttpGet("{id:Guid}")]
-        public IActionResult GetFlatById([FromRoute] Guid idOfFlatToFind)
+        public IActionResult GetFlatById([FromQuery] Guid buildingId, [FromRoute] Guid idOfFlatToFind)
         {
             try
             {
-                return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
+                return Ok(_flatAdapter.GetFlatById(buildingId,idOfFlatToFind));
             }
             catch (ObjectNotFoundAdapterException exceptionCaught)
             {
