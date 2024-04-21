@@ -10,6 +10,17 @@ namespace Test.Adapters;
 
 public class CategoryAdapterTest
 {
+    private Mock<ICategoryServiceLogic> _categoryServiceLogic;
+    private CategoryAdapter _categoryAdapter;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        _categoryServiceLogic = new Mock<ICategoryServiceLogic>(MockBehavior.Strict);
+        _categoryAdapter = new CategoryAdapter(_categoryServiceLogic.Object);
+    }
+    
+    
     [TestMethod]
     public void GetAllCategories_ShouldConvertFromDomainToResponse()
     {
@@ -42,14 +53,11 @@ public class CategoryAdapterTest
             }
         };
         
-        Mock<ICategoryServiceLogic> categoryServiceLogic = new Mock<ICategoryServiceLogic>();
-        categoryServiceLogic.Setup(service => service.GetAllCategories()).Returns(expectedServiceResponse);
-        
-        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryServiceLogic.Object);
+        _categoryServiceLogic.Setup(service => service.GetAllCategories()).Returns(expectedServiceResponse);
 
-        IEnumerable<GetCategoryResponse> adapterResponse = categoryAdapter.GetAllCategories();
+        IEnumerable<GetCategoryResponse> adapterResponse = _categoryAdapter.GetAllCategories();
         
-        categoryServiceLogic.VerifyAll();
+        _categoryServiceLogic.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.Count().Equals(expectedServiceResponse.Count()));
         Assert.IsTrue(adapterResponse.SequenceEqual(expectedAdapterResponse));
@@ -58,12 +66,9 @@ public class CategoryAdapterTest
     [TestMethod]
     public void GetAllCategories_ShouldThrowException()
     {
-        Mock<ICategoryServiceLogic> categoryServiceLogic = new Mock<ICategoryServiceLogic>();
-        categoryServiceLogic.Setup(service => service.GetAllCategories()).Throws(new Exception("Something went wrong"));
+        _categoryServiceLogic.Setup(service => service.GetAllCategories()).Throws(new Exception("Something went wrong"));
         
-        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryServiceLogic.Object);
-
-        Assert.ThrowsException<Exception>(() => categoryAdapter.GetAllCategories());
+        Assert.ThrowsException<Exception>(() => _categoryAdapter.GetAllCategories());
     }
     
 }
