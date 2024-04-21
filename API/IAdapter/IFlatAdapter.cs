@@ -10,7 +10,8 @@ namespace IAdapter
 {
     public interface IFlatAdapter
     {
-        public IEnumerable<GetFlatResponse> GetAllFlats();
+        public IEnumerable<GetFlatResponse> GetAllFlats(Guid buildingId);
+        
         public CreateFlatResponse CreateFlat(CreateFlatRequest flatToCreate);
         public GetFlatResponse GetFlatById(Guid flatId);
     }

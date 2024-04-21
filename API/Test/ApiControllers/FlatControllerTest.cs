@@ -35,6 +35,71 @@ namespace Test.ApiControllers
 
         #endregion
 
+        #region GetAllFlats
+
+        [TestMethod]
+        public void GetAllFlats_OkIsReturned()
+        {
+            IEnumerable<GetFlatResponse> expectedFlats = new List<GetFlatResponse>()
+            {
+                new GetFlatResponse()
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = 1,
+                    RoomNumber = 102,
+                    GetOwnerAssigned = new GetOwnerAssignedResponse()
+                    {
+                        Name = "Barry",
+                        Lastname = "White",
+                        Email = "barrywhite@gmail.com",
+                    },
+                    TotalRooms = 3,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            };
+
+            OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlats);
+
+            _flatAdapter.Setup(adapter => adapter.GetAllFlats(It.IsAny<Guid>())).Returns(expectedFlats);
+            
+            IActionResult controllerResponse = _flatController.GetAllFlats(It.IsAny<Guid>());
+
+            _flatAdapter.VerifyAll();
+
+            OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            List<GetFlatResponse>? controllerResponseValueCasted =
+                controllerResponseCasted.Value as List<GetFlatResponse>;
+            Assert.IsNotNull(controllerResponseValueCasted);
+
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(controllerResponseValueCasted));
+        }
+
+        [TestMethod]
+        public void GetAllFlats_500StatusCodeIsReturned()
+        {
+            ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+            expectedControllerResponse.StatusCode = 500;
+
+            _flatAdapter.Setup(adapter => adapter.GetAllFlats(It.IsAny<Guid>()))
+                .Throws(new Exception("Something went wrong"));
+
+            IActionResult controllerResponse = _flatController.GetAllFlats(It.IsAny<Guid>());
+
+            _flatAdapter.VerifyAll();
+
+            ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        }
+
+        #endregion
+
         #region CreateFlat
 
         [TestMethod]
@@ -106,17 +171,18 @@ namespace Test.ApiControllers
         [TestMethod]
         public void CreateFlatRequest_NotFoundIsReturned()
         {
-            NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Owner was not found in database");
-            
+            NotFoundObjectResult expectedControllerResponse =
+                new NotFoundObjectResult("Owner was not found in database");
+
             _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
                 .Throws(new ObjectNotFoundAdapterException());
-            
+
             IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
             _flatAdapter.VerifyAll();
-            
+
             NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
             Assert.IsNotNull(controllerResponseCasted);
-            
+
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
             Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         }
@@ -124,6 +190,7 @@ namespace Test.ApiControllers
         #endregion
 
         #region GetFlatById
+
         [TestMethod]
         public void GetFlatById_OkIsReturned()
         {
@@ -178,7 +245,7 @@ namespace Test.ApiControllers
             Assert.AreEqual(controllerResponseCasted.Value, expectedResponse.Value);
             Assert.AreEqual(expectedResponse.StatusCode, controllerResponseCasted.StatusCode);
         }
-        
+
         [TestMethod]
         public void GetFlatById_500StatusCodeIsReturned()
         {
@@ -197,6 +264,7 @@ namespace Test.ApiControllers
             Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
             Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
         }
+
         #endregion
     }
 }

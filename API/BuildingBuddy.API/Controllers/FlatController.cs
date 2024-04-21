@@ -21,6 +21,26 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
+        
+        #region Get All Flats
+        
+        [HttpGet]
+        [Route("/flats")]
+        public IActionResult GetAllFlats([FromRoute] Guid buildingId)
+        {
+            try
+            {
+                return Ok(_flatAdapter.GetAllFlats(buildingId));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        #endregion
+        
         #region GetFlatById
 
         [HttpGet("{id:Guid}")]
