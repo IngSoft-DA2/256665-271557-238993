@@ -13,6 +13,16 @@ namespace Test.Adapters;
 [TestClass]
 public class FlatAdapterTest
 {
+    private Mock<IFlatService> _flatService;
+    private FlatAdapter _flatAdapter;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _flatService = new Mock<IFlatService>(MockBehavior.Strict);
+        _flatAdapter = new FlatAdapter(_flatService.Object);
+    }
+
     [TestMethod]
     public void GetAllFlats_ShouldConvertFlatsReceived_IntoGetFlatResponses()
     {
@@ -53,15 +63,11 @@ public class FlatAdapterTest
                 HasTerrace = flatResponse.HasTerrace
             });
 
+        _flatService.Setup(service => service.GetAllFlats(It.IsAny<Guid>())).Returns(expectedServiceResponse);
 
-        Mock<IFlatService> flatService = new Mock<IFlatService>(MockBehavior.Strict);
-        flatService.Setup(service => service.GetAllFlats(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+        IEnumerable<GetFlatResponse> adapterResponse = _flatAdapter.GetAllFlats(It.IsAny<Guid>());
+        _flatService.VerifyAll();
 
-        FlatAdapter flatAdapter = new FlatAdapter(flatService.Object);
-
-        IEnumerable<GetFlatResponse> adapterResponse = flatAdapter.GetAllFlats(It.IsAny<Guid>());
-        flatService.VerifyAll();
-        
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
@@ -69,14 +75,10 @@ public class FlatAdapterTest
     [TestMethod]
     public void GetAllFlats_ShouldThrowNotFoundException()
     {
-        Mock<IFlatService> flatService = new Mock<IFlatService>(MockBehavior.Strict);
-        flatService.Setup(service => service.GetAllFlats(It.IsAny<Guid>()))
+        _flatService.Setup(service => service.GetAllFlats(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
-        FlatAdapter flatAdapter = new FlatAdapter(flatService.Object);
-        
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => flatAdapter.GetAllFlats(It.IsAny<Guid>()));
-        flatService.VerifyAll();
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.GetAllFlats(It.IsAny<Guid>()));
+        _flatService.VerifyAll();
     }
-    
 }
