@@ -40,7 +40,7 @@ namespace Test.ApiControllers
                     RoomNumber = 102,
                     GetOwnerAssigned = new GetOwnerAssignedResponse()
                     {
-                        Name = "Barry",
+                        Firstname = "Barry",
                         Lastname = "White",
                         Email = "barrywhite@gmail.com",
                     },
@@ -192,7 +192,7 @@ namespace Test.ApiControllers
                 RoomNumber = 102,
                 GetOwnerAssigned = new GetOwnerAssignedResponse()
                 {
-                    Name = "Barry",
+                    Firstname = "Barry",
                     Lastname = "White",
                     Email = "barrywhite@gmail.com"
                 },

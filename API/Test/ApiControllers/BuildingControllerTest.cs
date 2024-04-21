@@ -58,7 +58,7 @@ public class BuildingControllerTest
                         GetOwnerAssigned = new GetOwnerAssignedResponse
                         {
                             Id = Guid.NewGuid(),
-                            Name = "Owner Name",
+                            Firstname = "Owner Name",
                             Lastname = "Owner Lastname",
                             Email = "owner@gmail.com"
                         },
@@ -151,7 +151,7 @@ public class BuildingControllerTest
                     GetOwnerAssigned = new GetOwnerAssignedResponse()
                     {
                         Id = Guid.NewGuid(),
-                        Name = "Owner name",
+                        Firstname = "Owner name",
                         Lastname = "Owner lastname",
                         Email = "owner@gmail.com"
                     },

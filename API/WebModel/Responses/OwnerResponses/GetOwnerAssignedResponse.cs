@@ -11,7 +11,7 @@ namespace WebModel.Responses.OwnerResponses
     public class GetOwnerAssignedResponse
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
 
@@ -21,7 +21,7 @@ namespace WebModel.Responses.OwnerResponses
             if (toCompare is null) return false;
 
             return
-                Name == toCompare.Name &&
+                Firstname == toCompare.Firstname &&
                 Lastname == toCompare.Lastname &&
                 Email == toCompare.Email;
         }
