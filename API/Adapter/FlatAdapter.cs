@@ -22,7 +22,7 @@ public class FlatAdapter
         try
         {
             IEnumerable<Flat> flats = _flatService.GetAllFlats(buildingId);
-        
+
             IEnumerable<GetFlatResponse> flatsToReturn = flats.Select(flat => new GetFlatResponse
             {
                 Id = flat.Id,
@@ -39,12 +39,16 @@ public class FlatAdapter
                 TotalBaths = flat.TotalBaths,
                 HasTerrace = flat.HasTerrace
             });
-        
+
             return flatsToReturn;
         }
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
         }
        
     }
