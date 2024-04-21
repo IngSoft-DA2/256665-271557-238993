@@ -156,4 +156,17 @@ public class CategoryAdapterTest
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
     }
     
+    [TestMethod]
+    public void CreateCategory_ShouldThrowException()
+    {
+        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
+        {
+            Name = "Electrician"
+        };
+        
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Throws(new Exception("Something went wrong"));
+        
+        Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
+    }
+    
 }
