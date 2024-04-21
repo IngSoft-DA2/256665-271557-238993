@@ -9,7 +9,8 @@ using WebModel.Responses.AdministratorResponses;
 namespace Test.ApiControllers;
 
 [TestClass]
-public class AdministratorControllerTest
+public class 
+    AdministratorControllerTest
 {
     [TestMethod]
     public void CreateAdministratorRequest_CreatedAtActionIsReturned()

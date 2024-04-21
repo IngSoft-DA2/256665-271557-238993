@@ -21,6 +21,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
 
+        [HttpPost]
         public IActionResult CreateAdministrator(CreateAdministratorRequest request)
         {
             try
