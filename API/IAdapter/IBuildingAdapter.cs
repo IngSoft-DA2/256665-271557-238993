@@ -14,6 +14,5 @@ public interface IBuildingAdapter
     public void UpdateBuilding(Guid idOfBuilding, UpdateBuildingRequest buildingWithUpdates);
     public CreateBuildingResponse CreateBuilding(CreateBuildingRequest buildingToCreate);
     public void DeleteBuilding(Guid buildingId);
-    public IEnumerable<GetFlatResponse> GetAllFlatsByBuilding(Guid buildingId);
 
 }

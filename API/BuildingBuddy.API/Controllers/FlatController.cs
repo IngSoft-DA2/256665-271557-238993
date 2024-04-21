@@ -21,14 +21,34 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region GetFlatById
-
-        [HttpGet("{id:Guid}")]
-        public IActionResult GetFlatById([FromRoute] Guid idOfFlatToFind)
+        
+        #region Get All Flats
+        
+        [HttpGet]
+        [Route("/flats")]
+        public IActionResult GetAllFlats([FromRoute] Guid buildingId)
         {
             try
             {
-                return Ok(_flatAdapter.GetFlatById(idOfFlatToFind));
+                return Ok(_flatAdapter.GetAllFlats(buildingId));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        #endregion
+        
+        #region GetFlatById
+
+        [HttpGet("{id:Guid}")]
+        public IActionResult GetFlatById([FromQuery] Guid buildingId, [FromRoute] Guid idOfFlatToFind)
+        {
+            try
+            {
+                return Ok(_flatAdapter.GetFlatById(buildingId,idOfFlatToFind));
             }
             catch (ObjectNotFoundAdapterException exceptionCaught)
             {
