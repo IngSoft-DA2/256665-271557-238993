@@ -16,12 +16,24 @@ public class CategoryAdapterTest
     
     private Mock<ICategoryServiceLogic> _categoryServiceLogic;
     private CategoryAdapter _categoryAdapter;
+    private Category genericCategory1;
+    private Category genericCategory2;
     
     [TestInitialize]
     public void Initialize()
     {
         _categoryServiceLogic = new Mock<ICategoryServiceLogic>(MockBehavior.Strict);
         _categoryAdapter = new CategoryAdapter(_categoryServiceLogic.Object);
+        genericCategory1 = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Electrician"
+        };
+        genericCategory2 = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Plumber"
+        };
     }
     
     #endregion
@@ -31,20 +43,7 @@ public class CategoryAdapterTest
     [TestMethod]
     public void GetAllCategories_ShouldConvertFromDomainToResponse()
     {
-        IEnumerable<Category> expectedServiceResponse = new List<Category>
-        {
-            new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = "Test Category"
-            },
-            new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = "Test Category 2"
-            }
-            
-        };
+        IEnumerable<Category> expectedServiceResponse = new List<Category> {genericCategory1, genericCategory2};
         
         IEnumerable<GetCategoryResponse> expectedAdapterResponse = new List<GetCategoryResponse>
         {
@@ -80,14 +79,13 @@ public class CategoryAdapterTest
     
     #endregion
     
+    
+    #region Get Category By Id
+    
     [TestMethod]
     public void GetCategoryById_ShouldConvertFromDomainToResponse()
     {
-        Category expectedServiceResponse = new Category
-        {
-            Id = Guid.NewGuid(),
-            Name = "Test Category"
-        };
+        Category expectedServiceResponse = genericCategory1;
         
         GetCategoryResponse expectedAdapterResponse = new GetCategoryResponse
         {
@@ -111,5 +109,7 @@ public class CategoryAdapterTest
         
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _categoryAdapter.GetCategoryById(It.IsAny<Guid>()));
     }
+    
+    #endregion
     
 }
