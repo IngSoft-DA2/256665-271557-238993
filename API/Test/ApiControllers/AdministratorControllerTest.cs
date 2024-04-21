@@ -9,9 +9,18 @@ using WebModel.Responses.AdministratorResponses;
 namespace Test.ApiControllers;
 
 [TestClass]
-public class 
-    AdministratorControllerTest
+public class AdministratorControllerTest
 {
+    private Mock<IAdministratorAdapter> _administratorAdapter;
+    private AdministratorController _administratorController;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _administratorAdapter = new Mock<IAdministratorAdapter>(MockBehavior.Strict);
+        _administratorController = new AdministratorController(_administratorAdapter.Object);
+    }
+
     [TestMethod]
     public void CreateAdministratorRequest_CreatedAtActionIsReturned()
     {
@@ -23,13 +32,12 @@ public class
         CreatedAtActionResult expectedControllerResponse =
             new CreatedAtActionResult("CreateAdministrator", "CreateAdministrator"
                 , expectedValue.Id, expectedValue);
-        Mock<IAdministratorAdapter> administratorAdapter = new Mock<IAdministratorAdapter>(MockBehavior.Strict);
-        administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
+        
+        _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
             .Returns(expectedValue);
-        AdministratorController controller = new AdministratorController(administratorAdapter.Object);
-
-        IActionResult controllerResponse = controller.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
-        administratorAdapter.VerifyAll();
+        
+        IActionResult controllerResponse = _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
+        _administratorAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -46,18 +54,17 @@ public class
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
         
-        Mock<IAdministratorAdapter> administratorAdapter = new Mock<IAdministratorAdapter>(MockBehavior.Strict);
-        administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
+        _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
             .Throws(new ObjectErrorException("Specific error message"));
+
         
-        AdministratorController controller = new AdministratorController(administratorAdapter.Object);
-        
-        IActionResult controllerResponse = controller.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
-        administratorAdapter.VerifyAll();
-        
+        IActionResult controllerResponse = _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
+        _administratorAdapter.VerifyAll();
+
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
