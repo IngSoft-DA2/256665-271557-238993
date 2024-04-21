@@ -75,5 +75,22 @@ public class MaintenanceControllerTest
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(controllerResponseValueCasted));
     }
     
+    [TestMethod]
+    public void GetAllMaintenanceRequests_500CodeIsReturned()
+    {
+        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests()).Throws(new Exception());
+        
+        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests();
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    
     #endregion
 }
