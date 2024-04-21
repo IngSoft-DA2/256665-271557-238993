@@ -10,6 +10,8 @@ namespace Test.Adapters;
 
 public class CategoryAdapterTest
 {
+    #region Initializing Aspects
+    
     private Mock<ICategoryServiceLogic> _categoryServiceLogic;
     private CategoryAdapter _categoryAdapter;
     
@@ -20,6 +22,9 @@ public class CategoryAdapterTest
         _categoryAdapter = new CategoryAdapter(_categoryServiceLogic.Object);
     }
     
+    #endregion
+    
+    #region Get All Categories
     
     [TestMethod]
     public void GetAllCategories_ShouldConvertFromDomainToResponse()
@@ -70,5 +75,7 @@ public class CategoryAdapterTest
         
         Assert.ThrowsException<Exception>(() => _categoryAdapter.GetAllCategories());
     }
+    
+    #endregion
     
 }
