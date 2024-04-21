@@ -32,11 +32,12 @@ public class AdministratorControllerTest
         CreatedAtActionResult expectedControllerResponse =
             new CreatedAtActionResult("CreateAdministrator", "CreateAdministrator"
                 , expectedValue.Id, expectedValue);
-        
+
         _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
             .Returns(expectedValue);
-        
-        IActionResult controllerResponse = _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
+
+        IActionResult controllerResponse =
+            _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
         _administratorAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -53,18 +54,38 @@ public class AdministratorControllerTest
     public void CreateAdministratorRequest_BadRequestIsReturned()
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
-        
+
         _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
             .Throws(new ObjectErrorException("Specific error message"));
 
-        
-        IActionResult controllerResponse = _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
+
+        IActionResult controllerResponse =
+            _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
         _administratorAdapter.VerifyAll();
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    [TestMethod]
+    public void CreateAdministratorRequest_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        
+        _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
+            .Throws(new Exception("Unknown Error"));
+
+        IActionResult controllerResponse =
+            _administratorController.CreateAdministrator(It.IsAny<CreateAdministratorRequest>());
+        _administratorAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(500, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
