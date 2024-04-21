@@ -16,10 +16,10 @@ namespace Test.ApiControllers;
 [TestClass]
 public class BuildingControllerTest
 {
+    #region Initialization
+    
     private Mock<IBuildingAdapter> _buildingAdapter;
     private BuildingController _buildingController;
-
-    #region Initialization
 
     [TestInitialize]
     public void Initialize()
@@ -30,10 +30,10 @@ public class BuildingControllerTest
 
     #endregion
 
-    #region Get Buildings
+    #region Get All Buildings
 
     [TestMethod]
-    public void GetBuildings_OkIsReturned()
+    public void GetAllBuildings_OkIsReturned()
     {
         IEnumerable<GetBuildingResponse> expectedBuildings = new List<GetBuildingResponse>
         {
@@ -73,7 +73,7 @@ public class BuildingControllerTest
 
         _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
 
-        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
@@ -95,7 +95,7 @@ public class BuildingControllerTest
 
         _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
 
-        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -114,7 +114,7 @@ public class BuildingControllerTest
         _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>()))
             .Throws(new Exception("Unknown error"));
 
-        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
