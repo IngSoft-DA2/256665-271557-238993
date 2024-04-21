@@ -1,7 +1,9 @@
 ﻿using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.CategoryResponses;
 
 namespace Test.Adapters;
@@ -100,6 +102,14 @@ public class CategoryAdapterTest
         _categoryServiceLogic.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
+    
+    [TestMethod]
+    public void GetCategoryById_ShouldThrowException()
+    {
+        _categoryServiceLogic.Setup(service => service.GetCategoryById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
+        
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _categoryAdapter.GetCategoryById(It.IsAny<Guid>()));
     }
     
 }

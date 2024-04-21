@@ -115,7 +115,7 @@ public class CategoryControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Category was not found in database");
 
         _categoryAdapter.Setup(adapter => adapter.GetCategoryById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _categoryController.GetCategoryById(It.IsAny<Guid>());
         _categoryAdapter.VerifyAll();
@@ -181,7 +181,7 @@ public class CategoryControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("An specific Error");
 
         _categoryAdapter.Setup(adapter => adapter.CreateCategory(It.IsAny<CreateCategoryRequest>()))
-            .Throws(new ObjectErrorException("An specific Error"));
+            .Throws(new ObjectErrorAdapterException("An specific Error"));
 
         IActionResult controllerResponse = _categoryController.CreateCategory(It.IsAny<CreateCategoryRequest>());
         _categoryAdapter.VerifyAll();

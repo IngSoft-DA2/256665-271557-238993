@@ -69,7 +69,7 @@ namespace Test.ApiControllers
         public void CreateFlatRequest_BadRequestIsReturned()
         {
             _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
-                .Throws(new ObjectErrorException("Owner can't be null"));
+                .Throws(new ObjectErrorAdapterException("Owner can't be null"));
 
             IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
 
@@ -109,7 +109,7 @@ namespace Test.ApiControllers
             NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Owner was not found in database");
             
             _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
-                .Throws(new ObjectNotFoundException());
+                .Throws(new ObjectNotFoundAdapterException());
             
             IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
             _flatAdapter.VerifyAll();
@@ -166,7 +166,7 @@ namespace Test.ApiControllers
             NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Flat was not found, reload the page");
 
             _flatAdapter.Setup(adapter => adapter.GetFlatById(It.IsAny<Guid>()))
-                .Throws(new ObjectNotFoundException());
+                .Throws(new ObjectNotFoundAdapterException());
 
             IActionResult controllerResponse = _flatController.GetFlatById(It.IsAny<Guid>());
             _flatAdapter.VerifyAll();

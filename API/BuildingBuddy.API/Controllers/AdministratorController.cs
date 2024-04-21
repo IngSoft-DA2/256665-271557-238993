@@ -28,7 +28,7 @@ namespace BuildingBuddy.API.Controllers
                 CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(request);
                 return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }

@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\IServiceLogic\IServiceLogic.csproj" />
+      <ProjectReference Include="..\ServiceLogic\ServiceLogic.csproj" />
       <ProjectReference Include="..\WebModel\WebModel.csproj" />
     </ItemGroup>
 

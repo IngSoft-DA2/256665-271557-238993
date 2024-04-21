@@ -50,7 +50,7 @@ namespace BuildingBuddy.API.Controllers
                 CreateOwnerResponse response = _ownerAdapter.CreateOwner(createOwnerRequest);
                 return CreatedAtAction(nameof(CreateOwner), new { id = response.Id }, response);
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -74,11 +74,11 @@ namespace BuildingBuddy.API.Controllers
                 _ownerAdapter.UpdateOwner(id, updateOwnerRequest);
                 return NoContent();
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
-            catch(ObjectNotFoundException exceptionCaught)
+            catch(ObjectNotFoundAdapterException exceptionCaught)
             {
                 return NotFound("The specific owner was not found in Database");
             }

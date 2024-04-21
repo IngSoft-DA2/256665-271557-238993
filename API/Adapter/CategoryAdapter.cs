@@ -1,5 +1,7 @@
-﻿using Domain;
+﻿using Adapter.CustomExceptions;
+using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.CategoryResponses;
 
 namespace Adapter;
@@ -42,13 +44,20 @@ public class CategoryAdapter
 
     public GetCategoryResponse GetCategoryById(Guid idOfCategoryToFind)
     {
-        Category category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
-        GetCategoryResponse categoryResponse = new GetCategoryResponse
+        try
         {
-            Id = category.Id,
-            Name = category.Name
-        };
+            Category category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
+            GetCategoryResponse categoryResponse = new GetCategoryResponse
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
 
-        return categoryResponse;
+            return categoryResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }

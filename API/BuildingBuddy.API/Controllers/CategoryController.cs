@@ -37,7 +37,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_categoryAdapter.GetCategoryById(id));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Category was not found in database");
             }
@@ -56,7 +56,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }

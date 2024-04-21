@@ -62,7 +62,7 @@ public class AdministratorControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
 
         _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
-            .Throws(new ObjectErrorException("Specific error message"));
+            .Throws(new ObjectErrorAdapterException("Specific error message"));
 
 
         IActionResult controllerResponse =

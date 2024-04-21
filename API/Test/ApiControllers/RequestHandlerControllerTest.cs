@@ -61,7 +61,7 @@ public class RequestHandlerControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific Error");
 
         _requestHandlerAdapter.Setup(adapter => adapter.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
-            .Throws(new ObjectErrorException("Specific Error"));
+            .Throws(new ObjectErrorAdapterException("Specific Error"));
 
         IActionResult controllerResponse =
             _requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());

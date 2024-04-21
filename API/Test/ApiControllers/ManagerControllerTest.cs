@@ -105,7 +105,7 @@ public class ManagerControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager was not found in database");
 
         _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _managerController.DeleteManagerById(Guid.NewGuid());
         _managerAdapter.Verify(
