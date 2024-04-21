@@ -7,17 +7,18 @@ namespace Adapter;
 public class CategoryAdapter
 {
     #region Constructor and atributtes
-    
+
     private readonly ICategoryServiceLogic _categoryServiceLogic;
 
     public CategoryAdapter(ICategoryServiceLogic categoryServiceLogic)
     {
         _categoryServiceLogic = categoryServiceLogic;
     }
-    
+
     #endregion
 
     #region Get All Categories
+
     public IEnumerable<GetCategoryResponse> GetAllCategories()
     {
         try
@@ -36,6 +37,18 @@ public class CategoryAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
+
+    public GetCategoryResponse GetCategoryById(Guid idOfCategoryToFind)
+    {
+        Category category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
+        GetCategoryResponse categoryResponse = new GetCategoryResponse
+        {
+            Id = category.Id,
+            Name = category.Name
+        };
+
+        return categoryResponse;
+    }
 }

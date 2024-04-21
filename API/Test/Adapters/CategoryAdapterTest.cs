@@ -78,4 +78,28 @@ public class CategoryAdapterTest
     
     #endregion
     
+    [TestMethod]
+    public void GetCategoryById_ShouldConvertFromDomainToResponse()
+    {
+        Category expectedServiceResponse = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Category"
+        };
+        
+        GetCategoryResponse expectedAdapterResponse = new GetCategoryResponse
+        {
+            Id = expectedServiceResponse.Id,
+            Name = expectedServiceResponse.Name
+        };
+        
+        _categoryServiceLogic.Setup(service => service.GetCategoryById(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+
+        GetCategoryResponse adapterResponse = _categoryAdapter.GetCategoryById(It.IsAny<Guid>());
+        
+        _categoryServiceLogic.VerifyAll();
+
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
+    
 }
