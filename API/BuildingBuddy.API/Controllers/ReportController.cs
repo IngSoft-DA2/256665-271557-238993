@@ -37,6 +37,8 @@ namespace BuildingBuddy.API.Controllers
         }
         
         #endregion
+
+        #region  GetReportsByJanitor
         
         public IActionResult GetRequestsByJanitor([FromQuery] Guid janitorId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByJanitor)
         {
@@ -49,5 +51,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
     }
 }
