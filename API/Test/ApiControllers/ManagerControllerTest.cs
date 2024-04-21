@@ -96,13 +96,14 @@ public class ManagerControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-    
+
     [TestMethod]
     public void DeleteManagerById_NotFoundIsReturned()
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager was not found in database");
 
-        _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+        _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundException());
 
         IActionResult controllerResponse = _managerController.DeleteManagerById(Guid.NewGuid());
         _managerAdapter.Verify(
@@ -113,5 +114,26 @@ public class ManagerControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    [TestMethod]
+    public void DeleteManagerById_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>()))
+            .Throws(new Exception("Unknown error"));
+        
+        IActionResult controllerResponse = _managerController.DeleteManagerById(Guid.NewGuid());
+        _managerAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+        
+        
     }
 }
