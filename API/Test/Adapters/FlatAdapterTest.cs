@@ -98,4 +98,49 @@ public class FlatAdapterTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void GetFlatById_ReturnsGetFlatResponse()
+    {
+        Flat expectedServiceResponse = new Flat
+        {
+            Floor = 1,
+            RoomNumber = 102,
+            OwnerAssigned = new Owner
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Michael",
+                Lastname = "Kent",
+                Email = "owner@gmail.com",
+            },
+            TotalRooms = 4,
+            TotalBaths = 2,
+            HasTerrace = true
+        };
+
+        GetFlatResponse expectedAdapterResponse = new GetFlatResponse
+        {
+            Id = expectedServiceResponse.Id,
+            Floor = expectedServiceResponse.Floor,
+            RoomNumber = expectedServiceResponse.RoomNumber,
+            GetOwnerAssigned = new GetOwnerAssignedResponse()
+            {
+                Id = expectedServiceResponse.OwnerAssigned.Id,
+                Firstname = expectedServiceResponse.OwnerAssigned.Firstname,
+                Lastname = expectedServiceResponse.OwnerAssigned.Lastname,
+                Email = expectedServiceResponse.OwnerAssigned.Email
+            },
+            TotalRooms = expectedServiceResponse.TotalRooms,
+            TotalBaths = expectedServiceResponse.TotalBaths,
+            HasTerrace = expectedServiceResponse.HasTerrace
+        };
+
+        _flatService.Setup(service => service.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
+            .Returns(expectedServiceResponse);
+        
+        GetFlatResponse adapterResponse = _flatAdapter.GetFlatById(It.IsAny<Guid>(),It.IsAny<Guid>());
+        _flatService.VerifyAll();
+
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
 }

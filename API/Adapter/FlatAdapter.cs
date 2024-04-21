@@ -52,5 +52,28 @@ public class FlatAdapter
         }
        
     }
-    
+
+    public GetFlatResponse GetFlatById(Guid buildingId, Guid flatId)
+    {
+        Flat flatFound = _flatService.GetFlatById(buildingId, flatId);
+
+        GetFlatResponse flatToReturn = new GetFlatResponse
+        {
+            Id = flatFound.Id,
+            Floor = flatFound.Floor,
+            RoomNumber = flatFound.RoomNumber,
+            GetOwnerAssigned = new GetOwnerAssignedResponse
+            {
+                Id = flatFound.OwnerAssigned.Id,
+                Firstname = flatFound.OwnerAssigned.Firstname,
+                Lastname = flatFound.OwnerAssigned.Lastname,
+                Email = flatFound.OwnerAssigned.Email
+            },
+            TotalRooms = flatFound.TotalRooms,
+            TotalBaths = flatFound.TotalBaths,
+            HasTerrace = flatFound.HasTerrace
+        };
+
+        return flatToReturn;
+    }
 }
