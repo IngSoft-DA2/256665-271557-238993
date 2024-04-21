@@ -79,7 +79,6 @@ public class CategoryAdapterTest
     
     #endregion
     
-    
     #region Get Category By Id
     
     [TestMethod]
@@ -103,11 +102,19 @@ public class CategoryAdapterTest
     }
     
     [TestMethod]
-    public void GetCategoryById_ShouldThrowException()
+    public void GetCategoryById_ShouldThrowObjectNotFoundException()
     {
         _categoryServiceLogic.Setup(service => service.GetCategoryById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
         
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _categoryAdapter.GetCategoryById(It.IsAny<Guid>()));
+    }
+    
+    [TestMethod]
+    public void GetCategoryById_ShouldThrowException()
+    {
+        _categoryServiceLogic.Setup(service => service.GetCategoryById(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
+        
+        Assert.ThrowsException<Exception>(() => _categoryAdapter.GetCategoryById(It.IsAny<Guid>()));
     }
     
     #endregion

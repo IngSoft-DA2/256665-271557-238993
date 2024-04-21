@@ -59,5 +59,9 @@ public class CategoryAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }
