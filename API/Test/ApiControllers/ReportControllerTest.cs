@@ -11,6 +11,16 @@ namespace Test.ApiControllers;
 
 public class ReportControllerTest
 {
+    
+    private Mock<IReportAdapter> _reportAdapter;
+    private ReportController _reportController;
+    
+    [TestInitialize]
+    public void Initialize()
+    {   
+        _reportAdapter = new Mock<IReportAdapter>(MockBehavior.Strict);
+        _reportController = new ReportController(_reportAdapter.Object);
+    }
 
     [TestMethod]
     public void GetRequestsByBuildingTest()
@@ -27,12 +37,12 @@ public class ReportControllerTest
         };
         
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
-            
-        Mock<IReportAdapter> reportAdapter = new Mock<IReportAdapter>();
-        reportAdapter.Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>())).Returns(expectedResponseValue);
+
+        _reportAdapter.Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>())).Returns(expectedResponseValue);
         
-        ReportController reportController = new ReportController(reportAdapter.Object);
-        IActionResult controllerResponse = reportController.GetRequestsByBuilding(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
+        IActionResult controllerResponse = _reportController.GetRequestsByBuilding(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
+        
+        _reportAdapter.VerifyAll();
         
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -48,18 +58,18 @@ public class ReportControllerTest
     }
     
     [TestMethod]
-    public void GetRequestsByBuildingInternalServerErrorTest()
+    public void GetRequestsByBuilding_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
-        
-        Mock<IReportAdapter> reportAdapter = new Mock<IReportAdapter>();
-        reportAdapter.Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(), 
+            
+        _reportAdapter.Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(), 
             It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception());
         
-        ReportController reportController = new ReportController(reportAdapter.Object);
-        IActionResult controllerResponse = reportController.GetRequestsByBuilding(It.IsAny<Guid>(), 
+        IActionResult controllerResponse = _reportController.GetRequestsByBuilding(It.IsAny<Guid>(), 
             It.IsAny<GetMaintenanceReportRequest>());
+        
+        _reportAdapter.VerifyAll();
         
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
