@@ -47,4 +47,25 @@ public class ReportControllerTest
         
     }
     
+    [TestMethod]
+    public void GetRequestsByBuildingInternalServerErrorTest()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        Mock<IReportAdapter> reportAdapter = new Mock<IReportAdapter>();
+        reportAdapter.Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(), 
+            It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception());
+        
+        ReportController reportController = new ReportController(reportAdapter.Object);
+        IActionResult controllerResponse = reportController.GetRequestsByBuilding(It.IsAny<Guid>(), 
+            It.IsAny<GetMaintenanceReportRequest>());
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }   
+    
 }

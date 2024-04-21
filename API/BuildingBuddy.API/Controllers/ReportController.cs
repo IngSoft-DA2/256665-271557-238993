@@ -25,7 +25,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetRequestsByBuilding([FromQuery] Guid buildingId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByBuilding)
         {
-            return Ok(_reportAdapter.GetRequestsByBuilding(buildingId, getMaintenanceReportRequestByBuilding));
+            try
+            {
+                return Ok(_reportAdapter.GetRequestsByBuilding(buildingId, getMaintenanceReportRequestByBuilding));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
         
         #endregion
