@@ -81,4 +81,13 @@ public class FlatAdapterTest
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.GetAllFlats(It.IsAny<Guid>()));
         _flatService.VerifyAll();
     }
+
+    [TestMethod]
+    public void GetAllFlats_ShouldThrowException()
+    {
+        _flatService.Setup(service => service.GetAllFlats(It.IsAny<Guid>())).Throws(new Exception("Unknown Error"));
+
+        Assert.ThrowsException<Exception>(() => _flatAdapter.GetAllFlats(It.IsAny<Guid>()));
+        _flatService.VerifyAll();
+    }
 }
