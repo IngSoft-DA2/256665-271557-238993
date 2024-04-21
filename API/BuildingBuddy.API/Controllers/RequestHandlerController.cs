@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.RequestHandlerRequests;
@@ -19,10 +20,16 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateRequestHandler([FromBody] CreateRequestHandlerRequest requestHandlerRequest)
         {
-            CreateRequestHandlerResponse response = _requestHandlerAdapter.CreateRequestHandler(requestHandlerRequest);
-
-            return CreatedAtAction(nameof(CreateRequestHandler),
-                new { id = response.Id }, response);
+            try
+            {
+                CreateRequestHandlerResponse response = _requestHandlerAdapter.CreateRequestHandler(requestHandlerRequest);
+                return CreatedAtAction(nameof(CreateRequestHandler),
+                    new { id = response.Id }, response);
+            }
+            catch (ObjectErrorException exceptionCaugth)
+            {
+                return BadRequest(exceptionCaugth.Message);
+            }
         }
     }
 }

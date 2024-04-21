@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ public class RequestHandlerControllerTest
 
         IActionResult controllerResponse =
             requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());
+        requestHandlerAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -38,5 +40,28 @@ public class RequestHandlerControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedValue.Id, value.Id);
+    }
+
+    [TestMethod]
+    public void CreateRequestHandlerRequest_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific Error");
+
+        Mock<IRequestHandlerAdapter> requestHandlerAdapter = new Mock<IRequestHandlerAdapter>();
+        requestHandlerAdapter.Setup(adapter => adapter.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
+            .Throws(new ObjectErrorException("Specific Error"));
+
+        RequestHandlerController requestHandlerController = new RequestHandlerController(requestHandlerAdapter.Object);
+
+        IActionResult controllerResponse =
+            requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());
+        requestHandlerAdapter.VerifyAll();
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        
     }
 }
