@@ -71,7 +71,7 @@ public class BuildingControllerTest
         };
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedBuildings);
 
-        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
 
         IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
@@ -93,7 +93,7 @@ public class BuildingControllerTest
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("User id was not found in database");
 
-        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
 
         IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
@@ -111,7 +111,7 @@ public class BuildingControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>()))
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>()))
             .Throws(new Exception("Unknown error"));
 
         IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());

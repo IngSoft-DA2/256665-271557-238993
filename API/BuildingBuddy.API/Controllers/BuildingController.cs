@@ -30,7 +30,7 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                return Ok(_buildingAdapter.GetBuildings(userId));
+                return Ok(_buildingAdapter.GetAllBuildings(userId));
             }
             catch (ObjectNotFoundException)
             {
@@ -147,7 +147,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Flats
         
         [HttpGet]
-        [Route("{buildingId:Guid}")]
+        [Route("{buildingId:Guid}/flats")]
         public IActionResult GetAllFlats([FromRoute] Guid buildingId)
         {
             try
