@@ -10,10 +10,26 @@ namespace Test.ApiControllers;
 [TestClass]
 public class ManagerControllerTest
 {
-    [TestMethod]
-    public void GetManagersRequest_OkIsReturned()
+    #region Initialize
+
+    private Mock<IManagerAdapter> _managerAdapter;
+    private ManagerController _managerController;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        IEnumerable<GetManagerResponse> expectedValue = new List<GetManagerResponse>() 
+        _managerAdapter = new Mock<IManagerAdapter>(MockBehavior.Strict);
+        _managerController = new ManagerController(_managerAdapter.Object);
+    }
+
+    #endregion
+
+    #region Get All Managers
+
+    [TestMethod]
+    public void GetAllManagersRequest_OkIsReturned()
+    {
+        IEnumerable<GetManagerResponse> expectedValue = new List<GetManagerResponse>()
         {
             new GetManagerResponse
             {
@@ -22,35 +38,30 @@ public class ManagerControllerTest
                 Password = "Michael123421!"
             }
         };
-        
+
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedValue);
-        
-        Mock<IManagerAdapter> managerAdapter = new Mock<IManagerAdapter>(MockBehavior.Strict);
-        managerAdapter.Setup(adapter => adapter.GetAllManagers()).Returns(expectedValue);
 
-        ManagerController managerController = new ManagerController(managerAdapter.Object);
+        _managerAdapter.Setup(adapter => adapter.GetAllManagers()).Returns(expectedValue);
 
-        IActionResult controllerResponse = managerController.GetAllManagers();
-        managerAdapter.VerifyAll();
-        
+        IActionResult controllerResponse = _managerController.GetAllManagers();
+        _managerAdapter.VerifyAll();
+
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         IEnumerable<GetManagerResponse>? value = controllerResponseCasted.Value as IEnumerable<GetManagerResponse>;
         Assert.IsNotNull(value);
 
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedValue.SequenceEqual(value));
-
-
     }
 
     [TestMethod]
-    public void GetManagerRequest_500StatusCodeIsReturned()
+    public void GetAllManagerRequest_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
-        
+
         Mock<IManagerAdapter> managerAdapter = new Mock<IManagerAdapter>(MockBehavior.Strict);
         managerAdapter.Setup(adapter => adapter.GetAllManagers()).Throws(new Exception("Unknown error"));
 
@@ -58,12 +69,13 @@ public class ManagerControllerTest
 
         IActionResult controllerResponse = managerController.GetAllManagers();
         managerAdapter.VerifyAll();
-        
+
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
+
+    #endregion
 }
