@@ -4,6 +4,7 @@ using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.CategoryRequests;
 using WebModel.Responses.CategoryResponses;
 
 namespace Test.Adapters;
@@ -118,5 +119,27 @@ public class CategoryAdapterTest
     }
     
     #endregion
+    
+    [TestMethod]
+    public void CreateCategory_ShouldConvertFromRequestToResponse()
+    {
+        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
+        {
+            Name = "Electrician"
+        };
+        
+        CreateCategoryResponse expectedAdapterResponse = new CreateCategoryResponse
+        {
+            Id = genericCategory1.Id
+        };
+        
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Returns(genericCategory1);
+
+        CreateCategoryResponse adapterResponse = _categoryAdapter.CreateCategory(createCategoryRequest);
+        
+        _categoryServiceLogic.VerifyAll();
+
+        Assert.AreEqual(expectedAdapterResponse.Id, (adapterResponse.Id));
+    }
     
 }

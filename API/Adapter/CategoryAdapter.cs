@@ -2,6 +2,7 @@
 using Domain;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.CategoryRequests;
 using WebModel.Responses.CategoryResponses;
 
 namespace Adapter;
@@ -63,5 +64,22 @@ public class CategoryAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    public CreateCategoryResponse CreateCategory(CreateCategoryRequest categoryToCreate)
+    {
+        Category category = new Category
+        {
+            Name = categoryToCreate.Name
+        };
+
+        category = _categoryServiceLogic.CreateCategory(category);
+
+        CreateCategoryResponse categoryResponse = new CreateCategoryResponse
+        {
+            Id = category.Id,
+        };
+
+        return categoryResponse;
     }
 }
