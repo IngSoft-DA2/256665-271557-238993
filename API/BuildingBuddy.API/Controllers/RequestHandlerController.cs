@@ -22,13 +22,19 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                CreateRequestHandlerResponse response = _requestHandlerAdapter.CreateRequestHandler(requestHandlerRequest);
+                CreateRequestHandlerResponse response =
+                    _requestHandlerAdapter.CreateRequestHandler(requestHandlerRequest);
                 return CreatedAtAction(nameof(CreateRequestHandler),
                     new { id = response.Id }, response);
             }
-            catch (ObjectErrorException exceptionCaugth)
+            catch (ObjectErrorException exceptionCaught)
             {
-                return BadRequest(exceptionCaugth.Message);
+                return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }
