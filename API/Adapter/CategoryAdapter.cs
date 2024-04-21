@@ -68,18 +68,25 @@ public class CategoryAdapter
 
     public CreateCategoryResponse CreateCategory(CreateCategoryRequest categoryToCreate)
     {
-        Category category = new Category
+        try
         {
-            Name = categoryToCreate.Name
-        };
+            Category category = new Category
+            {
+                Name = categoryToCreate.Name
+            };
 
-        category = _categoryServiceLogic.CreateCategory(category);
+            category = _categoryServiceLogic.CreateCategory(category);
 
-        CreateCategoryResponse categoryResponse = new CreateCategoryResponse
+            CreateCategoryResponse categoryResponse = new CreateCategoryResponse
+            {
+                Id = category.Id,
+            };
+
+            return categoryResponse;
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
         {
-            Id = category.Id,
-        };
-
-        return categoryResponse;
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }

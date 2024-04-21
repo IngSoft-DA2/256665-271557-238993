@@ -142,4 +142,18 @@ public class CategoryAdapterTest
         Assert.AreEqual(expectedAdapterResponse.Id, (adapterResponse.Id));
     }
     
+    [TestMethod]
+    public void CreateCategory_ShouldThrowObjectErrorServiceException()
+    {
+        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
+        {
+            Name = ""
+        };
+        
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
+            Throws(new ObjectErrorServiceException("Error on Name"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
+    }
+    
 }
