@@ -12,6 +12,17 @@ namespace Test.ApiControllers;
 [TestClass]
 public class RequestHandlerControllerTest
 {
+    private Mock<IRequestHandlerAdapter> _requestHandlerAdapter;
+    private RequestHandlerController requestHandlerController;
+
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _requestHandlerAdapter = new Mock<IRequestHandlerAdapter>();
+        requestHandlerController = new RequestHandlerController(_requestHandlerAdapter.Object);
+    }
+
     [TestMethod]
     public void CreateRequestHandlerRequest_CreatedAtActionIsReturned()
     {
@@ -21,15 +32,12 @@ public class RequestHandlerControllerTest
             new CreatedAtActionResult("CreateRequestHandler", "CreateRequestHandler"
                 , expectedValue.Id, expectedValue);
 
-        Mock<IRequestHandlerAdapter> requestHandlerAdapter = new Mock<IRequestHandlerAdapter>();
-        requestHandlerAdapter.Setup(x => x.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
+        _requestHandlerAdapter.Setup(x => x.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
             .Returns(expectedValue);
-
-        RequestHandlerController requestHandlerController = new RequestHandlerController(requestHandlerAdapter.Object);
 
         IActionResult controllerResponse =
             requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());
-        requestHandlerAdapter.VerifyAll();
+        _requestHandlerAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -46,22 +54,18 @@ public class RequestHandlerControllerTest
     public void CreateRequestHandlerRequest_BadRequestIsReturned()
     {
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific Error");
-
-        Mock<IRequestHandlerAdapter> requestHandlerAdapter = new Mock<IRequestHandlerAdapter>();
-        requestHandlerAdapter.Setup(adapter => adapter.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
+        
+        _requestHandlerAdapter.Setup(adapter => adapter.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
             .Throws(new ObjectErrorException("Specific Error"));
-
-        RequestHandlerController requestHandlerController = new RequestHandlerController(requestHandlerAdapter.Object);
 
         IActionResult controllerResponse =
             requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());
-        requestHandlerAdapter.VerifyAll();
-        
+        _requestHandlerAdapter.VerifyAll();
+
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        
     }
 }
