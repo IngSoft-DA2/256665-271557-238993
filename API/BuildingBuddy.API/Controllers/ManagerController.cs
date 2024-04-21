@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +34,15 @@ namespace BuildingBuddy.API.Controllers
         [Route("{managerId:Guid}")]
         public IActionResult DeleteManagerById([FromRoute] Guid managerId)
         {
-            _managerAdapter.DeleteManagerById(managerId);
-            return NoContent();
+            try
+            {
+                _managerAdapter.DeleteManagerById(managerId);
+                return NoContent();
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Manager was not found in database");
+            }
         }
     }
 }

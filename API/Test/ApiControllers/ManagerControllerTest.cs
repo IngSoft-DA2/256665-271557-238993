@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -94,5 +95,23 @@ public class ManagerControllerTest
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+    
+    [TestMethod]
+    public void DeleteManagerById_NotFoundIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager was not found in database");
+
+        _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+
+        IActionResult controllerResponse = _managerController.DeleteManagerById(Guid.NewGuid());
+        _managerAdapter.Verify(
+            adapter => adapter.DeleteManagerById(It.IsAny<Guid>()), Times.Once());
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
