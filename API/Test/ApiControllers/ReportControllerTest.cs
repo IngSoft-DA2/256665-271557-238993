@@ -23,13 +23,13 @@ public class ReportControllerTest
     }
 
     [TestMethod]
-    public void GetRequestsByBuildingTest()
+    public void GetRequestsByBuilding_OkIsReturned()
     {
-        IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportByBuildingResponse>()
+        IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportResponse>()
         {
-            new GetMaintenanceReportByBuildingResponse()
+            new GetMaintenanceReportResponse()
             {
-                Building = Guid.NewGuid(),
+                IdOfResourceToReport = Guid.NewGuid(),
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8
@@ -47,8 +47,8 @@ public class ReportControllerTest
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
         
-        List<GetMaintenanceReportByBuildingResponse>? controllerResponseValueCasted =
-            controllerResponseCasted.Value as List<GetMaintenanceReportByBuildingResponse>;
+        List<GetMaintenanceReportResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetMaintenanceReportResponse>;
         
         Assert.IsNotNull(controllerResponseValueCasted);
         
@@ -77,5 +77,41 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }   
+    
+    [TestMethod]
+public void GetRequestsByJanitor_OkIsReturned()
+    {
+        IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportResponse>()
+        {
+            new GetMaintenanceReportResponse()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8
+            }
+        };
+        
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+
+        _reportAdapter.Setup(adapter => adapter.GetRequestsByJanitor(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>())).Returns(expectedResponseValue);
+        
+        IActionResult controllerResponse = _reportController.GetRequestsByJanitor(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
+        
+        _reportAdapter.VerifyAll();
+        
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        List<GetMaintenanceReportResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetMaintenanceReportResponse>;
+        
+        Assert.IsNotNull(controllerResponseValueCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
+        
+    }
+    
     
 }

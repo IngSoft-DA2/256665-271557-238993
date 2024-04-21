@@ -37,5 +37,10 @@ namespace BuildingBuddy.API.Controllers
         }
         
         #endregion
+        
+        public IActionResult GetRequestsByJanitor([FromQuery] Guid janitorId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByJanitor)
+        {
+            return Ok(_reportAdapter.GetRequestsByJanitor(janitorId, getMaintenanceReportRequestByJanitor));
+        }
     }
 }
