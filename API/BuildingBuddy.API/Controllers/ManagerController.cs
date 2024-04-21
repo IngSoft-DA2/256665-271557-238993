@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/managers")]
     [ApiController]
     public class ManagerController : ControllerBase
     {
-
         private readonly IManagerAdapter _managerAdapter;
+
         public ManagerController(IManagerAdapter managerAdapter)
         {
             _managerAdapter = managerAdapter;
@@ -27,7 +27,14 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-           
+        }
+
+        [HttpDelete]
+        [Route("{managerId:Guid}")]
+        public IActionResult DeleteManagerById([FromRoute] Guid managerId)
+        {
+            _managerAdapter.DeleteManagerById(managerId);
+            return NoContent();
         }
     }
 }

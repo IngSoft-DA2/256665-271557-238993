@@ -78,4 +78,21 @@ public class ManagerControllerTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void DeleteManagerById_NoContentIsReturned()
+    {
+        NoContentResult expectedControllerResponse = new NoContentResult();
+
+        _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>()));
+
+        IActionResult controllerResponse = _managerController.DeleteManagerById(Guid.NewGuid());
+        _managerAdapter.Verify(
+            adapter => adapter.DeleteManagerById(It.IsAny<Guid>()), Times.Once());
+
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
 }
