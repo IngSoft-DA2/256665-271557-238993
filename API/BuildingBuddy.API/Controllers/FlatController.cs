@@ -32,6 +32,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_flatAdapter.GetAllFlats(buildingId));
             }
+            catch (ObjectNotFoundAdapterException)
+            {
+                return NotFound("Building id was not found");
+            }
             catch (Exception exceptionCaught)
             {
                 Console.WriteLine(exceptionCaught.Message);

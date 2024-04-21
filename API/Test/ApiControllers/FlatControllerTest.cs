@@ -70,6 +70,23 @@ namespace Test.ApiControllers
         }
 
         [TestMethod]
+        public void GetAllFlats_NotFoundIsReturned()
+        {
+            NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Building id was not found");
+
+            _flatAdapter.Setup(adapter => adapter.GetAllFlats(It.IsAny<Guid>()))
+                .Throws(new ObjectNotFoundAdapterException());
+
+            IActionResult controllerResponse = _flatController.GetAllFlats(It.IsAny<Guid>());
+
+            NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+            Assert.IsNotNull(controllerResponseCasted);
+
+            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+        }
+
+        [TestMethod]
         public void GetAllFlats_500StatusCodeIsReturned()
         {
             ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
