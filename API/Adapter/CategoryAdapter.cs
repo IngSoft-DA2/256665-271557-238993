@@ -15,13 +15,20 @@ public class CategoryAdapter
 
     public IEnumerable<GetCategoryResponse> GetAllCategories()
     {
-        IEnumerable<Category> categories = _categoryServiceLogic.GetAllCategories();
-        IEnumerable<GetCategoryResponse> categoriesResponses = categories.Select(category => new GetCategoryResponse
+        try
         {
-            Id = category.Id,
-            Name = category.Name
-        });
+            IEnumerable<Category> categories = _categoryServiceLogic.GetAllCategories();
+            IEnumerable<GetCategoryResponse> categoriesResponses = categories.Select(category => new GetCategoryResponse
+            {
+                Id = category.Id,
+                Name = category.Name
+            });
 
-        return categoriesResponses;
+            return categoriesResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }

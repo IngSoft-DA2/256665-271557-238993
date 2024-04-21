@@ -55,4 +55,15 @@ public class CategoryAdapterTest
         Assert.IsTrue(adapterResponse.SequenceEqual(expectedAdapterResponse));
     }
     
+    [TestMethod]
+    public void GetAllCategories_ShouldThrowException()
+    {
+        Mock<ICategoryServiceLogic> categoryServiceLogic = new Mock<ICategoryServiceLogic>();
+        categoryServiceLogic.Setup(service => service.GetAllCategories()).Throws(new Exception("Something went wrong"));
+        
+        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryServiceLogic.Object);
+
+        Assert.ThrowsException<Exception>(() => categoryAdapter.GetAllCategories());
+    }
+    
 }
