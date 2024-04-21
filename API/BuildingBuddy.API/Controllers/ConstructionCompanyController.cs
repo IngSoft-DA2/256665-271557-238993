@@ -1,13 +1,12 @@
 using Adapter.CustomExceptions;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/constructionCompanies")]
+    [Route("api/v1/construction-companies")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
     {

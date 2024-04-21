@@ -6,7 +6,7 @@ using WebModel.Responses.RequestHandlerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/requestHandlers")]
+    [Route("api/v1/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase
     {
