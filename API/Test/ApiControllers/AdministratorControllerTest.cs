@@ -11,6 +11,8 @@ namespace Test.ApiControllers;
 [TestClass]
 public class AdministratorControllerTest
 {
+    #region Initialize
+
     private Mock<IAdministratorAdapter> _administratorAdapter;
     private AdministratorController _administratorController;
 
@@ -20,6 +22,10 @@ public class AdministratorControllerTest
         _administratorAdapter = new Mock<IAdministratorAdapter>(MockBehavior.Strict);
         _administratorController = new AdministratorController(_administratorAdapter.Object);
     }
+
+    #endregion
+
+    #region Create Administrator
 
     [TestMethod]
     public void CreateAdministratorRequest_CreatedAtActionIsReturned()
@@ -74,7 +80,7 @@ public class AdministratorControllerTest
     public void CreateAdministratorRequest_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        
+
         _administratorAdapter.Setup(adapter => adapter.CreateAdministrator(It.IsAny<CreateAdministratorRequest>()))
             .Throws(new Exception("Unknown Error"));
 
@@ -88,4 +94,6 @@ public class AdministratorControllerTest
         Assert.AreEqual(500, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
 }

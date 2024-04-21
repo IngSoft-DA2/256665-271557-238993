@@ -19,10 +19,9 @@ namespace BuildingBuddy.API.Controllers
         {
             _administratorAdapter = administratorAdapter;
         }
-
-
+        
         [HttpPost]
-        public IActionResult CreateAdministrator(CreateAdministratorRequest request)
+        public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequest request)
         {
             try
             {
