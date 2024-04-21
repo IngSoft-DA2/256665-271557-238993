@@ -80,6 +80,8 @@ public class ManagerControllerTest
 
     #endregion
 
+    #region Delete Manager By Id
+
     [TestMethod]
     public void DeleteManagerById_NoContentIsReturned()
     {
@@ -124,16 +126,16 @@ public class ManagerControllerTest
 
         _managerAdapter.Setup(adapter => adapter.DeleteManagerById(It.IsAny<Guid>()))
             .Throws(new Exception("Unknown error"));
-        
+
         IActionResult controllerResponse = _managerController.DeleteManagerById(Guid.NewGuid());
         _managerAdapter.VerifyAll();
-        
+
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
-        
-        
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+
+    #endregion
 }
