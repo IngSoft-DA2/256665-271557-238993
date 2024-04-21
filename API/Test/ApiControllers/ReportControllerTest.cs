@@ -172,4 +172,25 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
     }
+    
+    [TestMethod]
+    public void GetReportsByCategory_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _reportAdapter.Setup(adapter => adapter.GetRequestsByCategory(It.IsAny<Guid>(),
+            It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
+
+        IActionResult controllerResponse = _reportController.GetRequestsByCategory(It.IsAny<Guid>(),
+            It.IsAny<GetMaintenanceReportRequest>());
+
+        _reportAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 }

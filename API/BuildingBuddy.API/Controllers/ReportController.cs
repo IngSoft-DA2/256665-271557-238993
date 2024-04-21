@@ -62,7 +62,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetRequestsByCategory([FromQuery] Guid categoryId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByCategory)
         {
-            return Ok(_reportAdapter.GetRequestsByCategory(categoryId, getMaintenanceReportRequestByCategory));
+            try
+            {
+                return Ok(_reportAdapter.GetRequestsByCategory(categoryId, getMaintenanceReportRequestByCategory));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
     }
 }
