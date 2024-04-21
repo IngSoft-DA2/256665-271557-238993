@@ -16,12 +16,18 @@ public class FlatAdapterTest
     private Mock<IFlatService> _flatService;
     private FlatAdapter _flatAdapter;
 
+    #region Initialize
+
     [TestInitialize]
     public void Initialize()
     {
         _flatService = new Mock<IFlatService>(MockBehavior.Strict);
         _flatAdapter = new FlatAdapter(_flatService.Object);
     }
+
+    #endregion
+
+    #region GetAllFlats
 
     [TestMethod]
     public void GetAllFlats_ShouldConvertFlatsReceived_IntoGetFlatResponses()
@@ -90,4 +96,6 @@ public class FlatAdapterTest
         Assert.ThrowsException<Exception>(() => _flatAdapter.GetAllFlats(It.IsAny<Guid>()));
         _flatService.VerifyAll();
     }
+
+    #endregion
 }
