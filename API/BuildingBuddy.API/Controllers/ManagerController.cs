@@ -15,6 +15,7 @@ namespace BuildingBuddy.API.Controllers
             _managerAdapter = managerAdapter;
         }
 
+        [HttpGet]
         public IActionResult GetAllManagers()
         {
            return Ok(_managerAdapter.GetAllManagers());
