@@ -11,6 +11,9 @@ namespace BuildingBuddy.API.Controllers
     [ApiController]
     public class BuildingController : ControllerBase
     {
+        
+        #region Constructor and atributes
+        
         private readonly IBuildingAdapter _buildingAdapter;
 
         public BuildingController(IBuildingAdapter buildingAdapter)
@@ -18,12 +21,16 @@ namespace BuildingBuddy.API.Controllers
             _buildingAdapter = buildingAdapter;
         }
 
+        #endregion
+
+        #region Get All Buildings
+        
         [HttpGet]
-        public IActionResult GetBuildings([FromQuery] Guid userId)
+        public IActionResult GetAllBuildings([FromQuery] Guid userId)
         {
             try
             {
-                return Ok(_buildingAdapter.GetBuildings(userId));
+                return Ok(_buildingAdapter.GetAllBuildings(userId));
             }
             catch (ObjectNotFoundException)
             {
@@ -35,7 +42,11 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
 
+        #region Get Building By Id
+        
         [HttpGet]
         [Route("{buildingId:Guid}")]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
@@ -54,7 +65,11 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
 
+        #region Update Building 
+        
         [HttpPut]
         [Route("{buildingId:Guid}")]
         public IActionResult UpdateBuilding([FromRoute] Guid buildingId,
@@ -79,6 +94,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Create Building
 
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
@@ -98,6 +117,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+
+        #region Delete Building
 
         [HttpDelete]
         [Route("{buildingId:Guid}")]
@@ -118,6 +141,27 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Get All Flats
+        
+        [HttpGet]
+        [Route("{buildingId:Guid}/flats")]
+        public IActionResult GetAllFlats([FromRoute] Guid buildingId)
+        {
+            try
+            {
+                return Ok(_buildingAdapter.GetAllFlatsByBuilding(buildingId));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        #endregion
 
         //This must be done by the one of us that will make maintenace.
         // [HttpPost]

@@ -16,10 +16,10 @@ namespace Test.ApiControllers;
 [TestClass]
 public class BuildingControllerTest
 {
+    #region Initialization
+    
     private Mock<IBuildingAdapter> _buildingAdapter;
     private BuildingController _buildingController;
-
-    #region Initialization
 
     [TestInitialize]
     public void Initialize()
@@ -30,10 +30,10 @@ public class BuildingControllerTest
 
     #endregion
 
-    #region Get Buildings
+    #region Get All Buildings
 
     [TestMethod]
-    public void GetBuildings_OkIsReturned()
+    public void GetAllBuildings_OkIsReturned()
     {
         IEnumerable<GetBuildingResponse> expectedBuildings = new List<GetBuildingResponse>
         {
@@ -71,9 +71,9 @@ public class BuildingControllerTest
         };
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedBuildings);
 
-        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
 
-        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
@@ -93,9 +93,9 @@ public class BuildingControllerTest
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("User id was not found in database");
 
-        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
 
-        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -111,10 +111,10 @@ public class BuildingControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _buildingAdapter.Setup(adapter => adapter.GetBuildings(It.IsAny<Guid>()))
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>()))
             .Throws(new Exception("Unknown error"));
 
-        IActionResult controllerResponse = _buildingController.GetBuildings(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
@@ -459,6 +459,71 @@ public class BuildingControllerTest
             .Throws(new Exception("Unknown error"));
 
         IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
+        _buildingAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    #endregion
+
+    #region GetAllFlats
+
+    [TestMethod]
+    public void GetAllFlats_OkIsReturned()
+    {
+        IEnumerable<GetFlatResponse> expectedFlats = new List<GetFlatResponse>()
+        {
+            new GetFlatResponse()
+            {
+                Id = Guid.NewGuid(),
+                Floor = 1,
+                RoomNumber = 102,
+                GetOwnerAssigned = new GetOwnerAssignedResponse()
+                {
+                    Name = "Barry",
+                    Lastname = "White",
+                    Email = "barrywhite@gmail.com",
+                },
+                TotalRooms = 3,
+                TotalBaths = 2,
+                HasTerrace = true
+            }
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedFlats);
+
+        _buildingAdapter.Setup(adapter => adapter.GetAllFlatsByBuilding(It.IsAny<Guid>())).Returns(expectedFlats);
+
+        IActionResult controllerResponse = _buildingController.GetAllFlats(It.IsAny<Guid>());
+
+        _buildingAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetFlatResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetFlatResponse>;
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(controllerResponseValueCasted));
+    }
+
+    [TestMethod]
+    public void GetAllFlats_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _buildingAdapter.Setup(adapter => adapter.GetAllFlatsByBuilding(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        IActionResult controllerResponse = _buildingController.GetAllFlats(It.IsAny<Guid>());
+
         _buildingAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
