@@ -10,6 +10,8 @@ namespace Test.ApiControllers;
 [TestClass]
 public class ReportControllerTest
 {
+    #region Initizing aspects
+    
     private Mock<IReportAdapter> _reportAdapter;
     private ReportController _reportController;
 
@@ -19,9 +21,13 @@ public class ReportControllerTest
         _reportAdapter = new Mock<IReportAdapter>(MockBehavior.Strict);
         _reportController = new ReportController(_reportAdapter.Object);
     }
+    
+    #endregion
+    
+    #region GetMaintenanceRequestsByCategory
 
     [TestMethod]
-    public void GetRequestsByBuilding_OkIsReturned()
+    public void GetMaintenanceRequestsByBuilding_OkIsReturned()
     {
         IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportResponse>()
         {
@@ -36,12 +42,10 @@ public class ReportControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
-        _reportAdapter
-            .Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>()))
-            .Returns(expectedResponseValue);
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>())).Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetRequestsByBuilding(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
+            _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -58,16 +62,14 @@ public class ReportControllerTest
     }
 
     [TestMethod]
-    public void GetRequestsByBuilding_500StatusCodeIsReturned()
+    public void GetMaintenanceRequestsByBuilding_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => adapter.GetRequestsByBuilding(It.IsAny<Guid>(),
-            It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetRequestsByBuilding(It.IsAny<Guid>(),
-            It.IsAny<GetMaintenanceReportRequest>());
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -77,9 +79,13 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    #endregion
 
+    #region GetMaintenanceRequestsByRequestHandler
+    
     [TestMethod]
-    public void GetRequestsByJanitor_OkIsReturned()
+    public void GetMaintenanceRequestsByRequestHandler_OkIsReturned()
     {
         IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportResponse>()
         {
@@ -95,11 +101,11 @@ public class ReportControllerTest
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
         _reportAdapter
-            .Setup(adapter => adapter.GetRequestsByJanitor(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>()))
+            .Setup(adapter => adapter.GetMaintenanceRequestsByRequestHandler(It.IsAny<GetMaintenanceReportRequest>()))
             .Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetRequestsByJanitor(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
+            _reportController.GetMaintenanceRequestsByRequestHandler(It.IsAny<GetMaintenanceReportRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -116,16 +122,14 @@ public class ReportControllerTest
     }
     
     [TestMethod]
-    public void GetRequestsByJanitor_500StatusCodeIsReturned()
+    public void GetMaintenanceRequestsByRequestHandler_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => adapter.GetRequestsByJanitor(It.IsAny<Guid>(),
-            It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByRequestHandler(It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetRequestsByJanitor(It.IsAny<Guid>(),
-            It.IsAny<GetMaintenanceReportRequest>());
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(It.IsAny<GetMaintenanceReportRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -136,8 +140,12 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    #endregion
+    
+    #region GetMaintenanceRequestsByCategory
+    
     [TestMethod]
-    public void GetReportsByCategory_OkIsReturned()
+    public void GetMaintenanceRequestsByCategory_OkIsReturned()
     {
         IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportResponse>()
         {
@@ -153,11 +161,11 @@ public class ReportControllerTest
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
         _reportAdapter
-            .Setup(adapter => adapter.GetRequestsByCategory(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>()))
+            .Setup(adapter => adapter.GetMaintenanceRequestsByCategory(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>()))
             .Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetRequestsByCategory(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
+            _reportController.GetMaintenanceRequestsByCategory(It.IsAny<Guid>(), It.IsAny<GetMaintenanceReportRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -174,15 +182,15 @@ public class ReportControllerTest
     }
     
     [TestMethod]
-    public void GetReportsByCategory_500StatusCodeIsReturned()
+    public void GetMaintenanceRequestsByCategory_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => adapter.GetRequestsByCategory(It.IsAny<Guid>(),
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByCategory(It.IsAny<Guid>(),
             It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetRequestsByCategory(It.IsAny<Guid>(),
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByCategory(It.IsAny<Guid>(),
             It.IsAny<GetMaintenanceReportRequest>());
 
         _reportAdapter.VerifyAll();
@@ -193,4 +201,6 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    #endregion
 }

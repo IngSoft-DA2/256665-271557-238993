@@ -118,6 +118,25 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #region GetAllFlats
+        
+        [HttpGet]
+        [Route("{buildingId:Guid}")]
+        public IActionResult GetAllFlats([FromRoute] Guid buildingId)
+        {
+            try
+            {
+                return Ok(_buildingAdapter.GetAllFlatsByBuilding(buildingId));
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        #endregion
 
         //This must be done by the one of us that will make maintenace.
         // [HttpPost]

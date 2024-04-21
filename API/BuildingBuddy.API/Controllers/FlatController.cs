@@ -21,24 +21,6 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region GetAllFlats
-        //INCLUIR EN BUILDING Y QUITAR DE AQUI
-        [HttpGet]
-        public IActionResult GetAllFlats()
-        {
-            try
-            {
-                return Ok(_flatAdapter.GetAllFlats());
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        #endregion
-
         #region GetFlatById
 
         [HttpGet("{idOfFlatToFind}")]
@@ -60,8 +42,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-
-        //INCLUIR EN BUILDING Y QUITAR DE AQUI
+        
         #region CreateFlat
 
         [HttpPost]

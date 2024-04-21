@@ -20,15 +20,15 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region GetReportsByBuilding
+        #region GetMaintenanceRequestsByBuilding
 
-        [Route("/maintenanceReportByBuilding")]
+        [Route("/buildings/maintenance-requests")]
         [HttpGet]
-        public IActionResult GetRequestsByBuilding([FromQuery] Guid buildingId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByBuilding)
+        public IActionResult GetMaintenanceRequestsByBuilding([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByBuilding)
         {
             try
             {
-                return Ok(_reportAdapter.GetRequestsByBuilding(buildingId, getMaintenanceReportRequestByBuilding));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByBuilding(getMaintenanceReportRequestByBuilding));
             }
             catch (Exception exceptionCaught)
             {
@@ -39,15 +39,15 @@ namespace BuildingBuddy.API.Controllers
         
         #endregion
 
-        #region  GetReportsByJanitor
+        #region  GetMaintenanceRequestsByRequestHandler
         
-        [Route("/maintenanceReportByMaintenancePerson")]
+        [Route("/request-handler/maintenance-requests")]
         
         [HttpGet]
-        public IActionResult GetRequestsByJanitor([FromQuery] Guid maintenancePersonId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByJanitor)
+        public IActionResult GetMaintenanceRequestsByRequestHandler([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByRequestHandler)
         {
             try{
-                return Ok(_reportAdapter.GetRequestsByJanitor(maintenancePersonId, getMaintenanceReportRequestByJanitor));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(getMaintenanceReportRequestByRequestHandler));
             }
             catch (Exception exceptionCaught)
             {
@@ -57,20 +57,24 @@ namespace BuildingBuddy.API.Controllers
         }
         
         #endregion
+
+        #region  GetMaintenanceRequestsByCategory
         
-        [Route("/maintenanceReportByCategory")]
+        [Route("/categories/maintenance-requests")]
         [HttpGet]
-        public IActionResult GetRequestsByCategory([FromQuery] Guid categoryId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByCategory)
+        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByCategory)
         {
             try
             {
-                return Ok(_reportAdapter.GetRequestsByCategory(categoryId, getMaintenanceReportRequestByCategory));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByCategory(categoryId, getMaintenanceReportRequestByCategory));
             }
             catch (Exception exceptionCaught)
             {
                 Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
+                return StatusCode(500, "Internal Server Error");    
             }
         }
+        
+        #endregion
     }
 }
