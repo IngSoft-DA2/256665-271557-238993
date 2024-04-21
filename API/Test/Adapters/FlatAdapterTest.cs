@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 
@@ -63,4 +65,18 @@ public class FlatAdapterTest
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
+
+    [TestMethod]
+    public void GetAllFlats_ShouldThrowNotFoundException()
+    {
+        Mock<IFlatService> flatService = new Mock<IFlatService>(MockBehavior.Strict);
+        flatService.Setup(service => service.GetAllFlats(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        FlatAdapter flatAdapter = new FlatAdapter(flatService.Object);
+        
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => flatAdapter.GetAllFlats(It.IsAny<Guid>()));
+        flatService.VerifyAll();
+    }
+    
 }

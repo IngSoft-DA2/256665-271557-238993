@@ -1,5 +1,7 @@
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 
@@ -17,25 +19,34 @@ public class FlatAdapter
 
     public IEnumerable<GetFlatResponse> GetAllFlats(Guid buildingId)
     {
-        IEnumerable<Flat> flats = _flatService.GetAllFlats(buildingId);
-        
-        IEnumerable<GetFlatResponse> flatsToReturn = flats.Select(flat => new GetFlatResponse
+        try
         {
-            Id = flat.Id,
-            Floor = flat.Floor,
-            RoomNumber = flat.RoomNumber,
-            GetOwnerAssigned = new GetOwnerAssignedResponse
+            IEnumerable<Flat> flats = _flatService.GetAllFlats(buildingId);
+        
+            IEnumerable<GetFlatResponse> flatsToReturn = flats.Select(flat => new GetFlatResponse
             {
-                Id = flat.OwnerAssigned.Id,
-                Firstname = flat.OwnerAssigned.Firstname,
-                Lastname = flat.OwnerAssigned.Lastname,
-                Email = flat.OwnerAssigned.Email
-            },
-            TotalRooms = flat.TotalRooms,
-            TotalBaths = flat.TotalBaths,
-            HasTerrace = flat.HasTerrace
-        });
-        return flatsToReturn;
+                Id = flat.Id,
+                Floor = flat.Floor,
+                RoomNumber = flat.RoomNumber,
+                GetOwnerAssigned = new GetOwnerAssignedResponse
+                {
+                    Id = flat.OwnerAssigned.Id,
+                    Firstname = flat.OwnerAssigned.Firstname,
+                    Lastname = flat.OwnerAssigned.Lastname,
+                    Email = flat.OwnerAssigned.Email
+                },
+                TotalRooms = flat.TotalRooms,
+                TotalBaths = flat.TotalBaths,
+                HasTerrace = flat.HasTerrace
+            });
+        
+            return flatsToReturn;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+       
     }
     
 }
