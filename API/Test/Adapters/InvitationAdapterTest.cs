@@ -165,7 +165,7 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Invitation>()));
 
-        _invitationAdapter.UpdateInvitation(invitationWithUpdatesRequest);
+        _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest);
 
         _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Invitation>()), Times.Once);
     }

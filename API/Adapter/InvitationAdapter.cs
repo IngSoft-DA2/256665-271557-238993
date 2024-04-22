@@ -98,7 +98,7 @@ public class InvitationAdapter
         }
     }
 
-    public void UpdateInvitation(UpdateInvitationRequest invitationToUpdate)
+    public void UpdateInvitation(Guid idOfInvitationToUpdate, UpdateInvitationRequest invitationToUpdate)
     {
         Invitation invitation = new Invitation
         {
