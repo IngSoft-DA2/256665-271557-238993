@@ -200,7 +200,7 @@ public class FlatAdapterTest
     }
 
     [TestMethod]
-    public void CreateFlat_ThrowsObjectErrorAdapterException_WhenOwnerServiceFails()
+    public void CreateFlat_ThrowsObjectNotFoundAdapterException_WhenOwnerServiceFails()
     {
         CreateFlatRequest flatRequest = new CreateFlatRequest
         {
