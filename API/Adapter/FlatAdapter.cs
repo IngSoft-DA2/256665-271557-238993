@@ -96,12 +96,12 @@ public class FlatAdapter
         try
         {
             Owner? ownerAssigned = null;
-        
+
             if (flat.Owner is not null)
             {
                 ownerAssigned = _ownerService.GetOwnerById(flat.Owner.Id);
             }
-        
+
             Flat flatToCreate = new Flat
             {
                 Floor = flat.Floor,
@@ -121,10 +121,15 @@ public class FlatAdapter
 
             return response;
         }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
         catch (Exception exceptionCaught)
         {
             throw new Exception(exceptionCaught.Message);
         }
+        
         
     }
 }
