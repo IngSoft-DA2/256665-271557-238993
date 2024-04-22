@@ -43,7 +43,7 @@ public class OwnerControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedOwners);
         
-        _ownerAdapter.Setup(adapter => adapter.GetOwners()).Returns(expectedOwners);
+        _ownerAdapter.Setup(adapter => adapter.GetAllOwners()).Returns(expectedOwners);
         
         IActionResult controllerResponse = _ownerController.GetOwners();
 
@@ -66,7 +66,7 @@ public class OwnerControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
         
-        _ownerAdapter.Setup(adapter => adapter.GetOwners()).Throws(new Exception("Something went wrong"));
+        _ownerAdapter.Setup(adapter => adapter.GetAllOwners()).Throws(new Exception("Something went wrong"));
         
         IActionResult controllerResponse = _ownerController.GetOwners();
 

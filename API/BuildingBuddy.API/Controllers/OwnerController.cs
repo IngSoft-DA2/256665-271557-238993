@@ -29,7 +29,7 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                return Ok(_ownerAdapter.GetOwners());
+                return Ok(_ownerAdapter.GetAllOwners());
             }
             catch (Exception exceptionCaught)
             {

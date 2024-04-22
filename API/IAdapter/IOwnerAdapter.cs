@@ -5,7 +5,7 @@ namespace IAdapter;
 
 public interface IOwnerAdapter
 {
-    public IEnumerable<GetOwnerResponse> GetOwners();
+    public IEnumerable<GetOwnerResponse> GetAllOwners();
     public CreateOwnerResponse CreateOwner(CreateOwnerRequest createOwnerRequest);
     public void UpdateOwner(Guid id, UpdateOwnerRequest ownerWithUpdates);
 }
