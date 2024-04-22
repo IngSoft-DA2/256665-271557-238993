@@ -3,6 +3,7 @@ using Domain;
 using Domain.Enums;
 using IServiceLogic;
 using Moq;
+using WebModel.Requests.InvitationRequests;
 using WebModel.Responses.InvitationResponses;
 
 namespace Test.Adapters;
@@ -94,5 +95,23 @@ public class InvitationAdapterTest
         Assert.ThrowsException<Exception>(() => _invitationAdapter.GetInvitationById(It.IsAny<Guid>()));
 
         _invitationServiceLogic.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void CreateInvitation_ShouldCreateInvitation()
+    {
+        CreateInvitationRequest invitationToCreate = new CreateInvitationRequest
+        {
+            Firstname = _genericInvitation1.Firstname,
+            Lastname = _genericInvitation1.Lastname,
+            Email = _genericInvitation1.Email,
+            ExpirationDate = _genericInvitation1.ExpirationDate
+        };
+
+        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()));
+
+        _invitationAdapter.CreateInvitation(invitationToCreate);
+
+        _invitationServiceLogic.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
     }
 }
