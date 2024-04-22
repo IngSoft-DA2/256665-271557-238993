@@ -126,15 +126,10 @@ public class OwnerAdapterTest
     [TestMethod]
     public void CreateOwner_ReturnsCreateOwnerResponse()
     {
-        CreateOwnerRequest ownerToCreate = new CreateOwnerRequest
-        {
-            Firstname = "ownerName",
-            Lastname = "ownerLastname",
-            Email = "owner@gmail.com"
-        };
+    
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()));
 
-        CreateOwnerResponse adapterResponse = _ownerAdapter.CreateOwner(ownerToCreate);
+        CreateOwnerResponse adapterResponse = _ownerAdapter.CreateOwner(new CreateOwnerRequest());
         _ownerService.VerifyAll();
         Assert.IsNotNull(adapterResponse.Id);
     }
@@ -142,35 +137,21 @@ public class OwnerAdapterTest
     [TestMethod]
     public void CreateOwner_ThrowsObjectErrorAdapterException_WhenServiceFails()
     {
-        CreateOwnerRequest ownerToCreate = new CreateOwnerRequest
-        {
-            Firstname = "ownerName",
-            Lastname = "ownerLastname",
-            Email = "owner@gmail.com"
-        };
-
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()))
             .Throws(new ObjectErrorServiceException("Specific error detected at service"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _ownerAdapter.CreateOwner(ownerToCreate));
+            _ownerAdapter.CreateOwner(new CreateOwnerRequest()));
         _ownerService.VerifyAll();
     }
 
     [TestMethod]
     public void CreateOwner_ThrowsException()
     {
-        CreateOwnerRequest ownerToCreate = new CreateOwnerRequest
-        {
-            Firstname = "ownerName",
-            Lastname = "ownerLastname",
-            Email = "owner@gmail.com"
-        };
-
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()))
             .Throws(new Exception("Internal Server Error"));
 
-        Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(ownerToCreate));
+        Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(new CreateOwnerRequest()));
         _ownerService.VerifyAll();
     }
 
@@ -179,28 +160,18 @@ public class OwnerAdapterTest
     [TestMethod]
     public void UpdateOwner_ReturnsOwnerUpdateResponse()
     {
-        Guid idOfOwnerToUpdate = Guid.NewGuid();
-
-        UpdateOwnerRequest updateRequest = new UpdateOwnerRequest
-        {
-            Firstname = "OwnerNameUpdated",
-            Lastname = "OwnerLastnameUpdated",
-            Email = "ownerUpdated@gmail.com"
-        };
-
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()));
 
-        _ownerAdapter.UpdateOwnerById(idOfOwnerToUpdate, updateRequest);
+        _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest());
         _ownerService.Verify(service => service.UpdateOwnerById(It.IsAny<Owner>()), Times.Once);
     }
 
     [TestMethod]
     public void UpdateOwner_ThrowsObjectErrorAdapterException()
     {
-        
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
             .Throws(new ObjectErrorServiceException("Specific error detected at service"));
-        
+
         Assert.ThrowsException<ObjectErrorAdapterException>((() =>
             _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
         _ownerService.VerifyAll();
