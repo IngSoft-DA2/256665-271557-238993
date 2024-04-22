@@ -47,5 +47,9 @@ public class ManagerAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }

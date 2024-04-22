@@ -78,6 +78,20 @@ public class ManagerAdapterTest
         _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
         
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
+        
+        _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void DeleteManagerById_ShouldThrowException()
+    {
+        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
+        
+        Assert.ThrowsException<Exception>(() => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
+        
+        _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
+        
+        
     }
     
 }
