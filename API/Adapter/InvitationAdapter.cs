@@ -46,7 +46,7 @@ public class InvitationAdapter
         {
             Invitation serviceResponse = _invitationServiceLogic.GetInvitationById(idOfInvitationToFind);
 
-            return new GetInvitationResponse
+            GetInvitationResponse adapterResponse = new GetInvitationResponse
             {
                 Id = serviceResponse.Id,
                 Status = (StatusEnumResponse)serviceResponse.Status,
@@ -55,6 +55,8 @@ public class InvitationAdapter
                 Firstname = serviceResponse.Firstname,
                 Lastname = serviceResponse.Lastname
             };
+            
+            return adapterResponse;
         }
         catch (ObjectNotFoundServiceException)
         {
