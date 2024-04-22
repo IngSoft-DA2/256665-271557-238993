@@ -7,12 +7,18 @@ namespace Adapter;
 
 public class AdministratorAdapter
 {
+    #region Constructor and Attributes
+    
     private readonly IAdministratorService _administratorAdapter;
     
     public AdministratorAdapter(IAdministratorService administratorAdapter)
     {
         _administratorAdapter = administratorAdapter;
     }
+    
+    #endregion
+    
+    #region Create Administrator
     
     public CreateAdministratorResponse CreateAdministrator(Guid administratorId)
     {
@@ -40,4 +46,6 @@ public class AdministratorAdapter
         }
         
     }
+    
+    #endregion
 }

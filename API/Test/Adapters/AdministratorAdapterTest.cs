@@ -10,6 +10,8 @@ namespace Test.Adapters;
 [TestClass]
 public class AdministratorAdapterTest
 {
+    #region Initialize
+    
     private Mock<IAdministratorService> _administratorService;
     private AdministratorAdapter _administratorAdapter;
     
@@ -19,6 +21,10 @@ public class AdministratorAdapterTest
         _administratorService = new Mock<IAdministratorService>(MockBehavior.Strict);
         _administratorAdapter = new AdministratorAdapter(_administratorService.Object);
     }
+    
+    #endregion
+    
+    #region Create Administrator
     
     [TestMethod]
     public void CreateAdministrator_ShouldCreateAdminsitrator()
@@ -65,4 +71,5 @@ public class AdministratorAdapterTest
         Assert.ThrowsException<Exception>(() => administratorAdapter.CreateAdministrator(administratorId));
     }
     
+    #endregion
 }
