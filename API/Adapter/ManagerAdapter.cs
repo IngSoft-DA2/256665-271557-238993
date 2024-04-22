@@ -8,12 +8,18 @@ namespace Adapter;
 
 public class ManagerAdapter
 {
+    #region Constructor and attributes
+    
     private readonly IManagerService _managerServiceLogic;
 
     public ManagerAdapter(IManagerService managerServiceLogic)
     {
         _managerServiceLogic = managerServiceLogic;
     }
+    
+    #endregion
+    
+    #region Get All Managers
 
     public IEnumerable<GetManagerResponse> GetAllManagers()
     {
@@ -36,6 +42,10 @@ public class ManagerAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Delete Manager By Id
 
     public void DeleteManagerById(Guid id)
     {
@@ -52,4 +62,6 @@ public class ManagerAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }

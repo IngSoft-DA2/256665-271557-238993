@@ -9,9 +9,9 @@ using WebModel.Responses.ManagerResponses;
 namespace Test.Adapters;
 
 [TestClass]
-
 public class ManagerAdapterTest
 {
+    #region Initialize
     
     private Mock<IManagerService> _managerService;
     private ManagerAdapter _managerAdapter;
@@ -22,6 +22,10 @@ public class ManagerAdapterTest
         _managerService = new Mock<IManagerService>(MockBehavior.Strict);
         _managerAdapter = new ManagerAdapter(_managerService.Object);
     }
+    
+    #endregion
+    
+    #region Get All Managers
     
     [TestMethod]
     public void GetAllManagers_ShouldConvertFromDomainToResponse()
@@ -62,6 +66,10 @@ public class ManagerAdapterTest
         Assert.ThrowsException<Exception>(() => _managerAdapter.GetAllManagers());
     }
     
+    #endregion
+    
+    #region Delete Manager By Id
+    
     [TestMethod]
     public void DeleteManagerById_ShouldDeleteManager()
     {
@@ -90,8 +98,8 @@ public class ManagerAdapterTest
         Assert.ThrowsException<Exception>(() => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
         
         _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
-        
-        
     }
+    
+    #endregion
     
 }
