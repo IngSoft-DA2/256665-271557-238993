@@ -34,9 +34,9 @@ public class ManagerControllerTest
         {
             new GetManagerResponse
             {
+                Id = Guid.NewGuid(),
                 Name = "Michael Kent",
-                Email = "michael@gmail.com",
-                Password = "Michael123421!"
+                Email = "michael@gmail.com"
             }
         };
 
