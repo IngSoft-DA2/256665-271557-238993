@@ -214,16 +214,14 @@ public class FlatAdapterTest
             TotalBaths = 2,
             HasTerrace = true
         };
-        
-        _flatService.Setup(flatService => flatService.CreateFlat(It.IsAny<Flat>()));
+
         _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
-        _flatService.VerifyAll();
-        _ownerService.VerifyAll();
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.CreateFlat(flatRequest));
+        _ownerService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateFlat_ThrowsException_WhenServiceFails()
     {
