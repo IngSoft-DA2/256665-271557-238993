@@ -187,4 +187,16 @@ public class OwnerAdapterTest
             _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
         _ownerService.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateOwner_ThrowsException()
+    {
+        _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
+            .Throws(new Exception("Internal Server Error"));
+
+        Assert.ThrowsException<Exception>((() =>
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+        _ownerService.VerifyAll();
+    }
+    
 }
