@@ -71,14 +71,21 @@ public class InvitationAdapter
 
     public void CreateInvitation(CreateInvitationRequest invitationToCreate)
     {
-        Invitation invitation = new Invitation
+        try
         {
-            Firstname = invitationToCreate.Firstname,
-            Lastname = invitationToCreate.Lastname,
-            Email = invitationToCreate.Email,
-            ExpirationDate = invitationToCreate.ExpirationDate
-        };
-        
-        _invitationServiceLogic.CreateInvitation(invitation);
+            Invitation invitation = new Invitation
+            {
+                Firstname = invitationToCreate.Firstname,
+                Lastname = invitationToCreate.Lastname,
+                Email = invitationToCreate.Email,
+                ExpirationDate = invitationToCreate.ExpirationDate
+            };
+
+            _invitationServiceLogic.CreateInvitation(invitation);
+        }
+        catch (ObjectRepeatedServiceException exceptionCaught)
+        {
+            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+        }
     }
 }

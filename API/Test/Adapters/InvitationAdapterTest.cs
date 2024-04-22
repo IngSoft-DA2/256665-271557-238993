@@ -1,8 +1,10 @@
 ﻿using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using Domain.Enums;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Requests.InvitationRequests;
 using WebModel.Responses.InvitationResponses;
 
@@ -113,5 +115,24 @@ public class InvitationAdapterTest
         _invitationAdapter.CreateInvitation(invitationToCreate);
 
         _invitationServiceLogic.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void CreateInvitation_ShouldThrowObjectReapeatedException()
+    {
+        CreateInvitationRequest invitationToCreate = new CreateInvitationRequest
+        {
+            Firstname = _genericInvitation1.Firstname,
+            Lastname = _genericInvitation1.Lastname,
+            Email = _genericInvitation1.Email,
+            ExpirationDate = _genericInvitation1.ExpirationDate
+        };
+
+        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
+            .Throws(new ObjectRepeatedServiceException("The invitation already exists"));
+
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => _invitationAdapter.CreateInvitation(invitationToCreate));
+
+        _invitationServiceLogic.VerifyAll();
     }
 }
