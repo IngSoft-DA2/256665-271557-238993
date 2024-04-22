@@ -150,7 +150,7 @@ public class FlatAdapterTest
     }
 
     [TestMethod]
-    public void GetFlatById_ThrowsObjectErrorNotFoundAdapterException()
+    public void GetFlatById_ThrowsObjectNotFoundAdapterException()
     {
         _flatService.Setup(service => service.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
@@ -197,5 +197,30 @@ public class FlatAdapterTest
         _ownerService.VerifyAll();
 
         Assert.IsNotNull(adapterResponse.Id);
+    }
+
+    [TestMethod]
+    public void CreateFlat_ThrowsException_WhenServiceFails()
+    {
+        CreateFlatRequest flatRequest = new CreateFlatRequest
+        {
+            Floor = 1,
+            RoomNumber = 102,
+            Owner = new AssignOwnerToFlatRequest()
+            {
+                Id = Guid.NewGuid(),
+            },
+            TotalRooms = 4,
+            TotalBaths = 2,
+            HasTerrace = true
+        };
+
+        _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
+            .Throws(new Exception("Unknown Error"));
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+
+        Assert.ThrowsException<Exception>(() => _flatAdapter.CreateFlat(flatRequest));
+        _flatService.VerifyAll();
+        _ownerService.VerifyAll();
     }
 }

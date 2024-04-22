@@ -78,7 +78,7 @@ public class CategoryAdapter
             
             return categoryResponse;
         }
-        catch (ObjectErrorServiceException exceptionCaught)
+        catch (ObjectRepeatedServiceException exceptionCaught)
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }

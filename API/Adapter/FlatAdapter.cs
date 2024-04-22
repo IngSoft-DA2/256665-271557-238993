@@ -92,30 +92,39 @@ public class FlatAdapter
 
     public CreateFlatResponse CreateFlat(CreateFlatRequest flat)
     {
-        Owner? ownerAssigned = null;
-        
-        if (flat.Owner is not null)
+
+        try
         {
-            ownerAssigned = _ownerService.GetOwnerById(flat.Owner.Id);
+            Owner? ownerAssigned = null;
+        
+            if (flat.Owner is not null)
+            {
+                ownerAssigned = _ownerService.GetOwnerById(flat.Owner.Id);
+            }
+        
+            Flat flatToCreate = new Flat
+            {
+                Floor = flat.Floor,
+                RoomNumber = flat.RoomNumber,
+                OwnerAssigned = ownerAssigned,
+                TotalRooms = flat.TotalRooms,
+                TotalBaths = flat.TotalBaths,
+                HasTerrace = flat.HasTerrace
+            };
+
+            _flatService.CreateFlat(flatToCreate);
+
+            CreateFlatResponse response = new CreateFlatResponse
+            {
+                Id = flatToCreate.Id
+            };
+
+            return response;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
         }
         
-        Flat flatToCreate = new Flat
-        {
-            Floor = flat.Floor,
-            RoomNumber = flat.RoomNumber,
-            OwnerAssigned = ownerAssigned,
-            TotalRooms = flat.TotalRooms,
-            TotalBaths = flat.TotalBaths,
-            HasTerrace = flat.HasTerrace
-        };
-
-        _flatService.CreateFlat(flatToCreate);
-
-        CreateFlatResponse response = new CreateFlatResponse
-        {
-            Id = flatToCreate.Id
-        };
-
-        return response;
     }
 }
