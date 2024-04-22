@@ -39,9 +39,9 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-        
+
         #region CreateOwner
-        
+
         [HttpPost]
         public IActionResult CreateOwner([FromBody] CreateOwnerRequest createOwnerRequest)
         {
@@ -59,13 +59,12 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-
         }
-        
+
         #endregion
-        
+
         #region UpdateOwner
-        
+
         [HttpPut("{id:Guid}")]
         public IActionResult UpdateOwner([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
         {
@@ -78,7 +77,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return BadRequest(exceptionCaught.Message);
             }
-            catch(ObjectNotFoundAdapterException exceptionCaught)
+            catch (ObjectNotFoundAdapterException exceptionCaught)
             {
                 return NotFound("The specific owner was not found in Database");
             }
@@ -88,8 +87,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         #endregion
+
+        #region Get owner by Id
 
         [HttpGet]
         [Route("{ownerId:Guid}")]
@@ -103,7 +104,13 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("The specific owner was not found in Database");
             }
-            
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
         }
+
+        #endregion
     }
 }
