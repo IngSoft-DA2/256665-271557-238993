@@ -1,5 +1,7 @@
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
@@ -37,15 +39,22 @@ public class OwnerAdapter
 
     public GetOwnerResponse GetOwnerById(Guid ownerId)
     {
-        Owner owner = _ownerService.GetOwnerById(ownerId);
-        
-        GetOwnerResponse ownerResponse = new GetOwnerResponse
+        try
         {
-            Id = owner.Id,
-            Firstname = owner.Firstname,
-            Lastname = owner.Lastname,
-            Email = owner.Email
-        };
-        return ownerResponse;
+            Owner ownerFound = _ownerService.GetOwnerById(ownerId);
+            GetOwnerResponse ownerResponse = new GetOwnerResponse
+            {
+                Id = ownerFound.Id,
+                Firstname = ownerFound.Firstname,
+                Lastname = ownerFound.Lastname,
+                Email = ownerFound.Email
+            };
+            return ownerResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+       
     }
 }

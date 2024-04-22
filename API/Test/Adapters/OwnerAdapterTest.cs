@@ -99,4 +99,11 @@ public class OwnerAdapterTest
 
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
     }
+    
+    [TestMethod]
+    public void GetOwnerById_ThrowsObjectNotFoundAdapterException()
+    {
+        _ownerService.Setup(service => service.GetOwnerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _ownerAdapter.GetOwnerById(It.IsAny<Guid>()));
+    }
 }
