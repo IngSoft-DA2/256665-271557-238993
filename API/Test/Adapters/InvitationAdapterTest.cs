@@ -70,5 +70,37 @@ public class InvitationAdapterTest
         
         _invitationServiceLogic.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetInvitationById_ShouldReturnInvitationConvertedFromDomainToResponse()
+    {
+        Invitation invitation = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "John",
+            Lastname = "Doe",
+            Email = "johnDoe@gmail.com",
+            ExpirationDate = DateTime.Now,
+            Status = StatusEnum.Pending,
+        };
+        
+        GetInvitationResponse expectedAdapterResponse = new GetInvitationResponse
+        {
+            Id = invitation.Id,
+            Firstname = invitation.Firstname,
+            Lastname = invitation.Lastname,
+            Email = "johnDoe@gmail.com",
+            ExpirationDate = invitation.ExpirationDate,
+            Status = (StatusEnumResponse) invitation.Status
+        };
+        
+        _invitationServiceLogic.Setup(service => service.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+        
+        GetInvitationResponse adapterResponse = _invitationAdapter.GetInvitationById(invitation.Id);
+        
+        _invitationServiceLogic.VerifyAll();
+        
+        Assert.AreEqual(expectedAdapterResponse, adapterResponse);
+    }
 
 }

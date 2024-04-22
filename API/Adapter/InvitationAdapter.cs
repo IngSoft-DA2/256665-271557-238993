@@ -38,4 +38,19 @@ public class InvitationAdapter
         }
     }
     
+    public GetInvitationResponse GetInvitationById(Guid idOfInvitationToFind)
+    {
+        Invitation serviceResponse = _invitationServiceLogic.GetInvitationById(idOfInvitationToFind);
+            
+        return new GetInvitationResponse
+        {
+            Id = serviceResponse.Id,
+            Status = (StatusEnumResponse)serviceResponse.Status,
+            ExpirationDate = serviceResponse.ExpirationDate,
+            Email = serviceResponse.Email,
+            Firstname = serviceResponse.Firstname,
+            Lastname = serviceResponse.Lastname
+        };
+    }
+    
 }
