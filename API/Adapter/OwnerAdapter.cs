@@ -1,6 +1,7 @@
 using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.OwnerResponses;
@@ -62,16 +63,16 @@ public class OwnerAdapter
         }
     }
 
-    public CreateOwnerResponse CreateOwner(CreateOwnerRequest ownerRequest)
+    public CreateOwnerResponse CreateOwner(CreateOwnerRequest createRequest)
     {
 
         try
         {
             Owner ownerToCreate = new Owner
             {
-                Firstname = ownerRequest.Firstname,
-                Lastname = ownerRequest.Lastname,
-                Email = ownerRequest.Email
+                Firstname = createRequest.Firstname,
+                Lastname = createRequest.Lastname,
+                Email = createRequest.Email
             };
 
             _ownerService.CreateOwner(ownerToCreate);
@@ -91,5 +92,18 @@ public class OwnerAdapter
             throw new Exception(exceptionCaught.Message);
         }
       
+    }
+    
+    public void UpdateOwnerById(Guid idOfOwnerToUpdate,UpdateOwnerRequest updateRequest)
+    {
+        Owner ownerWithUpdates = new Owner
+        {
+            Id = idOfOwnerToUpdate,
+            Firstname = updateRequest.Firstname,
+            Lastname = updateRequest.Lastname,
+            Email = updateRequest.Email
+        };
+        
+        _ownerService.UpdateOwnerById(ownerWithUpdates);
     }
 }

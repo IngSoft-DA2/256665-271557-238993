@@ -171,7 +171,26 @@ public class OwnerAdapterTest
             .Throws(new Exception("Internal Server Error"));
 
         Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(ownerToCreate));
+        _ownerService.VerifyAll();
     }
 
     #endregion
+
+    [TestMethod]
+    public void UpdateOwner_ReturnsOwnerUpdateResponse()
+    {
+        Guid idOfOwnerToUpdate = Guid.NewGuid();
+
+        UpdateOwnerRequest updateRequest = new UpdateOwnerRequest
+        {
+            Firstname = "OwnerNameUpdated",
+            Lastname = "OwnerLastnameUpdated",
+            Email = "ownerUpdated@gmail.com"
+        };
+        
+        _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()));
+        
+        _ownerAdapter.UpdateOwnerById(idOfOwnerToUpdate, updateRequest);
+        _ownerService.Verify(service => service.UpdateOwnerById(It.IsAny<Owner>()), Times.Once);
+    }
 }
