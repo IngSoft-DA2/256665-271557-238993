@@ -1,5 +1,6 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.InvitationRequests;
@@ -95,5 +96,16 @@ public class InvitationAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    public void UpdateInvitation(UpdateInvitationRequest invitationToUpdate)
+    {
+        Invitation invitation = new Invitation
+        {
+            Status = (StatusEnum)invitationToUpdate.Status,
+            ExpirationDate = invitationToUpdate.ExpirationDate
+        };
+
+        _invitationServiceLogic.UpdateInvitation(invitation);
     }
 }

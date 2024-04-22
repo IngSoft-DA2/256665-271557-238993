@@ -52,22 +52,22 @@ public class InvitationAdapterTest
             Email = _genericInvitation1.Email,
             ExpirationDate = _genericInvitation1.ExpirationDate
         };
-        
     }
 
     [TestMethod]
     public void GetAllInvitations_ShouldReturnAllInvitationsConvertedFromDomainToResponse()
     {
-        IEnumerable<Invitation> invitations = new List<Invitation> {_genericInvitation1};
+        IEnumerable<Invitation> invitations = new List<Invitation> { _genericInvitation1 };
 
-        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse> {_genericInvitationResponse};
-        
+        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>
+            { _genericInvitationResponse };
+
         _invitationServiceLogic.Setup(service => service.GetAllInvitations()).Returns(invitations);
-        
+
         IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations();
 
         _invitationServiceLogic.VerifyAll();
-        
+
         Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponse));
     }
 
@@ -108,7 +108,7 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateInvitation_ShouldCreateInvitation()
     {
@@ -118,29 +118,31 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void CreateInvitation_ShouldThrowObjectReapeatedException()
     {
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new ObjectRepeatedServiceException("The invitation already exists"));
 
-        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
+            _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
         _invitationServiceLogic.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateInvitation_ShouldThrowObjectErrorAdapterException()
     {
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
 
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
         _invitationServiceLogic.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateInvitation_ShouldThrowException()
     {
@@ -150,5 +152,21 @@ public class InvitationAdapterTest
         Assert.ThrowsException<Exception>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
         _invitationServiceLogic.VerifyAll();
+    }
+
+    [TestMethod]
+    public void UpdateInvitation_ShouldUpdateInvitation()
+    {
+        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
+        {
+            Status = StatusEnumRequest.Rejected,
+            ExpirationDate = DateTime.Now.AddDays(1)
+        };
+
+        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Invitation>()));
+
+        _invitationAdapter.UpdateInvitation(invitationWithUpdatesRequest);
+
+        _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Invitation>()), Times.Once);
     }
 }

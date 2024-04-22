@@ -4,7 +4,7 @@ namespace Domain;
 
 public class Invitation
 {
-    public Guid Id { get; set; }
+    public Guid Id = Guid.NewGuid();
     public string Firstname { get; set; }
     public string Lastname { get; set; }
     public string Email { get; set; }
