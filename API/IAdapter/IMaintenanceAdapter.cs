@@ -9,4 +9,5 @@ public interface IMaintenanceAdapter
     public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid categoryId);
     public CreateRequestMaintenanceResponse CreateMaintenanceRequest(CreateRequestMaintenanceRequest requestToCreate);
     public AssignMaintenanceRequestResponse AssignMaintenanceRequest(AssignMaintenanceRequestRequest requestToAssign);
+    public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByRequestHandler(Guid requestHandlerId);
 }

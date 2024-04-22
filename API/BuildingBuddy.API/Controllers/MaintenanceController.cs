@@ -15,8 +15,8 @@ namespace BuildingBuddy.API.Controllers
         {
             _maintenanceAdapter = maintenanceAdapter;
         }
-
         [HttpGet]
+        [Route("requests")]
         public IActionResult GetAllMaintenanceRequests()
         {
             try
@@ -31,7 +31,6 @@ namespace BuildingBuddy.API.Controllers
         }
         
         [HttpPost]
-        
         public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
         {
             try
@@ -51,8 +50,8 @@ namespace BuildingBuddy.API.Controllers
         }
         
         [HttpGet]
-        [Route("{categoryId:Guid}")]
-        public IActionResult GetMaintenanceRequestByCategory([FromRoute] Guid categoryId)
+        [Route("/category/{categoryId:Guid}/requests")]
+        public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
             try
             {
@@ -70,6 +69,7 @@ namespace BuildingBuddy.API.Controllers
         }
         
         [HttpPut]
+        [Route("/request-handler/requests")]
         public IActionResult AssignMaintenanceRequest([FromBody] AssignMaintenanceRequestRequest request)
         {
             try
@@ -90,7 +90,24 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
-        
+
+        [HttpGet]
+        [Route("/request-handler/{handlerId:Guid}/requests")]
+        public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
+        {
+            try
+            {
+                return Ok(_maintenanceAdapter.GetMaintenanceRequestByRequestHandler(handlerId));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Maintenance request was not found, reload the page");
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }
