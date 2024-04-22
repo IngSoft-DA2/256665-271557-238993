@@ -10,12 +10,18 @@ namespace Adapter;
 
 public class InvitationAdapter
 {
+    #region Constructor and attributes
+    
     private readonly IInvitationServiceLogic _invitationServiceLogic;
 
     public InvitationAdapter(IInvitationServiceLogic invitationServiceLogic)
     {
         _invitationServiceLogic = invitationServiceLogic;
     }
+    
+    #endregion
+    
+    #region Get All Invitations
 
     public IEnumerable<GetInvitationResponse> GetAllInvitations()
     {
@@ -41,6 +47,10 @@ public class InvitationAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get Invitation By Id
 
     public GetInvitationResponse GetInvitationById(Guid idOfInvitationToFind)
     {
@@ -69,6 +79,10 @@ public class InvitationAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Create Invitation
 
     public CreateInvitationResponse CreateInvitation(CreateInvitationRequest invitationToCreate)
     {
@@ -101,6 +115,10 @@ public class InvitationAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Update Invitation
 
     public void UpdateInvitation(Guid idOfInvitationToUpdate, UpdateInvitationRequest invitationToUpdateRequest)
     {
@@ -131,6 +149,10 @@ public class InvitationAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Delete Invitation
 
     public void DeleteInvitation(Guid idOfInvitationToDelete)
     {
@@ -146,7 +168,7 @@ public class InvitationAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
-
-
     }
+    
+    #endregion
 }
