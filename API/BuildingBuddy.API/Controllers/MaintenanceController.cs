@@ -69,7 +69,27 @@ namespace BuildingBuddy.API.Controllers
             }
         }
         
-        
+        [HttpPut]
+        public IActionResult AssignMaintenanceRequest([FromBody] AssignMaintenanceRequestRequest request)
+        {
+            try
+            {
+                return Ok(_maintenanceAdapter.(request));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Maintenance request was not found, reload the page");
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
         
         
     }
