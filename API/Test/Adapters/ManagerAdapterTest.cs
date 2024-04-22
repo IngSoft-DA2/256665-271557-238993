@@ -10,6 +10,17 @@ namespace Test.Adapters;
 
 public class ManagerAdapterTest
 {
+    
+    private Mock<IManagerService> _managerService;
+    private ManagerAdapter _managerAdapter;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        _managerService = new Mock<IManagerService>(MockBehavior.Strict);
+        _managerAdapter = new ManagerAdapter(_managerService.Object);
+    }
+    
     [TestMethod]
     public void GetAllManagers_ShouldConvertFromDomainToResponse()
     {
@@ -19,8 +30,8 @@ public class ManagerAdapterTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Michael Kent",
-                Email = "",
-                Password = ""
+                Email = "michaelKent@gmail.com",
+                Password = "random238"
             }
         };
 
@@ -34,12 +45,9 @@ public class ManagerAdapterTest
             }
         };
         
-        Mock<IManagerService> managerService = new Mock<IManagerService>(MockBehavior.Strict);
-        managerService.Setup(service => service.GetAllManagers()).Returns(domainResponse);
+        _managerService.Setup(service => service.GetAllManagers()).Returns(domainResponse);
         
-        ManagerAdapter managerAdapter = new ManagerAdapter(managerService.Object);
-        
-        IEnumerable<GetManagerResponse> adapterResponse = managerAdapter.GetAllManagers();
+        IEnumerable<GetManagerResponse> adapterResponse = _managerAdapter.GetAllManagers();
         
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
@@ -47,12 +55,9 @@ public class ManagerAdapterTest
     [TestMethod]
     public void GetAllManagers_ShouldThrowException()
     {
-        Mock<IManagerService> managerService = new Mock<IManagerService>(MockBehavior.Strict);
-        managerService.Setup(service => service.GetAllManagers()).Throws(new Exception("Something went wrong"));
+        _managerService.Setup(service => service.GetAllManagers()).Throws(new Exception("Something went wrong"));
         
-        ManagerAdapter managerAdapter = new ManagerAdapter(managerService.Object);
-        
-        Assert.ThrowsException<Exception>(() => managerAdapter.GetAllManagers());
+        Assert.ThrowsException<Exception>(() => _managerAdapter.GetAllManagers());
     }
     
 }
