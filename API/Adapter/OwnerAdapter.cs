@@ -2,6 +2,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
@@ -59,5 +60,23 @@ public class OwnerAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    public CreateOwnerResponse CreateOwner(CreateOwnerRequest ownerRequest)
+    {
+        Owner ownerToCreate = new Owner
+        {
+            Firstname = ownerRequest.Firstname,
+            Lastname = ownerRequest.Lastname,
+            Email = ownerRequest.Email
+        };
+
+        _ownerService.CreateOwner(ownerToCreate);
+
+        CreateOwnerResponse createOwnerResponse = new CreateOwnerResponse
+        {
+            Id = ownerToCreate.Id
+        };
+        return createOwnerResponse;
     }
 }

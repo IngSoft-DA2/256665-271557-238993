@@ -5,6 +5,8 @@ using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.FlatRequests;
+using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.ManagerResponses;
 using WebModel.Responses.OwnerResponses;
 
@@ -70,6 +72,8 @@ public class OwnerAdapterTest
 
     #endregion
 
+    #region Get owner by Id
+
     [TestMethod]
     public void GetOwnerById_ReturnsGetOwnerResponse()
     {
@@ -99,18 +103,36 @@ public class OwnerAdapterTest
 
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
     }
-    
+
     [TestMethod]
     public void GetOwnerById_ThrowsObjectNotFoundAdapterException()
     {
-        _ownerService.Setup(service => service.GetOwnerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
+        _ownerService.Setup(service => service.GetOwnerById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _ownerAdapter.GetOwnerById(It.IsAny<Guid>()));
     }
-    
+
     [TestMethod]
     public void GetOwnerById_ThrowsException()
     {
         _ownerService.Setup(service => service.GetOwnerById(It.IsAny<Guid>())).Throws(new Exception());
         Assert.ThrowsException<Exception>(() => _ownerAdapter.GetOwnerById(It.IsAny<Guid>()));
+    }
+
+    #endregion
+
+    [TestMethod]
+    public void CreateOwner_ReturnsCreateOwnerResponse()
+    {
+        CreateOwnerRequest ownerToCreate = new CreateOwnerRequest
+        {
+            Firstname = "ownerName",
+            Lastname = "ownerLastname",
+            Email = "owner@gmail.com"
+        };
+        _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()));
+
+        CreateOwnerResponse adapterResponse = _ownerAdapter.CreateOwner(ownerToCreate);
+        Assert.IsNotNull(adapterResponse.Id);
     }
 }
