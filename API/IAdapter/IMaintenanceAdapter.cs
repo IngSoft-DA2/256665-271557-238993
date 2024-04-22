@@ -1,3 +1,4 @@
+using WebModel.Requests.MaintenanceRequests;
 using WebModel.Responses.MaintenanceResponses;
 
 namespace IAdapter;
@@ -5,5 +6,6 @@ namespace IAdapter;
 public interface IMaintenanceAdapter
 {
     public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests();
-    
+
+    public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid categoryId);
 }
