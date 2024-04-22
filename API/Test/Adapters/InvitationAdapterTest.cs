@@ -18,6 +18,7 @@ public class InvitationAdapterTest
     private GetInvitationResponse _genericInvitationResponse;
     private Invitation _genericInvitation1;
     private CreateInvitationRequest _genericInvitationToCreate;
+    private UpdateInvitationRequest _invitationWithUpdatesRequest;
 
     [TestInitialize]
     public void Initialize()
@@ -51,6 +52,12 @@ public class InvitationAdapterTest
             Lastname = _genericInvitation1.Lastname,
             Email = _genericInvitation1.Email,
             ExpirationDate = _genericInvitation1.ExpirationDate
+        };
+        
+        _invitationWithUpdatesRequest = new UpdateInvitationRequest
+        {
+            Status = StatusEnumRequest.Rejected,
+            ExpirationDate = DateTime.Now.AddDays(1)
         };
     }
 
@@ -157,15 +164,9 @@ public class InvitationAdapterTest
     [TestMethod]
     public void UpdateInvitation_ShouldUpdateInvitation()
     {
-        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
-        {
-            Status = StatusEnumRequest.Rejected,
-            ExpirationDate = DateTime.Now.AddDays(1)
-        };
-
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()));
 
-        _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest);
+        _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest);
 
         _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()), Times.Once);
     }
@@ -173,17 +174,11 @@ public class InvitationAdapterTest
     [TestMethod]
     public void UpdateInvitation_ShouldThrowObjectNotFoundException()
     {
-        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
-        {
-            Status = StatusEnumRequest.Rejected,
-            ExpirationDate = DateTime.Now.AddDays(1)
-        };
-
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
-            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest));
+            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
         _invitationServiceLogic.VerifyAll();
     }
@@ -191,17 +186,11 @@ public class InvitationAdapterTest
     [TestMethod]
     public void UpdateInvitation_ShouldThrowObjectErrorAdapterException()
     {
-        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
-        {
-            Status = StatusEnumRequest.Rejected,
-            ExpirationDate = DateTime.Now.AddDays(1)
-        };
-
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest));
+            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
         _invitationServiceLogic.VerifyAll();
     }
@@ -209,17 +198,11 @@ public class InvitationAdapterTest
     [TestMethod]
     public void UpdateInvitation_ShouldThrowObjectRepeatedException()
     {
-        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
-        {
-            Status = StatusEnumRequest.Rejected,
-            ExpirationDate = DateTime.Now.AddDays(1)
-        };
-
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new ObjectRepeatedAdapterException("No changes were registered on update, the invitation remains the same"));
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
-            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest));
+            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
         _invitationServiceLogic.VerifyAll();
     }
