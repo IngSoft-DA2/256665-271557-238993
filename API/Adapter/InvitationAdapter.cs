@@ -118,5 +118,9 @@ public class InvitationAdapter
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
+        catch (ObjectRepeatedServiceException exceptionCaught)
+        {
+            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+        }
     }
 }

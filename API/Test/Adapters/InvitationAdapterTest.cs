@@ -205,4 +205,22 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateInvitation_ShouldThrowObjectRepeatedException()
+    {
+        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
+        {
+            Status = StatusEnumRequest.Rejected,
+            ExpirationDate = DateTime.Now.AddDays(1)
+        };
+
+        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+            .Throws(new ObjectRepeatedAdapterException("No changes were registered on update, the invitation remains the same"));
+
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
+            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest));
+
+        _invitationServiceLogic.VerifyAll();
+    }
 }
