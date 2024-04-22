@@ -1,5 +1,7 @@
-﻿using Domain;
+﻿using Adapter.CustomExceptions;
+using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.InvitationResponses;
 
 namespace Adapter;
@@ -40,17 +42,24 @@ public class InvitationAdapter
     
     public GetInvitationResponse GetInvitationById(Guid idOfInvitationToFind)
     {
-        Invitation serviceResponse = _invitationServiceLogic.GetInvitationById(idOfInvitationToFind);
-            
-        return new GetInvitationResponse
+        try
         {
-            Id = serviceResponse.Id,
-            Status = (StatusEnumResponse)serviceResponse.Status,
-            ExpirationDate = serviceResponse.ExpirationDate,
-            Email = serviceResponse.Email,
-            Firstname = serviceResponse.Firstname,
-            Lastname = serviceResponse.Lastname
-        };
+            Invitation serviceResponse = _invitationServiceLogic.GetInvitationById(idOfInvitationToFind);
+
+            return new GetInvitationResponse
+            {
+                Id = serviceResponse.Id,
+                Status = (StatusEnumResponse)serviceResponse.Status,
+                ExpirationDate = serviceResponse.ExpirationDate,
+                Email = serviceResponse.Email,
+                Firstname = serviceResponse.Firstname,
+                Lastname = serviceResponse.Lastname
+            };
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
     
 }
