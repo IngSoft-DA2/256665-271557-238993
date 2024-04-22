@@ -154,4 +154,21 @@ public class OwnerAdapterTest
             _ownerAdapter.CreateOwner(ownerToCreate));
         _ownerService.VerifyAll();
     }
+
+    [TestMethod]
+    public void CreateOwner_ThrowsException()
+    {
+        CreateOwnerRequest ownerToCreate = new CreateOwnerRequest
+        {
+            Firstname = "ownerName",
+            Lastname = "ownerLastname",
+            Email = "owner@gmail.com"
+        };
+        
+        _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>())).Throws(new Exception("Internal Server Error"));
+        
+        Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(ownerToCreate));
+        
+        
+    }
 }
