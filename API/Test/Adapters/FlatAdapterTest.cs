@@ -1,7 +1,6 @@
 ﻿using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
-using Domain.Exceptions;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
@@ -226,7 +225,7 @@ public class FlatAdapterTest
     }
 
     [TestMethod]
-    public void CreateFlat_ThrowsObjectErrorAdapterException_WhenFlatDomainFails()
+    public void CreateFlat_ThrowsObjectErrorAdapterException_WhenServiceFails()
     {
         CreateFlatRequest flatRequest = new CreateFlatRequest
         {
@@ -242,7 +241,7 @@ public class FlatAdapterTest
         };
 
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
-            .Throws(new ValidateFlatException("Specific Flat Error"));
+            .Throws(new ObjectErrorServiceException("Specific Flat Error"));
         _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _flatAdapter.CreateFlat(flatRequest));
