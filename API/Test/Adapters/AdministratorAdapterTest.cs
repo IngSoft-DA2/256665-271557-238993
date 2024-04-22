@@ -43,4 +43,15 @@ public class AdministratorAdapterTest
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() => administratorAdapter.CreateAdministrator(administratorId));
     }
     
+    [TestMethod]
+    public void CreateAdministrator_ShouldThrowObjectErrorAdapterException()
+    {
+        Guid administratorId = Guid.NewGuid();
+        
+        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectErrorServiceException("Error creating administrator"));
+        AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => administratorAdapter.CreateAdministrator(administratorId));
+    }
+    
 }

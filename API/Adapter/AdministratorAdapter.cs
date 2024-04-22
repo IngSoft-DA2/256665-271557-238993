@@ -30,5 +30,10 @@ public class AdministratorAdapter
         {
             throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
         }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        
     }
 }
