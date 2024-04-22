@@ -7,6 +7,7 @@ namespace Adapter;
 public class OwnerAdapter
 {
     private readonly IOwnerService _ownerService;
+
     public OwnerAdapter(IOwnerService ownerService)
     {
         _ownerService = ownerService;
@@ -14,17 +15,23 @@ public class OwnerAdapter
 
     public IEnumerable<GetOwnerResponse> GetAllOwners()
     {
-
-        IEnumerable<Owner> owners = _ownerService.GetAllOwners();
-        
-        IEnumerable<GetOwnerResponse> ownerResponses = owners.Select(owner => new GetOwnerResponse
+        try
         {
-            Id = owner.Id,
-            Name = owner.Firstname,
-            Lastname = owner.Lastname,
-            Email = owner.Email
-        });
+            IEnumerable<Owner> owners = _ownerService.GetAllOwners();
 
-        return ownerResponses;
+            IEnumerable<GetOwnerResponse> ownerResponses = owners.Select(owner => new GetOwnerResponse
+            {
+                Id = owner.Id,
+                Name = owner.Firstname,
+                Lastname = owner.Lastname,
+                Email = owner.Email
+            });
+
+            return ownerResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }

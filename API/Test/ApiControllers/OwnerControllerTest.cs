@@ -45,7 +45,7 @@ public class OwnerControllerTest
         
         _ownerAdapter.Setup(adapter => adapter.GetAllOwners()).Returns(expectedOwners);
         
-        IActionResult controllerResponse = _ownerController.GetOwners();
+        IActionResult controllerResponse = _ownerController.GetAllOwners();
 
         _ownerAdapter.VerifyAll();
 
@@ -68,7 +68,7 @@ public class OwnerControllerTest
         
         _ownerAdapter.Setup(adapter => adapter.GetAllOwners()).Throws(new Exception("Something went wrong"));
         
-        IActionResult controllerResponse = _ownerController.GetOwners();
+        IActionResult controllerResponse = _ownerController.GetAllOwners();
 
         _ownerAdapter.VerifyAll();
 

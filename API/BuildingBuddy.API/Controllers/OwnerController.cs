@@ -25,7 +25,7 @@ namespace BuildingBuddy.API.Controllers
         #region GetAllOwners
 
         [HttpGet]
-        public IActionResult GetOwners()
+        public IActionResult GetAllOwners()
         {
             try
             {
