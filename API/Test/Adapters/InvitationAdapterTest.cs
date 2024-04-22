@@ -34,7 +34,7 @@ public class InvitationAdapterTest
                 Email = "",
                 ExpirationDate = DateTime.Now,
                 Status = StatusEnum.Pending,
-            }
+            }       
         };
         
         IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>
@@ -101,6 +101,16 @@ public class InvitationAdapterTest
         _invitationServiceLogic.VerifyAll();
         
         Assert.AreEqual(expectedAdapterResponse, adapterResponse);
+    }
+    
+    [TestMethod]
+    public void GetInvitationById_ShouldThrowException()
+    {
+        _invitationServiceLogic.Setup(service => service.GetInvitationById(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
+        
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetInvitationById(It.IsAny<Guid>()));
+        
+        _invitationServiceLogic.VerifyAll();
     }
 
 }
