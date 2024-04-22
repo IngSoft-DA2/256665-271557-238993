@@ -1,6 +1,7 @@
 using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.MaintenanceRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -28,6 +29,27 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        [HttpPost]
+        
+        public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
+        {
+            try
+            {
+                return Ok(_maintenanceAdapter.CreateMaintenanceRequest(request));
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+            
+        }
+        
         [HttpGet]
         [Route("{categoryId:Guid}")]
         public IActionResult GetMaintenanceRequestByCategory([FromRoute] Guid categoryId)
@@ -46,6 +68,9 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        
+        
         
     }
 }

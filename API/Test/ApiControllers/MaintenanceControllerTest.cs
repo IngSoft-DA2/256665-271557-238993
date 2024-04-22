@@ -158,5 +158,78 @@ public class MaintenanceControllerTest
     }
     #endregion
     
+    #region Request Maintenance
     
+    [TestMethod]
+    public void RequestMaintenance_200CodeIsReturned()
+    {
+        CreateRequestMaintenanceResponse expectedResponse = new CreateRequestMaintenanceResponse()
+        {
+            Id = Guid.NewGuid(),
+            BuildingId = Guid.NewGuid(),
+            Description = "Repair elevator light",
+            FlatId = Guid.NewGuid(),
+            Category = Guid.NewGuid(),
+            RequestStatus = StatusEnumMaintenanceResponse.Open
+        };
+        
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponse);
+        
+        _maintenanceAdapter.Setup(adapter => 
+                adapter.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>())).Returns(expectedResponse);
+        
+        IActionResult controllerResponse = _maintenanceController.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>());
+        _maintenanceAdapter.VerifyAll();
+        
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        CreateRequestMaintenanceResponse? controllerResponseValueCasted = 
+            controllerResponseCasted.Value as CreateRequestMaintenanceResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedResponse.Equals(controllerResponseValueCasted));
+    }
+    
+    [TestMethod]
+    public void RequestMaintenance_400CodeIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
+        
+        _maintenanceAdapter.Setup(adapter => 
+                adapter.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>())).Throws(new ObjectErrorException("Bad Request"));
+        
+        IActionResult controllerResponse = _maintenanceController.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void RequestMaintenance_500CodeIsReturned()
+    {
+        _maintenanceAdapter.Setup(adapter => 
+                adapter.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>())).Throws(new Exception());
+        
+        IActionResult controllerResponse = _maintenanceController.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    #endregion
+
+    
+
 }
