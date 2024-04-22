@@ -208,4 +208,14 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    [TestMethod]
+    public void DeleteInvitation_ShouldDeleteInvitation()
+    {
+        _invitationServiceLogic.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()));
+        
+        _invitationAdapter.DeleteInvitation(_genericInvitation1.Id);
+
+        _invitationServiceLogic.Verify(service => service.DeleteInvitation(It.IsAny<Guid>()), Times.Once);
+    }
 }
