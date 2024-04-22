@@ -91,5 +91,11 @@ namespace BuildingBuddy.API.Controllers
         
         #endregion
 
+        [HttpGet]
+        [Route("{ownerId:Guid}")]
+        public IActionResult GetOwnerById(Guid ownerId)
+        {
+            return Ok(_ownerAdapter.GetOwnerById(ownerId));
+        }
     }
 }
