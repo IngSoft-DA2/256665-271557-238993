@@ -15,16 +15,23 @@ public class ManagerAdapter
 
     public IEnumerable<GetManagerResponse> GetAllManagers()
     {
-        IEnumerable<Manager> serviceResponse = _managerServiceLogic.GetAllManagers();
+        try
+        {
+            IEnumerable<Manager> serviceResponse = _managerServiceLogic.GetAllManagers();
 
-        IEnumerable<GetManagerResponse> adapterResponse = serviceResponse.Select(manager =>
-            new GetManagerResponse
-            {
-                Id = manager.Id,
-                Email = manager.Email,
-                Name = manager.Name,
-            });
+            IEnumerable<GetManagerResponse> adapterResponse = serviceResponse.Select(manager =>
+                new GetManagerResponse
+                {
+                    Id = manager.Id,
+                    Email = manager.Email,
+                    Name = manager.Name,
+                });
 
-        return adapterResponse;
+            return adapterResponse;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }

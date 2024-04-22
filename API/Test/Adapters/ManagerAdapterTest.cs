@@ -43,4 +43,16 @@ public class ManagerAdapterTest
         
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
+    
+    [TestMethod]
+    public void GetAllManagers_ShouldThrowException()
+    {
+        Mock<IManagerService> managerService = new Mock<IManagerService>(MockBehavior.Strict);
+        managerService.Setup(service => service.GetAllManagers()).Throws(new Exception("Something went wrong"));
+        
+        ManagerAdapter managerAdapter = new ManagerAdapter(managerService.Object);
+        
+        Assert.ThrowsException<Exception>(() => managerAdapter.GetAllManagers());
+    }
+    
 }
