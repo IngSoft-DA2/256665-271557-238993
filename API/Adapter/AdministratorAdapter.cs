@@ -1,4 +1,6 @@
-﻿using IServiceLogic;
+﻿using Adapter.CustomExceptions;
+using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.AdministratorResponses;
 
 namespace Adapter;
@@ -14,12 +16,19 @@ public class AdministratorAdapter
     
     public CreateAdministratorResponse CreateAdministrator(Guid administratorId)
     {
-        _administratorAdapter.CreateAdministrator(administratorId);
-        CreateAdministratorResponse adapterResponse = new CreateAdministratorResponse()
+        try
         {
-            Id = administratorId
-        };
-        
-        return adapterResponse;
+            _administratorAdapter.CreateAdministrator(administratorId);
+            CreateAdministratorResponse adapterResponse = new CreateAdministratorResponse()
+            {
+                Id = administratorId
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectRepeatedServiceException exceptionCaught)
+        {
+            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+        }
     }
 }
