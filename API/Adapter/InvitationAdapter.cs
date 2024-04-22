@@ -98,14 +98,21 @@ public class InvitationAdapter
         }
     }
 
-    public void UpdateInvitation(Guid idOfInvitationToUpdate, UpdateInvitationRequest invitationToUpdate)
+    public void UpdateInvitation(Guid idOfInvitationToUpdate, UpdateInvitationRequest invitationToUpdateRequest)
     {
-        Invitation invitation = new Invitation
+        try
         {
-            Status = (StatusEnum)invitationToUpdate.Status,
-            ExpirationDate = invitationToUpdate.ExpirationDate
-        };
+            Invitation invitation = new Invitation
+            {
+                Status = (StatusEnum)invitationToUpdateRequest.Status,
+                ExpirationDate = invitationToUpdateRequest.ExpirationDate
+            };
 
-        _invitationServiceLogic.UpdateInvitation(invitation);
+            _invitationServiceLogic.UpdateInvitation(idOfInvitationToUpdate, invitation);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }

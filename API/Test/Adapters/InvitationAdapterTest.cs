@@ -163,10 +163,28 @@ public class InvitationAdapterTest
             ExpirationDate = DateTime.Now.AddDays(1)
         };
 
-        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Invitation>()));
+        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()));
 
         _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest);
 
-        _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Invitation>()), Times.Once);
+        _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void UpdateInvitation_ShouldThrowObjectNotFoundException()
+    {
+        UpdateInvitationRequest invitationWithUpdatesRequest = new UpdateInvitationRequest
+        {
+            Status = StatusEnumRequest.Rejected,
+            ExpirationDate = DateTime.Now.AddDays(1)
+        };
+
+        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, invitationWithUpdatesRequest));
+
+        _invitationServiceLogic.VerifyAll();
     }
 }
