@@ -109,5 +109,28 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpPut]
+        [Route("/requests/{id:Guid}")]
+        public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id, [FromBody] UpdateMaintenanceRequestStatusRequest request)
+        {
+            try
+            {
+                return Ok(_maintenanceAdapter.UpdateMaintenanceRequestStatus(id, request));
+            }
+            catch (ObjectNotFoundException)
+            {
+                return NotFound("Maintenance request was not found, reload the page");
+            }
+            catch (ObjectErrorException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
+            catch (Exception exceptionCaught)
+            {
+                Console.WriteLine(exceptionCaught.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }

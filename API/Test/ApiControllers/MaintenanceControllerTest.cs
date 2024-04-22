@@ -400,4 +400,95 @@ public class MaintenanceControllerTest
 
     #endregion
 
+
+    #region Update Maintenance Request Status
+    
+    [TestMethod]
+    public void UpdateMaintenanceRequestStatus_200CodeIsReturned()
+    {
+        UpdateMaintenanceRequestStatusResponse expectedResponse = new UpdateMaintenanceRequestStatusResponse()
+        {
+            Id = Guid.NewGuid(),
+            RequestStatus = StatusEnumMaintenanceResponse.Closed
+        };
+        
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponse);
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Returns(expectedResponse);
+        
+        IActionResult controllerResponse = _maintenanceController.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        UpdateMaintenanceRequestStatusResponse? controllerResponseValueCasted = 
+            controllerResponseCasted.Value as UpdateMaintenanceRequestStatusResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedResponse.Equals(controllerResponseValueCasted));
+    }
+    
+    [TestMethod]
+    public void UpdateMaintenanceRequestStatus_400CodeIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new ObjectErrorException("Bad Request"));
+        
+        IActionResult controllerResponse = _maintenanceController.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void UpdateMaintenanceRequestStatus_404CodeIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Maintenance request was not found, reload the page");
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new ObjectNotFoundException());
+        
+        IActionResult controllerResponse = _maintenanceController.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void UpdateMaintenanceRequestStatus_500CodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new Exception("Exception not recognized"));
+        
+        IActionResult controllerResponse = _maintenanceController.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    #endregion
 }
