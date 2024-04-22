@@ -278,6 +278,25 @@ public class MaintenanceControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    [TestMethod]
+    public void AssignMaintenanceRequest_404CodeIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Maintenance request was not found, reload the page");
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Throws(new ObjectNotFoundException());
+        
+        IActionResult controllerResponse = _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
     
 
 
