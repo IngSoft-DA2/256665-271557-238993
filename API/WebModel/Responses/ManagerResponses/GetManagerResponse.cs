@@ -2,9 +2,9 @@ namespace WebModel.Responses.ManagerResponses;
 
 public class GetManagerResponse
 {
+    public Guid Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
 
     public override bool Equals(object? obj)
     {
@@ -12,6 +12,6 @@ public class GetManagerResponse
 
         if (objectToCompare is null) return false;
 
-        return Name == objectToCompare.Name && Email == objectToCompare.Email && Password == objectToCompare.Password;
+        return Id == objectToCompare.Id && Name == objectToCompare.Name && Email == objectToCompare.Email;
     }
 }
