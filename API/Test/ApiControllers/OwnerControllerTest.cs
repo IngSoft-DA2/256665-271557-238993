@@ -35,7 +35,7 @@ public class OwnerControllerTest
             new GetOwnerResponse()
             {
                 Id = Guid.NewGuid(),
-                Name = "myOwner",
+                Firstname = "myOwner",
                 Lastname = "myLastName",
                 Email = "email@email.com",
             }
@@ -89,7 +89,7 @@ public class OwnerControllerTest
         GetOwnerResponse expectedOwner = new GetOwnerResponse()
         {
             Id = Guid.NewGuid(),
-            Name = "ownerFirstname",
+            Firstname = "ownerFirstname",
             Lastname = "ownerLastname",
             Email = "owner@gmail.com"
         };

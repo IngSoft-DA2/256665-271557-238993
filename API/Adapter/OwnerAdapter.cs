@@ -22,7 +22,7 @@ public class OwnerAdapter
             IEnumerable<GetOwnerResponse> ownerResponses = owners.Select(owner => new GetOwnerResponse
             {
                 Id = owner.Id,
-                Name = owner.Firstname,
+                Firstname = owner.Firstname,
                 Lastname = owner.Lastname,
                 Email = owner.Email
             });
@@ -33,5 +33,19 @@ public class OwnerAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    public GetOwnerResponse GetOwnerById(Guid ownerId)
+    {
+        Owner owner = _ownerService.GetOwnerById(ownerId);
+        
+        GetOwnerResponse ownerResponse = new GetOwnerResponse
+        {
+            Id = owner.Id,
+            Firstname = owner.Firstname,
+            Lastname = owner.Lastname,
+            Email = owner.Email
+        };
+        return ownerResponse;
     }
 }

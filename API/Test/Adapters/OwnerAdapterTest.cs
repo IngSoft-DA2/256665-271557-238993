@@ -37,7 +37,7 @@ public class OwnerAdapterTest
             new GetOwnerResponse
             {
                 Id = Guid.NewGuid(),
-                Name = "OwnerName",
+                Firstname = "OwnerName",
                 Lastname = "OwnerLastname",
                 Email = "owner@gmail.com"
             }
@@ -47,7 +47,7 @@ public class OwnerAdapterTest
             new Owner
             {
                 Id = expectedAdapterResponse.First().Id,
-                Firstname = expectedAdapterResponse.First().Name,
+                Firstname = expectedAdapterResponse.First().Firstname,
                 Lastname = expectedAdapterResponse.First().Lastname,
                 Email = expectedAdapterResponse.First().Email
             }
@@ -69,6 +69,34 @@ public class OwnerAdapterTest
     }
 
     #endregion
-    
-    
+
+    [TestMethod]
+    public void GetOwnerById_ReturnsGetOwnerResponse()
+    {
+        Guid ownerId = Guid.NewGuid();
+
+        GetOwnerResponse expectedAdapterResponse = new GetOwnerResponse
+        {
+            Id = ownerId,
+            Firstname = "OwnerFirstname",
+            Lastname = "OwnerLastname",
+            Email = "owner@gmail.com"
+        };
+
+        Owner expectedServiceResponse = new Owner
+        {
+            Id = ownerId,
+            Firstname = expectedAdapterResponse.Firstname,
+            Lastname = expectedAdapterResponse.Lastname,
+            Email = expectedAdapterResponse.Email
+        };
+
+
+        _ownerService.Setup(service => service.GetOwnerById(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+
+        GetOwnerResponse adapterResponse = _ownerAdapter.GetOwnerById(ownerId);
+        _ownerService.VerifyAll();
+
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
 }
