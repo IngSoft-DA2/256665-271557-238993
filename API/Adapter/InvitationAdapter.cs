@@ -104,7 +104,7 @@ public class InvitationAdapter
         }
         catch (ObjectRepeatedServiceException exceptionCaught)
         {
-            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+            throw new ObjectRepeatedAdapterException();
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
@@ -142,7 +142,7 @@ public class InvitationAdapter
         }
         catch (ObjectRepeatedServiceException exceptionCaught)
         {
-            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+            throw new ObjectRepeatedAdapterException();
         }
         catch (Exception exceptionCaught)
         {

@@ -114,5 +114,9 @@ public class OwnerAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (ObjectRepeatedServiceException exceptionCaught)
+        {
+            throw new ObjectRepeatedAdapterException();
+        }
     }
 }

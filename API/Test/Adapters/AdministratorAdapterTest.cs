@@ -43,7 +43,7 @@ public class AdministratorAdapterTest
     {
         Guid administratorId = Guid.NewGuid();
         
-        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectRepeatedServiceException("Administrator already exists"));
+        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectRepeatedServiceException());
         AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
         
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() => administratorAdapter.CreateAdministrator(administratorId));
