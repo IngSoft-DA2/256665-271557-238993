@@ -65,7 +65,6 @@ public class OwnerAdapter
 
     public CreateOwnerResponse CreateOwner(CreateOwnerRequest createRequest)
     {
-
         try
         {
             Owner ownerToCreate = new Owner
@@ -91,19 +90,25 @@ public class OwnerAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
-      
     }
-    
-    public void UpdateOwnerById(Guid idOfOwnerToUpdate,UpdateOwnerRequest updateRequest)
+
+    public void UpdateOwnerById(Guid idOfOwnerToUpdate, UpdateOwnerRequest updateRequest)
     {
-        Owner ownerWithUpdates = new Owner
+        try
         {
-            Id = idOfOwnerToUpdate,
-            Firstname = updateRequest.Firstname,
-            Lastname = updateRequest.Lastname,
-            Email = updateRequest.Email
-        };
-        
-        _ownerService.UpdateOwnerById(ownerWithUpdates);
+            Owner ownerWithUpdates = new Owner
+            {
+                Id = idOfOwnerToUpdate,
+                Firstname = updateRequest.Firstname,
+                Lastname = updateRequest.Lastname,
+                Email = updateRequest.Email
+            };
+
+            _ownerService.UpdateOwnerById(ownerWithUpdates);
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }

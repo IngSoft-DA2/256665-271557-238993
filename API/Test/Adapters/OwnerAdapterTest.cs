@@ -187,10 +187,22 @@ public class OwnerAdapterTest
             Lastname = "OwnerLastnameUpdated",
             Email = "ownerUpdated@gmail.com"
         };
-        
+
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()));
-        
+
         _ownerAdapter.UpdateOwnerById(idOfOwnerToUpdate, updateRequest);
         _ownerService.Verify(service => service.UpdateOwnerById(It.IsAny<Owner>()), Times.Once);
+    }
+
+    [TestMethod]
+    public void UpdateOwner_ThrowsObjectErrorAdapterException()
+    {
+        
+        _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
+            .Throws(new ObjectErrorServiceException("Specific error detected at service"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>((() =>
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+        _ownerService.VerifyAll();
     }
 }
