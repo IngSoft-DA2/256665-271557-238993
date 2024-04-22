@@ -17,13 +17,14 @@ public class InvitationAdapterTest
     private InvitationAdapter _invitationAdapter;
     private GetInvitationResponse _genericInvitationResponse;
     private Invitation _genericInvitation1;
+    private CreateInvitationRequest _genericInvitationToCreate;
 
     [TestInitialize]
     public void Initialize()
     {
         _invitationServiceLogic = new Mock<IInvitationServiceLogic>(MockBehavior.Strict);
         _invitationAdapter = new InvitationAdapter(_invitationServiceLogic.Object);
-        
+
         _genericInvitation1 = new Invitation
         {
             Id = Guid.NewGuid(),
@@ -33,7 +34,7 @@ public class InvitationAdapterTest
             ExpirationDate = DateTime.Now,
             Status = StatusEnum.Pending,
         };
-        
+
         _genericInvitationResponse = new GetInvitationResponse
         {
             Id = _genericInvitation1.Id,
@@ -43,6 +44,15 @@ public class InvitationAdapterTest
             ExpirationDate = _genericInvitation1.ExpirationDate,
             Status = (StatusEnumResponse)_genericInvitation1.Status
         };
+
+        _genericInvitationToCreate = new CreateInvitationRequest
+        {
+            Firstname = _genericInvitation1.Firstname,
+            Lastname = _genericInvitation1.Lastname,
+            Email = _genericInvitation1.Email,
+            ExpirationDate = _genericInvitation1.ExpirationDate
+        };
+        
     }
 
     [TestMethod]
@@ -102,17 +112,9 @@ public class InvitationAdapterTest
     [TestMethod]
     public void CreateInvitation_ShouldCreateInvitation()
     {
-        CreateInvitationRequest invitationToCreate = new CreateInvitationRequest
-        {
-            Firstname = _genericInvitation1.Firstname,
-            Lastname = _genericInvitation1.Lastname,
-            Email = _genericInvitation1.Email,
-            ExpirationDate = _genericInvitation1.ExpirationDate
-        };
-
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()));
 
-        _invitationAdapter.CreateInvitation(invitationToCreate);
+        _invitationAdapter.CreateInvitation(_genericInvitationToCreate);
 
         _invitationServiceLogic.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
     }
@@ -120,18 +122,10 @@ public class InvitationAdapterTest
     [TestMethod]
     public void CreateInvitation_ShouldThrowObjectReapeatedException()
     {
-        CreateInvitationRequest invitationToCreate = new CreateInvitationRequest
-        {
-            Firstname = _genericInvitation1.Firstname,
-            Lastname = _genericInvitation1.Lastname,
-            Email = _genericInvitation1.Email,
-            ExpirationDate = _genericInvitation1.ExpirationDate
-        };
-
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new ObjectRepeatedServiceException("The invitation already exists"));
 
-        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => _invitationAdapter.CreateInvitation(invitationToCreate));
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
         _invitationServiceLogic.VerifyAll();
     }
@@ -139,18 +133,21 @@ public class InvitationAdapterTest
     [TestMethod]
     public void CreateInvitation_ShouldThrowObjectErrorAdapterException()
     {
-        CreateInvitationRequest invitationToCreate = new CreateInvitationRequest
-        {
-            Firstname = _genericInvitation1.Firstname,
-            Lastname = _genericInvitation1.Lastname,
-            Email = _genericInvitation1.Email,
-            ExpirationDate = _genericInvitation1.ExpirationDate
-        };
-
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
 
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _invitationAdapter.CreateInvitation(invitationToCreate));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void CreateInvitation_ShouldThrowException()
+    {
+        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
         _invitationServiceLogic.VerifyAll();
     }

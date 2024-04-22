@@ -91,5 +91,9 @@ public class InvitationAdapter
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }
