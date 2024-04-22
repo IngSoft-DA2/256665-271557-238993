@@ -252,7 +252,21 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
-    
+
+    [TestMethod]
+    public void DeleteInvitation_ShouldThrowException()
+    {
+        _invitationServiceLogic.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.DeleteInvitation(_genericInvitation1.Id));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+
+
+
+
     #endregion
     
     
