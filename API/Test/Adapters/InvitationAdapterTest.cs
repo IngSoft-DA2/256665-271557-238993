@@ -53,5 +53,18 @@ public class InvitationAdapterTest
         Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponseList));
 
     }
+    
+    [TestMethod]
+    public void GetAllInvitations_ShouldThrowException()
+    {
+        Mock<IInvitationServiceLogic> invitationServiceLogicMock = new Mock<IInvitationServiceLogic>(MockBehavior.Strict);
+        invitationServiceLogicMock.Setup(service => service.GetAllInvitations()).Throws(new Exception("Something went wrong"));
+        
+        InvitationAdapter invitationAdapter = new InvitationAdapter(invitationServiceLogicMock.Object);
+        
+        Assert.ThrowsException<Exception>(() => invitationAdapter.GetAllInvitations());
+        
+        invitationServiceLogicMock.VerifyAll();
+    }
 
 }

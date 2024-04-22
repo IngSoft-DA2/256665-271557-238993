@@ -16,18 +16,24 @@ public class InvitationAdapter
     
     public IEnumerable<GetInvitationResponse> GetAllInvitations()
     {
-        IEnumerable<Invitation> serviceResponse = _invitationServiceLogic.GetAllInvitations();
-        
-        return serviceResponse.Select(invitation => new GetInvitationResponse
+        try
         {
-            Id = invitation.Id,
-            Status = (StatusEnumResponse) invitation.Status,
-            ExpirationDate = invitation.ExpirationDate,
-            Email = invitation.Email,
-            Firstname = invitation.Firstname,
-            Lastname = invitation.Lastname
-        });
-        
+            IEnumerable<Invitation> serviceResponse = _invitationServiceLogic.GetAllInvitations();
+
+            return serviceResponse.Select(invitation => new GetInvitationResponse
+            {
+                Id = invitation.Id,
+                Status = (StatusEnumResponse)invitation.Status,
+                ExpirationDate = invitation.ExpirationDate,
+                Email = invitation.Email,
+                Firstname = invitation.Firstname,
+                Lastname = invitation.Lastname
+            });
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
     
 }
