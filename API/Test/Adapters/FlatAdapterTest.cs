@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using Adapter;
+﻿using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.FlatRequests;
+using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 
@@ -14,6 +15,7 @@ namespace Test.Adapters;
 public class FlatAdapterTest
 {
     private Mock<IFlatService> _flatService;
+    private Mock<IOwnerService> _ownerService;
     private FlatAdapter _flatAdapter;
 
     #region Initialize
@@ -22,12 +24,13 @@ public class FlatAdapterTest
     public void Initialize()
     {
         _flatService = new Mock<IFlatService>(MockBehavior.Strict);
-        _flatAdapter = new FlatAdapter(_flatService.Object);
+        _ownerService = new Mock<IOwnerService>(MockBehavior.Strict);
+        _flatAdapter = new FlatAdapter(_ownerService.Object, _flatService.Object);
     }
 
     #endregion
 
-    #region GetAllFlats
+    #region Get All Flats
 
     [TestMethod]
     public void GetAllFlats_ShouldConvertFlatsReceived_IntoGetFlatResponses()
@@ -99,6 +102,8 @@ public class FlatAdapterTest
 
     #endregion
 
+    #region Get flat by Id
+
     [TestMethod]
     public void GetFlatById_ReturnsGetFlatResponse()
     {
@@ -164,5 +169,33 @@ public class FlatAdapterTest
         Assert.ThrowsException<Exception>(() => _flatAdapter.GetFlatById(It.IsAny<Guid>(),
             It.IsAny<Guid>()));
         _flatService.VerifyAll();
+    }
+
+    #endregion
+
+    [TestMethod]
+    public void CreateFlat_ReturnsGetFlatResponse()
+    {
+        CreateFlatRequest flatRequest = new CreateFlatRequest
+        {
+            Floor = 1,
+            RoomNumber = 102,
+            Owner = new AssignOwnerToFlatRequest()
+            {
+                Id = Guid.NewGuid(),
+            },
+            TotalRooms = 4,
+            TotalBaths = 2,
+            HasTerrace = true
+        };
+
+        _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()));
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+
+        CreateFlatResponse adapterResponse = _flatAdapter.CreateFlat(flatRequest);
+        _flatService.VerifyAll();
+        _ownerService.VerifyAll();
+
+        Assert.IsNotNull(adapterResponse.Id);
     }
 }

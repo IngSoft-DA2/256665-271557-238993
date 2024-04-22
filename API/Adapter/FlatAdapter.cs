@@ -2,6 +2,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.FlatRequests;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 
@@ -9,10 +10,12 @@ namespace Adapter;
 
 public class FlatAdapter
 {
+    private readonly IOwnerService _ownerService;
     private readonly IFlatService _flatService;
 
-    public FlatAdapter(IFlatService flatService)
+    public FlatAdapter(IOwnerService ownerService, IFlatService flatService)
     {
+        _ownerService = ownerService;
         _flatService = flatService;
     }
 
@@ -85,5 +88,34 @@ public class FlatAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    public CreateFlatResponse CreateFlat(CreateFlatRequest flat)
+    {
+        Owner? ownerAssigned = null;
+        
+        if (flat.Owner is not null)
+        {
+            ownerAssigned = _ownerService.GetOwnerById(flat.Owner.Id);
+        }
+        
+        Flat flatToCreate = new Flat
+        {
+            Floor = flat.Floor,
+            RoomNumber = flat.RoomNumber,
+            OwnerAssigned = ownerAssigned,
+            TotalRooms = flat.TotalRooms,
+            TotalBaths = flat.TotalBaths,
+            HasTerrace = flat.HasTerrace
+        };
+
+        _flatService.CreateFlat(flatToCreate);
+
+        CreateFlatResponse response = new CreateFlatResponse
+        {
+            Id = flatToCreate.Id
+        };
+
+        return response;
     }
 }
