@@ -64,19 +64,28 @@ public class OwnerAdapter
 
     public CreateOwnerResponse CreateOwner(CreateOwnerRequest ownerRequest)
     {
-        Owner ownerToCreate = new Owner
-        {
-            Firstname = ownerRequest.Firstname,
-            Lastname = ownerRequest.Lastname,
-            Email = ownerRequest.Email
-        };
 
-        _ownerService.CreateOwner(ownerToCreate);
-
-        CreateOwnerResponse createOwnerResponse = new CreateOwnerResponse
+        try
         {
-            Id = ownerToCreate.Id
-        };
-        return createOwnerResponse;
+            Owner ownerToCreate = new Owner
+            {
+                Firstname = ownerRequest.Firstname,
+                Lastname = ownerRequest.Lastname,
+                Email = ownerRequest.Email
+            };
+
+            _ownerService.CreateOwner(ownerToCreate);
+
+            CreateOwnerResponse createOwnerResponse = new CreateOwnerResponse
+            {
+                Id = ownerToCreate.Id
+            };
+            return createOwnerResponse;
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+      
     }
 }
