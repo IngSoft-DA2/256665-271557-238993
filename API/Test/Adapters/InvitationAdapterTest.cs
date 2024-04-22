@@ -13,6 +13,8 @@ namespace Test.Adapters;
 [TestClass]
 public class InvitationAdapterTest
 {
+    #region Initializing Aspects
+    
     private Mock<IInvitationServiceLogic> _invitationServiceLogic;
     private InvitationAdapter _invitationAdapter;
     private GetInvitationResponse _genericInvitationResponse;
@@ -60,6 +62,10 @@ public class InvitationAdapterTest
             ExpirationDate = DateTime.Now.AddDays(1)
         };
     }
+    
+    #endregion  
+    
+    #region Get All Invitations
 
     [TestMethod]
     public void GetAllInvitations_ShouldReturnAllInvitationsConvertedFromDomainToResponse()
@@ -88,6 +94,10 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Get Invitation By Id
 
     [TestMethod]
     public void GetInvitationById_ShouldReturnInvitationConvertedFromDomainToResponse()
@@ -115,6 +125,10 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Create Invitation
 
     [TestMethod]
     public void CreateInvitation_ShouldCreateInvitation()
@@ -162,6 +176,10 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Update Invitation
 
     [TestMethod]
     public void UpdateInvitation_ShouldUpdateInvitation()
@@ -209,6 +227,10 @@ public class InvitationAdapterTest
         _invitationServiceLogic.VerifyAll();
     }
     
+    #endregion
+    
+    #region Delete Invitation
+    
     [TestMethod]
     public void DeleteInvitation_ShouldDeleteInvitation()
     {
@@ -230,6 +252,8 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    #endregion
     
     
 }
