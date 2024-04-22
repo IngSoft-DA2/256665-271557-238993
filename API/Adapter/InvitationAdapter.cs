@@ -114,5 +114,9 @@ public class InvitationAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }
