@@ -135,4 +135,23 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateInvitation_ShouldThrowObjectErrorAdapterException()
+    {
+        CreateInvitationRequest invitationToCreate = new CreateInvitationRequest
+        {
+            Firstname = _genericInvitation1.Firstname,
+            Lastname = _genericInvitation1.Lastname,
+            Email = _genericInvitation1.Email,
+            ExpirationDate = _genericInvitation1.ExpirationDate
+        };
+
+        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
+            .Throws(new ObjectErrorServiceException("Something went wrong"));
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _invitationAdapter.CreateInvitation(invitationToCreate));
+
+        _invitationServiceLogic.VerifyAll();
+    }
 }
