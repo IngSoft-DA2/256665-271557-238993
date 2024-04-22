@@ -60,4 +60,14 @@ public class ManagerAdapterTest
         Assert.ThrowsException<Exception>(() => _managerAdapter.GetAllManagers());
     }
     
+    [TestMethod]
+    public void DeleteManagerById_ShouldDeleteManager()
+    {
+        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>()));
+        
+        _managerAdapter.DeleteManagerById(It.IsAny<Guid>());
+        
+        _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
 }

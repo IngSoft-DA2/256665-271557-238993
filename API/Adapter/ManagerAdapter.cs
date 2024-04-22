@@ -34,4 +34,9 @@ public class ManagerAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+
+    public void DeleteManagerById(Guid id)
+    {
+        _managerServiceLogic.DeleteManagerById(id);
+    }
 }
