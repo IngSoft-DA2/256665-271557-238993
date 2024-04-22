@@ -121,6 +121,8 @@ public class OwnerAdapterTest
 
     #endregion
 
+    #region Create owner
+
     [TestMethod]
     public void CreateOwner_ReturnsCreateOwnerResponse()
     {
@@ -164,11 +166,12 @@ public class OwnerAdapterTest
             Lastname = "ownerLastname",
             Email = "owner@gmail.com"
         };
-        
-        _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>())).Throws(new Exception("Internal Server Error"));
-        
+
+        _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()))
+            .Throws(new Exception("Internal Server Error"));
+
         Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(ownerToCreate));
-        
-        
     }
+
+    #endregion
 }
