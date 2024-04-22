@@ -70,7 +70,7 @@ public class InvitationAdapter
         }
     }
 
-    public void CreateInvitation(CreateInvitationRequest invitationToCreate)
+    public CreateInvitationResponse CreateInvitation(CreateInvitationRequest invitationToCreate)
     {
         try
         {
@@ -83,6 +83,10 @@ public class InvitationAdapter
             };
 
             _invitationServiceLogic.CreateInvitation(invitation);
+            
+            CreateInvitationResponse invitationResponse = new CreateInvitationResponse { Id = invitation.Id };
+
+            return invitationResponse;
         }
         catch (ObjectRepeatedServiceException exceptionCaught)
         {
@@ -122,5 +126,10 @@ public class InvitationAdapter
         {
             throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
         }
+    }
+
+    public void DeleteInvitation(Guid idOfInvitationToDelete)
+    {
+        _invitationServiceLogic.DeleteInvitation(idOfInvitationToDelete);
     }
 }

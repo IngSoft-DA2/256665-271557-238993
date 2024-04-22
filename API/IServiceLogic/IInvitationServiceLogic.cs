@@ -8,5 +8,6 @@ public interface IInvitationServiceLogic
     public Invitation GetInvitationById(Guid idOfInvitationToFind);
     public void CreateInvitation(Invitation invitationToCreate);
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationToUpdate);
+    public void DeleteInvitation(Guid idOfInvitationToDelete);
     
 }

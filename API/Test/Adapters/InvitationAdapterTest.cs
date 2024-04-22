@@ -121,9 +121,11 @@ public class InvitationAdapterTest
     {
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()));
 
-        _invitationAdapter.CreateInvitation(_genericInvitationToCreate);
+        CreateInvitationResponse adapterResponse = _invitationAdapter.CreateInvitation(_genericInvitationToCreate);
 
         _invitationServiceLogic.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
+        
+        Assert.IsNotNull(adapterResponse);
     }
 
     [TestMethod]
@@ -165,7 +167,7 @@ public class InvitationAdapterTest
     public void UpdateInvitation_ShouldUpdateInvitation()
     {
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()));
-
+        
         _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest);
 
         _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()), Times.Once);
