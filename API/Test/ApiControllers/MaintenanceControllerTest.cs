@@ -260,7 +260,25 @@ public class MaintenanceControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedResponse.Equals(controllerResponseValueCasted));
     }
-
+    [TestMethod]
+    public void AssignMaintenanceRequest_400CodeIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Throws(new ObjectErrorException("Bad Request"));
+        
+        IActionResult controllerResponse = _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
 
 
 
