@@ -19,8 +19,8 @@ public class InvitationAdapter
         try
         {
             IEnumerable<Invitation> serviceResponse = _invitationServiceLogic.GetAllInvitations();
-
-            return serviceResponse.Select(invitation => new GetInvitationResponse
+            
+            IEnumerable<GetInvitationResponse> adapterResponse = serviceResponse.Select(invitation => new GetInvitationResponse
             {
                 Id = invitation.Id,
                 Status = (StatusEnumResponse)invitation.Status,
@@ -29,6 +29,8 @@ public class InvitationAdapter
                 Firstname = invitation.Firstname,
                 Lastname = invitation.Lastname
             });
+
+            return adapterResponse;
         }
         catch (Exception exceptionCaught)
         {   
