@@ -95,7 +95,15 @@ namespace BuildingBuddy.API.Controllers
         [Route("{ownerId:Guid}")]
         public IActionResult GetOwnerById(Guid ownerId)
         {
-            return Ok(_ownerAdapter.GetOwnerById(ownerId));
+            try
+            {
+                return Ok(_ownerAdapter.GetOwnerById(ownerId));
+            }
+            catch (ObjectNotFoundAdapterException)
+            {
+                return NotFound("The specific owner was not found in Database");
+            }
+            
         }
     }
 }
