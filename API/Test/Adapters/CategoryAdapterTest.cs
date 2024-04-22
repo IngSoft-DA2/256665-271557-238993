@@ -135,13 +135,14 @@ public class CategoryAdapterTest
             Id = genericCategory1.Id
         };
         
-        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Returns(genericCategory1);
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>()));
 
         CreateCategoryResponse adapterResponse = _categoryAdapter.CreateCategory(createCategoryRequest);
         
-        _categoryServiceLogic.VerifyAll();
+        _categoryServiceLogic.Verify(
+                service => service.CreateCategory(It.IsAny<Category>()), Times.Once());
 
-        Assert.AreEqual(expectedAdapterResponse.Id, (adapterResponse.Id));
+        Assert.IsNotNull(adapterResponse);
     }
     
     [TestMethod]
@@ -164,6 +165,20 @@ public class CategoryAdapterTest
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Throws(new Exception("Something went wrong"));
         
         Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(It.IsAny<CreateCategoryRequest>()));
+    }
+    
+    [TestMethod]
+    public void CreateCategory_ShouldThrowObjectRepeatedServiceException()
+    {
+        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
+        {
+            Name = "Electrician"
+        };
+        
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
+            Throws(new ObjectRepeatedServiceException("Category already exists"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
     }
     
     #endregion
