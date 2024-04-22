@@ -130,6 +130,13 @@ public class InvitationAdapter
 
     public void DeleteInvitation(Guid idOfInvitationToDelete)
     {
-        _invitationServiceLogic.DeleteInvitation(idOfInvitationToDelete);
+        try
+        {
+            _invitationServiceLogic.DeleteInvitation(idOfInvitationToDelete);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }

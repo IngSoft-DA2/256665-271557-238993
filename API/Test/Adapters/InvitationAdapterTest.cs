@@ -218,4 +218,18 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.Verify(service => service.DeleteInvitation(It.IsAny<Guid>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void DeleteInvitation_ShouldThrowObjectNotFoundException()
+    {
+        _invitationServiceLogic.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _invitationAdapter.DeleteInvitation(_genericInvitation1.Id));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
+    
 }
