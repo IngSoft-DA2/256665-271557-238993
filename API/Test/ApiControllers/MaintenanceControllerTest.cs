@@ -229,6 +229,42 @@ public class MaintenanceControllerTest
     }
     
     #endregion
+    
+    #region Assign Maintenance Request
+
+    [TestMethod]
+    public void AssignMaintenanceRequest_200CodeIsReturned()
+    {
+        AssignMaintenanceRequestResponse expectedResponse = new AssignMaintenanceRequestResponse()
+        {
+            Id = Guid.NewGuid(),
+            WorkerId = Guid.NewGuid()
+        };
+        
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponse);
+        
+        _maintenanceAdapter.Setup(adapter => 
+            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Returns(expectedResponse);
+        
+        IActionResult controllerResponse = _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
+        
+        _maintenanceAdapter.VerifyAll();
+        
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        AssignMaintenanceRequestResponse? controllerResponseValueCasted = 
+            controllerResponseCasted.Value as AssignMaintenanceRequestResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedResponse.Equals(controllerResponseValueCasted));
+    }
+
+
+
+
+    #endregion
 
     
 
