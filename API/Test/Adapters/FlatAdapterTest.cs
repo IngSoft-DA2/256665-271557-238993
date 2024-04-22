@@ -174,6 +174,8 @@ public class FlatAdapterTest
 
     #endregion
 
+    #region Create Flat
+
     [TestMethod]
     public void CreateFlat_ReturnsGetFlatResponse()
     {
@@ -226,7 +228,6 @@ public class FlatAdapterTest
     [TestMethod]
     public void CreateFlat_ThrowsObjectErrorAdapterException_WhenFlatDomainFails()
     {
-        
         CreateFlatRequest flatRequest = new CreateFlatRequest
         {
             Floor = 1,
@@ -247,10 +248,8 @@ public class FlatAdapterTest
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _flatAdapter.CreateFlat(flatRequest));
         _flatService.VerifyAll();
         _ownerService.VerifyAll();
-        
     }
-    
-    
+
     [TestMethod]
     public void CreateFlat_ThrowsException_WhenServiceFails()
     {
@@ -275,4 +274,6 @@ public class FlatAdapterTest
         _flatService.VerifyAll();
         _ownerService.VerifyAll();
     }
+
+    #endregion
 }
