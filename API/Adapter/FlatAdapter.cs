@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using Domain.Exceptions;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.FlatRequests;
@@ -120,6 +121,10 @@ public class FlatAdapter
             };
 
             return response;
+        }
+        catch (ValidateFlatException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
         catch (ObjectNotFoundServiceException)
         {
