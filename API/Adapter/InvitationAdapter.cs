@@ -31,7 +31,7 @@ public class InvitationAdapter
             });
         }
         catch (Exception exceptionCaught)
-        {
+        {   
             throw new Exception(exceptionCaught.Message);
         }
     }

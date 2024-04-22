@@ -19,6 +19,7 @@ public class CategoryAdapterTest
     private CategoryAdapter _categoryAdapter;
     private Category genericCategory1;
     private Category genericCategory2;
+    private CreateCategoryRequest genericCreateCategoryRequest;
     
     [TestInitialize]
     public void Initialize()
@@ -34,6 +35,11 @@ public class CategoryAdapterTest
         {
             Id = Guid.NewGuid(),
             Name = "Plumber"
+        };
+        
+        genericCreateCategoryRequest = new CreateCategoryRequest
+        {
+            Name = "Electrician"
         };
     }
     
@@ -156,15 +162,19 @@ public class CategoryAdapterTest
     [TestMethod]
     public void CreateCategory_ShouldThrowObjectRepeatedServiceException()
     {
-        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
-        {
-            Name = "Electrician"
-        };
-        
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
             Throws(new ObjectRepeatedServiceException("Category already exists"));
         
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
+    }
+    
+    [TestMethod]
+    public void CreateCategory_ShouldThrowObjectErrorServiceException()
+    {
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
+            Throws(new ObjectErrorServiceException("Name can't be empty"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
     }
     
     #endregion
