@@ -11,6 +11,16 @@ namespace Test.Adapters;
 
 public class InvitationAdapterTest
 {
+    private Mock<IInvitationServiceLogic> _invitationServiceLogic;
+    private InvitationAdapter _invitationAdapter;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        _invitationServiceLogic = new Mock<IInvitationServiceLogic>(MockBehavior.Strict);
+        _invitationAdapter = new InvitationAdapter(_invitationServiceLogic.Object);
+    }
+    
     [TestMethod]
     public void GetAllInvitations_ShouldReturnAllInvitationsConvertedFromDomainToResponse()
     {
@@ -40,14 +50,11 @@ public class InvitationAdapterTest
             }
         };
         
-        Mock<IInvitationServiceLogic> invitationServiceLogicMock = new Mock<IInvitationServiceLogic>(MockBehavior.Strict);
-        invitationServiceLogicMock.Setup(service => service.GetAllInvitations()).Returns(invitations);
+        _invitationServiceLogic.Setup(service => service.GetAllInvitations()).Returns(invitations);
         
-        InvitationAdapter invitationAdapter = new InvitationAdapter(invitationServiceLogicMock.Object);
-        IEnumerable<GetInvitationResponse> adapterResponse = invitationAdapter.GetAllInvitations();
+        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations();
         
-        invitationServiceLogicMock.VerifyAll();
-        
+        _invitationServiceLogic.VerifyAll();
         
         IEnumerable<GetInvitationResponse> adapterResponseList = adapterResponse.ToList();
         Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponseList));
@@ -57,14 +64,11 @@ public class InvitationAdapterTest
     [TestMethod]
     public void GetAllInvitations_ShouldThrowException()
     {
-        Mock<IInvitationServiceLogic> invitationServiceLogicMock = new Mock<IInvitationServiceLogic>(MockBehavior.Strict);
-        invitationServiceLogicMock.Setup(service => service.GetAllInvitations()).Throws(new Exception("Something went wrong"));
+        _invitationServiceLogic.Setup(service => service.GetAllInvitations()).Throws(new Exception("Something went wrong"));
         
-        InvitationAdapter invitationAdapter = new InvitationAdapter(invitationServiceLogicMock.Object);
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations());
         
-        Assert.ThrowsException<Exception>(() => invitationAdapter.GetAllInvitations());
-        
-        invitationServiceLogicMock.VerifyAll();
+        _invitationServiceLogic.VerifyAll();
     }
 
 }
