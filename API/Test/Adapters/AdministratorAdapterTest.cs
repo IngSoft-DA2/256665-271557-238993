@@ -10,16 +10,24 @@ namespace Test.Adapters;
 [TestClass]
 public class AdministratorAdapterTest
 {
+    private Mock<IAdministratorService> _administratorService;
+    private AdministratorAdapter _administratorAdapter;
+    
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        _administratorService = new Mock<IAdministratorService>(MockBehavior.Strict);
+        _administratorAdapter = new AdministratorAdapter(_administratorService.Object);
+    }
+    
     [TestMethod]
     public void CreateAdministrator_ShouldCreateAdminsitrator()
     {
         Guid administratorId = Guid.NewGuid();
         
-        Mock<IAdministratorService> administratorService = new Mock<IAdministratorService>(MockBehavior.Strict);
-        administratorService.Setup(service => service.CreateAdministrator(administratorId));
-        AdministratorAdapter administratorAdapter = new AdministratorAdapter(administratorService.Object);
+        _administratorService.Setup(service => service.CreateAdministrator(administratorId));
         
-        CreateAdministratorResponse response = administratorAdapter.CreateAdministrator(administratorId);
+        CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(administratorId);
         
         Assert.AreEqual(administratorId, response.Id);
     }
@@ -29,12 +37,10 @@ public class AdministratorAdapterTest
     {
         Guid administratorId = Guid.NewGuid();
         
-        Mock<IAdministratorService> administratorService = new Mock<IAdministratorService>(MockBehavior.Strict);
-        administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectRepeatedServiceException("Administrator already exists"));
-        AdministratorAdapter administratorAdapter = new AdministratorAdapter(administratorService.Object);
+        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectRepeatedServiceException("Administrator already exists"));
+        AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
         
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() => administratorAdapter.CreateAdministrator(administratorId));
     }
-    
     
 }
