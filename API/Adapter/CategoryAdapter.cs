@@ -72,11 +72,15 @@ public class CategoryAdapter
         {
             Category category = new Category { Name = categoryToCreate.Name };
 
-            category = _categoryServiceLogic.CreateCategory(category);
+            _categoryServiceLogic.CreateCategory(category);
 
-            CreateCategoryResponse categoryResponse = new CreateCategoryResponse { Id = category.Id, };
-            
+            CreateCategoryResponse categoryResponse = new CreateCategoryResponse { Id = category.Id };
+
             return categoryResponse;
+        }
+        catch (ObjectRepeatedServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

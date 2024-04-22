@@ -19,6 +19,7 @@ public class CategoryAdapterTest
     private CategoryAdapter _categoryAdapter;
     private Category genericCategory1;
     private Category genericCategory2;
+    private CreateCategoryRequest genericCreateCategoryRequest;
     
     [TestInitialize]
     public void Initialize()
@@ -34,6 +35,11 @@ public class CategoryAdapterTest
         {
             Id = Guid.NewGuid(),
             Name = "Plumber"
+        };
+        
+        genericCreateCategoryRequest = new CreateCategoryRequest
+        {
+            Name = "Electrician"
         };
     }
     
@@ -135,27 +141,14 @@ public class CategoryAdapterTest
             Id = genericCategory1.Id
         };
         
-        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Returns(genericCategory1);
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>()));
 
         CreateCategoryResponse adapterResponse = _categoryAdapter.CreateCategory(createCategoryRequest);
         
-        _categoryServiceLogic.VerifyAll();
+        _categoryServiceLogic.Verify(
+                service => service.CreateCategory(It.IsAny<Category>()), Times.Once());
 
-        Assert.AreEqual(expectedAdapterResponse.Id, (adapterResponse.Id));
-    }
-    
-    [TestMethod]
-    public void CreateCategory_ShouldThrowObjectErrorServiceException()
-    {
-        CreateCategoryRequest createCategoryRequest = new CreateCategoryRequest
-        {
-            Name = "Electrician"
-        };
-        
-        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
-            Throws(new ObjectErrorServiceException("Error on Name"));
-        
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(createCategoryRequest));
+        Assert.IsNotNull(adapterResponse);
     }
     
     [TestMethod]
@@ -164,6 +157,24 @@ public class CategoryAdapterTest
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Throws(new Exception("Something went wrong"));
         
         Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(It.IsAny<CreateCategoryRequest>()));
+    }
+    
+    [TestMethod]
+    public void CreateCategory_ShouldThrowObjectRepeatedServiceException()
+    {
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
+            Throws(new ObjectRepeatedServiceException("Category already exists"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
+    }
+    
+    [TestMethod]
+    public void CreateCategory_ShouldThrowObjectErrorServiceException()
+    {
+        _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
+            Throws(new ObjectErrorServiceException("Name can't be empty"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
     }
     
     #endregion
