@@ -29,7 +29,7 @@ namespace WebModel.Responses.FlatResponses
             return Id == toCompare.Id &&
                    Floor == toCompare.Floor &&
                    RoomNumber == toCompare.RoomNumber &&
-                   GetOwnerAssigned == toCompare.GetOwnerAssigned &&
+                   GetOwnerAssigned.Equals(toCompare.GetOwnerAssigned) &&
                    TotalBaths == toCompare.TotalBaths &&
                    TotalRooms == toCompare.TotalRooms &&
                    HasTerrace == toCompare.HasTerrace;

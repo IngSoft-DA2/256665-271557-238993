@@ -2,7 +2,7 @@
 
 public class ObjectErrorServiceException : Exception
 {
-    public ObjectErrorServiceException(string msg) : base(msg)
+    public ObjectErrorServiceException (string message) : base(message)
     {
     }
 }
