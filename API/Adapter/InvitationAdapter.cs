@@ -126,6 +126,10 @@ public class InvitationAdapter
         {
             throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 
     public void DeleteInvitation(Guid idOfInvitationToDelete)

@@ -219,9 +219,21 @@ public class InvitationAdapterTest
     public void UpdateInvitation_ShouldThrowObjectRepeatedException()
     {
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
-            .Throws(new ObjectRepeatedAdapterException("No changes were registered on update, the invitation remains the same"));
+            .Throws(new ObjectRepeatedServiceException("No changes were registered on update, the invitation remains the same"));
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
+            _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void UpdateInvitation_ShouldThrowException()
+    {
+        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<Exception>(() =>
             _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
         _invitationServiceLogic.VerifyAll();
@@ -263,9 +275,6 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
-
-
-
 
     #endregion
     
