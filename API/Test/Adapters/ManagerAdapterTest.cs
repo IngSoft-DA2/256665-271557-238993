@@ -1,7 +1,9 @@
 ﻿using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.ManagerResponses;
 
 namespace Test.Adapters;
@@ -68,6 +70,14 @@ public class ManagerAdapterTest
         _managerAdapter.DeleteManagerById(It.IsAny<Guid>());
         
         _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void DeleteManagerById_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
+        
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
     }
     
 }

@@ -1,5 +1,7 @@
-﻿using Domain;
+﻿using Adapter.CustomExceptions;
+using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.ManagerResponses;
 
 namespace Adapter;
@@ -37,6 +39,13 @@ public class ManagerAdapter
 
     public void DeleteManagerById(Guid id)
     {
-        _managerServiceLogic.DeleteManagerById(id);
+        try
+        {
+            _managerServiceLogic.DeleteManagerById(id);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }
