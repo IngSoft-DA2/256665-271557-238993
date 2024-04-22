@@ -114,9 +114,13 @@ public class OwnerAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
-        catch (ObjectRepeatedServiceException exceptionCaught)
+        catch (ObjectRepeatedServiceException)
         {
             throw new ObjectRepeatedAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
         }
     }
 }
