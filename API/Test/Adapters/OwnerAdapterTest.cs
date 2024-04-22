@@ -205,4 +205,15 @@ public class OwnerAdapterTest
             _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
         _ownerService.VerifyAll();
     }
+
+    [TestMethod]
+    public void UpdateOwner_ThrowsObjectNotFoundAdapterException()
+    {
+        _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>((() =>
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+        _ownerService.VerifyAll();
+    }
 }

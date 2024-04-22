@@ -110,5 +110,9 @@ public class OwnerAdapter
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }
