@@ -105,12 +105,22 @@ public class ConstructionCompanyAdapterTest
     }
 
     [TestMethod]
-    public void GetConstructionCompanyById_ThrowObjectNotFoundAdapterException()
+    public void GetConstructionCompanyById_ThrowsObjectNotFoundAdapterException()
     {
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>()));
+    }
+    
+    [TestMethod]
+    public void GetConstructionCompanyById_ThrowsUnknownAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Throws(new Exception("Internal server error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
             _constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>()));
     }
 

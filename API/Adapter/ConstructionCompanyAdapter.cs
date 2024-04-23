@@ -41,7 +41,8 @@ public class ConstructionCompanyAdapter
 
         try
         {
-            ConstructionCompany constructionCompanyInDb = _constructionCompanyService.GetConstructionCompanyById(idOfConstructionCompany);
+            ConstructionCompany constructionCompanyInDb =
+                _constructionCompanyService.GetConstructionCompanyById(idOfConstructionCompany);
             GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
             {
                 Id = constructionCompanyInDb.Id,
@@ -53,6 +54,10 @@ public class ConstructionCompanyAdapter
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
         }
    
     }
