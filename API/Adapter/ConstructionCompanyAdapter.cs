@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using WebModel.Responses.ConstructionCompanyResponses;
@@ -14,15 +15,23 @@ public class ConstructionCompanyAdapter
 
     public IEnumerable<GetConstructionCompanyResponse> GetAllConstructionCompanies()
     {
-        IEnumerable<ConstructionCompany> constructionCompaniesInDb =
-            _constructionCompanyService.GetAllConstructionCompanies();
+        try
+        {
+            IEnumerable<ConstructionCompany> constructionCompaniesInDb =
+                _constructionCompanyService.GetAllConstructionCompanies();
         
-        IEnumerable<GetConstructionCompanyResponse> constructionCompaniesToReturn = 
-            constructionCompaniesInDb.Select(constructionCompany => new GetConstructionCompanyResponse
-            {
-                Id = constructionCompany.Id,
-                Name = constructionCompany.Name,
-            });
-        return constructionCompaniesToReturn;
+            IEnumerable<GetConstructionCompanyResponse> constructionCompaniesToReturn = 
+                constructionCompaniesInDb.Select(constructionCompany => new GetConstructionCompanyResponse
+                {
+                    Id = constructionCompany.Id,
+                    Name = constructionCompany.Name,
+                });
+            return constructionCompaniesToReturn;
+        }
+        catch (Exception exceptionCaught)
+        {
+            Console.WriteLine(exceptionCaught.Message);
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 }

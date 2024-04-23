@@ -1,9 +1,11 @@
 ﻿using Adapter;
+using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using Domain;
 using IAdapter;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Test.Adapters;
@@ -46,11 +48,29 @@ public class ConstructionCompanyAdapterTest
 
         IEnumerable<GetConstructionCompanyResponse> adapterResponse =
             constructionCompanyAdapter.GetAllConstructionCompanies();
+        constructionCompanyService.VerifyAll();
 
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
 
-    #endregion
+    [TestMethod]
+    public void GetAllConstructionCompanies_ThrowUnknownAdapterException()
+    {
+        Mock<IConstructionCompanyService> constructionCompanyService =
+            new Mock<IConstructionCompanyService>(MockBehavior.Strict);
+
+        constructionCompanyService.Setup(service => service.GetAllConstructionCompanies())
+            .Throws(new Exception("Internal server error"));
+
+        ConstructionCompanyAdapter constructionCompanyAdapter =
+            new ConstructionCompanyAdapter(constructionCompanyService.Object);
+
+        Assert.ThrowsException<UnknownAdapterException>(() => constructionCompanyAdapter.GetAllConstructionCompanies());
+        constructionCompanyService.VerifyAll();
+
+    }
+
+#endregion
 
 }
