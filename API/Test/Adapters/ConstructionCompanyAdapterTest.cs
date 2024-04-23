@@ -18,6 +18,7 @@ public class ConstructionCompanyAdapterTest
 
     private Mock<IConstructionCompanyService> _constructionCompanyService;
     private ConstructionCompanyAdapter _constructionCompanyAdapter;
+    private CreateConstructionCompanyRequest _dummyRequest;
 
     [TestInitialize]
     public void Initialize()
@@ -26,6 +27,8 @@ public class ConstructionCompanyAdapterTest
             new Mock<IConstructionCompanyService>(MockBehavior.Strict);
 
         _constructionCompanyAdapter = new ConstructionCompanyAdapter(_constructionCompanyService.Object);
+
+        _dummyRequest = new CreateConstructionCompanyRequest();
     }
 
     #endregion
@@ -136,9 +139,9 @@ public class ConstructionCompanyAdapterTest
             service.CreateConstructionCompany(It.IsAny<ConstructionCompany>()));
 
         CreateConstructionCompanyResponse constructionCompanyResponse =
-            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest());
+            _constructionCompanyAdapter.CreateConstructionCompany(_dummyRequest);
         _constructionCompanyService.VerifyAll();
-        
+
         Assert.IsNotNull(constructionCompanyResponse);
         Assert.IsInstanceOfType(constructionCompanyResponse.Id, typeof(Guid));
     }
@@ -150,7 +153,7 @@ public class ConstructionCompanyAdapterTest
             .Throws(new ObjectErrorServiceException("Specific construction company error"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
+            _constructionCompanyAdapter.CreateConstructionCompany(_dummyRequest));
         _constructionCompanyService.VerifyAll();
     }
 
@@ -161,10 +164,10 @@ public class ConstructionCompanyAdapterTest
             .Throws(new ObjectRepeatedServiceException("Name already in use"));
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
-            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
+            _constructionCompanyAdapter.CreateConstructionCompany(_dummyRequest));
         _constructionCompanyService.VerifyAll();
-        
     }
+
     [TestMethod]
     public void CreateConstructionCompanyRequest_ThrowsUnknownAdapterException()
     {
@@ -172,7 +175,7 @@ public class ConstructionCompanyAdapterTest
             .Throws(new Exception("Internal server error"));
 
         Assert.ThrowsException<UnknownAdapterException>(() =>
-            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
+            _constructionCompanyAdapter.CreateConstructionCompany(_dummyRequest));
         _constructionCompanyService.VerifyAll();
     }
 }
