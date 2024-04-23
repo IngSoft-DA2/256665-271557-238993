@@ -41,7 +41,7 @@ public class OwnerAdapterTest
                 Id = Guid.NewGuid(),
                 Firstname = "OwnerName",
                 Lastname = "OwnerLastname",
-                Email = "owner@gmail.com"
+                Email = "owner@gmail.com",
             }
         };
         IEnumerable<Owner> expectedServiceResponse = new List<Owner>()
@@ -51,7 +51,8 @@ public class OwnerAdapterTest
                 Id = expectedAdapterResponse.First().Id,
                 Firstname = expectedAdapterResponse.First().Firstname,
                 Lastname = expectedAdapterResponse.First().Lastname,
-                Email = expectedAdapterResponse.First().Email
+                Email = expectedAdapterResponse.First().Email,
+                Flats = new List<Flat>()
             }
         };
 
@@ -92,7 +93,8 @@ public class OwnerAdapterTest
             Id = ownerId,
             Firstname = expectedAdapterResponse.Firstname,
             Lastname = expectedAdapterResponse.Lastname,
-            Email = expectedAdapterResponse.Email
+            Email = expectedAdapterResponse.Email,
+            Flats = new List<Flat>()
         };
 
 
@@ -126,10 +128,10 @@ public class OwnerAdapterTest
     [TestMethod]
     public void CreateOwner_ReturnsCreateOwnerResponse()
     {
-    
+        CreateOwnerRequest dummyRequest = new CreateOwnerRequest();
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()));
 
-        CreateOwnerResponse adapterResponse = _ownerAdapter.CreateOwner(new CreateOwnerRequest());
+        CreateOwnerResponse adapterResponse = _ownerAdapter.CreateOwner(dummyRequest);
         _ownerService.VerifyAll();
         Assert.IsNotNull(adapterResponse.Id);
     }
@@ -137,76 +139,87 @@ public class OwnerAdapterTest
     [TestMethod]
     public void CreateOwner_ThrowsObjectErrorAdapterException_WhenServiceFails()
     {
+        CreateOwnerRequest dummyRequest = new CreateOwnerRequest();
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()))
             .Throws(new ObjectErrorServiceException("Specific error detected at service"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _ownerAdapter.CreateOwner(new CreateOwnerRequest()));
+            _ownerAdapter.CreateOwner(dummyRequest));
         _ownerService.VerifyAll();
     }
 
     [TestMethod]
     public void CreateOwner_ThrowsException()
     {
+        CreateOwnerRequest dummyRequest = new CreateOwnerRequest();
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()))
             .Throws(new Exception("Internal Server Error"));
 
-        Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(new CreateOwnerRequest()));
+        Assert.ThrowsException<Exception>(() => _ownerAdapter.CreateOwner(dummyRequest));
         _ownerService.VerifyAll();
     }
 
     #endregion
 
+    #region Update owner
+
     [TestMethod]
     public void UpdateOwner_ReturnsOwnerUpdateResponse()
     {
+        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest();
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()));
 
-        _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest());
+        _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), dummyUpdate);
         _ownerService.Verify(service => service.UpdateOwnerById(It.IsAny<Owner>()), Times.Once);
     }
 
     [TestMethod]
     public void UpdateOwner_ThrowsObjectErrorAdapterException()
     {
+        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest();
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
             .Throws(new ObjectErrorServiceException("Specific error detected at service"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>((() =>
-            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), dummyUpdate)));
         _ownerService.VerifyAll();
     }
 
     [TestMethod]
     public void UpdateOwner_ThrowsObjectNotFoundAdapterException()
     {
+        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest();
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>((() =>
-            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), dummyUpdate)));
         _ownerService.VerifyAll();
     }
+
     [TestMethod]
-    public void UpdateOwner_ThrowsRepeteadObjectAdapterException()
+    public void UpdateOwner_ThrowsRepeatedObjectAdapterException()
     {
+        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest();
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
             .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>((() =>
-            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), dummyUpdate)));
         _ownerService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void UpdateOwner_ThrowsException()
     {
+        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest();
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()))
             .Throws(new Exception("Internal Server Error"));
 
         Assert.ThrowsException<Exception>((() =>
-            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), new UpdateOwnerRequest())));
+            _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), dummyUpdate)));
         _ownerService.VerifyAll();
     }
-    
+
+    #endregion
 }
