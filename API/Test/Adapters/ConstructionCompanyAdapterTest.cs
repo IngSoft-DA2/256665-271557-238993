@@ -104,5 +104,15 @@ public class ConstructionCompanyAdapterTest
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
     }
 
+    [TestMethod]
+    public void GetConstructionCompanyById_ThrowObjectNotFoundAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>()));
+    }
+
     #endregion
 }

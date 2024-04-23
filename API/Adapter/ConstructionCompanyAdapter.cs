@@ -1,6 +1,7 @@
 using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Adapter;
@@ -37,15 +38,22 @@ public class ConstructionCompanyAdapter
 
     public GetConstructionCompanyResponse GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
-       
-        ConstructionCompany constructionCompanyInDb = _constructionCompanyService.GetConstructionCompanyById(idOfConstructionCompany);
-        
-        GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
-        {
-            Id = constructionCompanyInDb.Id,
-            Name = constructionCompanyInDb.Name,
-        };
 
-        return constructionCompanyToReturn;
+        try
+        {
+            ConstructionCompany constructionCompanyInDb = _constructionCompanyService.GetConstructionCompanyById(idOfConstructionCompany);
+            GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
+            {
+                Id = constructionCompanyInDb.Id,
+                Name = constructionCompanyInDb.Name,
+            };
+
+            return constructionCompanyToReturn;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+   
     }
 }
