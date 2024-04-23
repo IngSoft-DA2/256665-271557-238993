@@ -101,8 +101,7 @@ public class FlatAdapter
             {
                 ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId.Value);
             }
-
-
+            
             Flat flatToCreate = new Flat
             {
                 Floor = flat.Floor,

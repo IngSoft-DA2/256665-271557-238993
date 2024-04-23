@@ -179,9 +179,10 @@ public class FlatAdapterTest
     public void CreateFlat_ReturnsGetFlatResponse()
     {
         CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
 
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()));
-        _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
         CreateFlatResponse adapterResponse = _flatAdapter.CreateFlat(dummyCreateRequest);
         _flatService.VerifyAll();
@@ -194,8 +195,9 @@ public class FlatAdapterTest
     public void CreateFlat_ThrowsObjectNotFoundAdapterException_WhenOwnerServiceFails()
     {
         CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
         
-        _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>()))
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
@@ -206,10 +208,11 @@ public class FlatAdapterTest
     public void CreateFlat_ThrowsObjectErrorAdapterException_WhenServiceFails()
     {
         CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
-
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
+        
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
             .Throws(new ObjectErrorServiceException("Specific Flat Error"));
-        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _flatService.VerifyAll();
@@ -220,10 +223,11 @@ public class FlatAdapterTest
     public void CreateFlat_ThrowsException_WhenServiceFails()
     {
         CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
-
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();    
+        
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
             .Throws(new Exception("Unknown Error"));
-        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
         Assert.ThrowsException<Exception>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _flatService.VerifyAll();
