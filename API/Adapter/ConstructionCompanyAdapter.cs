@@ -9,12 +9,18 @@ namespace Adapter;
 
 public class ConstructionCompanyAdapter
 {
+    #region Constructor and atributes
+
     private readonly IConstructionCompanyService _constructionCompanyService;
 
     public ConstructionCompanyAdapter(IConstructionCompanyService constructionCompanyService)
     {
         _constructionCompanyService = constructionCompanyService;
     }
+
+    #endregion
+
+    #region Get all construction companies responses
 
     public IEnumerable<GetConstructionCompanyResponse> GetAllConstructionCompanies()
     {
@@ -37,6 +43,10 @@ public class ConstructionCompanyAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    #endregion
+
+    #region Get construction company response by id
 
     public GetConstructionCompanyResponse GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
@@ -61,6 +71,10 @@ public class ConstructionCompanyAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    #endregion
+
+    #region Create construction company response
 
     public CreateConstructionCompanyResponse CreateConstructionCompany(
         CreateConstructionCompanyRequest createConstructionCompanyRequest)
@@ -94,4 +108,6 @@ public class ConstructionCompanyAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    #endregion
 }

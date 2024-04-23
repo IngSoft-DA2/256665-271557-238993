@@ -1,5 +1,4 @@
 using Domain;
-using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace IServiceLogic;
 

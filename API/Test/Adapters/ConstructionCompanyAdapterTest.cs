@@ -132,6 +132,8 @@ public class ConstructionCompanyAdapterTest
 
     #endregion
 
+    #region Create construction company
+
     [TestMethod]
     public void CreateConstructionCompanyRequest_ReturnsConstructionCompanyResponse()
     {
@@ -178,4 +180,6 @@ public class ConstructionCompanyAdapterTest
             _constructionCompanyAdapter.CreateConstructionCompany(_dummyRequest));
         _constructionCompanyService.VerifyAll();
     }
+
+    #endregion
 }
