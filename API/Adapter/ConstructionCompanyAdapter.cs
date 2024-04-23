@@ -65,18 +65,25 @@ public class ConstructionCompanyAdapter
     public CreateConstructionCompanyResponse CreateConstructionCompany(
         CreateConstructionCompanyRequest createConstructionCompanyRequest)
     {
-        ConstructionCompany constructionCompanyToCreate = new ConstructionCompany
+        try
         {
-            Id = Guid.NewGuid(),
-            Name = createConstructionCompanyRequest.Name
-        };
+            ConstructionCompany constructionCompanyToCreate = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = createConstructionCompanyRequest.Name
+            };
         
-        _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);
+            _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);
 
-        CreateConstructionCompanyResponse response = new CreateConstructionCompanyResponse
+            CreateConstructionCompanyResponse response = new CreateConstructionCompanyResponse
+            {
+                Id = constructionCompanyToCreate.Id
+            };
+            return response;
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
         {
-            Id = constructionCompanyToCreate.Id
-        };
-        return response;
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }

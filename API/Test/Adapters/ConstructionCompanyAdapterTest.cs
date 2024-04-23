@@ -142,4 +142,15 @@ public class ConstructionCompanyAdapterTest
         Assert.IsNotNull(constructionCompanyResponse);
         Assert.IsInstanceOfType(constructionCompanyResponse.Id, typeof(Guid));
     }
+
+    [TestMethod]
+    public void CreateConstructionCompanyRequest_ThrowsObjectErrorAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.CreateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new ObjectErrorServiceException("Specific construction company error"));
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
+        _constructionCompanyService.VerifyAll();
+    }
 }
