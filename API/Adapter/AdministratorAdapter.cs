@@ -32,9 +32,9 @@ public class AdministratorAdapter
 
             return adapterResponse;
         }
-        catch (ObjectRepeatedServiceException exceptionCaught)
+        catch (ObjectRepeatedServiceException)
         {
-            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+            throw new ObjectRepeatedAdapterException();
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
 using IAdapter;
@@ -245,10 +246,7 @@ public class BuildingControllerTest
                 {
                     Floor = 1,
                     RoomNumber = 102,
-                    Owner = new AssignOwnerToFlatRequest()
-                    {
-                        Id = Guid.NewGuid()
-                    },
+                    OwnerAssignedId = Guid.NewGuid(),
                     TotalRooms = 4,
                     TotalBaths = 2,
                     HasTerrace = true

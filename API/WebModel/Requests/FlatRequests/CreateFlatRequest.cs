@@ -12,7 +12,7 @@ namespace WebModel.Requests.FlatRequests
     {
         public int Floor { get; set; }
         public int RoomNumber { get; set; }
-        public AssignOwnerToFlatRequest? Owner { get; set; } = null;
+        public Guid? OwnerAssignedId { get; set; } = null;
         public int TotalBaths { get; set; }
         public int TotalRooms { get; set; }
         public bool HasTerrace { get; set; }

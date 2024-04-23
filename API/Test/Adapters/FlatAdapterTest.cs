@@ -1,7 +1,6 @@
 ﻿using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
-using Domain.Exceptions;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
@@ -179,23 +178,13 @@ public class FlatAdapterTest
     [TestMethod]
     public void CreateFlat_ReturnsGetFlatResponse()
     {
-        CreateFlatRequest flatRequest = new CreateFlatRequest
-        {
-            Floor = 1,
-            RoomNumber = 102,
-            Owner = new AssignOwnerToFlatRequest()
-            {
-                Id = Guid.NewGuid(),
-            },
-            TotalRooms = 4,
-            TotalBaths = 2,
-            HasTerrace = true
-        };
+        CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
 
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()));
-        _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
-        CreateFlatResponse adapterResponse = _flatAdapter.CreateFlat(flatRequest);
+        CreateFlatResponse adapterResponse = _flatAdapter.CreateFlat(dummyCreateRequest);
         _flatService.VerifyAll();
         _ownerService.VerifyAll();
 
@@ -205,47 +194,27 @@ public class FlatAdapterTest
     [TestMethod]
     public void CreateFlat_ThrowsObjectNotFoundAdapterException_WhenOwnerServiceFails()
     {
-        CreateFlatRequest flatRequest = new CreateFlatRequest
-        {
-            Floor = 1,
-            RoomNumber = 102,
-            Owner = new AssignOwnerToFlatRequest()
-            {
-                Id = Guid.NewGuid(),
-            },
-            TotalRooms = 4,
-            TotalBaths = 2,
-            HasTerrace = true
-        };
-
-        _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>()))
+        CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
+        
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value))
             .Throws(new ObjectNotFoundServiceException());
 
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.CreateFlat(flatRequest));
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _ownerService.VerifyAll();
     }
 
     [TestMethod]
-    public void CreateFlat_ThrowsObjectErrorAdapterException_WhenFlatDomainFails()
+    public void CreateFlat_ThrowsObjectErrorAdapterException_WhenServiceFails()
     {
-        CreateFlatRequest flatRequest = new CreateFlatRequest
-        {
-            Floor = 1,
-            RoomNumber = 102,
-            Owner = new AssignOwnerToFlatRequest()
-            {
-                Id = Guid.NewGuid(),
-            },
-            TotalRooms = 4,
-            TotalBaths = 2,
-            HasTerrace = true
-        };
-
+        CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
+        
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
-            .Throws(new ValidateFlatException("Specific Flat Error"));
-        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+            .Throws(new ObjectErrorServiceException("Specific Flat Error"));
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _flatAdapter.CreateFlat(flatRequest));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _flatService.VerifyAll();
         _ownerService.VerifyAll();
     }
@@ -253,24 +222,14 @@ public class FlatAdapterTest
     [TestMethod]
     public void CreateFlat_ThrowsException_WhenServiceFails()
     {
-        CreateFlatRequest flatRequest = new CreateFlatRequest
-        {
-            Floor = 1,
-            RoomNumber = 102,
-            Owner = new AssignOwnerToFlatRequest()
-            {
-                Id = Guid.NewGuid(),
-            },
-            TotalRooms = 4,
-            TotalBaths = 2,
-            HasTerrace = true
-        };
-
+        CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
+        dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();    
+        
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
             .Throws(new Exception("Unknown Error"));
-        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(It.IsAny<Guid>())).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
-        Assert.ThrowsException<Exception>(() => _flatAdapter.CreateFlat(flatRequest));
+        Assert.ThrowsException<Exception>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _flatService.VerifyAll();
         _ownerService.VerifyAll();
     }

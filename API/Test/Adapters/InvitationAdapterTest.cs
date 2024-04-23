@@ -146,7 +146,7 @@ public class InvitationAdapterTest
     public void CreateInvitation_ShouldThrowObjectReapeatedException()
     {
         _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
-            .Throws(new ObjectRepeatedServiceException("The invitation already exists"));
+            .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
             _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
@@ -219,7 +219,7 @@ public class InvitationAdapterTest
     public void UpdateInvitation_ShouldThrowObjectRepeatedException()
     {
         _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
-            .Throws(new ObjectRepeatedServiceException("No changes were registered on update, the invitation remains the same"));
+            .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
             _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));

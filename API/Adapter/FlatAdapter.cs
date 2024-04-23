@@ -1,6 +1,5 @@
 using Adapter.CustomExceptions;
 using Domain;
-using Domain.Exceptions;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.FlatRequests;
@@ -98,11 +97,11 @@ public class FlatAdapter
         {
             Owner? ownerAssigned = null;
 
-            if (flat.Owner is not null)
+            if (flat.OwnerAssignedId != null)
             {
-                ownerAssigned = _ownerService.GetOwnerById(flat.Owner.Id);
+                ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId.Value);
             }
-
+            
             Flat flatToCreate = new Flat
             {
                 Floor = flat.Floor,
@@ -122,7 +121,7 @@ public class FlatAdapter
 
             return response;
         }
-        catch (ValidateFlatException exceptionCaught)
+        catch (ObjectErrorServiceException exceptionCaught)
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }

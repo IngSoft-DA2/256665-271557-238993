@@ -163,7 +163,7 @@ public class CategoryAdapterTest
     public void CreateCategory_ShouldThrowObjectRepeatedServiceException()
     {
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).
-            Throws(new ObjectRepeatedServiceException("Category already exists"));
+            Throws(new ObjectRepeatedServiceException());
         
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
     }
