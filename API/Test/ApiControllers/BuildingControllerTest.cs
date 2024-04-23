@@ -243,10 +243,7 @@ public class BuildingControllerTest
                 Latitude = 1.2345,
                 Longitude = 1.2345
             },
-            ConstructionCompany = new CreateConstructionCompanyRequest
-            {
-                Name = "Construction company 1"
-            },
+            ConstructionCompanyId = Guid.NewGuid(),
             CommonExpenses = 300,
             Flats = new[]
             {
