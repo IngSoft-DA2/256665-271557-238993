@@ -72,7 +72,7 @@ public class ConstructionCompanyAdapter
                 Id = Guid.NewGuid(),
                 Name = createConstructionCompanyRequest.Name
             };
-        
+
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);
 
             CreateConstructionCompanyResponse response = new CreateConstructionCompanyResponse
@@ -84,6 +84,10 @@ public class ConstructionCompanyAdapter
         catch (ObjectErrorServiceException exceptionCaught)
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException exceptionCaught)
+        {
+            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
         }
     }
 }

@@ -153,4 +153,18 @@ public class ConstructionCompanyAdapterTest
             _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
         _constructionCompanyService.VerifyAll();
     }
+
+    [TestMethod]
+    public void CreateConstructionCompanyRequest_ThrowsObjectRepeatedAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.CreateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new ObjectRepeatedServiceException("Name already in use"));
+
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
+            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
+        _constructionCompanyService.VerifyAll();
+        
+
+
+    }
 }
