@@ -2,6 +2,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Adapter;
@@ -9,6 +10,7 @@ namespace Adapter;
 public class ConstructionCompanyAdapter
 {
     private readonly IConstructionCompanyService _constructionCompanyService;
+
     public ConstructionCompanyAdapter(IConstructionCompanyService constructionCompanyService)
     {
         _constructionCompanyService = constructionCompanyService;
@@ -20,8 +22,8 @@ public class ConstructionCompanyAdapter
         {
             IEnumerable<ConstructionCompany> constructionCompaniesInDb =
                 _constructionCompanyService.GetAllConstructionCompanies();
-        
-            IEnumerable<GetConstructionCompanyResponse> constructionCompaniesToReturn = 
+
+            IEnumerable<GetConstructionCompanyResponse> constructionCompaniesToReturn =
                 constructionCompaniesInDb.Select(constructionCompany => new GetConstructionCompanyResponse
                 {
                     Id = constructionCompany.Id,
@@ -38,7 +40,6 @@ public class ConstructionCompanyAdapter
 
     public GetConstructionCompanyResponse GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
-
         try
         {
             ConstructionCompany constructionCompanyInDb =
@@ -59,6 +60,23 @@ public class ConstructionCompanyAdapter
         {
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
-   
+    }
+
+    public CreateConstructionCompanyResponse CreateConstructionCompany(
+        CreateConstructionCompanyRequest createConstructionCompanyRequest)
+    {
+        ConstructionCompany constructionCompanyToCreate = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = createConstructionCompanyRequest.Name
+        };
+        
+        _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);
+
+        CreateConstructionCompanyResponse response = new CreateConstructionCompanyResponse
+        {
+            Id = constructionCompanyToCreate.Id
+        };
+        return response;
     }
 }

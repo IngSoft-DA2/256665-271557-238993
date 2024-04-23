@@ -6,6 +6,7 @@ using IAdapter;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Test.Adapters;
@@ -112,8 +113,9 @@ public class ConstructionCompanyAdapterTest
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>()));
+        _constructionCompanyService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void GetConstructionCompanyById_ThrowsUnknownAdapterException()
     {
@@ -122,7 +124,22 @@ public class ConstructionCompanyAdapterTest
 
         Assert.ThrowsException<UnknownAdapterException>(() =>
             _constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>()));
+        _constructionCompanyService.VerifyAll();
     }
 
     #endregion
+
+    [TestMethod]
+    public void CreateConstructionCompanyRequest_ReturnsConstructionCompanyResponse()
+    {
+        _constructionCompanyService.Setup(service =>
+            service.CreateConstructionCompany(It.IsAny<ConstructionCompany>()));
+
+        CreateConstructionCompanyResponse constructionCompanyResponse =
+            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest());
+        _constructionCompanyService.VerifyAll();
+        
+        Assert.IsNotNull(constructionCompanyResponse);
+        Assert.IsInstanceOfType(constructionCompanyResponse.Id, typeof(Guid));
+    }
 }
