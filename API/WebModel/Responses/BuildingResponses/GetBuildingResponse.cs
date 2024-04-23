@@ -1,3 +1,4 @@
+using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
 
 namespace WebModel.Responses.BuildingResponses;
@@ -8,7 +9,7 @@ public class GetBuildingResponse
     public string Name { get; set; }
     public string Address { get; set; }
     public LocationResponse Location { get; set; }
-    public string ConstructionCompany { get; set; }
+    public GetConstructionCompanyResponse ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
     public IEnumerable<GetFlatResponse> Flats { get; set; }
 

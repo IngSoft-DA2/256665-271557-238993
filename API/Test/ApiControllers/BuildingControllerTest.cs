@@ -9,6 +9,7 @@ using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Requests.FlatRequests;
 using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.BuildingResponses;
+using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.OwnerResponses;
 
@@ -48,7 +49,11 @@ public class BuildingControllerTest
                     Latitude = 1.2345,
                     Longitude = 1.2345,
                 },
-                ConstructionCompany = "Company 1",
+                ConstructionCompany = new GetConstructionCompanyResponse
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "ConstructionCompany"
+                },
                 CommonExpenses = 300,
                 Flats = new[]
                 {
@@ -141,7 +146,11 @@ public class BuildingControllerTest
                 Latitude = 1.023,
                 Longitude = 1.12
             },
-            ConstructionCompany = "Construction Company 1",
+            ConstructionCompany = new GetConstructionCompanyResponse
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction company 1"
+            },
             CommonExpenses = 1000,
             Flats = new[]
             {
@@ -235,10 +244,7 @@ public class BuildingControllerTest
                 Latitude = 1.2345,
                 Longitude = 1.2345
             },
-            ConstructionCompany = new CreateConstructionCompanyRequest
-            {
-                Name = "Construction company 1"
-            },
+            ConstructionCompanyId = Guid.NewGuid(),
             CommonExpenses = 300,
             Flats = new[]
             {
