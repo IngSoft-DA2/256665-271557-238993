@@ -164,7 +164,15 @@ public class ConstructionCompanyAdapterTest
             _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
         _constructionCompanyService.VerifyAll();
         
+    }
+    [TestMethod]
+    public void CreateConstructionCompanyRequest_ThrowsUnknownAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.CreateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new Exception("Internal server error"));
 
-
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdapter.CreateConstructionCompany(new CreateConstructionCompanyRequest()));
+        _constructionCompanyService.VerifyAll();
     }
 }

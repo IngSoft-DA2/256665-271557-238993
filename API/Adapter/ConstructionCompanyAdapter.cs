@@ -89,5 +89,9 @@ public class ConstructionCompanyAdapter
         {
             throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 }
