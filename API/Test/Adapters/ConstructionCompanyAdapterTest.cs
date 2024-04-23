@@ -13,6 +13,22 @@ namespace Test.Adapters;
 [TestClass]
 public class ConstructionCompanyAdapterTest
 {
+    #region Initialize
+
+    private Mock<IConstructionCompanyService> _constructionCompanyService;
+    private ConstructionCompanyAdapter _constructionCompanyAdapter;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _constructionCompanyService =
+            new Mock<IConstructionCompanyService>(MockBehavior.Strict);
+
+        _constructionCompanyAdapter = new ConstructionCompanyAdapter(_constructionCompanyService.Object);
+    }
+
+    #endregion
+
     #region Get all construction companies
 
     [TestMethod]
@@ -37,18 +53,12 @@ public class ConstructionCompanyAdapterTest
                 }
             };
 
-        Mock<IConstructionCompanyService> constructionCompanyService =
-            new Mock<IConstructionCompanyService>(MockBehavior.Strict);
-
-        constructionCompanyService.Setup(service => service.GetAllConstructionCompanies())
+        _constructionCompanyService.Setup(service => service.GetAllConstructionCompanies())
             .Returns(expectedServiceResponse);
 
-        ConstructionCompanyAdapter constructionCompanyAdapter =
-            new ConstructionCompanyAdapter(constructionCompanyService.Object);
-
         IEnumerable<GetConstructionCompanyResponse> adapterResponse =
-            constructionCompanyAdapter.GetAllConstructionCompanies();
-        constructionCompanyService.VerifyAll();
+            _constructionCompanyAdapter.GetAllConstructionCompanies();
+        _constructionCompanyService.VerifyAll();
 
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
@@ -57,20 +67,17 @@ public class ConstructionCompanyAdapterTest
     [TestMethod]
     public void GetAllConstructionCompanies_ThrowUnknownAdapterException()
     {
-        Mock<IConstructionCompanyService> constructionCompanyService =
-            new Mock<IConstructionCompanyService>(MockBehavior.Strict);
-
-        constructionCompanyService.Setup(service => service.GetAllConstructionCompanies())
+        _constructionCompanyService.Setup(service => service.GetAllConstructionCompanies())
             .Throws(new Exception("Internal server error"));
 
-        ConstructionCompanyAdapter constructionCompanyAdapter =
-            new ConstructionCompanyAdapter(constructionCompanyService.Object);
-
-        Assert.ThrowsException<UnknownAdapterException>(() => constructionCompanyAdapter.GetAllConstructionCompanies());
-        constructionCompanyService.VerifyAll();
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdapter.GetAllConstructionCompanies());
+        _constructionCompanyService.VerifyAll();
     }
 
     #endregion
+
+    #region Get construction company by id
 
     [TestMethod]
     public void GetConstructionCompanyById_ReturnsConstructionCompanyResponse()
@@ -87,17 +94,15 @@ public class ConstructionCompanyAdapterTest
             Name = expectedServiceResponse.Name
         };
 
-        Mock<IConstructionCompanyService> constructionCompanyService = new Mock<IConstructionCompanyService>(MockBehavior.Strict);
-        constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(expectedServiceResponse);
-        
-        ConstructionCompanyAdapter constructionCompanyAdapter = new ConstructionCompanyAdapter(constructionCompanyService.Object);
-        
-        GetConstructionCompanyResponse adapterResponse = constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>());
-        constructionCompanyService.VerifyAll();
-        
-        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
-        
-    }
-}
 
+        GetConstructionCompanyResponse adapterResponse =
+            _constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>());
+        _constructionCompanyService.VerifyAll();
+
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
+
+    #endregion
+}
