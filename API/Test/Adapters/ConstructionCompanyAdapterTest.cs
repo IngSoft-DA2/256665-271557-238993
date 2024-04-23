@@ -11,13 +11,13 @@ namespace Test.Adapters;
 [TestClass]
 public class ConstructionCompanyAdapterTest
 {
+    #region Get all construction companies
 
     [TestMethod]
-    public void GetAllConstructionCompanies()
+    public void GetAllConstructionCompanies_ReturnsConstructionCompanyResponses()
     {
         IEnumerable<ConstructionCompany> expectedServiceResponse = new List<ConstructionCompany>
         {
-            
             new ConstructionCompany
             {
                 Id = Guid.NewGuid(),
@@ -34,26 +34,23 @@ public class ConstructionCompanyAdapterTest
                     Name = expectedServiceResponse.First().Name
                 }
             };
-        
+
         Mock<IConstructionCompanyService> constructionCompanyService =
             new Mock<IConstructionCompanyService>(MockBehavior.Strict);
-        
-        constructionCompanyService.Setup( service => service.GetAllConstructionCompanies()).Returns(expectedServiceResponse);
+
+        constructionCompanyService.Setup(service => service.GetAllConstructionCompanies())
+            .Returns(expectedServiceResponse);
 
         ConstructionCompanyAdapter constructionCompanyAdapter =
             new ConstructionCompanyAdapter(constructionCompanyService.Object);
-        
-        IEnumerable<GetConstructionCompanyResponse> adapterResponse = constructionCompanyAdapter.GetAllConstructionCompanies();
-        
+
+        IEnumerable<GetConstructionCompanyResponse> adapterResponse =
+            constructionCompanyAdapter.GetAllConstructionCompanies();
+
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
+    #endregion
+
 }
