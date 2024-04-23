@@ -34,4 +34,18 @@ public class ConstructionCompanyAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public GetConstructionCompanyResponse GetConstructionCompanyById(Guid idOfConstructionCompany)
+    {
+       
+        ConstructionCompany constructionCompanyInDb = _constructionCompanyService.GetConstructionCompanyById(idOfConstructionCompany);
+        
+        GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
+        {
+            Id = constructionCompanyInDb.Id,
+            Name = constructionCompanyInDb.Name,
+        };
+
+        return constructionCompanyToReturn;
+    }
 }

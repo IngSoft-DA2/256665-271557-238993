@@ -68,9 +68,36 @@ public class ConstructionCompanyAdapterTest
 
         Assert.ThrowsException<UnknownAdapterException>(() => constructionCompanyAdapter.GetAllConstructionCompanies());
         constructionCompanyService.VerifyAll();
-
     }
 
-#endregion
+    #endregion
 
+    [TestMethod]
+    public void GetConstructionCompanyById_ReturnsConstructionCompanyResponse()
+    {
+        ConstructionCompany expectedServiceResponse = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Company 1"
+        };
+
+        GetConstructionCompanyResponse expectedAdapterResponse = new GetConstructionCompanyResponse
+        {
+            Id = expectedServiceResponse.Id,
+            Name = expectedServiceResponse.Name
+        };
+
+        Mock<IConstructionCompanyService> constructionCompanyService = new Mock<IConstructionCompanyService>(MockBehavior.Strict);
+        constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(expectedServiceResponse);
+        
+        ConstructionCompanyAdapter constructionCompanyAdapter = new ConstructionCompanyAdapter(constructionCompanyService.Object);
+        
+        GetConstructionCompanyResponse adapterResponse = constructionCompanyAdapter.GetConstructionCompanyById(It.IsAny<Guid>());
+        constructionCompanyService.VerifyAll();
+        
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+        
+    }
 }
+
