@@ -28,7 +28,7 @@ public class MaintenanceRequestAdapterTest
         {
             Id = Guid.NewGuid(),
             BuildingId = Guid.NewGuid(),
-            Description = "Test Description",
+            Description = "Test Description Random",
             FlatId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
             RequestStatus = StatusEnum.Accepted,
@@ -103,6 +103,17 @@ public class MaintenanceRequestAdapterTest
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
-        
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_ThrowsException()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
+
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
     }
 }
