@@ -51,5 +51,16 @@ public class RequestHandlerAdapterTest
         _requestHandlerService.VerifyAll();
     }
 
+    [TestMethod]
+    public void CreateRequestHandler_ThrowsException()
+    {
+        CreateRequestHandlerRequest dummyRequest = new CreateRequestHandlerRequest();
+        _requestHandlerService.Setup(service => service.CreateRequestHandler(It.IsAny<RequestHandler>()))
+            .Throws(new Exception("Internal Server Error"));
+        
+        Assert.ThrowsException<Exception>(() => _requestHandlerAdapter.CreateRequestHandler(dummyRequest));
+        _requestHandlerService.VerifyAll();
+    }
+
     #endregion
 }
