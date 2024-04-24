@@ -1,7 +1,9 @@
 using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Requests.RequestHandlerRequests;
 using WebModel.Responses.RequestHandlerResponses;
 
@@ -35,6 +37,18 @@ public class RequestHandlerAdapterTest
         CreateRequestHandlerResponse adapterResponse = _requestHandlerAdapter.CreateRequestHandler(dummyRequest);
         _requestHandlerService.VerifyAll();
         Assert.IsNotNull(adapterResponse.Id);
+    }
+
+    [TestMethod]
+    public void CreateRequestHandler_ThrowsObjectErrorAdapterException_WhenServiceFails()
+    {
+        CreateRequestHandlerRequest dummyRequest = new CreateRequestHandlerRequest();
+        _requestHandlerService.Setup(service => service.CreateRequestHandler(It.IsAny<RequestHandler>()))
+            .Throws(new ObjectErrorServiceException("Service Error"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => 
+            _requestHandlerAdapter.CreateRequestHandler(dummyRequest));
+        _requestHandlerService.VerifyAll();
     }
 
     #endregion
