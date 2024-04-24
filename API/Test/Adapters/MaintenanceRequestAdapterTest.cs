@@ -1,8 +1,10 @@
 ﻿using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using Domain.Enums;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.MaintenanceResponses;
 
 namespace Test.Adapters;
@@ -91,5 +93,16 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.VerifyAll();
 
         Assert.AreEqual(genericMaintenanceRequestResponse, adapterResponse);
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
+        
     }
 }

@@ -2,6 +2,7 @@
 using Domain;
 using IAdapter;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.MaintenanceResponses;
 
 namespace Adapter;
@@ -45,21 +46,28 @@ public class MaintenanceRequestAdapter
 
     public GetMaintenanceRequestResponse GetMaintenanceRequestById(Guid id)
     {
-        MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestById(id);
-
-        GetMaintenanceRequestResponse maintenanceRequestToReturn = new GetMaintenanceRequestResponse
+        try
         {
-            Id = maintenanceRequestInDb.Id,
-            Description = maintenanceRequestInDb.Description,
-            BuildingId = maintenanceRequestInDb.BuildingId,
-            RequestHandlerId = maintenanceRequestInDb.RequestHandlerId,
-            Category = maintenanceRequestInDb.Category,
-            RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequestInDb.RequestStatus,
-            OpenedDate = maintenanceRequestInDb.OpenedDate,
-            ClosedDate = maintenanceRequestInDb.ClosedDate,
-            FlatId = maintenanceRequestInDb.FlatId
-        };
-        
-        return maintenanceRequestToReturn;
+            MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestById(id);
+
+            GetMaintenanceRequestResponse maintenanceRequestToReturn = new GetMaintenanceRequestResponse
+            {
+                Id = maintenanceRequestInDb.Id,
+                Description = maintenanceRequestInDb.Description,
+                BuildingId = maintenanceRequestInDb.BuildingId,
+                RequestHandlerId = maintenanceRequestInDb.RequestHandlerId,
+                Category = maintenanceRequestInDb.Category,
+                RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequestInDb.RequestStatus,
+                OpenedDate = maintenanceRequestInDb.OpenedDate,
+                ClosedDate = maintenanceRequestInDb.ClosedDate,
+                FlatId = maintenanceRequestInDb.FlatId
+            };
+
+            return maintenanceRequestToReturn;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }
