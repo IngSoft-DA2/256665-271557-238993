@@ -80,4 +80,43 @@ public class MaintenanceRequestAdapterTest
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
     }
     
+    [TestMethod]
+    public void GetMaintenanceRequestById_ReturnsMaintenanceRequestResponse()
+    {
+        MaintenanceRequest expectedServiceResponse = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            BuildingId = Guid.NewGuid(),
+            Description = "Test Description",
+            FlatId = Guid.NewGuid(),
+            Category = Guid.NewGuid(),
+            RequestStatus = StatusEnum.Accepted,
+            OpenedDate = DateTime.Now,
+            ClosedDate = DateTime.Now,
+            RequestHandlerId = Guid.NewGuid()
+        };
+
+        GetMaintenanceRequestResponse expectedAdapterResponse = new GetMaintenanceRequestResponse
+        {
+            Id = expectedServiceResponse.Id,
+            BuildingId = expectedServiceResponse.BuildingId,
+            Description = expectedServiceResponse.Description,
+            FlatId = expectedServiceResponse.FlatId,
+            Category = expectedServiceResponse.Category,
+            RequestStatus = (StatusEnumMaintenanceResponse)expectedServiceResponse.RequestStatus,
+            OpenedDate = expectedServiceResponse.OpenedDate,
+            ClosedDate = expectedServiceResponse.ClosedDate,
+            RequestHandlerId = expectedServiceResponse.RequestHandlerId
+        };
+        
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(expectedServiceResponse);
+        
+        GetMaintenanceRequestResponse adapterResponse = 
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(expectedServiceResponse.Id);
+        _maintenanceRequestService.VerifyAll();
+        
+        Assert.AreEqual(expectedAdapterResponse, adapterResponse);
+    }
+    
 }

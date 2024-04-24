@@ -42,4 +42,24 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+
+    public GetMaintenanceRequestResponse GetMaintenanceRequestById(Guid id)
+    {
+        MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestById(id);
+
+        GetMaintenanceRequestResponse maintenanceRequestToReturn = new GetMaintenanceRequestResponse
+        {
+            Id = maintenanceRequestInDb.Id,
+            Description = maintenanceRequestInDb.Description,
+            BuildingId = maintenanceRequestInDb.BuildingId,
+            RequestHandlerId = maintenanceRequestInDb.RequestHandlerId,
+            Category = maintenanceRequestInDb.Category,
+            RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequestInDb.RequestStatus,
+            OpenedDate = maintenanceRequestInDb.OpenedDate,
+            ClosedDate = maintenanceRequestInDb.ClosedDate,
+            FlatId = maintenanceRequestInDb.FlatId
+        };
+        
+        return maintenanceRequestToReturn;
+    }
 }
