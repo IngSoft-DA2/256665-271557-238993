@@ -61,4 +61,22 @@ public class MaintenanceRequestAdapterTest
         
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequests_ThrowsException_ReturnsExceptionMessage()
+    {
+        Mock<IMaintenanceRequestService> maintenanceRequestService =
+            new Mock<IMaintenanceRequestService>(MockBehavior.Strict);
+        maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
+            .Throws(new Exception("Something went wrong"));
+
+        MaintenanceRequestAdapter maintenanceRequestAdapter =
+            new MaintenanceRequestAdapter(maintenanceRequestService.Object);
+        
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            maintenanceRequestAdapter.GetAllMaintenanceRequests());
+        
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+    }
+    
 }
