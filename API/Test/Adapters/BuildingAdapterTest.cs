@@ -121,7 +121,7 @@ public class BuildingAdapterTest
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
-    
+
     [TestMethod]
     public void GetAllBuildings_ThrowsUnknownAdapterException()
     {
@@ -211,32 +211,33 @@ public class BuildingAdapterTest
                 }
             }
         };
-        
+
         _buildingService.Setup(service => service.GetBuildingById(It.IsAny<Guid>())).Returns(expectedServiceResponse);
 
         GetBuildingResponse adapterResponse = _buildingAdapter.GetBuildingById(Guid.NewGuid());
         _buildingService.VerifyAll();
-        
+
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
     }
 
     [TestMethod]
     public void GetBuildingById_ThrowsNotFoundAdapterException()
     {
-
         _buildingService.Setup(service => service.GetBuildingById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.GetBuildingById(Guid.NewGuid()));
+        _buildingService.VerifyAll();
     }
-    
 
-    
-    
-    
-    
-    
-    
-    
+    [TestMethod]
+    public void GetBuildingById_ThrowsUnknownAdapterException()
+    {
+        _buildingService.Setup(service => service.GetBuildingById(It.IsAny<Guid>())).Throws<Exception>();
+
+        Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.GetBuildingById(Guid.NewGuid()));
+        _buildingService.VerifyAll();
+    }
+
     #endregion
 }

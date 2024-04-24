@@ -119,5 +119,9 @@ public class BuildingAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 }
