@@ -70,4 +70,46 @@ public class BuildingAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public GetBuildingResponse GetBuildingById(Guid idOfBuilding)
+    {
+        Building buildingInDb = _buildingService.GetBuildingById(idOfBuilding);
+        GetBuildingResponse buildingToReturn = new GetBuildingResponse
+        {
+            Id = buildingInDb.Id,
+            Name = buildingInDb.Name,
+            Address = buildingInDb.Address,
+            Location = new LocationResponse()
+            {
+                Latitude = buildingInDb.Location.Latitude,
+                Longitude = buildingInDb.Location.Longitude
+            },
+            ConstructionCompany = new GetConstructionCompanyResponse
+            {
+                Id = buildingInDb.ConstructionCompany.Id,
+                Name = buildingInDb.ConstructionCompany.Name
+            },
+            CommonExpenses = buildingInDb.CommonExpenses,
+            Flats = buildingInDb.Flats.Select(flat => new GetFlatResponse
+            {
+                Id = flat.Id,
+                Floor = flat.Floor,
+                RoomNumber = flat.RoomNumber,
+                OwnerAssigned = flat.OwnerAssigned != null
+                    ? new GetOwnerResponse
+                    {
+                        Id = flat.OwnerAssigned.Id,
+                        Firstname = flat.OwnerAssigned.Firstname,
+                        Lastname = flat.OwnerAssigned.Lastname,
+                        Email = flat.OwnerAssigned.Email
+                    }
+                    : null,
+                TotalRooms = flat.TotalRooms,
+                TotalBaths = flat.TotalBaths,
+                HasTerrace = flat.HasTerrace
+            }).ToList()
+        };
+        
+        return buildingToReturn;
+    }
 }

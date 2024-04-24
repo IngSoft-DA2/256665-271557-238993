@@ -18,6 +18,7 @@ public class BuildingAdapterTest
     private Mock<IBuildingService> _buildingService;
     private BuildingAdapter _buildingAdapter;
 
+    [TestInitialize]
     public void Initialize()
     {
         _buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
@@ -126,6 +127,96 @@ public class BuildingAdapterTest
         _buildingService.Setup(service => service.GetAllBuildings()).Throws<Exception>();
 
         Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.GetAllBuildings());
+        _buildingService.VerifyAll();
+    }
+
+    #endregion
+
+    #region Get building by id
+
+    [TestMethod]
+    public void GetBuildingById_ReturnsBuildingResponse()
+    {
+        Building expectedServiceResponse = new Building
+        {
+            Id = Guid.NewGuid(),
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = new Location
+            {
+                Latitude = 1.23,
+                Longitude = 4.56
+            },
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "constructionCompany"
+            },
+            CommonExpenses = 1000,
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = 1,
+                    RoomNumber = 102,
+                    OwnerAssigned = new Owner
+                    {
+                        Id = Guid.NewGuid(),
+                        Firstname = "OwnerFirstname",
+                        Lastname = "OwnerLastname",
+                        Email = "owner@gmail.com",
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+
+        GetBuildingResponse expectedAdapterResponse = new GetBuildingResponse
+        {
+            Id = expectedServiceResponse.Id,
+            Name = expectedServiceResponse.Name,
+            Address = expectedServiceResponse.Address,
+            Location = new LocationResponse
+            {
+                Latitude = expectedServiceResponse.Location.Latitude,
+                Longitude = expectedServiceResponse.Location.Longitude
+            },
+            ConstructionCompany = new GetConstructionCompanyResponse
+            {
+                Id = expectedServiceResponse.ConstructionCompany.Id,
+                Name = expectedServiceResponse.ConstructionCompany.Name,
+            },
+            CommonExpenses = 1000,
+            Flats = new List<GetFlatResponse>
+            {
+                new GetFlatResponse
+                {
+                    Id = expectedServiceResponse.Flats.First().Id,
+                    Floor = expectedServiceResponse.Flats.First().Floor,
+                    RoomNumber = expectedServiceResponse.Flats.First().RoomNumber,
+                    OwnerAssigned = new GetOwnerResponse()
+                    {
+                        Id = expectedServiceResponse.Flats.First().OwnerAssigned.Id,
+                        Firstname = expectedServiceResponse.Flats.First().OwnerAssigned.Firstname,
+                        Lastname = expectedServiceResponse.Flats.First().OwnerAssigned.Lastname,
+                        Email = expectedServiceResponse.Flats.First().OwnerAssigned.Email
+                    },
+                    TotalRooms = expectedServiceResponse.Flats.First().TotalRooms,
+                    TotalBaths = expectedServiceResponse.Flats.First().TotalBaths,
+                    HasTerrace = expectedServiceResponse.Flats.First().HasTerrace
+                }
+            }
+        };
+        
+        _buildingService.Setup(service => service.GetBuildingById(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+
+        GetBuildingResponse adapterResponse = _buildingAdapter.GetBuildingById(Guid.NewGuid());
+        _buildingService.VerifyAll();
+        
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
     }
 
     #endregion
