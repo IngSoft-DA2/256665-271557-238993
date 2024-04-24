@@ -163,7 +163,7 @@ public class ConstructionCompanyAdapterTest
     public void CreateConstructionCompanyRequest_ThrowsObjectRepeatedAdapterException()
     {
         _constructionCompanyService.Setup(service => service.CreateConstructionCompany(It.IsAny<ConstructionCompany>()))
-            .Throws(new ObjectRepeatedServiceException("Name already in use"));
+            .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
             _constructionCompanyAdapter.CreateConstructionCompany(_dummyRequest));

@@ -37,7 +37,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_maintenanceAdapter.CreateMaintenanceRequest(request));
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -57,7 +57,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_maintenanceAdapter.GetMaintenanceRequestByCategory(categoryId));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Maintenance request was not found, reload the page");
             }
@@ -76,11 +76,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_maintenanceAdapter.AssignMaintenanceRequest(request));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Maintenance request was not found, reload the page");
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
@@ -99,7 +99,7 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_maintenanceAdapter.GetMaintenanceRequestByRequestHandler(handlerId));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Maintenance request was not found, reload the page");
             }
@@ -118,11 +118,11 @@ namespace BuildingBuddy.API.Controllers
             {
                 return Ok(_maintenanceAdapter.UpdateMaintenanceRequestStatus(id, request));
             }
-            catch (ObjectNotFoundException)
+            catch (ObjectNotFoundAdapterException)
             {
                 return NotFound("Maintenance request was not found, reload the page");
             }
-            catch (ObjectErrorException exceptionCaught)
+            catch (ObjectErrorAdapterException exceptionCaught)
             {
                 return BadRequest(exceptionCaught.Message);
             }
