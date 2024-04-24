@@ -339,4 +339,26 @@ public class BuildingAdapterTest
         _buildingService.VerifyAll();
     }
     
+    [TestMethod]
+    public void CreateBuilding_ThrowsUnknownAdapterException()
+    {
+        _buildingService.Setup(buildingService => buildingService.CreateBuilding(It.IsAny<Building>()))
+            .Throws(new Exception());
+
+        _constructionCompanyService
+            .Setup(constructionCompanyService =>
+                constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(new ConstructionCompany());
+        
+        CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
+        LocationRequest dummyLocationRequest = new LocationRequest();
+        
+        dummyCreateRequest.Location = dummyLocationRequest;
+        
+        Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
+        
+        _constructionCompanyService.VerifyAll();
+        _buildingService.VerifyAll();
+    }
+    
 }

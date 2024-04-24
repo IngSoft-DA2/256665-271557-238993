@@ -183,5 +183,9 @@ public class BuildingAdapter
         {
             throw new ObjectRepeatedAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 }
