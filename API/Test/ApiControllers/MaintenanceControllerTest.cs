@@ -127,7 +127,7 @@ public class MaintenanceControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Maintenance request was not found, reload the page");
         
         _maintenanceAdapter.Setup(adapter => adapter.GetMaintenanceRequestByCategory(_categoryFromRoute))
-            .Throws(new ObjectNotFoundException());
+            .Throws(new ObjectNotFoundAdapterException());
         
         IActionResult controllerResponse = _maintenanceController.GetMaintenanceRequestByCategory(_categoryFromRoute);
         
@@ -198,7 +198,7 @@ public class MaintenanceControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
         
         _maintenanceAdapter.Setup(adapter => 
-                adapter.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>())).Throws(new ObjectErrorException("Bad Request"));
+                adapter.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>())).Throws(new ObjectErrorAdapterException("Bad Request"));
         
         IActionResult controllerResponse = _maintenanceController.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>());
         
@@ -266,7 +266,7 @@ public class MaintenanceControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
         
         _maintenanceAdapter.Setup(adapter => 
-            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Throws(new ObjectErrorException("Bad Request"));
+            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Throws(new ObjectErrorAdapterException("Bad Request"));
         
         IActionResult controllerResponse = _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
         
@@ -284,7 +284,7 @@ public class MaintenanceControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Maintenance request was not found, reload the page");
         
         _maintenanceAdapter.Setup(adapter => 
-            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Throws(new ObjectNotFoundException());
+            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>())).Throws(new ObjectNotFoundAdapterException());
         
         IActionResult controllerResponse = _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
         
@@ -365,7 +365,7 @@ public class MaintenanceControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Maintenance request was not found, reload the page");
         
         _maintenanceAdapter.Setup(adapter => 
-            adapter.GetMaintenanceRequestByRequestHandler(It.IsAny<Guid>())).Throws(new ObjectNotFoundException());
+            adapter.GetMaintenanceRequestByRequestHandler(It.IsAny<Guid>())).Throws(new ObjectNotFoundAdapterException());
         
         IActionResult controllerResponse = _maintenanceController.GetMaintenanceRequestByRequestHandler(It.IsAny<Guid>());
         
@@ -438,7 +438,7 @@ public class MaintenanceControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
         
         _maintenanceAdapter.Setup(adapter => 
-            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new ObjectErrorException("Bad Request"));
+            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new ObjectErrorAdapterException("Bad Request"));
         
         IActionResult controllerResponse = _maintenanceController.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>());
         
@@ -457,7 +457,7 @@ public class MaintenanceControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Maintenance request was not found, reload the page");
         
         _maintenanceAdapter.Setup(adapter => 
-            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new ObjectNotFoundException());
+            adapter.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>())).Throws(new ObjectNotFoundAdapterException());
         
         IActionResult controllerResponse = _maintenanceController.UpdateMaintenanceRequestStatus(It.IsAny<Guid>(), It.IsAny<UpdateMaintenanceRequestStatusRequest>());
         
