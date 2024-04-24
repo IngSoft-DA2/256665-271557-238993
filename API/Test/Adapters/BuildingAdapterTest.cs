@@ -317,4 +317,26 @@ public class BuildingAdapterTest
         _buildingService.VerifyAll();
     }
     
+    [TestMethod]
+    public void CreateBuilding_ThrowsRepeatedObjectException()
+    {
+        _buildingService.Setup(buildingService => buildingService.CreateBuilding(It.IsAny<Building>()))
+            .Throws(new ObjectRepeatedServiceException());
+
+        _constructionCompanyService
+            .Setup(constructionCompanyService =>
+                constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(new ConstructionCompany());
+        
+        CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
+        LocationRequest dummyLocationRequest = new LocationRequest();
+        
+        dummyCreateRequest.Location = dummyLocationRequest;
+        
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
+        
+        _constructionCompanyService.VerifyAll();
+        _buildingService.VerifyAll();
+    }
+    
 }

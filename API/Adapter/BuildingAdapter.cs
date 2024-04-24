@@ -179,5 +179,9 @@ public class BuildingAdapter
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedAdapterException();
+        }
     }
 }
