@@ -292,7 +292,28 @@ public class BuildingAdapterTest
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
         
         _constructionCompanyService.VerifyAll();
-        _ownerService.VerifyAll();
+        _buildingService.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateBuilding_ThrowsObjectErrorException()
+    {
+        _buildingService.Setup(buildingService => buildingService.CreateBuilding(It.IsAny<Building>()))
+            .Throws(new ObjectErrorServiceException("Specific Error"));
+
+        _constructionCompanyService
+            .Setup(constructionCompanyService =>
+                constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(new ConstructionCompany());
+        
+        CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
+        LocationRequest dummyLocationRequest = new LocationRequest();
+        
+        dummyCreateRequest.Location = dummyLocationRequest;
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
+        
+        _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
     }
     

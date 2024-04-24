@@ -162,7 +162,7 @@ public class BuildingAdapter
                 }).ToList()
             };
             _buildingService.CreateBuilding(buildingToCreate);
-        
+
             CreateBuildingResponse buildingResponse = new CreateBuildingResponse
             {
                 Id = buildingToCreate.Id
@@ -170,11 +170,14 @@ public class BuildingAdapter
 
             return buildingResponse;
         }
-        
+
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundAdapterException();
         }
-        
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }
