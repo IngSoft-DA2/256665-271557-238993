@@ -8,82 +8,21 @@ using WebModel.Responses.MaintenanceResponses;
 namespace Test.Adapters;
 
 [TestClass]
-
 public class MaintenanceRequestAdapterTest
 {
-    
     private Mock<IMaintenanceRequestService> _maintenanceRequestService;
     private MaintenanceRequestAdapter _maintenanceRequestAdapter;
-    
+
+    private MaintenanceRequest genericMaintenanceRequest;
+    private GetMaintenanceRequestResponse genericMaintenanceRequestResponse;
+
     [TestInitialize]
     public void Initialize()
     {
         _maintenanceRequestService = new Mock<IMaintenanceRequestService>();
         _maintenanceRequestAdapter = new MaintenanceRequestAdapter(_maintenanceRequestService.Object);
-    }
-    
-    [TestMethod]
-    public void GetAllMaintenanceRequests_ReturnsMaintenanceRequestResponses()
-    {
-        IEnumerable<MaintenanceRequest> expectedServiceResponse = new List<MaintenanceRequest>
-        {
-            new MaintenanceRequest
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid(),
-                Description = "Test Description",
-                FlatId = Guid.NewGuid(),
-                Category = Guid.NewGuid(),
-                RequestStatus = StatusEnum.Accepted,
-                OpenedDate = DateTime.Now,
-                ClosedDate = DateTime.Now,
-                RequestHandlerId = Guid.NewGuid()
-            }
-        };
 
-        IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse =
-            new List<GetMaintenanceRequestResponse>
-            {
-                new GetMaintenanceRequestResponse
-                {
-                    Id = expectedServiceResponse.First().Id,
-                    BuildingId = expectedServiceResponse.First().BuildingId,
-                    Description = expectedServiceResponse.First().Description,
-                    FlatId = expectedServiceResponse.First().FlatId,
-                    Category = expectedServiceResponse.First().Category,
-                    RequestStatus = (StatusEnumMaintenanceResponse)expectedServiceResponse.First().RequestStatus,
-                    OpenedDate = expectedServiceResponse.First().OpenedDate,
-                    ClosedDate = expectedServiceResponse.First().ClosedDate,
-                    RequestHandlerId = expectedServiceResponse.First().RequestHandlerId
-                }
-            };
-        
-        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
-            .Returns(expectedServiceResponse);
-        
-        IEnumerable<GetMaintenanceRequestResponse> adapterResponse = 
-            _maintenanceRequestAdapter.GetAllMaintenanceRequests();
-        _maintenanceRequestService.VerifyAll();
-        
-        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
-    }
-    
-    [TestMethod]
-    public void GetAllMaintenanceRequests_ThrowsException_ReturnsExceptionMessage()
-    {
-        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
-            .Throws(new Exception("Something went wrong"));
-        
-        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.GetAllMaintenanceRequests());
-        
-        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-    }
-    
-    [TestMethod]
-    public void GetMaintenanceRequestById_ReturnsMaintenanceRequestResponse()
-    {
-        MaintenanceRequest expectedServiceResponse = new MaintenanceRequest
+        genericMaintenanceRequest = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
             BuildingId = Guid.NewGuid(),
@@ -95,28 +34,62 @@ public class MaintenanceRequestAdapterTest
             ClosedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid()
         };
-
-        GetMaintenanceRequestResponse expectedAdapterResponse = new GetMaintenanceRequestResponse
+        
+        genericMaintenanceRequestResponse = new GetMaintenanceRequestResponse
         {
-            Id = expectedServiceResponse.Id,
-            BuildingId = expectedServiceResponse.BuildingId,
-            Description = expectedServiceResponse.Description,
-            FlatId = expectedServiceResponse.FlatId,
-            Category = expectedServiceResponse.Category,
-            RequestStatus = (StatusEnumMaintenanceResponse)expectedServiceResponse.RequestStatus,
-            OpenedDate = expectedServiceResponse.OpenedDate,
-            ClosedDate = expectedServiceResponse.ClosedDate,
-            RequestHandlerId = expectedServiceResponse.RequestHandlerId
+            Id = genericMaintenanceRequest.Id,
+            BuildingId = genericMaintenanceRequest.BuildingId,
+            Description = genericMaintenanceRequest.Description,
+            FlatId = genericMaintenanceRequest.FlatId,
+            Category = genericMaintenanceRequest.Category,
+            RequestStatus = (StatusEnumMaintenanceResponse)genericMaintenanceRequest.RequestStatus,
+            OpenedDate = genericMaintenanceRequest.OpenedDate,
+            ClosedDate = genericMaintenanceRequest.ClosedDate,
+            RequestHandlerId = genericMaintenanceRequest.RequestHandlerId
         };
-        
-        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
-            .Returns(expectedServiceResponse);
-        
-        GetMaintenanceRequestResponse adapterResponse = 
-            _maintenanceRequestAdapter.GetMaintenanceRequestById(expectedServiceResponse.Id);
-        _maintenanceRequestService.VerifyAll();
-        
-        Assert.AreEqual(expectedAdapterResponse, adapterResponse);
     }
-    
+
+    [TestMethod]
+    public void GetAllMaintenanceRequests_ReturnsMaintenanceRequestResponses()
+    {
+        IEnumerable<MaintenanceRequest> expectedServiceResponse = new List<MaintenanceRequest>
+            { genericMaintenanceRequest };
+
+        IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse =
+            new List<GetMaintenanceRequestResponse> {genericMaintenanceRequestResponse};
+
+        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
+            .Returns(expectedServiceResponse);
+
+        IEnumerable<GetMaintenanceRequestResponse> adapterResponse =
+            _maintenanceRequestAdapter.GetAllMaintenanceRequests();
+        _maintenanceRequestService.VerifyAll();
+
+        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+    }
+
+    [TestMethod]
+    public void GetAllMaintenanceRequests_ThrowsException_ReturnsExceptionMessage()
+    {
+        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
+            .Throws(new Exception("Something went wrong"));
+
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            _maintenanceRequestAdapter.GetAllMaintenanceRequests());
+
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+    }
+
+    [TestMethod]
+    public void GetMaintenanceRequestById_ReturnsMaintenanceRequestResponse()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(genericMaintenanceRequest);
+
+        GetMaintenanceRequestResponse adapterResponse =
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id);
+        _maintenanceRequestService.VerifyAll();
+
+        Assert.AreEqual(genericMaintenanceRequestResponse, adapterResponse);
+    }
 }
