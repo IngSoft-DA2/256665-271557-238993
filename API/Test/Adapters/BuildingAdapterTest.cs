@@ -1,4 +1,5 @@
 ﻿using Adapter;
+using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
@@ -101,8 +102,21 @@ public class BuildingAdapterTest
         BuildingAdapter buildingAdapter = new BuildingAdapter(buildingService.Object);
 
         IEnumerable<GetBuildingResponse> adapterResponse = buildingAdapter.GetAllBuildings();
-
+        buildingService.VerifyAll();
+        
         Assert.AreEqual(expectedAdapterResponse.Count(),adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+    }
+
+    [TestMethod]
+    public void GetAllBuildings_ThrowsUnknownAdapterException()
+    {
+        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
+        buildingService.Setup(service => service.GetAllBuildings()).Throws<Exception>();
+
+        BuildingAdapter buildingAdapter = new BuildingAdapter(buildingService.Object);
+
+        Assert.ThrowsException<UnknownAdapterException>(() => buildingAdapter.GetAllBuildings());
+        
     }
 }
