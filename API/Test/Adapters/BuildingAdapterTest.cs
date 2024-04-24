@@ -3,6 +3,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
@@ -120,7 +121,7 @@ public class BuildingAdapterTest
         Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
-
+    
     [TestMethod]
     public void GetAllBuildings_ThrowsUnknownAdapterException()
     {
@@ -219,5 +220,23 @@ public class BuildingAdapterTest
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
     }
 
+    [TestMethod]
+    public void GetBuildingById_ThrowsNotFoundAdapterException()
+    {
+
+        _buildingService.Setup(service => service.GetBuildingById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.GetBuildingById(Guid.NewGuid()));
+    }
+    
+
+    
+    
+    
+    
+    
+    
+    
     #endregion
 }

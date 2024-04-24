@@ -1,6 +1,7 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
@@ -73,43 +74,50 @@ public class BuildingAdapter
 
     public GetBuildingResponse GetBuildingById(Guid idOfBuilding)
     {
-        Building buildingInDb = _buildingService.GetBuildingById(idOfBuilding);
-        GetBuildingResponse buildingToReturn = new GetBuildingResponse
+        try
         {
-            Id = buildingInDb.Id,
-            Name = buildingInDb.Name,
-            Address = buildingInDb.Address,
-            Location = new LocationResponse()
+            Building buildingInDb = _buildingService.GetBuildingById(idOfBuilding);
+            GetBuildingResponse buildingToReturn = new GetBuildingResponse
             {
-                Latitude = buildingInDb.Location.Latitude,
-                Longitude = buildingInDb.Location.Longitude
-            },
-            ConstructionCompany = new GetConstructionCompanyResponse
-            {
-                Id = buildingInDb.ConstructionCompany.Id,
-                Name = buildingInDb.ConstructionCompany.Name
-            },
-            CommonExpenses = buildingInDb.CommonExpenses,
-            Flats = buildingInDb.Flats.Select(flat => new GetFlatResponse
-            {
-                Id = flat.Id,
-                Floor = flat.Floor,
-                RoomNumber = flat.RoomNumber,
-                OwnerAssigned = flat.OwnerAssigned != null
-                    ? new GetOwnerResponse
-                    {
-                        Id = flat.OwnerAssigned.Id,
-                        Firstname = flat.OwnerAssigned.Firstname,
-                        Lastname = flat.OwnerAssigned.Lastname,
-                        Email = flat.OwnerAssigned.Email
-                    }
-                    : null,
-                TotalRooms = flat.TotalRooms,
-                TotalBaths = flat.TotalBaths,
-                HasTerrace = flat.HasTerrace
-            }).ToList()
-        };
+                Id = buildingInDb.Id,
+                Name = buildingInDb.Name,
+                Address = buildingInDb.Address,
+                Location = new LocationResponse()
+                {
+                    Latitude = buildingInDb.Location.Latitude,
+                    Longitude = buildingInDb.Location.Longitude
+                },
+                ConstructionCompany = new GetConstructionCompanyResponse
+                {
+                    Id = buildingInDb.ConstructionCompany.Id,
+                    Name = buildingInDb.ConstructionCompany.Name
+                },
+                CommonExpenses = buildingInDb.CommonExpenses,
+                Flats = buildingInDb.Flats.Select(flat => new GetFlatResponse
+                {
+                    Id = flat.Id,
+                    Floor = flat.Floor,
+                    RoomNumber = flat.RoomNumber,
+                    OwnerAssigned = flat.OwnerAssigned != null
+                        ? new GetOwnerResponse
+                        {
+                            Id = flat.OwnerAssigned.Id,
+                            Firstname = flat.OwnerAssigned.Firstname,
+                            Lastname = flat.OwnerAssigned.Lastname,
+                            Email = flat.OwnerAssigned.Email
+                        }
+                        : null,
+                    TotalRooms = flat.TotalRooms,
+                    TotalBaths = flat.TotalBaths,
+                    HasTerrace = flat.HasTerrace
+                }).ToList()
+            };
         
-        return buildingToReturn;
+            return buildingToReturn;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }
