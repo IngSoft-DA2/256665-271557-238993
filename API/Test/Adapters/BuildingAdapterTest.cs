@@ -13,6 +13,21 @@ namespace Test.Adapters;
 [TestClass]
 public class BuildingAdapterTest
 {
+    #region Initialize
+
+    private Mock<IBuildingService> _buildingService;
+    private BuildingAdapter _buildingAdapter;
+
+    public void Initialize()
+    {
+        _buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
+        _buildingAdapter = new BuildingAdapter(_buildingService.Object);
+    }
+
+    #endregion
+
+    #region Get all buildings
+
     [TestMethod]
     public void GetAllBuilding_ReturnsGetBuildingResponses()
     {
@@ -95,28 +110,23 @@ public class BuildingAdapterTest
                 }
             }
         };
-        
-        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
-        buildingService.Setup(service => service.GetAllBuildings()).Returns(expectedServiceResponse);
 
-        BuildingAdapter buildingAdapter = new BuildingAdapter(buildingService.Object);
+        _buildingService.Setup(service => service.GetAllBuildings()).Returns(expectedServiceResponse);
 
-        IEnumerable<GetBuildingResponse> adapterResponse = buildingAdapter.GetAllBuildings();
-        buildingService.VerifyAll();
-        
-        Assert.AreEqual(expectedAdapterResponse.Count(),adapterResponse.Count());
+        IEnumerable<GetBuildingResponse> adapterResponse = _buildingAdapter.GetAllBuildings();
+        _buildingService.VerifyAll();
+
+        Assert.AreEqual(expectedAdapterResponse.Count(), adapterResponse.Count());
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
 
     [TestMethod]
     public void GetAllBuildings_ThrowsUnknownAdapterException()
     {
-        Mock<IBuildingService> buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
-        buildingService.Setup(service => service.GetAllBuildings()).Throws<Exception>();
+        _buildingService.Setup(service => service.GetAllBuildings()).Throws<Exception>();
 
-        BuildingAdapter buildingAdapter = new BuildingAdapter(buildingService.Object);
-
-        Assert.ThrowsException<UnknownAdapterException>(() => buildingAdapter.GetAllBuildings());
-        
+        Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.GetAllBuildings());
     }
+
+    #endregion
 }
