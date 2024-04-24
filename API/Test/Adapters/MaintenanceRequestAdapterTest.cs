@@ -11,6 +11,17 @@ namespace Test.Adapters;
 
 public class MaintenanceRequestAdapterTest
 {
+    
+    private Mock<IMaintenanceRequestService> _maintenanceRequestService;
+    private MaintenanceRequestAdapter _maintenanceRequestAdapter;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        _maintenanceRequestService = new Mock<IMaintenanceRequestService>();
+        _maintenanceRequestAdapter = new MaintenanceRequestAdapter(_maintenanceRequestService.Object);
+    }
+    
     [TestMethod]
     public void GetAllMaintenanceRequests_ReturnsMaintenanceRequestResponses()
     {
@@ -46,18 +57,13 @@ public class MaintenanceRequestAdapterTest
                     RequestHandlerId = expectedServiceResponse.First().RequestHandlerId
                 }
             };
-
-        Mock<IMaintenanceRequestService> maintenanceRequestService =
-            new Mock<IMaintenanceRequestService>(MockBehavior.Strict);
-        maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
+        
+        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
             .Returns(expectedServiceResponse);
-
-        MaintenanceRequestAdapter maintenanceRequestAdapter =
-            new MaintenanceRequestAdapter(maintenanceRequestService.Object);
         
         IEnumerable<GetMaintenanceRequestResponse> adapterResponse = 
-            maintenanceRequestAdapter.GetAllMaintenanceRequests();
-        maintenanceRequestService.VerifyAll();
+            _maintenanceRequestAdapter.GetAllMaintenanceRequests();
+        _maintenanceRequestService.VerifyAll();
         
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
@@ -65,16 +71,11 @@ public class MaintenanceRequestAdapterTest
     [TestMethod]
     public void GetAllMaintenanceRequests_ThrowsException_ReturnsExceptionMessage()
     {
-        Mock<IMaintenanceRequestService> maintenanceRequestService =
-            new Mock<IMaintenanceRequestService>(MockBehavior.Strict);
-        maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
+        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
             .Throws(new Exception("Something went wrong"));
-
-        MaintenanceRequestAdapter maintenanceRequestAdapter =
-            new MaintenanceRequestAdapter(maintenanceRequestService.Object);
         
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            maintenanceRequestAdapter.GetAllMaintenanceRequests());
+            _maintenanceRequestAdapter.GetAllMaintenanceRequests());
         
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
     }
