@@ -166,11 +166,6 @@ public class MaintenanceControllerTest
         CreateRequestMaintenanceResponse expectedResponse = new CreateRequestMaintenanceResponse()
         {
             Id = Guid.NewGuid(),
-            BuildingId = Guid.NewGuid(),
-            Description = "Repair elevator light",
-            FlatId = Guid.NewGuid(),
-            Category = Guid.NewGuid(),
-            RequestStatus = StatusEnumMaintenanceResponse.Open
         };
         
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponse);

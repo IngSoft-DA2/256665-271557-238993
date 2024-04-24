@@ -6,6 +6,7 @@ public interface IMaintenanceRequestService
 {
     public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests();
     public MaintenanceRequest GetMaintenanceRequestById(Guid id);
+    public void CreateMaintenanceRequest(MaintenanceRequest maintenanceRequest);
     
     
 }

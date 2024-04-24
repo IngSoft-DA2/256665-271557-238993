@@ -4,7 +4,7 @@ namespace Domain;
 
 public class MaintenanceRequest
 {
-    public Guid Id { get; set; }
+    public Guid Id = Guid.NewGuid();
     public Guid BuildingId { get; set; }
     public string? Description { get; set; }
     public Guid FlatId { get; set; }

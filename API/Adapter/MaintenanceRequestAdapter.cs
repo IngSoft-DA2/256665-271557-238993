@@ -1,8 +1,10 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.MaintenanceRequests;
 using WebModel.Responses.MaintenanceResponses;
 
 namespace Adapter;
@@ -70,6 +72,31 @@ public class MaintenanceRequestAdapter
             throw new ObjectNotFoundAdapterException();
         }
         catch(Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
+    }
+    
+    public CreateRequestMaintenanceResponse CreateMaintenanceRequest(CreateRequestMaintenanceRequest maintenanceRequestToCreate)
+    {
+        try
+        {
+            MaintenanceRequest maintenanceRequest = new MaintenanceRequest
+            {
+                BuildingId = maintenanceRequestToCreate.BuildingId,
+                Description = maintenanceRequestToCreate.Description,
+                FlatId = maintenanceRequestToCreate.FlatId,
+                Category = maintenanceRequestToCreate.Category,
+            };
+
+            _maintenanceRequestService.CreateMaintenanceRequest(maintenanceRequest);
+            
+            CreateRequestMaintenanceResponse maintenanceRequestResponse = new CreateRequestMaintenanceResponse
+            { Id = maintenanceRequest.Id };
+
+            return maintenanceRequestResponse;
+        }
+        catch (Exception exceptionCaught)
         {
             throw new Exception(exceptionCaught.Message);
         }

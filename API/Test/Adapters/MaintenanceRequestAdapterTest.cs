@@ -5,6 +5,7 @@ using Domain.Enums;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.MaintenanceRequests;
 using WebModel.Responses.MaintenanceResponses;
 
 namespace Test.Adapters;
@@ -17,12 +18,15 @@ public class MaintenanceRequestAdapterTest
 
     private MaintenanceRequest genericMaintenanceRequest;
     private GetMaintenanceRequestResponse genericMaintenanceRequestResponse;
+    private CreateRequestMaintenanceRequest _dummyCreateRequestMaintenanceResponse;
 
     [TestInitialize]
     public void Initialize()
     {
-        _maintenanceRequestService = new Mock<IMaintenanceRequestService>();
+        _maintenanceRequestService = new Mock<IMaintenanceRequestService>(MockBehavior.Strict);
         _maintenanceRequestAdapter = new MaintenanceRequestAdapter(_maintenanceRequestService.Object);
+
+        _dummyCreateRequestMaintenanceResponse = new CreateRequestMaintenanceRequest();
 
         genericMaintenanceRequest = new MaintenanceRequest
         {
@@ -115,5 +119,26 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequest_ShouldReturnCreateMaintenanceRequestResponse()
+    {
+        CreateRequestMaintenanceRequest createRequest = new CreateRequestMaintenanceRequest()
+        {
+            BuildingId = genericMaintenanceRequest.BuildingId,
+            Description = genericMaintenanceRequest.Description,
+            FlatId = genericMaintenanceRequest.FlatId,
+            Category = genericMaintenanceRequest.Category,
+        };
+        
+        
+        _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()));
+        
+        CreateRequestMaintenanceResponse adapterResponse = _maintenanceRequestAdapter.CreateMaintenanceRequest(createRequest);
+        
+        Assert.IsNotNull(adapterResponse);
+        
+        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
     }
 }
