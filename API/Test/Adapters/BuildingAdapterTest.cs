@@ -4,6 +4,7 @@ using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.BuildingRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
@@ -17,13 +18,18 @@ public class BuildingAdapterTest
     #region Initialize
 
     private Mock<IBuildingService> _buildingService;
+    private Mock<IConstructionCompanyService> _constructionCompanyService;
+    private Mock<IOwnerService> _ownerService;
     private BuildingAdapter _buildingAdapter;
 
     [TestInitialize]
     public void Initialize()
     {
         _buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
-        _buildingAdapter = new BuildingAdapter(_buildingService.Object);
+        _constructionCompanyService = new Mock<IConstructionCompanyService>(MockBehavior.Strict);
+        _ownerService = new Mock<IOwnerService>(MockBehavior.Strict);
+        _buildingAdapter = new BuildingAdapter(_buildingService.Object, _constructionCompanyService.Object,
+            _ownerService.Object);
     }
 
     #endregion
@@ -240,4 +246,30 @@ public class BuildingAdapterTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void CreateBuilding_ReturnsCreateBuildingResponse()
+    {
+        _buildingService.Setup(buildingService => buildingService.CreateBuilding(It.IsAny<Building>()));
+
+        _constructionCompanyService
+            .Setup(constructionCompanyService =>
+                constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(new ConstructionCompany());
+        
+        CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
+        LocationRequest dummyLocationRequest = new LocationRequest();
+        
+        dummyCreateRequest.Location = dummyLocationRequest;
+        
+        
+        CreateBuildingResponse buildingResponse = _buildingAdapter.CreateBuilding(dummyCreateRequest);
+        
+        _constructionCompanyService.VerifyAll();
+        _ownerService.VerifyAll();
+        _buildingService.VerifyAll();
+
+        Assert.IsNotNull(buildingResponse);
+        Assert.IsInstanceOfType<Guid>(buildingResponse.Id);
+    }
 }

@@ -6,8 +6,8 @@ public class CreateBuildingRequest
 {
     public string Name { get; set; }
     public string Address { get; set; }
-    public LocationRequest Location { get; set; }
+    public LocationRequest Location { get; set; } = new LocationRequest();
     public Guid ConstructionCompanyId { get; set; }
-    public double CommonExpenses { get; set; }
+    public int CommonExpenses { get; set; }
     public IEnumerable<CreateFlatRequest> Flats { get; set; } = new List<CreateFlatRequest>();
 }

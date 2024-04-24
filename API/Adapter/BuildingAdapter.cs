@@ -2,6 +2,7 @@
 using Domain;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.BuildingRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
@@ -14,10 +15,15 @@ public class BuildingAdapter
     #region Constructor and Attributes
 
     private readonly IBuildingService _buildingService;
+    private readonly IConstructionCompanyService _constructionCompanyService;
+    private readonly IOwnerService _ownerService;
 
-    public BuildingAdapter(IBuildingService buildingService)
+    public BuildingAdapter(IBuildingService buildingService, IConstructionCompanyService constructionCompanyService,
+        IOwnerService ownerService)
     {
         _buildingService = buildingService;
+        _constructionCompanyService = constructionCompanyService;
+        _ownerService = ownerService;
     }
 
     #endregion
@@ -112,7 +118,7 @@ public class BuildingAdapter
                     HasTerrace = flat.HasTerrace
                 }).ToList()
             };
-        
+
             return buildingToReturn;
         }
         catch (ObjectNotFoundServiceException)
@@ -123,5 +129,43 @@ public class BuildingAdapter
         {
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
+    }
+
+    public CreateBuildingResponse CreateBuilding(CreateBuildingRequest createBuildingRequest)
+    {
+        Building buildingToCreate = new Building
+        {
+            Id = Guid.NewGuid(),
+            Name = createBuildingRequest.Name,
+            Address = createBuildingRequest.Address,
+            Location = new Location
+            {
+                Latitude = 1,
+                Longitude = 2
+            },
+            ConstructionCompany =
+                _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
+            CommonExpenses = createBuildingRequest.CommonExpenses,
+            Flats = createBuildingRequest.Flats.Select(flat => new Flat
+            {
+                Id = Guid.NewGuid(),
+                Floor = flat.Floor,
+                RoomNumber = flat.RoomNumber,
+                OwnerAssigned = flat.OwnerAssignedId != null
+                    ? _ownerService.GetOwnerById(flat.OwnerAssignedId.Value)
+                    : null,
+                TotalRooms = flat.TotalRooms,
+                TotalBaths = flat.TotalBaths,
+                HasTerrace = flat.HasTerrace
+            }).ToList()
+        };
+        _buildingService.CreateBuilding(buildingToCreate);
+        
+        CreateBuildingResponse buildingResponse = new CreateBuildingResponse
+        {
+            Id = buildingToCreate.Id
+        };
+
+        return buildingResponse;
     }
 }
