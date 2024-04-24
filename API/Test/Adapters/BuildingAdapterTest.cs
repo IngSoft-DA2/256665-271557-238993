@@ -272,4 +272,28 @@ public class BuildingAdapterTest
         Assert.IsNotNull(buildingResponse);
         Assert.IsInstanceOfType<Guid>(buildingResponse.Id);
     }
+    
+    [TestMethod]
+    public void CreateBuilding_ThrowsNotFoundAdapterException()
+    {
+        _buildingService.Setup(buildingService => buildingService.CreateBuilding(It.IsAny<Building>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        _constructionCompanyService
+            .Setup(constructionCompanyService =>
+                constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(new ConstructionCompany());
+        
+        CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
+        LocationRequest dummyLocationRequest = new LocationRequest();
+        
+        dummyCreateRequest.Location = dummyLocationRequest;
+        
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
+        
+        _constructionCompanyService.VerifyAll();
+        _ownerService.VerifyAll();
+        _buildingService.VerifyAll();
+    }
+    
 }

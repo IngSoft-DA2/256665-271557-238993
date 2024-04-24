@@ -133,39 +133,48 @@ public class BuildingAdapter
 
     public CreateBuildingResponse CreateBuilding(CreateBuildingRequest createBuildingRequest)
     {
-        Building buildingToCreate = new Building
+        try
         {
-            Id = Guid.NewGuid(),
-            Name = createBuildingRequest.Name,
-            Address = createBuildingRequest.Address,
-            Location = new Location
-            {
-                Latitude = 1,
-                Longitude = 2
-            },
-            ConstructionCompany =
-                _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
-            CommonExpenses = createBuildingRequest.CommonExpenses,
-            Flats = createBuildingRequest.Flats.Select(flat => new Flat
+            Building buildingToCreate = new Building
             {
                 Id = Guid.NewGuid(),
-                Floor = flat.Floor,
-                RoomNumber = flat.RoomNumber,
-                OwnerAssigned = flat.OwnerAssignedId != null
-                    ? _ownerService.GetOwnerById(flat.OwnerAssignedId.Value)
-                    : null,
-                TotalRooms = flat.TotalRooms,
-                TotalBaths = flat.TotalBaths,
-                HasTerrace = flat.HasTerrace
-            }).ToList()
-        };
-        _buildingService.CreateBuilding(buildingToCreate);
+                Name = createBuildingRequest.Name,
+                Address = createBuildingRequest.Address,
+                Location = new Location
+                {
+                    Latitude = 1,
+                    Longitude = 2
+                },
+                ConstructionCompany =
+                    _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
+                CommonExpenses = createBuildingRequest.CommonExpenses,
+                Flats = createBuildingRequest.Flats.Select(flat => new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = flat.Floor,
+                    RoomNumber = flat.RoomNumber,
+                    OwnerAssigned = flat.OwnerAssignedId != null
+                        ? _ownerService.GetOwnerById(flat.OwnerAssignedId.Value)
+                        : null,
+                    TotalRooms = flat.TotalRooms,
+                    TotalBaths = flat.TotalBaths,
+                    HasTerrace = flat.HasTerrace
+                }).ToList()
+            };
+            _buildingService.CreateBuilding(buildingToCreate);
         
-        CreateBuildingResponse buildingResponse = new CreateBuildingResponse
-        {
-            Id = buildingToCreate.Id
-        };
+            CreateBuildingResponse buildingResponse = new CreateBuildingResponse
+            {
+                Id = buildingToCreate.Id
+            };
 
-        return buildingResponse;
+            return buildingResponse;
+        }
+        
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        
     }
 }
