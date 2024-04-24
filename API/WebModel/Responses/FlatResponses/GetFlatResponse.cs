@@ -15,24 +15,27 @@ namespace WebModel.Responses.FlatResponses
         public Guid Id { get; set; }
         public int Floor { get; set; }
         public int RoomNumber { get; set; }
-        public GetOwnerAssignedResponse GetOwnerAssigned { get; set; }
-        public int TotalBaths { get; set; }
+        public GetOwnerResponse? OwnerAssigned { get; set; }
         public int TotalRooms { get; set; }
+        public int TotalBaths { get; set; }
         public bool HasTerrace { get; set; }
 
         public override bool Equals(object objectToCompare)
         {
             GetFlatResponse? toCompare = objectToCompare as GetFlatResponse;
-
             if (toCompare is null) return false;
+            
+            bool ownerEquals = OwnerAssigned == null && toCompare.OwnerAssigned == null ||
+                               OwnerAssigned != null && toCompare.OwnerAssigned != null && OwnerAssigned.Equals(toCompare.OwnerAssigned);
 
             return Id == toCompare.Id &&
                    Floor == toCompare.Floor &&
                    RoomNumber == toCompare.RoomNumber &&
-                   GetOwnerAssigned.Equals(toCompare.GetOwnerAssigned) &&
-                   TotalBaths == toCompare.TotalBaths &&
+                   ownerEquals && 
                    TotalRooms == toCompare.TotalRooms &&
+                   TotalBaths == toCompare.TotalBaths &&
                    HasTerrace == toCompare.HasTerrace;
         }
+
     }
 }

@@ -11,7 +11,7 @@ public class GetBuildingResponse
     public LocationResponse Location { get; set; }
     public GetConstructionCompanyResponse ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
-    public IEnumerable<GetFlatResponse> Flats { get; set; }
+    public IEnumerable<GetFlatResponse> Flats { get; set; } = new List<GetFlatResponse>();
 
     public override bool Equals(object? toCompare)
     {
@@ -22,10 +22,9 @@ public class GetBuildingResponse
         return Id == buildingToCompare.Id
                && Name == buildingToCompare.Name
                && Address == buildingToCompare.Address
-               && Location.Latitude == buildingToCompare.Location.Latitude
-               && Location.Longitude == buildingToCompare.Location.Longitude
-               && ConstructionCompany == buildingToCompare.ConstructionCompany
-               && CommonExpenses == buildingToCompare.CommonExpenses
-               && Flats.Equals(buildingToCompare.Flats);
+               && Location.Equals(buildingToCompare.Location)
+               && ConstructionCompany.Equals(buildingToCompare.ConstructionCompany)
+               && Math.Abs(CommonExpenses - buildingToCompare.CommonExpenses) < 0.02
+               && Flats.SequenceEqual(buildingToCompare.Flats);
     }
 }

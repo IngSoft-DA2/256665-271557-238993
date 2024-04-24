@@ -19,8 +19,9 @@ namespace WebModel.Responses.OwnerResponses
         {
             GetOwnerResponse? toCompare = objectToCompare as GetOwnerResponse;
             if (toCompare is null) return false;
-
+                
             return
+                Id == toCompare.Id &&
                 Firstname == toCompare.Firstname &&
                 Lastname == toCompare.Lastname &&
                 Email == toCompare.Email;

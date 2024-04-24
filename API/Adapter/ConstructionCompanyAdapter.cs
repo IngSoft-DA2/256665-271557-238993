@@ -101,7 +101,7 @@ public class ConstructionCompanyAdapter
         }
         catch (ObjectRepeatedServiceException exceptionCaught)
         {
-            throw new ObjectRepeatedAdapterException(exceptionCaught.Message);
+            throw new ObjectRepeatedAdapterException();
         }
         catch (Exception exceptionCaught)
         {

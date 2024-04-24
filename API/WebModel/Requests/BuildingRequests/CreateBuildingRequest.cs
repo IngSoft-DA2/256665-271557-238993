@@ -1,4 +1,3 @@
-using WebModel.Requests.ConstructionCompanyRequests;
 using WebModel.Requests.FlatRequests;
 
 namespace WebModel.Requests.BuildingRequests;
@@ -10,5 +9,5 @@ public class CreateBuildingRequest
     public LocationRequest Location { get; set; }
     public Guid ConstructionCompanyId { get; set; }
     public double CommonExpenses { get; set; }
-    public IEnumerable<CreateFlatRequest>? Flats { get; set; }
+    public IEnumerable<CreateFlatRequest> Flats { get; set; } = new List<CreateFlatRequest>();
 }
