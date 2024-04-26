@@ -400,8 +400,20 @@ public class BuildingAdapterTest
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
     }
-
     
+    [TestMethod]
+    public void UpdateBuildingId_ThrowsObjectErrorException()
+    {
+        _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()))
+            .Throws(new ObjectErrorServiceException("Specific Error"));
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>())).
+            Returns(new ConstructionCompany());
+        
+        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
+    }
     
     
     
