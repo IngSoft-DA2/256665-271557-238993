@@ -221,6 +221,14 @@ public class BuildingAdapter
 
     public void DeleteBuildingById(Guid buildingIdToDelete)
     {
-        _buildingService.DeleteBuilding(buildingIdToDelete);
+        try
+        {
+            _buildingService.DeleteBuilding(buildingIdToDelete);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        
     }
 }
