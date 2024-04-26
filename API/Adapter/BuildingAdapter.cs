@@ -28,6 +28,7 @@ public class BuildingAdapter
 
     #endregion
 
+    #region Get all buildings
 
     public IEnumerable<GetBuildingResponse> GetAllBuildings()
     {
@@ -77,6 +78,10 @@ public class BuildingAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    #endregion
+
+    #region Get building by Id
 
     public GetBuildingResponse GetBuildingById(Guid idOfBuilding)
     {
@@ -130,6 +135,10 @@ public class BuildingAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    #endregion
+
+    #region Create building
 
     public CreateBuildingResponse CreateBuilding(CreateBuildingRequest createBuildingRequest)
     {
@@ -189,6 +198,10 @@ public class BuildingAdapter
         }
     }
 
+    #endregion
+
+    #region Update Building
+
     public void UpdateBuildingById(Guid buildingIdToUpd, UpdateBuildingRequest updateBuildingRequest)
     {
         try
@@ -219,6 +232,10 @@ public class BuildingAdapter
         }
     }
 
+    #endregion
+
+    #region Delete building
+
     public void DeleteBuildingById(Guid buildingIdToDelete)
     {
         try
@@ -229,6 +246,15 @@ public class BuildingAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
-        
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
+
+    #endregion
 }

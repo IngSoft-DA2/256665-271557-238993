@@ -451,8 +451,25 @@ public class BuildingAdapterTest
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
         _buildingService.VerifyAll();
     }
-    
-    
 
+    [TestMethod]
+    public void DeleteBuildingById_ThrowsObjectErrorAdapterException()
+    {
+        _buildingService.Setup(service => service.DeleteBuilding(It.IsAny<Guid>()))
+            .Throws(new ObjectErrorServiceException("Specific Error"));
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
+        _buildingService.VerifyAll();
+    }
+    [TestMethod]
+    public void DeleteBuildingById_ThrowsUnknownAdapterException()
+    {
+        _buildingService.Setup(service => service.DeleteBuilding(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
+        _buildingService.VerifyAll();
+    }
+    
     #endregion
 }
