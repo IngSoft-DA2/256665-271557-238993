@@ -415,6 +415,19 @@ public class BuildingAdapterTest
             _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
     }
     
+    [TestMethod]
+    public void UpdateBuildingId_ThrowsUnknownAdapterException()
+    {
+        _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()))
+            .Throws(new Exception());
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>())).
+            Returns(new ConstructionCompany());
+        
+        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+        
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
+    }
     
     
     

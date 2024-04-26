@@ -213,5 +213,9 @@ public class BuildingAdapter
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 }
