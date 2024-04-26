@@ -73,4 +73,37 @@ public class InvitationServiceTest
     }
 
     #endregion
+
+    [TestMethod]
+    public void GetInvitationById_InvitationIsReturned()
+    {
+        Invitation expectedResponse = new Invitation()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "firstnameExample",
+            Lastname = "lastnameExample",
+            Email = "example@gmail.com",
+            Status = StatusEnum.Pending
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(expectedResponse);
+
+
+        Invitation serviceResponse = _invitationService.GetInvitationById(Guid.NewGuid());
+        _invitationRepository.VerifyAll();
+
+        Assert.IsTrue(expectedResponse.Equals(serviceResponse));
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

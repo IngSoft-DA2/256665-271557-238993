@@ -6,17 +6,16 @@ namespace ServiceLogic;
 
 public class InvitationService
 {
-
     private readonly IInvitationRepository _invitationRepository;
+
     public InvitationService(IInvitationRepository invitationRepository)
     {
         _invitationRepository = invitationRepository;
     }
-    
-    
+
+
     public IEnumerable<Invitation> GetAllInvitations()
     {
-
         try
         {
             IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
@@ -26,6 +25,11 @@ public class InvitationService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
+    }
+
+    public Invitation GetInvitationById(Guid invitationId)
+    {
+        Invitation invitationFound = _invitationRepository.GetInvitationById(invitationId);
+        return invitationFound;
     }
 }
