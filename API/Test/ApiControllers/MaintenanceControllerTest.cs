@@ -161,14 +161,14 @@ public class MaintenanceControllerTest
     #region Request Maintenance
     
     [TestMethod]
-    public void RequestMaintenance_200CodeIsReturned()
+    public void RequestMaintenance_201CodeIsReturned()
     {
         CreateRequestMaintenanceResponse expectedResponse = new CreateRequestMaintenanceResponse()
         {
             Id = Guid.NewGuid(),
         };
         
-        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponse);
+        CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateMaintenanceRequest", "CreateMaintenanceRequest", expectedResponse.Id, expectedResponse);
         
         _maintenanceAdapter.Setup(adapter => 
                 adapter.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>())).Returns(expectedResponse);
@@ -176,7 +176,7 @@ public class MaintenanceControllerTest
         IActionResult controllerResponse = _maintenanceController.CreateMaintenanceRequest(It.IsAny<CreateRequestMaintenanceRequest>());
         _maintenanceAdapter.VerifyAll();
         
-        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
         
         CreateRequestMaintenanceResponse? controllerResponseValueCasted = 

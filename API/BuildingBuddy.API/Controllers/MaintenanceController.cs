@@ -2,6 +2,7 @@ using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.MaintenanceRequests;
+using WebModel.Responses.MaintenanceResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -35,7 +36,8 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                return Ok(_maintenanceAdapter.CreateMaintenanceRequest(request));
+                CreateRequestMaintenanceResponse response = _maintenanceAdapter.CreateMaintenanceRequest(request);
+                return CreatedAtAction(nameof(CreateMaintenanceRequest), new {id = response.Id}, response);
             }
             catch (ObjectErrorAdapterException exceptionCaught)
             {
