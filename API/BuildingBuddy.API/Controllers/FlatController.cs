@@ -20,7 +20,6 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-
         
         #region Get All Flats
         
@@ -74,7 +73,8 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                return Ok(_flatAdapter.CreateFlat(flatToCreate));
+                _flatAdapter.CreateFlat(flatToCreate);
+                return Accepted(new {message = "Flat accepted, and it will be processed on the building creation stage"});
             }
             catch (ObjectErrorAdapterException exceptionCaught)
             {

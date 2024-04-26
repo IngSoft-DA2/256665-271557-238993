@@ -184,11 +184,9 @@ public class FlatAdapterTest
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()));
         _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
 
-        CreateFlatResponse adapterResponse = _flatAdapter.CreateFlat(dummyCreateRequest);
+        _flatAdapter.CreateFlat(dummyCreateRequest);
         _flatService.VerifyAll();
         _ownerService.VerifyAll();
-
-        Assert.IsNotNull(adapterResponse.Id);
     }
 
     [TestMethod]

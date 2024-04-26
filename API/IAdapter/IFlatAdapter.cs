@@ -12,7 +12,7 @@ namespace IAdapter
     {
         public IEnumerable<GetFlatResponse> GetAllFlats(Guid buildingId);
 
-        public CreateFlatResponse CreateFlat(CreateFlatRequest flatToCreate);
+        public void CreateFlat(CreateFlatRequest flatToCreate);
         public GetFlatResponse GetFlatById(Guid buildingId, Guid flatId);
     }
 }

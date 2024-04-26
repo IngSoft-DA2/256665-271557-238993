@@ -71,13 +71,14 @@ public class MaintenanceRequestAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
-        catch(Exception exceptionCaught)
+        catch (Exception exceptionCaught)
         {
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
-    public CreateRequestMaintenanceResponse CreateMaintenanceRequest(CreateRequestMaintenanceRequest maintenanceRequestToCreate)
+
+    public CreateRequestMaintenanceResponse CreateMaintenanceRequest(
+        CreateRequestMaintenanceRequest maintenanceRequestToCreate)
     {
         try
         {
@@ -104,5 +105,15 @@ public class MaintenanceRequestAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    public void UpdateMaintenanceRequest(Guid id, UpdateMaintenanceRequestStatusRequest maintenanceRequestToUpdate)
+    {
+        MaintenanceRequest maintenanceRequestWithUpdates = new MaintenanceRequest
+        {
+            RequestStatus = (StatusEnum)maintenanceRequestToUpdate.RequestStatus
+        };
+
+        _maintenanceRequestService.UpdateMaintenanceRequest(id, maintenanceRequestWithUpdates);
     }
 }
