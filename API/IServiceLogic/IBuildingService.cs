@@ -10,4 +10,5 @@ public interface IBuildingService
     public Building GetBuildingById (Guid buildingId);
     public void CreateBuilding(Building buildingToCreate);
     public void UpdateBuilding(Building buildingWithChanges);
+    public void DeleteBuilding(Guid buildingToDelete);
 }

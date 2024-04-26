@@ -218,4 +218,9 @@ public class BuildingAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public void DeleteBuildingById(Guid buildingIdToDelete)
+    {
+        _buildingService.DeleteBuilding(buildingIdToDelete);
+    }
 }
