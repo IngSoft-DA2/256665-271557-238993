@@ -191,14 +191,21 @@ public class BuildingAdapter
 
     public void UpdateBuildingById(Guid buildingIdToUpd, UpdateBuildingRequest updateBuildingRequest)
     {
-        ConstructionCompany newConstructionCompany =
-            _constructionCompanyService.GetConstructionCompanyById(updateBuildingRequest.ConstructionCompanyId);
+        try
+        {
+            ConstructionCompany newConstructionCompany =
+                _constructionCompanyService.GetConstructionCompanyById(updateBuildingRequest.ConstructionCompanyId);
 
-        Building buildingToUpd = new Building();
-        buildingToUpd.Id = buildingIdToUpd;
-        buildingToUpd.CommonExpenses = updateBuildingRequest.CommonExpenses;
-        buildingToUpd.ConstructionCompany = newConstructionCompany;
-        
-        _buildingService.UpdateBuilding(buildingToUpd);
+            Building buildingToUpd = new Building();
+            buildingToUpd.Id = buildingIdToUpd;
+            buildingToUpd.CommonExpenses = updateBuildingRequest.CommonExpenses;
+            buildingToUpd.ConstructionCompany = newConstructionCompany;
+
+            _buildingService.UpdateBuilding(buildingToUpd);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }
