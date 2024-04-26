@@ -15,6 +15,7 @@ public class InvitationServiceTest
     private Mock<IInvitationRepository> _invitationRepository;
     private InvitationService _invitationService;
 
+    [TestInitialize]
     public void Initialize()
     {
         _invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
@@ -33,16 +34,20 @@ public class InvitationServiceTest
             new Invitation()
             {
                 Id = Guid.NewGuid(),
+                Firstname = "firstnameExample",
+                Lastname = "lastnameExample",
                 Email = "example@gmail.com",
+                ExpirationDate = DateTime.MaxValue,
                 Status = StatusEnum.Pending,
-                ExpirationDate = DateTime.MaxValue
             },
             new Invitation()
             {
                 Id = Guid.NewGuid(),
+                Firstname = "firstname2Example",
+                Lastname = "lastname2Example",
                 Email = "example2@gmail.com",
+                ExpirationDate = DateTime.MaxValue,
                 Status = StatusEnum.Pending,
-                ExpirationDate = DateTime.MaxValue
             }
         };
 
