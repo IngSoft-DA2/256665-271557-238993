@@ -10,6 +10,21 @@ namespace Test.Services;
 [TestClass]
 public class InvitationServiceTest
 {
+    #region Initialize
+
+    private Mock<IInvitationRepository> _invitationRepository;
+    private InvitationService _invitationService;
+
+    public void Initialize()
+    {
+        _invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
+        _invitationService = new InvitationService(_invitationRepository.Object);
+    }
+
+    #endregion
+
+    #region Get all invitations
+
     [TestMethod]
     public void GetAllInvitations_InvitationsAreReturned()
     {
@@ -31,14 +46,13 @@ public class InvitationServiceTest
             }
         };
 
-        Mock<IInvitationRepository> invitationRepositoryMock = new Mock<IInvitationRepository>(MockBehavior.Strict);
-        invitationRepositoryMock.Setup(invitationRepository => invitationRepository.GetAllInvitations())
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitations())
             .Returns(expectedRepositoryResponse);
 
-        InvitationService invitationService = new InvitationService(invitationRepositoryMock.Object);
 
-        IEnumerable<Invitation> actualResponse = invitationService.GetAllInvitations();
-        invitationRepositoryMock.VerifyAll();
+        IEnumerable<Invitation> actualResponse = _invitationService.GetAllInvitations();
+        _invitationRepository.VerifyAll();
 
         Assert.AreEqual(expectedRepositoryResponse.Count(), actualResponse.Count());
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
@@ -47,13 +61,11 @@ public class InvitationServiceTest
     [TestMethod]
     public void GetAllInvitations_UnknownServiceExceptionIsThrown()
     {
-        Mock<IInvitationRepository> invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
-
-        invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitations())
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitations())
             .Throws(new Exception());
 
-        InvitationService invitationService = new InvitationService(invitationRepository.Object);
-        
-        Assert.ThrowsException<UnknownServiceException>(() => invitationService.GetAllInvitations());
+        Assert.ThrowsException<UnknownServiceException>(() => _invitationService.GetAllInvitations());
     }
+
+    #endregion
 }
