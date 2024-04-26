@@ -1,5 +1,6 @@
 using Domain;
 using IRepository;
+using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
@@ -15,7 +16,16 @@ public class InvitationService
     
     public IEnumerable<Invitation> GetAllInvitations()
     {
-        IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
-        return invitations;
+
+        try
+        {
+            IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
+            return invitations;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+        
     }
 }
