@@ -96,6 +96,10 @@ public class MaintenanceRequestAdapter
 
             return maintenanceRequestResponse;
         }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
         catch (Exception exceptionCaught)
         {
             throw new Exception(exceptionCaught.Message);

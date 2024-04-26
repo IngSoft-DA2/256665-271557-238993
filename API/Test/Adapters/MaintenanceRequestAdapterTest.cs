@@ -72,6 +72,7 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+        
     }
 
     [TestMethod]
@@ -84,6 +85,8 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.GetAllMaintenanceRequests());
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+        
+        _maintenanceRequestService.Verify(service => service.GetAllMaintenanceRequests(), Times.Once);
     }
 
     [TestMethod]
@@ -107,6 +110,8 @@ public class MaintenanceRequestAdapterTest
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
+        
+        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()), Times.Once);
     }
     
     [TestMethod]
@@ -119,6 +124,8 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+        
+        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()), Times.Once);
     }
     
     [TestMethod]
@@ -147,5 +154,21 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.CreateMaintenanceRequest(createRequest));
         
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+        
+        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequest_ShouldThrowObjectErrorAdapterException()
+    {
+        CreateRequestMaintenanceRequest createRequest = _dummyCreateRequestMaintenanceResponse;
+        
+        _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()))
+            .Throws(new ObjectErrorServiceException("Description can't be empty"));
+        
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _maintenanceRequestAdapter.CreateMaintenanceRequest(createRequest));
+        
+        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
     }
 }
