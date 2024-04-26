@@ -95,6 +95,17 @@ public class InvitationServiceTest
 
         Assert.IsTrue(expectedResponse.Equals(serviceResponse));
     }
+    
+    [TestMethod]
+    public void GetInvitationById_InvitationNotFound()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _invitationService.GetInvitationById(Guid.NewGuid()));
+        _invitationRepository.VerifyAll();
+        
+    }
 
 
 

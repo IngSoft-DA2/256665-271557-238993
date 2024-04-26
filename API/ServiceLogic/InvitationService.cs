@@ -30,6 +30,9 @@ public class InvitationService
     public Invitation GetInvitationById(Guid invitationId)
     {
         Invitation invitationFound = _invitationRepository.GetInvitationById(invitationId);
+        
+        if (invitationFound is null) throw new ObjectNotFoundServiceException();
+        
         return invitationFound;
     }
 }
