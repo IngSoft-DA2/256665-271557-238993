@@ -124,14 +124,7 @@ public class MaintenanceRequestAdapterTest
     [TestMethod]
     public void CreateMaintenanceRequest_ShouldReturnCreateMaintenanceRequestResponse()
     {
-        CreateRequestMaintenanceRequest createRequest = new CreateRequestMaintenanceRequest()
-        {
-            BuildingId = genericMaintenanceRequest.BuildingId,
-            Description = genericMaintenanceRequest.Description,
-            FlatId = genericMaintenanceRequest.FlatId,
-            Category = genericMaintenanceRequest.Category,
-        };
-        
+        CreateRequestMaintenanceRequest createRequest = _dummyCreateRequestMaintenanceResponse;
         
         _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()));
         
@@ -145,7 +138,7 @@ public class MaintenanceRequestAdapterTest
     [TestMethod]
     public void CreateMaintenanceRequest_ShouldThrowException()
     {
-        CreateRequestMaintenanceRequest createRequest = new CreateRequestMaintenanceRequest();
+        CreateRequestMaintenanceRequest createRequest = _dummyCreateRequestMaintenanceResponse;
         
         _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()))
             .Throws(new Exception("Something went wrong"));

@@ -90,9 +90,9 @@ public class MaintenanceRequestAdapter
             };
 
             _maintenanceRequestService.CreateMaintenanceRequest(maintenanceRequest);
-            
+
             CreateRequestMaintenanceResponse maintenanceRequestResponse = new CreateRequestMaintenanceResponse
-            { Id = maintenanceRequest.Id };
+                { Id = maintenanceRequest.Id };
 
             return maintenanceRequestResponse;
         }
