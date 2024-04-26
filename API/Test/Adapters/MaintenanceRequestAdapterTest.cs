@@ -141,4 +141,18 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequest_ShouldThrowException()
+    {
+        CreateRequestMaintenanceRequest createRequest = new CreateRequestMaintenanceRequest();
+        
+        _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()))
+            .Throws(new Exception("Something went wrong"));
+        
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            _maintenanceRequestAdapter.CreateMaintenanceRequest(createRequest));
+        
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+    }
 }
