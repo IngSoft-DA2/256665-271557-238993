@@ -9,4 +9,5 @@ public interface IBuildingService
     public IEnumerable<Building> GetAllBuildings();
     public Building GetBuildingById (Guid buildingId);
     public void CreateBuilding(Building buildingToCreate);
+    public void UpdateBuilding(Building buildingWithChanges);
 }

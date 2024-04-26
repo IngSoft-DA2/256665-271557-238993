@@ -188,4 +188,17 @@ public class BuildingAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public void UpdateBuildingById(Guid buildingIdToUpd, UpdateBuildingRequest updateBuildingRequest)
+    {
+        ConstructionCompany newConstructionCompany =
+            _constructionCompanyService.GetConstructionCompanyById(updateBuildingRequest.ConstructionCompanyId);
+
+        Building buildingToUpd = new Building();
+        buildingToUpd.Id = buildingIdToUpd;
+        buildingToUpd.CommonExpenses = updateBuildingRequest.CommonExpenses;
+        buildingToUpd.ConstructionCompany = newConstructionCompany;
+        
+        _buildingService.UpdateBuilding(buildingToUpd);
+    }
 }

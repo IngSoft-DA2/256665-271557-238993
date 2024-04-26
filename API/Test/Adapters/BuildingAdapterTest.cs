@@ -247,6 +247,8 @@ public class BuildingAdapterTest
 
     #endregion
 
+    #region Create building
+
     [TestMethod]
     public void CreateBuilding_ReturnsCreateBuildingResponse()
     {
@@ -256,15 +258,15 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
-        
+
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
-        
+
         dummyCreateRequest.Location = dummyLocationRequest;
-        
-        
+
+
         CreateBuildingResponse buildingResponse = _buildingAdapter.CreateBuilding(dummyCreateRequest);
-        
+
         _constructionCompanyService.VerifyAll();
         _ownerService.VerifyAll();
         _buildingService.VerifyAll();
@@ -272,7 +274,7 @@ public class BuildingAdapterTest
         Assert.IsNotNull(buildingResponse);
         Assert.IsInstanceOfType<Guid>(buildingResponse.Id);
     }
-    
+
     [TestMethod]
     public void CreateBuilding_ThrowsNotFoundAdapterException()
     {
@@ -283,14 +285,15 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
-        
+
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
-        
+
         dummyCreateRequest.Location = dummyLocationRequest;
-        
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
-        
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(
+            () => _buildingAdapter.CreateBuilding(dummyCreateRequest));
+
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
     }
@@ -305,18 +308,18 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
-        
+
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
-        
+
         dummyCreateRequest.Location = dummyLocationRequest;
-        
+
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
-        
+
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateBuilding_ThrowsRepeatedObjectException()
     {
@@ -327,18 +330,19 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
-        
+
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
-        
+
         dummyCreateRequest.Location = dummyLocationRequest;
-        
-        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
-        
+
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(
+            () => _buildingAdapter.CreateBuilding(dummyCreateRequest));
+
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateBuilding_ThrowsUnknownAdapterException()
     {
@@ -349,16 +353,36 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
-        
+
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
-        
+
         dummyCreateRequest.Location = dummyLocationRequest;
-        
+
         Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.CreateBuilding(dummyCreateRequest));
-        
+
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
     }
-    
+
+    #endregion
+
+    #region Update building
+
+    [TestMethod]
+    public void UpdateBuildingById_UpdatesSuccessfully()
+    {
+        _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()));
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(new ConstructionCompany());
+
+        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+
+        _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest);
+
+        _constructionCompanyService.VerifyAll();
+        _buildingService.Verify(service => service.UpdateBuilding(It.IsAny<Building>()), Times.Once);
+    }
+
+    #endregion
 }
