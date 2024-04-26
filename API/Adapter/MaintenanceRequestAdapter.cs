@@ -109,11 +109,18 @@ public class MaintenanceRequestAdapter
 
     public void UpdateMaintenanceRequest(Guid id, UpdateMaintenanceRequestStatusRequest maintenanceRequestToUpdate)
     {
-        MaintenanceRequest maintenanceRequestWithUpdates = new MaintenanceRequest
+        try
         {
-            RequestStatus = (StatusEnum)maintenanceRequestToUpdate.RequestStatus
-        };
+            MaintenanceRequest maintenanceRequestWithUpdates = new MaintenanceRequest
+            {
+                RequestStatus = (StatusEnum)maintenanceRequestToUpdate.RequestStatus
+            };
 
-        _maintenanceRequestService.UpdateMaintenanceRequest(id, maintenanceRequestWithUpdates);
+            _maintenanceRequestService.UpdateMaintenanceRequest(id, maintenanceRequestWithUpdates);
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }
