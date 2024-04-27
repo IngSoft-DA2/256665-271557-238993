@@ -315,7 +315,7 @@ public class InvitationServiceTest
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
 
-        
+
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
 
@@ -344,18 +344,18 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
     [TestMethod]
-    public void UpdateInvitationByIdWhenStatusIsNotPending_ThrowsObjectErrorServiceException()
+    public void UpdateInvitationById_WhenStatusIsNotPending_ThrowsObjectErrorServiceException()
     {
         _invitationExample.Status = StatusEnum.Rejected;
-        
+
         Invitation invitationWithUpdates = new Invitation
         {
             Status = StatusEnum.Accepted,
             ExpirationDate = DateTime.MaxValue
         };
-        
+
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
 
@@ -364,18 +364,18 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
- 
+
     [TestMethod]
     public void UpdateStatus_CannotBeDoneIfExpirationDateIsBeforeToday()
     {
         _invitationExample.ExpirationDate = DateTime.MinValue;
-        
+
         Invitation invitationWithUpdates = new Invitation
         {
             Status = StatusEnum.Accepted,
             ExpirationDate = DateTime.MinValue
         };
-        
+
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
 
@@ -384,12 +384,28 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
-    
+
+    [TestMethod]
+    public void WhenStatusIsPending_InvitationThatIsExpiredOrNearToExpire_ExceptionIsThrown()
+    {
+        _invitationExample.ExpirationDate = DateTime.Now.AddDays(2);
+
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Pending,
+            ExpirationDate = DateTime.MaxValue
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.UpdateInvitation
+            (_invitationExample.Id, invitationWithUpdates));
+
+        _invitationRepository.VerifyAll();
+    }
 
     #endregion
-
- 
 
     #endregion
 }

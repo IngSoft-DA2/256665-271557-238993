@@ -94,12 +94,13 @@ public class InvitationService
 
         if (invitationWithoutUpdates.Status != StatusEnum.Pending)
         {
-            throw new ObjectErrorServiceException("Invitation is not pending, so it cannot be updated.");
+            throw new ObjectErrorServiceException("Invitation is not pending status, so it is not usable.");
         }
         
-        if(invitationWithUpdates.Status != StatusEnum.Pending && invitationWithoutUpdates.ExpirationDate < DateTime.Now)
+        if(invitationWithUpdates.Status == StatusEnum.Pending 
+           && invitationWithoutUpdates.ExpirationDate.Date > DateTime.UtcNow.AddDays(1))
         {
-            throw new ObjectErrorServiceException("Invitation is expired, so it cannot be updated.");
+            throw new ObjectErrorServiceException("Expiration date cannot be updated to a later date.");
         }
         
         try
