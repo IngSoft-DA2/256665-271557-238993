@@ -131,5 +131,10 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
+    public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
+    {
+        MaintenanceRequest maintenanceRequest = _maintenanceRequestService.GetMaintenanceRequestById(idToUpdate);
+        _maintenanceRequestService.AssignMaintenanceRequest(idToUpdate, idOfWorker);
+    }
 }
