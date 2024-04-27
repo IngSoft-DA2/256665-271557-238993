@@ -132,7 +132,7 @@ public class InvitationServiceTest
 
     #endregion
 
-    #region Create Invitation Domain Validations
+    #region Create Invitation
 
     //Happy path
     [TestMethod]
@@ -241,6 +241,31 @@ public class InvitationServiceTest
 
     #endregion
 
+    #region Expiration Date Domain Validations
+
+    [TestMethod]
+    public void CreateInvitationThatHasAnExpirationDateThatIsBeforeToday_ThrowsObjectErrorServiceException()
+    {
+        DateTime expiredExpirationDate = DateTime.MinValue;
+        _invitationExample.ExpirationDate = expiredExpirationDate;
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.CreateInvitation(_invitationExample));
+    }
+
+    #endregion
+
+    #region Status Domain Validations
+
+    [TestMethod]
+    public void WhenCreatingAnInvitation_StatusShouldBePending()
+    {
+        Invitation invitationToCheckStatus = new Invitation();
+        Assert.AreEqual(StatusEnum.Pending, (invitationToCheckStatus).Status);
+    }
+
+    #endregion
+
     #region Email Repository Validations
 
     [TestMethod]
@@ -279,41 +304,17 @@ public class InvitationServiceTest
 
     #endregion
 
-    #region Expiration Date Domain Validations
-
-    [TestMethod]
-    public void CreateInvitationThatHasAnExpirationDateThatIsBeforeToday_ThrowsObjectErrorServiceException()
-    {
-        DateTime expiredExpirationDate = DateTime.MinValue;
-        _invitationExample.ExpirationDate = expiredExpirationDate;
-
-        Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _invitationService.CreateInvitation(_invitationExample));
-    }
-
-    #endregion
-
-    #region Status Domain Validations
-
-    [TestMethod]
-    public void WhenCreatingAnInvitation_StatusShouldBePending()
-    {
-        Invitation invitationToCheckStatus = new Invitation();
-        Assert.AreEqual(StatusEnum.Pending, (invitationToCheckStatus).Status);
-    }
-
-    #endregion
-
     #endregion
 
     #region Update Invitation by Id
 
+    //Happy path
     [TestMethod]
     public void UpdateInvitationById_InvitationIsUpdated()
     {
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
-        
+
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
 
@@ -328,21 +329,29 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
+    #region Update Invitation By Id, Repository Validations
+
     [TestMethod]
     public void UpdateInvitationById_InvitationNotFound()
     {
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(() => null);
-        
+
         Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
             _invitationService.UpdateInvitation(Guid.NewGuid(), new Invitation()));
-        
+
         _invitationRepository.VerifyAll();
     }
+
+    #endregion
+
+    #region Update Invitation By Id, Domain Validations
     
     
     
+
+    #endregion
 
     #endregion
 }
