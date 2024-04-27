@@ -12,7 +12,6 @@ public class Invitation
     public StatusEnum Status { get; set; }
 
 
-
     public void InvitationValidator()
     {
         FirstnameValidation();
@@ -32,6 +31,11 @@ public class Invitation
         if (String.IsNullOrEmpty(Firstname))
         {
             throw new InvalidInvitationException("Firstname is required");
+        }
+
+        if (!Firstname.All(char.IsLetter))
+        {
+            throw new InvalidInvitationException("Firstname cannot contain special characters.");
         }
     }
 
