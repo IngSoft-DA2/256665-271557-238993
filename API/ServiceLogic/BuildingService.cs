@@ -24,4 +24,9 @@ public class BuildingService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+
+    public Building GetBuildingById(Guid buildingId)
+    {
+        return _buildingRepository.GetBuildingById(buildingId);
+    }
 }
