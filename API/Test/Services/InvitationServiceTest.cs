@@ -158,7 +158,7 @@ public class InvitationServiceTest
     }
 
     [TestMethod]
-    public void CreateInvitationWithNumericLastname_ThrowsObjectErrorServiceException()
+    public void CreateInvitationWithNumericFirstname_ThrowsObjectErrorServiceException()
     {
         _invitationExample.Firstname = "123";
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
@@ -171,6 +171,19 @@ public class InvitationServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
     }
     
+    [TestMethod]
+    public void CreateInvitationWithNumericLastname_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Lastname = "123";
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
+    }
+    
+    [TestMethod]
+    public void CreateInvitationWithEmptyEmail_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Email = "";
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
+    }
     
     
     

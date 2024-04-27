@@ -16,13 +16,18 @@ public class Invitation
     {
         FirstnameValidation();
         LastnameValidation();
+        EmailValidation();
     }
-
+    
     private void LastnameValidation()
     {
         if (String.IsNullOrEmpty(Lastname))
         {
             throw new InvalidInvitationException("Lastname is required");
+        }
+        if (!Lastname.All(char.IsLetter))
+        {
+            throw new InvalidInvitationException("Firstname cannot contain special characters.");
         }
     }
 
@@ -38,7 +43,16 @@ public class Invitation
             throw new InvalidInvitationException("Firstname cannot contain special characters.");
         }
     }
+    
+    private void EmailValidation()
+    {
+        if (String.IsNullOrEmpty(Email))
+        {
+            throw new InvalidInvitationException("Email is required");
+        }
+    }
 
+    
 
     public override bool Equals(object? obj)
     {
