@@ -328,6 +328,21 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateInvitationById_InvitationNotFound()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(() => null);
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _invitationService.UpdateInvitation(Guid.NewGuid(), new Invitation()));
+        
+        _invitationRepository.VerifyAll();
+    }
+    
+    
+    
 
     #endregion
 }

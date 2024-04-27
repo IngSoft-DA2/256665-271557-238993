@@ -90,7 +90,7 @@ public class InvitationService
 
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationWithUpdates)
     {
-        Invitation invitationWithoutUpdates = _invitationRepository.GetInvitationById(idOfInvitationToUpdate);
+        Invitation invitationWithoutUpdates = GetInvitationById(idOfInvitationToUpdate);
         
         foreach (PropertyInfo property in typeof(Invitation).GetProperties())
         {
