@@ -2,6 +2,7 @@
 using IRepository;
 using Moq;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace Test.Services;
 
@@ -61,5 +62,18 @@ public class BuildingServiceTest
         IEnumerable<Building> serviceResponse = buildingService.GetAllBuildings();
 
         Assert.IsTrue(expectedBuildings.SequenceEqual(serviceResponse));
+    }
+    
+    [TestMethod]
+    public void GetAllBuildingsTest_ThrowsException()
+    {
+        Mock<IBuildingRepository> mockRepository = new Mock<IBuildingRepository>(MockBehavior.Strict);
+
+        mockRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
+        BuildingService buildingService = new BuildingService(mockRepository.Object);
+
+        Assert.ThrowsException<UnknownServiceException>(() => buildingService.GetAllBuildings());
+        
+        mockRepository.VerifyAll();
     }
 }
