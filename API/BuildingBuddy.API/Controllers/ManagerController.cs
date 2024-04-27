@@ -55,8 +55,15 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateManager(CreateManagerRequest createRequest)
         {
-            CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
-            return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
+            try
+            {
+                CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
+                return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
+            }
+            catch (ObjectNotFoundAdapterException exceptionCaught)
+            {
+                return NotFound(exceptionCaught.Message);
+            }
         }
     }
 }
