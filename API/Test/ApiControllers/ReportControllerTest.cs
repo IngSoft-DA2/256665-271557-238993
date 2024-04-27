@@ -42,10 +42,11 @@ public class ReportControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>())).Returns(expectedResponseValue);
+        _reportAdapter.Setup(adapter => 
+            adapter.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportByBuildingRequest>())).Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>());
+            _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportByBuildingRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -67,9 +68,10 @@ public class ReportControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>())).Throws(new Exception("Something went wrong"));
+        _reportAdapter.Setup(adapter => 
+            adapter.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportByBuildingRequest>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportRequest>());
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportByBuildingRequest>());
 
         _reportAdapter.VerifyAll();
 
@@ -201,6 +203,48 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    #endregion
+
+    #region Get Maintenance Report By Building
+    
+    [TestMethod]
+    public void GetMaintenanceReportByBuilding_OkIsReturned()
+    {
+        IEnumerable<GetMaintenanceReportResponse> expectedResponseValue = new List<GetMaintenanceReportResponse>()
+        {
+            new GetMaintenanceReportResponse()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8
+            }
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceRequestsByBuilding(
+            It.IsAny<GetMaintenanceReportByBuildingRequest>())).Returns(expectedResponseValue);
+
+        IActionResult controllerResponse =
+            _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<GetMaintenanceReportByBuildingRequest>());
+
+        _reportAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetMaintenanceReportResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetMaintenanceReportResponse>;
+
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
+    }
+    
+    
     
     #endregion
 }
