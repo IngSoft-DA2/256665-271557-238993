@@ -202,4 +202,24 @@ public class ManagerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    [TestMethod]
+    public void CreateManager_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            .Throws(new Exception("Unknown error"));
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        _managerAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 }
