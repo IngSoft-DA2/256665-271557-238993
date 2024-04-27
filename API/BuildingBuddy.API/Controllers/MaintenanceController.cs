@@ -100,7 +100,7 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                return Ok(_maintenanceAdapter.GetMaintenanceRequestByRequestHandler(handlerId));
+                return Ok(_maintenanceAdapter.GetMaintenanceRequestsByRequestHandler(handlerId));
             }
             catch (ObjectNotFoundAdapterException)
             {

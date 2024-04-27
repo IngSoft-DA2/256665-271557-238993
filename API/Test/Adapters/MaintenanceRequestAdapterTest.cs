@@ -13,6 +13,8 @@ namespace Test.Adapters;
 [TestClass]
 public class MaintenanceRequestAdapterTest
 {
+    #region Initialize
+    
     private Mock<IMaintenanceRequestService> _maintenanceRequestService;
     private MaintenanceRequestAdapter _maintenanceRequestAdapter;
 
@@ -56,6 +58,10 @@ public class MaintenanceRequestAdapterTest
             RequestHandlerId = genericMaintenanceRequest.RequestHandlerId
         };
     }
+    
+    #endregion
+    
+    #region Get All Maintenance Requests
 
     [TestMethod]
     public void GetAllMaintenanceRequests_ReturnsMaintenanceRequestResponses()
@@ -90,6 +96,10 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.GetAllMaintenanceRequests(), Times.Once);
     }
+    
+    #endregion
+    
+    #region Get Maintenance Request By Id
 
     [TestMethod]
     public void GetMaintenanceRequestById_ReturnsMaintenanceRequestResponse()
@@ -130,6 +140,10 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()), Times.Once);
     }
     
+    #endregion
+    
+    #region Create Maintenance Request
+    
     [TestMethod]
     public void CreateMaintenanceRequest_ShouldReturnCreateMaintenanceRequestResponse()
     {
@@ -167,6 +181,10 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
     }
+    
+    #endregion
+    
+    #region Update Maintenance Request
     
     [TestMethod]
     public void UpdateMaintenanceRequest_ShouldUpdateMaintenanceRequest()
@@ -215,6 +233,10 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
+    
+    #endregion
+    
+    #region Assign Maintenance Request
 
     [TestMethod]
     public void AssignMaintenanceRequest_ShouldAssignMaintenanceRequest()
@@ -264,6 +286,10 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
     
+    #endregion
+    
+    #region Get Maintenance Requests By Handler
+    
     [TestMethod]
     public void GetMaintenanceRequestsByHandler_ShouldReturnMaintenanceRequestResponses()
     {
@@ -277,7 +303,7 @@ public class MaintenanceRequestAdapterTest
             .Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceRequestResponse> adapterResponse =
-            _maintenanceRequestAdapter.GetMaintenanceRequestByRequestHandler(genericMaintenanceRequest.RequestHandlerId);
+            _maintenanceRequestAdapter.GetMaintenanceRequestsByRequestHandler(genericMaintenanceRequest.RequestHandlerId);
         
         _maintenanceRequestService.VerifyAll();
 
@@ -291,13 +317,13 @@ public class MaintenanceRequestAdapterTest
             .Throws(new Exception("Something went wrong"));
 
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.GetMaintenanceRequestByRequestHandler(genericMaintenanceRequest.RequestHandlerId));
+            _maintenanceRequestAdapter.GetMaintenanceRequestsByRequestHandler(genericMaintenanceRequest.RequestHandlerId));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
         
         _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()), Times.Once);
         
     }
-
     
+    #endregion
 }
