@@ -4,6 +4,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModel.Requests.ManagerRequests;
 using WebModel.Responses.ManagerResponses;
 
 namespace Test.ApiControllers;
@@ -138,4 +139,24 @@ public class ManagerControllerTest
     }
 
     #endregion
+
+    public void CreateManager_CreatedAtActionIsReturned()
+    {
+        CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateManager", "CreateManager",
+            new CreateManagerResponse(), new CreateManagerResponse());
+        
+        _managerAdapter.Setup(adapter => adapter.CreateManager(new CreateManagerRequest()))
+            .Returns(new CreateManagerResponse());
+
+        IActionResult controllerResponse = _managerController.CreateManager(new CreateManagerRequest());
+        Assert.IsNotNull(controllerResponse);
+        
+        CreatedAtActionResult controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
+        
+        
+    }
 }

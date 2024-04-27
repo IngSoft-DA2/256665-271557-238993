@@ -2,6 +2,8 @@ using Adapter.CustomExceptions;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebModel.Requests.ManagerRequests;
+using WebModel.Responses.ManagerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -48,6 +50,13 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+        
+        [HttpPost]
+        public IActionResult CreateManager(CreateManagerRequest createRequest)
+        {
+            CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
+            return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
         }
     }
 }
