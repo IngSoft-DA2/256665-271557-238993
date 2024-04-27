@@ -275,6 +275,27 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void AssignMaintenanceRequest_ShouldThrowException()
+    {
+        Guid idOfRequest = genericMaintenanceRequest.Id;
+        Guid idOfWorker = Guid.NewGuid();
+    
+        _maintenanceRequestService
+            .Setup(service => service.AssignMaintenanceRequest(idOfRequest, idOfWorker))
+            .Throws(new Exception("Something went wrong"));
+
+        _maintenanceRequestService.Setup(service =>
+            service.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(genericMaintenanceRequest);
+        
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            _maintenanceRequestAdapter.AssignMaintenanceRequest(idOfRequest, idOfWorker));
+        
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+        
+        _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+    }
 
     
 }
