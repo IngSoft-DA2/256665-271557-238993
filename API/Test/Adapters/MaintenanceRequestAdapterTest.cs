@@ -317,5 +317,20 @@ public class MaintenanceRequestAdapterTest
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
 
+    [TestMethod]
+    public void GetMaintenanceRequestsByHandler_ShouldThrowException()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            _maintenanceRequestAdapter.GetMaintenanceRequestByRequestHandler(genericMaintenanceRequest.RequestHandlerId));
+
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+        
+        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()), Times.Once);
+        
+    }
+
     
 }
