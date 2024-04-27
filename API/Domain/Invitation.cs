@@ -19,6 +19,7 @@ public class Invitation
         LastnameValidation();
         EmailValidation();
         ExpirationDateValidation();
+        StatusValidation();
     }
 
 
@@ -67,6 +68,14 @@ public class Invitation
         if (ExpirationDate <= DateTime.Today)
         {
             throw new InvalidInvitationException("Expiration date must be greater than today");
+        }
+    }
+    
+    private void StatusValidation()
+    {
+        if (Status != StatusEnum.Pending)
+        {
+            throw new InvalidInvitationException("Status must be Pending.");
         }
     }
 

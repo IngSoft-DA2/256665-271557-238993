@@ -315,6 +315,7 @@ public class InvitationServiceTest
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
 
+        
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
 
@@ -343,15 +344,33 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateTheStatusWhenStatusIsNotPending_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Status = StatusEnum.Rejected;
+        
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Accepted,
+            ExpirationDate = DateTime.MaxValue
+        };
+        
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates));
+
+        _invitationRepository.VerifyAll();
+    }
+ 
+    
+    
 
     #endregion
 
-    #region Update Invitation By Id, Domain Validations
-    
-    
-    
-
-    #endregion
+ 
 
     #endregion
 }

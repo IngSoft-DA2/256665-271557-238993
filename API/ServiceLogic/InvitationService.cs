@@ -91,18 +91,32 @@ public class InvitationService
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationWithUpdates)
     {
         Invitation invitationWithoutUpdates = GetInvitationById(idOfInvitationToUpdate);
-        
-        foreach (PropertyInfo property in typeof(Invitation).GetProperties())
+
+        if (invitationWithoutUpdates.Status != StatusEnum.Pending)
         {
-            object? originalValue = property.GetValue(invitationWithoutUpdates);
-            object? updatedValue = property.GetValue(invitationWithUpdates);
-            
-            if (updatedValue == null && originalValue != null)
-            {
-                property.SetValue(invitationWithUpdates, originalValue);
-            }
+            throw new ObjectErrorServiceException("Invitation is not pending, so it cannot be updated.");
         }
         
-        _invitationRepository.UpdateInvitation(invitationWithUpdates);
+        try
+        {
+            foreach (PropertyInfo property in typeof(Invitation).GetProperties())
+            {
+                object? originalValue = property.GetValue(invitationWithoutUpdates);
+                object? updatedValue = property.GetValue(invitationWithUpdates);
+            
+                if (updatedValue == null && originalValue != null)
+                {
+                    property.SetValue(invitationWithUpdates, originalValue);
+                }
+            }
+        
+            invitationWithUpdates.InvitationValidator();
+        
+            _invitationRepository.UpdateInvitation(invitationWithUpdates);
+        }
+        catch (InvalidInvitationException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
     }
 }

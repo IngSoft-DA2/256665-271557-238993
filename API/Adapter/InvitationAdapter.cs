@@ -126,10 +126,10 @@ public class InvitationAdapter
         {
             Invitation invitation = new Invitation
             {
-                Status = (StatusEnum)invitationToUpdateRequest.Status,
+                Status = (StatusEnum)invitationToUpdateRequest.Status, 
                 ExpirationDate = invitationToUpdateRequest.ExpirationDate
             };
-
+            
             _invitationServiceLogic.UpdateInvitation(idOfInvitationToUpdate, invitation);
         }
         catch (ObjectNotFoundServiceException)
