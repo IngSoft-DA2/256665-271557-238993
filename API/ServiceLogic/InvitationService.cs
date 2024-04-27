@@ -1,3 +1,4 @@
+using System.Reflection;
 using Domain;
 using Domain.Enums;
 using IRepository;
@@ -63,9 +64,7 @@ public class InvitationService
         try
         {
             invitationToAdd.InvitationValidator();
-
             CheckIfEmailHasAlreadyAInvitation(invitationToAdd);
-
             _invitationRepository.CreateInvitation(invitationToAdd);
         }
         catch (InvalidInvitationException exceptionFromDomain)
@@ -88,4 +87,22 @@ public class InvitationService
     }
 
     #endregion
+
+    public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationWithUpdates)
+    {
+        Invitation invitationWithoutUpdates = _invitationRepository.GetInvitationById(idOfInvitationToUpdate);
+        
+        foreach (PropertyInfo property in typeof(Invitation).GetProperties())
+        {
+            object? originalValue = property.GetValue(invitationWithoutUpdates);
+            object? updatedValue = property.GetValue(invitationWithUpdates);
+            
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(invitationWithUpdates, originalValue);
+            }
+        }
+        
+        _invitationRepository.UpdateInvitation(invitationWithUpdates);
+    }
 }

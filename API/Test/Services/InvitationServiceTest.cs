@@ -305,4 +305,29 @@ public class InvitationServiceTest
     #endregion
 
     #endregion
+
+    #region Update Invitation by Id
+
+    [TestMethod]
+    public void UpdateInvitationById_InvitationIsUpdated()
+    {
+        _invitationRepository.Setup(invitationRepository =>
+            invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
+        
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Rejected,
+            ExpirationDate = DateTime.Now
+        };
+        Guid idOfInvitationToUpdate = _invitationExample.Id;
+
+        _invitationService.UpdateInvitation(idOfInvitationToUpdate, invitationWithUpdates);
+
+        _invitationRepository.VerifyAll();
+    }
+
+    #endregion
 }
