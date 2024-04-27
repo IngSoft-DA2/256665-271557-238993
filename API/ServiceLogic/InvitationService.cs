@@ -1,5 +1,6 @@
 using Domain;
 using IRepository;
+using Repositories.CustomExceptions;
 using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
@@ -26,13 +27,19 @@ public class InvitationService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
     public Invitation GetInvitationById(Guid invitationId)
     {
-        Invitation invitationFound = _invitationRepository.GetInvitationById(invitationId);
+        Invitation invitationFound;
+        try
+        {
+            invitationFound = _invitationRepository.GetInvitationById(invitationId);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
         
         if (invitationFound is null) throw new ObjectNotFoundServiceException();
-        
         return invitationFound;
     }
 }

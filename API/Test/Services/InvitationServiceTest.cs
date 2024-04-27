@@ -2,6 +2,7 @@ using Domain;
 using Domain.Enums;
 using IRepository;
 using Moq;
+using Repositories.CustomExceptions;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;
 
@@ -95,7 +96,7 @@ public class InvitationServiceTest
 
         Assert.IsTrue(expectedResponse.Equals(serviceResponse));
     }
-    
+
     [TestMethod]
     public void GetInvitationById_InvitationNotFound()
     {
@@ -104,13 +105,17 @@ public class InvitationServiceTest
 
         Assert.ThrowsException<ObjectNotFoundServiceException>(() => _invitationService.GetInvitationById(Guid.NewGuid()));
         _invitationRepository.VerifyAll();
-        
     }
+    
+    [TestMethod]
+    public void GetInvitationById_UnknownServiceExceptionIsThrown()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Throws(new UnknownRepositoryException("Internal Server Error"));
 
-
-
-
-
+        Assert.ThrowsException<UnknownServiceException>(() => _invitationService.GetInvitationById(Guid.NewGuid()));
+        _invitationRepository.VerifyAll();
+    }
 
 
 
