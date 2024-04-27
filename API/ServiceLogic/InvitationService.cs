@@ -88,18 +88,26 @@ public class InvitationService
 
     #endregion
 
+    #region Update Invitation By Id
+
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationUpdated)
     {
         Invitation invitationNotUpdated = GetInvitationById(idOfInvitationToUpdate);
         try
         {
-            MapProperties(invitationUpdated, invitationNotUpdated);
             ValidationForBeingPossibleToUpdate(invitationUpdated, invitationNotUpdated);
+            MapProperties(invitationUpdated, invitationNotUpdated);
+            invitationUpdated.InvitationValidator();
+
             _invitationRepository.UpdateInvitation(invitationUpdated);
         }
         catch (InvalidInvitationException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
 
@@ -108,22 +116,21 @@ public class InvitationService
     {
         if (invitationNotUpdated.Status != StatusEnum.Pending)
         {
-            throw new ObjectErrorServiceException("Invitation is not pending status, so it is not usable.");
+            throw new InvalidInvitationException("Invitation is not pending status, so it is not usable.");
         }
 
         if (invitationUpdated.Status == StatusEnum.Pending
             && invitationNotUpdated.ExpirationDate.Date > DateTime.UtcNow.AddDays(1))
         {
-            throw new ObjectErrorServiceException("Expiration date cannot be updated to a later date.");
+            throw new InvalidInvitationException(
+                "Expiration date cannot be updated to a later date. It must be expired or one day from now.");
         }
 
         if (invitationUpdated.Status != StatusEnum.Pending &&
             invitationUpdated.ExpirationDate != invitationNotUpdated.ExpirationDate)
         {
-            throw new ObjectErrorServiceException("Expiration date cannot be updated if the status is not pending.");
+            throw new InvalidInvitationException("Expiration date cannot be updated if the status is not pending.");
         }
-
-        invitationUpdated.InvitationValidator();
     }
 
     private static void MapProperties(Invitation invitationWithUpdates, Invitation invitationWithoutUpdates)
@@ -139,4 +146,6 @@ public class InvitationService
             }
         }
     }
+
+    #endregion
 }

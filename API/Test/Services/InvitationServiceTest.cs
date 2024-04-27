@@ -1,5 +1,6 @@
 using Domain;
 using Domain.Enums;
+using Humanizer;
 using IRepository;
 using Moq;
 using Repositories.CustomExceptions;
@@ -38,6 +39,7 @@ public class InvitationServiceTest
     #region Get all invitations
 
     [TestMethod]
+    //Happy path
     public void GetAllInvitations_InvitationsAreReturned()
     {
         IEnumerable<Invitation> expectedRepositoryResponse = new List<Invitation>
@@ -74,6 +76,8 @@ public class InvitationServiceTest
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
 
+    #region Get all invitations, repository validation
+
     [TestMethod]
     public void GetAllInvitations_UnknownServiceExceptionIsThrown()
     {
@@ -82,6 +86,8 @@ public class InvitationServiceTest
 
         Assert.ThrowsException<UnknownServiceException>(() => _invitationService.GetAllInvitations());
     }
+
+    #endregion
 
     #endregion
 
@@ -147,7 +153,7 @@ public class InvitationServiceTest
         _invitationRepository.VerifyAll();
     }
 
-    #region Firstname Domain Validations
+    #region Create Invitation, Domain Validations
 
     [TestMethod]
     public void CreateInvitationWithEmptyFirstname_ThrowsObjectErrorServiceException()
@@ -183,10 +189,6 @@ public class InvitationServiceTest
             _invitationService.CreateInvitation(_invitationExample));
     }
 
-    #endregion
-
-    #region Lastname Domain Validations
-
     [TestMethod]
     public void CreateInvitationWithEmptyLastname_ThrowsObjectErrorServiceException()
     {
@@ -219,10 +221,6 @@ public class InvitationServiceTest
             _invitationService.CreateInvitation(_invitationExample));
     }
 
-    #endregion
-
-    #region Email Domain Validations
-
     [TestMethod]
     public void CreateInvitationWithEmptyEmail_ThrowsObjectErrorServiceException()
     {
@@ -239,10 +237,6 @@ public class InvitationServiceTest
             _invitationService.CreateInvitation(_invitationExample));
     }
 
-    #endregion
-
-    #region Expiration Date Domain Validations
-
     [TestMethod]
     public void CreateInvitationThatHasAnExpirationDateThatIsBeforeToday_ThrowsObjectErrorServiceException()
     {
@@ -253,10 +247,6 @@ public class InvitationServiceTest
             _invitationService.CreateInvitation(_invitationExample));
     }
 
-    #endregion
-
-    #region Status Domain Validations
-
     [TestMethod]
     public void WhenCreatingAnInvitation_StatusShouldBePending()
     {
@@ -266,7 +256,7 @@ public class InvitationServiceTest
 
     #endregion
 
-    #region Email Repository Validations
+    #region Create Invitation, Repository Validations
 
     [TestMethod]
     public void CreateInvitationThatTheEmailHasANonRejectedInvitation_ThrowsObjectRepeatedServiceException()
@@ -334,13 +324,34 @@ public class InvitationServiceTest
     #region Update Invitation By Id, Repository Validations
 
     [TestMethod]
-    public void UpdateInvitationById_InvitationNotFound()
+    public void UpdateInvitationById_ThrowsObjectNotFoundServiceException()
     {
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(() => null);
 
         Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
             _invitationService.UpdateInvitation(Guid.NewGuid(), new Invitation()));
+
+        _invitationRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void UpdateInvitationById_ThrowsUnknownServiceException()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Invitation invitationUpdated = new Invitation
+        {
+            Status = StatusEnum.Accepted,
+            ExpirationDate = DateTime.MaxValue
+        };
+        
+        _invitationRepository.Setup(invitationRepository => invitationRepository.UpdateInvitation(It.IsAny<Invitation>()))
+            .Throws(new UnknownRepositoryException("Internal Error"));
+        
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _invitationService.UpdateInvitation(Guid.NewGuid(), invitationUpdated));
 
         _invitationRepository.VerifyAll();
     }
@@ -424,7 +435,7 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
     #endregion
 
     #region Update Invitation By Id, Domain Validations
@@ -448,11 +459,9 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-
-    
-    
-    
     #endregion
 
     #endregion
+
+  
 }
