@@ -322,7 +322,7 @@ public class InvitationServiceTest
         Invitation invitationWithUpdates = new Invitation
         {
             Status = StatusEnum.Rejected,
-            ExpirationDate = DateTime.Now
+            ExpirationDate = DateTime.MaxValue
         };
         Guid idOfInvitationToUpdate = _invitationExample.Id;
 
@@ -346,7 +346,7 @@ public class InvitationServiceTest
     }
 
     [TestMethod]
-    public void UpdateInvitationById_WhenStatusIsNotPending_ThrowsObjectErrorServiceException()
+    public void UpdateInvitationStatus_WhenStatusIsNotPending_ThrowsObjectErrorServiceException()
     {
         _invitationExample.Status = StatusEnum.Rejected;
 
@@ -366,7 +366,7 @@ public class InvitationServiceTest
     }
 
     [TestMethod]
-    public void UpdateStatus_CannotBeDoneIfExpirationDateIsBeforeToday()
+    public void UpdateStatus_CannotBeDoneIfExpirationDateIsExpired()
     {
         _invitationExample.ExpirationDate = DateTime.MinValue;
 
@@ -386,7 +386,7 @@ public class InvitationServiceTest
     }
 
     [TestMethod]
-    public void WhenStatusIsPending_InvitationThatIsExpiredOrNearToExpire_ExceptionIsThrown()
+    public void WhenStatusIsPending_InvitationThatIsNotNearToExpire_CannotUpdateExpirationDate()
     {
         _invitationExample.ExpirationDate = DateTime.Now.AddDays(2);
 
@@ -405,6 +405,26 @@ public class InvitationServiceTest
         _invitationRepository.VerifyAll();
     }
 
+    [TestMethod]
+    public void UpdateExpirationDate_FromAnInvitationThatIsNotPending_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Status = StatusEnum.Pending;
+
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Accepted,
+            ExpirationDate = DateTime.MinValue
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates));
+
+        _invitationRepository.VerifyAll();
+    }
+    
     #endregion
 
     #endregion

@@ -88,42 +88,55 @@ public class InvitationService
 
     #endregion
 
-    public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationWithUpdates)
+    public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationUpdated)
     {
-        Invitation invitationWithoutUpdates = GetInvitationById(idOfInvitationToUpdate);
-
-        if (invitationWithoutUpdates.Status != StatusEnum.Pending)
-        {
-            throw new ObjectErrorServiceException("Invitation is not pending status, so it is not usable.");
-        }
-        
-        if(invitationWithUpdates.Status == StatusEnum.Pending 
-           && invitationWithoutUpdates.ExpirationDate.Date > DateTime.UtcNow.AddDays(1))
-        {
-            throw new ObjectErrorServiceException("Expiration date cannot be updated to a later date.");
-        }
-        
+        Invitation invitationNotUpdated = GetInvitationById(idOfInvitationToUpdate);
         try
         {
-            foreach (PropertyInfo property in typeof(Invitation).GetProperties())
-            {
-                object? originalValue = property.GetValue(invitationWithoutUpdates);
-                object? updatedValue = property.GetValue(invitationWithUpdates);
-            
-                if (updatedValue == null && originalValue != null)
-                {
-                    property.SetValue(invitationWithUpdates, originalValue);
-                }
-            }
-            
-            //PARA VALIDAR SI LOS DATOS DE LA INVITACION ACTUALIZADA SON CORRECTOS
-            invitationWithUpdates.InvitationValidator();
-        
-            _invitationRepository.UpdateInvitation(invitationWithUpdates);
+            MapProperties(invitationUpdated, invitationNotUpdated);
+            ValidationForBeingPossibleToUpdate(invitationUpdated, invitationNotUpdated);
+            _invitationRepository.UpdateInvitation(invitationUpdated);
         }
         catch (InvalidInvitationException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+    }
+
+    private static void ValidationForBeingPossibleToUpdate(Invitation invitationUpdated,
+        Invitation invitationNotUpdated)
+    {
+        if (invitationNotUpdated.Status != StatusEnum.Pending)
+        {
+            throw new ObjectErrorServiceException("Invitation is not pending status, so it is not usable.");
+        }
+
+        if (invitationUpdated.Status == StatusEnum.Pending
+            && invitationNotUpdated.ExpirationDate.Date > DateTime.UtcNow.AddDays(1))
+        {
+            throw new ObjectErrorServiceException("Expiration date cannot be updated to a later date.");
+        }
+
+        if (invitationUpdated.Status != StatusEnum.Pending &&
+            invitationUpdated.ExpirationDate != invitationNotUpdated.ExpirationDate)
+        {
+            throw new ObjectErrorServiceException("Expiration date cannot be updated if the status is not pending.");
+        }
+
+        invitationUpdated.InvitationValidator();
+    }
+
+    private static void MapProperties(Invitation invitationWithUpdates, Invitation invitationWithoutUpdates)
+    {
+        foreach (PropertyInfo property in typeof(Invitation).GetProperties())
+        {
+            object? originalValue = property.GetValue(invitationWithoutUpdates);
+            object? updatedValue = property.GetValue(invitationWithUpdates);
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(invitationWithUpdates, originalValue);
+            }
         }
     }
 }
