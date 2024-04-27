@@ -132,8 +132,7 @@ public class InvitationServiceTest
 
     #endregion
 
-    #region Create Invitation
-
+    #region Create Invitation Domain Validations
     [TestMethod]
     public void CreateInvitation_InvitationIsValidated()
     {
@@ -146,8 +145,7 @@ public class InvitationServiceTest
         _invitationRepository.Verify(_invitationRepository =>
             _invitationRepository.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
     }
-
-
+    
     [TestMethod]
     public void CreateInvitationWithEmptyFirstname_ThrowsObjectErrorServiceException()
     {
@@ -158,19 +156,20 @@ public class InvitationServiceTest
     }
     
     [TestMethod]
-    public void GivenFirstnameWithSpecialChars_ShouldThrowException()
+    public void CreateInvitationThatHasFirstnameWithSpecialChars_ShouldThrowException()
     {
         _invitationExample.Firstname = "Michael@";
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
     }
 
     [TestMethod]
-    public void GivenFirstNameWithBlanks_ShouldThrowException()
+    public void CreateInvitationThatHasFirstnameWithBlanks_ShouldThrowException()
     {
         _invitationExample.Firstname = "Mich  ael";
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
     }
 
+    
     [TestMethod]
     public void CreateInvitationWithNumericFirstname_ThrowsObjectErrorServiceException()
     {
@@ -182,6 +181,20 @@ public class InvitationServiceTest
     public void CreateInvitationWithEmptyLastname_ThrowsObjectErrorServiceException()
     {
         _invitationExample.Lastname = "";
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
+    }
+    
+    [TestMethod]
+    public void CreateInvitationWithLastnameThatHasBlanks_ShouldThrowException()
+    {
+        _invitationExample.Lastname = "Ken t";
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
+    }
+    
+    [TestMethod]
+    public void CreateInvitationWithLastnameThatHasSpecialChars_ShouldThrowException()
+    {
+        _invitationExample.Firstname = "Michael@";
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
     }
     

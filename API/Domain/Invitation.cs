@@ -20,18 +20,7 @@ public class Invitation
         EmailValidation();
     }
     
-    private void LastnameValidation()
-    {
-        if (String.IsNullOrEmpty(Lastname))
-        {
-            throw new InvalidInvitationException("Lastname is required");
-        }
-        if (!Lastname.All(char.IsLetter))
-        {
-            throw new InvalidInvitationException("Firstname cannot contain special characters.");
-        }
-    }
-
+    
     private void FirstnameValidation()
     {
         if (String.IsNullOrEmpty(Firstname))
@@ -40,6 +29,17 @@ public class Invitation
         }
 
         if (!Firstname.All(char.IsLetter))
+        {
+            throw new InvalidInvitationException("Firstname cannot contain special characters.");
+        }
+    }
+    private void LastnameValidation()
+    {
+        if (String.IsNullOrEmpty(Lastname))
+        {
+            throw new InvalidInvitationException("Lastname is required");
+        }
+        if (!Lastname.All(char.IsLetter))
         {
             throw new InvalidInvitationException("Firstname cannot contain special characters.");
         }
