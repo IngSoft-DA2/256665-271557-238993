@@ -1,6 +1,5 @@
 using Domain;
 using Domain.Enums;
-using Humanizer;
 using IRepository;
 using Moq;
 using Repositories.CustomExceptions;

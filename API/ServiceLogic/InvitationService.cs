@@ -2,7 +2,6 @@ using System.Reflection;
 using Domain;
 using Domain.Enums;
 using IRepository;
-using Repositories.CustomExceptions;
 using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
@@ -149,6 +148,8 @@ public class InvitationService
 
     #endregion
 
+    #region Delete Invitation By Id
+
     public void DeleteInvitation(Guid invitationIdToDelete)
     {
         Invitation invitationToDelete = GetInvitationById(invitationIdToDelete);
@@ -165,8 +166,8 @@ public class InvitationService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
-        
+
+
         _invitationRepository.DeleteInvitation(invitationToDelete);
     }
 
@@ -175,4 +176,6 @@ public class InvitationService
         if (invitationToDelete.Status == StatusEnum.Accepted)
             throw new InvalidInvitationException("Invitation that is accepted, can not be deleted.");
     }
+
+    #endregion
 }
