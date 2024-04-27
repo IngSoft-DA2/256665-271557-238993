@@ -10,7 +10,7 @@ public class Invitation
     public string Lastname { get; set; }
     public string Email { get; set; }
     public DateTime ExpirationDate { get; set; }
-    public StatusEnum Status { get; set; }
+    public StatusEnum Status { get; set; } = StatusEnum.Pending;
 
 
     public void InvitationValidator()

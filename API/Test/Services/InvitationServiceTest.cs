@@ -255,5 +255,16 @@ public class InvitationServiceTest
 
     #endregion
 
+    #region Status Domain Validations
+
+    [TestMethod]
+    public void WhenCreatingAnInvitation_StatusShouldBePending()
+    {
+        Invitation invitationToCheckStatus = new Invitation();
+        Assert.AreEqual(StatusEnum.Pending, (invitationToCheckStatus).Status);
+    }
+
+    #endregion
+
     #endregion
 }
