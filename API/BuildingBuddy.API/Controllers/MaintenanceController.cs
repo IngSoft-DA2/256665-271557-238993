@@ -142,7 +142,14 @@ namespace BuildingBuddy.API.Controllers
         [Route("/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)
         {
-            return Ok(_maintenanceAdapter.GetMaintenanceRequestById(id));
+            try
+            {
+                return Ok(_maintenanceAdapter.GetMaintenanceRequestById(id));
+            }
+            catch (ObjectNotFoundAdapterException)
+            {
+                return NotFound("Maintenance request was not found, reload the page");
+            }
         }
     }
 }
