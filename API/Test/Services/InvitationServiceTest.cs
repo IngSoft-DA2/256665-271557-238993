@@ -121,4 +121,27 @@ public class InvitationServiceTest
     }
 
     #endregion
+
+    #region Create Invitation
+
+    [TestMethod]
+    public void CreateInvitation_InvitationIsValidated(Invitation invitation)
+    {
+        Invitation dummyInvitation = new Invitation();
+
+        _invitationRepository.Setup(invitationRepository =>
+            invitationRepository.CreateInvitation(It.IsAny<Invitation>()));
+
+        _invitationService.CreateInvitation(dummyInvitation);
+
+        _invitationRepository.Verify(_invitationRepository =>
+            _invitationRepository.CreateInvitation(dummyInvitation), Times.Once);
+    }
+    
+    
+    
+    
+    
+
+    #endregion
 }

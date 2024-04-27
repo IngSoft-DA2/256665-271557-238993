@@ -10,7 +10,7 @@ public class Invitation
     public string Email { get; set; }
     public DateTime ExpirationDate { get; set; }
     public StatusEnum Status { get; set; }
-
+    
     public override bool Equals(object? obj)
     {
         Invitation? invitationToCompare = obj as Invitation;

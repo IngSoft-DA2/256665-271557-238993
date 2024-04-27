@@ -9,4 +9,5 @@ public interface IInvitationRepository
 
 
     public Invitation GetInvitationById(Guid invitationId);
+    public void CreateInvitation(Invitation invitationToAdd);
 }

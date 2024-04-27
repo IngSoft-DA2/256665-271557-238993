@@ -17,7 +17,7 @@ public class InvitationService
     }
 
     #endregion
-    
+
     #region Get all invitations
 
     public IEnumerable<Invitation> GetAllInvitations()
@@ -51,6 +51,15 @@ public class InvitationService
 
         if (invitationFound is null) throw new ObjectNotFoundServiceException();
         return invitationFound;
+    }
+
+    #endregion
+
+    #region Create Invitation
+
+    public void CreateInvitation(Invitation invitationToAdd)
+    {
+        _invitationRepository.CreateInvitation(invitationToAdd);
     }
 
     #endregion
