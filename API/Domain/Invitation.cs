@@ -10,6 +10,17 @@ public class Invitation
     public string Email { get; set; }
     public DateTime ExpirationDate { get; set; }
     public StatusEnum Status { get; set; }
+
+
+
+    public void InvitationValidator()
+    {
+        if (String.IsNullOrEmpty(Firstname))
+        {
+            throw new InvalidInvitationException("Firstname is required");
+        }
+    }
+    
     
     public override bool Equals(object? obj)
     {

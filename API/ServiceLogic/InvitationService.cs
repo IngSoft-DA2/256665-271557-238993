@@ -59,13 +59,15 @@ public class InvitationService
 
     public void CreateInvitation(Invitation invitationToAdd)
     {
-
-        if (String.IsNullOrEmpty(invitationToAdd.Firstname))
+        try
         {
-            throw new ObjectErrorServiceException("Firstname cannot be null");
+            invitationToAdd.InvitationValidator();
+            _invitationRepository.CreateInvitation(invitationToAdd);
         }
-        
-        _invitationRepository.CreateInvitation(invitationToAdd);
+        catch (InvalidInvitationException exceptionFromDomain)
+        {
+            throw new ObjectErrorServiceException(exceptionFromDomain.Message);
+        }
     }
 
     #endregion
