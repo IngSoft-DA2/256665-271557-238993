@@ -318,6 +318,8 @@ public class MaintenanceRequestAdapterTest
     
     #endregion
     
+    #region Get Maintenance Request By Id
+    
     [TestMethod]
     public void GetMaintenanceRequestById_ShouldReturnMaintenanceRequestResponse()
     {
@@ -356,4 +358,6 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.VerifyAll();
     }
+    
+    #endregion
 }

@@ -203,6 +203,7 @@ public class MaintenanceRequestAdapter
 
     #endregion
 
+    #region Get Maintenance Request By Id
     public GetMaintenanceRequestResponse GetMaintenanceRequestById(Guid id)
     {
         try
@@ -233,4 +234,6 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }

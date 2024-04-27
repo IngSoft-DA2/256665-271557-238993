@@ -320,7 +320,6 @@ public class MaintenanceControllerTest
 
     #endregion
 
-
     #region Get Maintenance Request by Request Handler
 
     [TestMethod]
@@ -407,8 +406,7 @@ public class MaintenanceControllerTest
     }
 
     #endregion
-
-
+    
     #region Update Maintenance Request Status
 
     [TestMethod]

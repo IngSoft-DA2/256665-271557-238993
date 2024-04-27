@@ -10,12 +10,18 @@ namespace BuildingBuddy.API.Controllers
     [ApiController]
     public class MaintenanceController : ControllerBase
     {
+        #region Constructor and attributes
+        
         private readonly IMaintenanceAdapter _maintenanceAdapter;
 
         public MaintenanceController(IMaintenanceAdapter maintenanceAdapter)
         {
             _maintenanceAdapter = maintenanceAdapter;
         }
+        
+        #endregion
+        
+        #region Get All Maintenance Requests
 
         [HttpGet]
         [Route("requests")]
@@ -31,6 +37,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Create Maintenance Request
 
         [HttpPost]
         public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
@@ -50,6 +60,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Get Maintenance Request By Category Id
 
         [HttpGet]
         [Route("/category/{categoryId:Guid}/requests")]
@@ -69,6 +83,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Assign Maintenance Request
 
         [HttpPut]
         [Route("/request-handler/requests")]
@@ -93,6 +111,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Get Maintenance Requests By Request Handler
 
         [HttpGet]
         [Route("/request-handler/{handlerId:Guid}/requests")]
@@ -112,6 +134,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Update Maintenance Request
 
         [HttpPut]
         [Route("/requests/{id:Guid}")]
@@ -137,6 +163,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Get Maintenance Request By Id
 
         [HttpGet]
         [Route("/{id:Guid}")]
@@ -156,5 +186,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
     }
 }
