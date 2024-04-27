@@ -21,6 +21,18 @@ public class Invitation
         ExpirationDateValidation();
     }
 
+    public override bool Equals(object? obj)
+    {
+        Invitation? invitationToCompare = obj as Invitation;
+        if (invitationToCompare == null)
+        {
+            return false;
+        }
+
+        return Id == invitationToCompare.Id && Firstname == invitationToCompare.Firstname &&
+               Lastname == invitationToCompare.Lastname && Email == invitationToCompare.Email &&
+               ExpirationDate == invitationToCompare.ExpirationDate && Status == invitationToCompare.Status;
+    }
 
     private void FirstnameValidation()
     {
@@ -68,18 +80,5 @@ public class Invitation
         {
             throw new InvalidInvitationException("Expiration date must be greater than today");
         }
-    }
-    
-    public override bool Equals(object? obj)
-    {
-        Invitation? invitationToCompare = obj as Invitation;
-        if (invitationToCompare == null)
-        {
-            return false;
-        }
-
-        return Id == invitationToCompare.Id && Firstname == invitationToCompare.Firstname &&
-               Lastname == invitationToCompare.Lastname && Email == invitationToCompare.Email &&
-               ExpirationDate == invitationToCompare.ExpirationDate && Status == invitationToCompare.Status;
     }
 }
