@@ -15,13 +15,27 @@ public class Invitation
 
     public void InvitationValidator()
     {
+        FirstnameValidation();
+        LastnameValidation();
+    }
+
+    private void LastnameValidation()
+    {
+        if (String.IsNullOrEmpty(Lastname))
+        {
+            throw new InvalidInvitationException("Lastname is required");
+        }
+    }
+
+    private void FirstnameValidation()
+    {
         if (String.IsNullOrEmpty(Firstname))
         {
             throw new InvalidInvitationException("Firstname is required");
         }
     }
-    
-    
+
+
     public override bool Equals(object? obj)
     {
         Invitation? invitationToCompare = obj as Invitation;
