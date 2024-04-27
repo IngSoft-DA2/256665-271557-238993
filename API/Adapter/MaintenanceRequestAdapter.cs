@@ -12,16 +12,16 @@ namespace Adapter;
 public class MaintenanceRequestAdapter
 {
     #region Constructor and attributes
-    
+
     private readonly IMaintenanceRequestService _maintenanceRequestService;
 
     public MaintenanceRequestAdapter(IMaintenanceRequestService maintenanceRequestService)
     {
         _maintenanceRequestService = maintenanceRequestService;
     }
-    
+
     #endregion
-    
+
     #region Get All Maintenance Requests
 
     public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests()
@@ -51,9 +51,9 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request By Category Id
 
     public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid id)
@@ -86,9 +86,9 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Create Maintenance Request
 
     public CreateRequestMaintenanceResponse CreateMaintenanceRequest(
@@ -120,10 +120,10 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
-    #region Update Maintenance Request 
+
+    #region Update Maintenance Request
 
     public void UpdateMaintenanceRequest(Guid id, UpdateMaintenanceRequestStatusRequest maintenanceRequestToUpdate)
     {
@@ -149,9 +149,9 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Assign Maintenance Request
 
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
@@ -169,9 +169,9 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Requests By Request Handler
 
     public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
@@ -200,6 +200,26 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
+
+    public GetMaintenanceRequestResponse GetMaintenanceRequestById(Guid id)
+    {
+        MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestById(id);
+
+        GetMaintenanceRequestResponse maintenanceRequestToReturn = new GetMaintenanceRequestResponse
+        {
+            Id = maintenanceRequestInDb.Id,
+            Description = maintenanceRequestInDb.Description,
+            BuildingId = maintenanceRequestInDb.BuildingId,
+            RequestHandlerId = maintenanceRequestInDb.RequestHandlerId,
+            Category = maintenanceRequestInDb.Category,
+            RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequestInDb.RequestStatus,
+            OpenedDate = maintenanceRequestInDb.OpenedDate,
+            ClosedDate = maintenanceRequestInDb.ClosedDate,
+            FlatId = maintenanceRequestInDb.FlatId
+        };
+
+        return maintenanceRequestToReturn;
+    }
 }

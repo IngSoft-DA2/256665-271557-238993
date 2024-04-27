@@ -317,4 +317,17 @@ public class MaintenanceRequestAdapterTest
     }
     
     #endregion
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_ShouldReturnMaintenanceRequestResponse()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(genericMaintenanceRequest);
+
+        GetMaintenanceRequestResponse adapterResponse =
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id);
+        _maintenanceRequestService.VerifyAll();
+
+        Assert.AreEqual(genericMaintenanceRequestResponse, adapterResponse);
+    }
 }
