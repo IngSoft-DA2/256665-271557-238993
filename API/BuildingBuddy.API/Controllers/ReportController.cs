@@ -5,7 +5,7 @@ using WebModel.Requests.ReportRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/reports")]
+    [Route("api/v1/")]
     [ApiController]
     public class ReportController : ControllerBase
     {
@@ -22,9 +22,9 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByBuilding
 
-        [Route("/buildings/maintenance-requests")]
+        [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByBuilding([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByBuilding)
+        public IActionResult GetMaintenanceRequestsByBuilding([FromBody] GetMaintenanceReportByBuildingRequest getMaintenanceReportRequestByBuilding)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByRequestHandler
         
-        [Route("/request-handler/maintenance-requests")]
+        [Route("/request-handler/maintenance-requests/reports")]
         
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByRequestHandler)
@@ -60,7 +60,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByCategory
         
-        [Route("/categories/maintenance-requests")]
+        [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByCategory)
         {
@@ -76,5 +76,7 @@ namespace BuildingBuddy.API.Controllers
         }
         
         #endregion
+
+        
     }
 }
