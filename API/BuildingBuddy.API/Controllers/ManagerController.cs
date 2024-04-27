@@ -64,6 +64,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 return NotFound("Manager was not found in database");
             }
+            catch (ObjectErrorAdapterException exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }
