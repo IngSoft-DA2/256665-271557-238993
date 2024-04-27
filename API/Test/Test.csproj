@@ -36,7 +36,7 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\IAdapter\IAdapter.csproj" />
       <ProjectReference Include="..\IRepository\IRepository.csproj" />
-      <ProjectReference Include="..\Repositories\Repositories.csproj" />
+      <ProjectReference Include="..\Repository\Repository.csproj" />
       <ProjectReference Include="..\WebModel\WebModel.csproj" />
     </ItemGroup>
 

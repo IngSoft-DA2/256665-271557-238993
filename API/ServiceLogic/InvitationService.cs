@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Enums;
 using IRepository;
 using Repositories.CustomExceptions;
 using ServiceLogic.CustomExceptions;
@@ -62,6 +63,17 @@ public class InvitationService
         try
         {
             invitationToAdd.InvitationValidator();
+
+            IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
+            
+            foreach (Invitation invitation in invitations)
+            {
+                if (invitation.Email == invitationToAdd.Email && invitation.Status != StatusEnum.Rejected)
+                {
+                    throw new ObjectRepeatedServiceException();
+                }
+            }
+
             _invitationRepository.CreateInvitation(invitationToAdd);
         }
         catch (InvalidInvitationException exceptionFromDomain)

@@ -140,11 +140,11 @@ public class InvitationServiceTest
     {
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.CreateInvitation(It.IsAny<Invitation>()));
+        _invitationRepository.Setup(invitationRepository =>
+            invitationRepository.GetAllInvitations()).Returns(new List<Invitation>());
 
         _invitationService.CreateInvitation(_invitationExample);
-
-        _invitationRepository.Verify(_invitationRepository =>
-            _invitationRepository.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
+        _invitationRepository.VerifyAll();
     }
 
     #region Firstname Domain Validations
@@ -237,6 +237,44 @@ public class InvitationServiceTest
         _invitationExample.Email = "a@example";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
+    }
+
+    #endregion
+
+    #region Email Repository Validations
+
+    [TestMethod]
+    public void CreateInvitationThatTheEmailHasANonRejectedInvitation_ThrowsObjectRepeatedServiceException()
+    {
+        IEnumerable<Invitation> invitationsFromDb = new List<Invitation>
+        {
+            new Invitation()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "firstnameExample",
+                Lastname = "lastnameExample",
+                Email = "example@gmail.com",
+                ExpirationDate = DateTime.MaxValue,
+                Status = StatusEnum.Pending,
+            },
+            new Invitation()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "firstname2Example",
+                Lastname = "lastname2Example",
+                Email = "example2@gmail.com",
+                ExpirationDate = DateTime.MaxValue,
+                Status = StatusEnum.Pending,
+            }
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitations())
+            .Returns(invitationsFromDb);
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _invitationService.CreateInvitation(_invitationExample));
+
+        _invitationRepository.VerifyAll();
     }
 
     #endregion
