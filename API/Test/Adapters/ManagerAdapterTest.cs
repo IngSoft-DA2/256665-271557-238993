@@ -106,30 +106,15 @@ public class ManagerAdapterTest
     [TestMethod]
     public void CreateManager_ShouldCreateManager()
     {
-        CreateManagerRequest createRequest = new CreateManagerRequest
-        {
-            FirstName = "Michael",
-            Email = "michael@gmail.com",
-            Password = "2312313",
-        };
+        CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        Manager domainResponse = new Manager
-        {
-            Id = Guid.NewGuid(),
-            Name = createRequest.FirstName,
-            Email = createRequest.Email,
-            Password = createRequest.Password,
-            Buildings = new List<Guid>()
-        };
+        Manager dummyDomainResponse = new Manager();
 
-        CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse
-        {
-            Id = domainResponse.Id
-        };
+        CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Returns(domainResponse);
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Returns(dummyDomainResponse);
 
-        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(createRequest);
+        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(dummyCreateRequest);
 
         Assert.AreEqual(expectedAdapterResponse.Id, adapterResponse.Id);
 
