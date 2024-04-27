@@ -97,6 +97,11 @@ public class InvitationService
             throw new ObjectErrorServiceException("Invitation is not pending, so it cannot be updated.");
         }
         
+        if(invitationWithUpdates.Status != StatusEnum.Pending && invitationWithoutUpdates.ExpirationDate < DateTime.Now)
+        {
+            throw new ObjectErrorServiceException("Invitation is expired, so it cannot be updated.");
+        }
+        
         try
         {
             foreach (PropertyInfo property in typeof(Invitation).GetProperties())
@@ -109,7 +114,8 @@ public class InvitationService
                     property.SetValue(invitationWithUpdates, originalValue);
                 }
             }
-        
+            
+            //PARA VALIDAR SI LOS DATOS DE LA INVITACION ACTUALIZADA SON CORRECTOS
             invitationWithUpdates.InvitationValidator();
         
             _invitationRepository.UpdateInvitation(invitationWithUpdates);

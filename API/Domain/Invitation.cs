@@ -19,7 +19,6 @@ public class Invitation
         LastnameValidation();
         EmailValidation();
         ExpirationDateValidation();
-        StatusValidation();
     }
 
 
@@ -71,15 +70,6 @@ public class Invitation
         }
     }
     
-    private void StatusValidation()
-    {
-        if (Status != StatusEnum.Pending)
-        {
-            throw new InvalidInvitationException("Status must be Pending.");
-        }
-    }
-
-
     public override bool Equals(object? obj)
     {
         Invitation? invitationToCompare = obj as Invitation;

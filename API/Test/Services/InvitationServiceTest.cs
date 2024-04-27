@@ -365,6 +365,25 @@ public class InvitationServiceTest
         _invitationRepository.VerifyAll();
     }
  
+    [TestMethod]
+    public void UpdateStatus_CannotBeDoneIfExpirationDateIsBeforeToday()
+    {
+        _invitationExample.ExpirationDate = DateTime.MinValue;
+        
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Accepted,
+            ExpirationDate = DateTime.MinValue
+        };
+        
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates));
+
+        _invitationRepository.VerifyAll();
+    }
     
     
 
