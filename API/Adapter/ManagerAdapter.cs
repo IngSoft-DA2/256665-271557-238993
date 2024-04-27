@@ -69,20 +69,27 @@ public class ManagerAdapter
 
     public CreateManagerResponse CreateManager(CreateManagerRequest createRequest)
     {
-        Manager manager = new Manager
+        try
         {
-            Name = createRequest.FirstName,
-            Email = createRequest.Email,
-            Password = createRequest.Password,
-        };
-        
-        Manager serviceResponse = _managerServiceLogic.CreateManager(manager);
+            Manager manager = new Manager
+            {
+                Name = createRequest.FirstName,
+                Email = createRequest.Email,
+                Password = createRequest.Password,
+            };
 
-        CreateManagerResponse adapterResponse = new CreateManagerResponse
+            Manager serviceResponse = _managerServiceLogic.CreateManager(manager);
+
+            CreateManagerResponse adapterResponse = new CreateManagerResponse
+            {
+                Id = serviceResponse.Id
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException)
         {
-            Id = serviceResponse.Id
-        };
-
-        return adapterResponse;
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }

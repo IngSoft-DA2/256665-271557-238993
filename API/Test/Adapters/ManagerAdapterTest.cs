@@ -120,5 +120,17 @@ public class ManagerAdapterTest
 
         _managerService.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateManager_ShouldThrowException()
+    {
+        CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
+
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<Exception>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+
+        _managerService.VerifyAll();
+    }
 
 }
