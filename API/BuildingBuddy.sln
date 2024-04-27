@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IServiceLogic", "IServiceLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLogic", "ServiceLogic\ServiceLogic.csproj", "{9E4A8CA9-3D57-4209-87E5-2845051FFD6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRepository", "IRepository\IRepository.csproj", "{A0FEF9A3-2593-462E-84DE-0120503FE16E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{004FA039-72ED-4F00-87B8-414078E662C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +64,13 @@ Global
 		{9E4A8CA9-3D57-4209-87E5-2845051FFD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E4A8CA9-3D57-4209-87E5-2845051FFD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E4A8CA9-3D57-4209-87E5-2845051FFD6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0FEF9A3-2593-462E-84DE-0120503FE16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0FEF9A3-2593-462E-84DE-0120503FE16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0FEF9A3-2593-462E-84DE-0120503FE16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0FEF9A3-2593-462E-84DE-0120503FE16E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{004FA039-72ED-4F00-87B8-414078E662C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{004FA039-72ED-4F00-87B8-414078E662C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{004FA039-72ED-4F00-87B8-414078E662C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{004FA039-72ED-4F00-87B8-414078E662C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
