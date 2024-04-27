@@ -60,7 +60,7 @@ public class FlatAdapterTest
                 Id = flatResponse.Id,
                 Floor = flatResponse.Floor,
                 RoomNumber = flatResponse.RoomNumber,
-                GetOwnerAssigned = new GetOwnerAssignedResponse()
+                OwnerAssigned = new GetOwnerResponse()
                 {
                     Id = flatResponse.OwnerAssigned.Id,
                     Firstname = flatResponse.OwnerAssigned.Firstname,
@@ -128,7 +128,7 @@ public class FlatAdapterTest
             Id = expectedServiceResponse.Id,
             Floor = expectedServiceResponse.Floor,
             RoomNumber = expectedServiceResponse.RoomNumber,
-            GetOwnerAssigned = new GetOwnerAssignedResponse()
+            OwnerAssigned = new GetOwnerResponse()
             {
                 Id = expectedServiceResponse.OwnerAssigned.Id,
                 Firstname = expectedServiceResponse.OwnerAssigned.Firstname,

@@ -31,7 +31,7 @@ public class FlatAdapter
                 Id = flat.Id,
                 Floor = flat.Floor,
                 RoomNumber = flat.RoomNumber,
-                GetOwnerAssigned = new GetOwnerAssignedResponse
+                OwnerAssigned = new GetOwnerResponse()
                 {
                     Id = flat.OwnerAssigned.Id,
                     Firstname = flat.OwnerAssigned.Firstname,
@@ -66,7 +66,7 @@ public class FlatAdapter
                 Id = flatFound.Id,
                 Floor = flatFound.Floor,
                 RoomNumber = flatFound.RoomNumber,
-                GetOwnerAssigned = new GetOwnerAssignedResponse
+                OwnerAssigned = new GetOwnerResponse()
                 {
                     Id = flatFound.OwnerAssigned.Id,
                     Firstname = flatFound.OwnerAssigned.Firstname,
@@ -96,12 +96,10 @@ public class FlatAdapter
         try
         {
             Owner? ownerAssigned = null;
-
             if (flat.OwnerAssignedId != null)
             {
                 ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId.Value);
             }
-            
             Flat flatToCreate = new Flat
             {
                 Floor = flat.Floor,

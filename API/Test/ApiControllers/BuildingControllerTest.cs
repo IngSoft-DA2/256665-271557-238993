@@ -61,7 +61,7 @@ public class BuildingControllerTest
                     {
                         Floor = 1,
                         RoomNumber = 102,
-                        GetOwnerAssigned = new GetOwnerAssignedResponse
+                        OwnerAssigned = new GetOwnerResponse()
                         {
                             Id = Guid.NewGuid(),
                             Firstname = "Owner Name",
@@ -158,7 +158,7 @@ public class BuildingControllerTest
                 {
                     Floor = 1,
                     RoomNumber = 102,
-                    GetOwnerAssigned = new GetOwnerAssignedResponse()
+                    OwnerAssigned = new GetOwnerResponse()
                     {
                         Id = Guid.NewGuid(),
                         Firstname = "Owner name",
@@ -237,6 +237,7 @@ public class BuildingControllerTest
     {
         CreateBuildingRequest createBuildingRequest = new CreateBuildingRequest()
         {
+            ManagerId = Guid.NewGuid(),
             Name = "Building 1",
             Address = "North Avenue",
             Location = new LocationRequest()
