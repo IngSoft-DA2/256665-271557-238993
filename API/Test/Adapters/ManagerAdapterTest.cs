@@ -103,6 +103,8 @@ public class ManagerAdapterTest
     
     #endregion
 
+    #region Create Manager
+    
     [TestMethod]
     public void CreateManager_ShouldCreateManager()
     {
@@ -156,5 +158,6 @@ public class ManagerAdapterTest
 
         _managerService.VerifyAll();
     }
-
+    
+    #endregion
 }

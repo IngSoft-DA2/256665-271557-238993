@@ -66,6 +66,8 @@ public class ManagerAdapter
     }
 
     #endregion
+    
+    #region Create Manager
 
     public CreateManagerResponse CreateManager(CreateManagerRequest createRequest)
     {
@@ -100,4 +102,6 @@ public class ManagerAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }
