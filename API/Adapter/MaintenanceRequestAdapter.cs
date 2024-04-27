@@ -148,4 +148,24 @@ public class MaintenanceRequestAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+
+    public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByRequestHandler(Guid requestHandlerId)
+    {
+        IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestFromHandler = _maintenanceRequestService
+            .GetMaintenanceRequestsByRequestHandler(requestHandlerId)
+            .Select(maintenanceRequest => new GetMaintenanceRequestResponse
+            {
+                Id = maintenanceRequest.Id,
+                Description = maintenanceRequest.Description,
+                BuildingId = maintenanceRequest.BuildingId,
+                RequestHandlerId = maintenanceRequest.RequestHandlerId,
+                Category = maintenanceRequest.Category,
+                RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
+                OpenedDate = maintenanceRequest.OpenedDate,
+                ClosedDate = maintenanceRequest.ClosedDate,
+                FlatId = maintenanceRequest.FlatId
+            });
+        
+        return maintenanceRequestFromHandler;
+    }
 }

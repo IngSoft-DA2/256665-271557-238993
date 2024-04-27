@@ -296,6 +296,26 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestsByHandler_ShouldReturnMaintenanceRequestResponses()
+    {
+        IEnumerable<MaintenanceRequest> expectedServiceResponse = new List<MaintenanceRequest>
+            { genericMaintenanceRequest };
+
+        IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse =
+            new List<GetMaintenanceRequestResponse> {genericMaintenanceRequestResponse};
+
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
+            .Returns(expectedServiceResponse);
+
+        IEnumerable<GetMaintenanceRequestResponse> adapterResponse =
+            _maintenanceRequestAdapter.GetMaintenanceRequestByRequestHandler(genericMaintenanceRequest.RequestHandlerId);
+        
+        _maintenanceRequestService.VerifyAll();
+
+        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+    }
 
     
 }
