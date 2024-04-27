@@ -427,5 +427,32 @@ public class InvitationServiceTest
     
     #endregion
 
+    #region Update Invitation By Id, Domain Validations
+
+    [TestMethod]
+    public void UpdateInvitationWithExpirationDateExpired_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.ExpirationDate = new DateTime(2023, 1, 1);
+
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Pending,
+            ExpirationDate = DateTime.MinValue
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates));
+
+        _invitationRepository.VerifyAll();
+    }
+
+    
+    
+    
+    #endregion
+
     #endregion
 }
