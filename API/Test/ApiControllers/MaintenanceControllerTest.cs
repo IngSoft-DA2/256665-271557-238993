@@ -342,7 +342,7 @@ public class MaintenanceControllerTest
             };
 
         _maintenanceAdapter.Setup(adapter =>
-                adapter.GetMaintenanceRequestByRequestHandler(It.IsAny<Guid>()))
+                adapter.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
             .Returns(expectedMaintenanceRequests.ToList());
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedMaintenanceRequests);
@@ -369,7 +369,7 @@ public class MaintenanceControllerTest
             new NotFoundObjectResult("Maintenance request was not found, reload the page");
 
         _maintenanceAdapter.Setup(adapter =>
-                adapter.GetMaintenanceRequestByRequestHandler(It.IsAny<Guid>()))
+                adapter.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse =
@@ -391,7 +391,7 @@ public class MaintenanceControllerTest
         expectedControllerResponse.StatusCode = 500;
 
         _maintenanceAdapter.Setup(adapter =>
-                adapter.GetMaintenanceRequestByRequestHandler(It.IsAny<Guid>()))
+                adapter.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
             .Throws(new Exception("Exception not recognized"));
 
         IActionResult controllerResponse =
@@ -501,6 +501,30 @@ public class MaintenanceControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_200CodeIsReturned()
+    {
+        OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedMaintenanceRequest);
+        expectedControllerResponse.Value = _expectedMaintenanceRequest;
+        
+        _maintenanceAdapter.Setup(adapter => adapter.GetMaintenanceRequestById(_idFromRoute))
+            .Returns(_expectedMaintenanceRequest);
+
+        IActionResult controllerResponse = _maintenanceController.GetMaintenanceRequestById(_idFromRoute);
+
+        _maintenanceAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        GetMaintenanceRequestResponse? controllerResponseValueCasted =
+            controllerResponseCasted.Value as GetMaintenanceRequestResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(_expectedMaintenanceRequest.Equals(controllerResponseValueCasted));
     }
 
     #endregion

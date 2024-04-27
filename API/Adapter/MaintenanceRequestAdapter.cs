@@ -54,13 +54,13 @@ public class MaintenanceRequestAdapter
     
     #endregion
     
-    #region Get Maintenance Request By Id
+    #region Get Maintenance Request By Category Id
 
-    public GetMaintenanceRequestResponse GetMaintenanceRequestById(Guid id)
+    public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid id)
     {
         try
         {
-            MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestById(id);
+            MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestByCategory(id);
 
             GetMaintenanceRequestResponse maintenanceRequestToReturn = new GetMaintenanceRequestResponse
             {
@@ -158,7 +158,6 @@ public class MaintenanceRequestAdapter
     {
         try
         {
-            MaintenanceRequest maintenanceRequest = _maintenanceRequestService.GetMaintenanceRequestById(idToUpdate);
             _maintenanceRequestService.AssignMaintenanceRequest(idToUpdate, idOfWorker);
         }
         catch (ObjectNotFoundServiceException)

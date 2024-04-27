@@ -16,6 +16,7 @@ namespace BuildingBuddy.API.Controllers
         {
             _maintenanceAdapter = maintenanceAdapter;
         }
+
         [HttpGet]
         [Route("requests")]
         public IActionResult GetAllMaintenanceRequests()
@@ -30,14 +31,14 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         [HttpPost]
         public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
         {
             try
             {
                 CreateRequestMaintenanceResponse response = _maintenanceAdapter.CreateMaintenanceRequest(request);
-                return CreatedAtAction(nameof(CreateMaintenanceRequest), new {id = response.Id}, response);
+                return CreatedAtAction(nameof(CreateMaintenanceRequest), new { id = response.Id }, response);
             }
             catch (ObjectErrorAdapterException exceptionCaught)
             {
@@ -48,9 +49,8 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-            
         }
-        
+
         [HttpGet]
         [Route("/category/{categoryId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
@@ -69,7 +69,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         [HttpPut]
         [Route("/request-handler/requests")]
         public IActionResult AssignMaintenanceRequest(Guid idOfRequestToUpdate, Guid idOfWorker)
@@ -115,7 +115,8 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPut]
         [Route("/requests/{id:Guid}")]
-        public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id, [FromBody] UpdateMaintenanceRequestStatusRequest request)
+        public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id,
+            [FromBody] UpdateMaintenanceRequestStatusRequest request)
         {
             try
             {
@@ -135,6 +136,13 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
+        }
+
+        [HttpGet]
+        [Route("/{id:Guid}")]
+        public IActionResult GetMaintenanceRequestById(Guid id)
+        {
+            return Ok(_maintenanceAdapter.GetMaintenanceRequestById(id));
         }
     }
 }
