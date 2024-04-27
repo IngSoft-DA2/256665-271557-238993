@@ -140,6 +140,8 @@ public class ManagerControllerTest
 
     #endregion
     
+    #region Create Manager
+    
     [TestMethod]
     public void CreateManager_CreatedAtActionIsReturned()
     {
@@ -222,4 +224,6 @@ public class ManagerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    #endregion
 }
