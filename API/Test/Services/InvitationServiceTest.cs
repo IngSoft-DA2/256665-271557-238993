@@ -346,7 +346,7 @@ public class InvitationServiceTest
     }
     
     [TestMethod]
-    public void UpdateTheStatusWhenStatusIsNotPending_ThrowsObjectErrorServiceException()
+    public void UpdateInvitationByIdWhenStatusIsNotPending_ThrowsObjectErrorServiceException()
     {
         _invitationExample.Status = StatusEnum.Rejected;
         
