@@ -44,6 +44,7 @@ public class BuildingAdapterTest
             new Building
             {
                 Id = Guid.NewGuid(),
+                ManagerId = Guid.NewGuid(),
                 Name = "Building 1",
                 Address = "Address 1",
                 Location = new Location

@@ -237,6 +237,7 @@ public class BuildingControllerTest
     {
         CreateBuildingRequest createBuildingRequest = new CreateBuildingRequest()
         {
+            ManagerId = Guid.NewGuid(),
             Name = "Building 1",
             Address = "North Avenue",
             Location = new LocationRequest()
