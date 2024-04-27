@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using System.Text.RegularExpressions;
+using Domain.Enums;
 
 namespace Domain;
 
@@ -46,9 +47,15 @@ public class Invitation
     
     private void EmailValidation()
     {
-        if (String.IsNullOrEmpty(Email))
+        // Pattern has all the available letters and digits that an email can have
+        const string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
+        //Regex checks if the email has the correct pattern and so on if the email is not empty
+        bool hasCorrectPattern = Regex.IsMatch(Email, pattern);
+
+        if (!hasCorrectPattern)
         {
-            throw new InvalidInvitationException("Email is required");
+            throw new InvalidInvitationException("Error on email pattern");
         }
     }
 

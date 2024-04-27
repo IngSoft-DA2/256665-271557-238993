@@ -185,6 +185,13 @@ public class InvitationServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
     }
     
+    [TestMethod]
+    public void CreateInvitationWithIncorrectFormat_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Email = "a@example";
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
+    }
+    
     
     
     
