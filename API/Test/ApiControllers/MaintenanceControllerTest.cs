@@ -285,7 +285,7 @@ public class MaintenanceControllerTest
             new NotFoundObjectResult("Maintenance request was not found, reload the page");
 
         _maintenanceAdapter.Setup(adapter =>
-            adapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()));
+            adapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse =
             _maintenanceController.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>());
