@@ -143,43 +143,28 @@ public class ManagerControllerTest
     [TestMethod]
     public void CreateManager_CreatedAtActionIsReturned()
     {
-        CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateManager", "CreateManager",
-            new CreateManagerResponse(), new CreateManagerResponse());
-        
-        _managerAdapter.Setup(adapter => adapter.CreateManager(new CreateManagerRequest()))
-            .Returns(new CreateManagerResponse());
+        CreateManagerResponse expectedResponse = new CreateManagerResponse
+        {
+            Id = Guid.NewGuid(),
+        };
 
-        IActionResult controllerResponse = _managerController.CreateManager(new CreateManagerRequest());
-        Assert.IsNotNull(controllerResponse);
-        
-        CreatedAtActionResult controllerResponseCasted = controllerResponse as CreatedAtActionResult;
-        Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
-        
+        CreatedAtActionResult expectedControllerResponse =
+            new CreatedAtActionResult("CreateManager", "CreateManager"
+                , expectedResponse.Id, expectedResponse);
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>())).Returns(expectedResponse);
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
         _managerAdapter.VerifyAll();
-        
-    }
 
-    [TestMethod]
-    public void CreateManager_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager not found");
-
-        _managerAdapter.Setup(adapter => adapter.CreateManager(new CreateManagerRequest()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _managerController.CreateManager(new CreateManagerRequest());
-        Assert.IsNotNull(controllerResponse);
-        
-        NotFoundObjectResult controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
-        
+
+        CreateManagerResponse? controllerResponseValue = controllerResponseCasted.Value as CreateManagerResponse;
+        Assert.IsNotNull(controllerResponseValue);
+
+        Assert.IsTrue(expectedResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
-        
-        _managerAdapter.VerifyAll();
     }
-    
 }

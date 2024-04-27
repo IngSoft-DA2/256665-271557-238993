@@ -51,19 +51,12 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         [HttpPost]
         public IActionResult CreateManager(CreateManagerRequest createRequest)
         {
-            try
-            {
-                CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
-                return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
-            }
-            catch (ObjectNotFoundAdapterException exceptionCaught)
-            {
-                return NotFound(exceptionCaught.Message);
-            }
+            CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
+            return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
         }
     }
 }
