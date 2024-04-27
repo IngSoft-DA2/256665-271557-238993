@@ -91,5 +91,9 @@ public class ManagerAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
     }
 }
