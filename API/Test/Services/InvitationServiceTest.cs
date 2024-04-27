@@ -15,12 +15,22 @@ public class InvitationServiceTest
 
     private Mock<IInvitationRepository> _invitationRepository;
     private InvitationService _invitationService;
+    private Invitation _dummyInvitation;
 
     [TestInitialize]
     public void Initialize()
     {
         _invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
         _invitationService = new InvitationService(_invitationRepository.Object);
+        _dummyInvitation = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "firstnameExample",
+            Lastname = "lastnameExample",
+            Email = "example@gmail.com",
+            ExpirationDate = DateTime.MaxValue,
+            Status = StatusEnum.Pending
+        };
     }
 
     #endregion
@@ -125,23 +135,27 @@ public class InvitationServiceTest
     #region Create Invitation
 
     [TestMethod]
-    public void CreateInvitation_InvitationIsValidated(Invitation invitation)
+    public void CreateInvitation_InvitationIsValidated()
     {
-        Invitation dummyInvitation = new Invitation();
 
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.CreateInvitation(It.IsAny<Invitation>()));
 
-        _invitationService.CreateInvitation(dummyInvitation);
+        _invitationService.CreateInvitation(_dummyInvitation);
 
         _invitationRepository.Verify(_invitationRepository =>
-            _invitationRepository.CreateInvitation(dummyInvitation), Times.Once);
+            _invitationRepository.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
     }
-    
-    
-    
-    
-    
+
+
+    [TestMethod]
+    public void CreateInvitationWithEmptyName_ThrowsException()
+    {
+        Invitation invitationWithEmptyName = new Invitation();
+        invitationWithEmptyName.Firstname = "";
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(invitationWithEmptyName));
+    }
 
     #endregion
 }
