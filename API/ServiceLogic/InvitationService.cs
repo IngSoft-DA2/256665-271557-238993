@@ -152,6 +152,23 @@ public class InvitationService
     public void DeleteInvitation(Guid invitationIdToDelete)
     {
         Invitation invitationToDelete = GetInvitationById(invitationIdToDelete);
+        try
+        {
+            DeleteRepoValidations(invitationToDelete);
+            _invitationRepository.DeleteInvitation(invitationToDelete);
+        }
+        catch (InvalidInvitationException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        
+        
         _invitationRepository.DeleteInvitation(invitationToDelete);
+    }
+
+    private static void DeleteRepoValidations(Invitation invitationToDelete)
+    {
+        if (invitationToDelete.Status == StatusEnum.Accepted)
+            throw new InvalidInvitationException("Invitation that is accepted, can not be deleted.");
     }
 }

@@ -499,6 +499,20 @@ public class InvitationServiceTest
         _invitationRepository.VerifyAll();
     }
     
+    [TestMethod]
+    public void DeleteInvitationThatIsAccepted_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Status = StatusEnum.Accepted;
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.DeleteInvitation(_invitationExample.Id));
+
+        _invitationRepository.VerifyAll();
+    }
+    
 
     #endregion
   
