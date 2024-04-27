@@ -320,7 +320,7 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     //Happy path
     public void PendingInvitation_ExpirationDateCanBeUpdated()
@@ -335,7 +335,8 @@ public class InvitationServiceTest
 
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
-        _invitationRepository.Setup(_invitationRepository => _invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
+        _invitationRepository.Setup(_invitationRepository =>
+            _invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
 
         _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates);
 
@@ -355,7 +356,7 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void UpdateInvitationById_ThrowsUnknownServiceException()
     {
@@ -367,10 +368,11 @@ public class InvitationServiceTest
             Status = StatusEnum.Accepted,
             ExpirationDate = DateTime.MaxValue
         };
-        
-        _invitationRepository.Setup(invitationRepository => invitationRepository.UpdateInvitation(It.IsAny<Invitation>()))
+
+        _invitationRepository
+            .Setup(invitationRepository => invitationRepository.UpdateInvitation(It.IsAny<Invitation>()))
             .Throws(new UnknownRepositoryException("Internal Error"));
-        
+
         Assert.ThrowsException<UnknownServiceException>(() =>
             _invitationService.UpdateInvitation(Guid.NewGuid(), invitationUpdated));
 
@@ -416,7 +418,7 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void WhenStatusIsPending_InvitationThatIsNotNearToExpire_CannotUpdateExpirationDate()
     {
@@ -480,25 +482,29 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
+
     #endregion
 
     #endregion
 
     #region Delete Invitation By Id
- 
+
     //Happy path
     [TestMethod]
     public void DeleteInvitationById_InvitationIsDeleted()
     {
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
-        _invitationRepository.Setup(invitationRepository => invitationRepository.DeleteInvitation(It.IsAny<Invitation>()));
+        _invitationRepository.Setup(invitationRepository =>
+            invitationRepository.DeleteInvitation(It.IsAny<Invitation>()));
 
         _invitationService.DeleteInvitation(_invitationExample.Id);
 
         _invitationRepository.VerifyAll();
     }
-    
+
+    #region Delete Invitation By Id, Repository Validations
+
     [TestMethod]
     public void DeleteInvitationThatIsAccepted_ThrowsObjectErrorServiceException()
     {
@@ -506,14 +512,23 @@ public class InvitationServiceTest
 
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.DeleteInvitation(_invitationExample.Id));
 
         _invitationRepository.VerifyAll();
     }
-    
+
+    [TestMethod]
+    public void DeleteInvitationThatIsNotInDb_ThrowsNotFoundException()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(() => null);
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(()=> _invitationService.DeleteInvitation(Guid.NewGuid()));
+    }
 
     #endregion
-  
+
+    #endregion
 }
