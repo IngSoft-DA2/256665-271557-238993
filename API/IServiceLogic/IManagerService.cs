@@ -6,4 +6,5 @@ public interface IManagerService
 {
     public IEnumerable<Manager> GetAllManagers();
     public void DeleteManagerById(Guid id);
+    public Manager CreateManager(Manager manager);
 }

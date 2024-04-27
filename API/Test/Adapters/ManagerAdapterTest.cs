@@ -4,6 +4,7 @@ using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.ManagerRequests;
 using WebModel.Responses.ManagerResponses;
 
 namespace Test.Adapters;
@@ -101,5 +102,38 @@ public class ManagerAdapterTest
     }
     
     #endregion
-    
+
+    [TestMethod]
+    public void CreateManager_ShouldCreateManager()
+    {
+        CreateManagerRequest createRequest = new CreateManagerRequest
+        {
+            FirstName = "Michael",
+            Email = "michael@gmail.com",
+            Password = "2312313",
+        };
+
+        Manager domainResponse = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Name = createRequest.FirstName,
+            Email = createRequest.Email,
+            Password = createRequest.Password,
+            Buildings = new List<Guid>()
+        };
+
+        CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse
+        {
+            Id = domainResponse.Id
+        };
+
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Returns(domainResponse);
+
+        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(createRequest);
+
+        Assert.AreEqual(expectedAdapterResponse.Id, adapterResponse.Id);
+
+        _managerService.VerifyAll();
+    }
+
 }
