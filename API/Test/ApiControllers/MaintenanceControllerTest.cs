@@ -546,6 +546,23 @@ public class MaintenanceControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_500CodeIsReturned()
+    {
+        _maintenanceAdapter.Setup(adapter => adapter.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Throws(new Exception("Database Broken"));
+
+        IActionResult controllerResponse = _maintenanceController.GetMaintenanceRequestById(It.IsAny<Guid>());
+
+        _maintenanceAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
 
     #endregion
 }
