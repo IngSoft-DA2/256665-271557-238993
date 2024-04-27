@@ -122,5 +122,9 @@ public class MaintenanceRequestAdapter
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }

@@ -10,5 +10,5 @@ public interface IMaintenanceAdapter
     public CreateRequestMaintenanceResponse CreateMaintenanceRequest(CreateRequestMaintenanceRequest requestToCreate);
     public AssignMaintenanceRequestResponse AssignMaintenanceRequest(AssignMaintenanceRequestRequest requestToAssign);
     public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByRequestHandler(Guid requestHandlerId);
-    public UpdateMaintenanceRequestStatusResponse UpdateMaintenanceRequestStatus(Guid isAny, UpdateMaintenanceRequestStatusRequest updateMaintenanceRequestStatusRequest);
+    public void UpdateMaintenanceRequestStatus(Guid isAny, UpdateMaintenanceRequestStatusRequest updateMaintenanceRequestStatusRequest);
 }
