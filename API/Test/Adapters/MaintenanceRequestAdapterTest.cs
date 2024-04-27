@@ -204,4 +204,21 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
     
+    [TestMethod]
+    public void UpdateMaintenanceRequest_ShouldThrowObjectNotFoundAdapterException()
+    {
+        UpdateMaintenanceRequestStatusRequest updateRequest = new UpdateMaintenanceRequestStatusRequest
+        {
+            RequestStatus = (StatusEnumMaintenanceRequest) StatusEnum.Accepted
+        };
+        
+        _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+            .Throws(new ObjectNotFoundServiceException());
+        
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _maintenanceRequestAdapter.UpdateMaintenanceRequest(genericMaintenanceRequest.Id, updateRequest));
+        
+        _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
+    }
+    
 }
