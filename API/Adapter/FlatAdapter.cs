@@ -90,7 +90,7 @@ public class FlatAdapter
         }
     }
 
-    public CreateFlatResponse CreateFlat(CreateFlatRequest flat)
+    public void CreateFlat(CreateFlatRequest flat)
     {
 
         try
@@ -111,13 +111,6 @@ public class FlatAdapter
             };
 
             _flatService.CreateFlat(flatToCreate);
-
-            CreateFlatResponse response = new CreateFlatResponse
-            {
-                Id = flatToCreate.Id
-            };
-
-            return response;
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

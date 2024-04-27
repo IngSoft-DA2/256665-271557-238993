@@ -2,7 +2,8 @@ namespace Domain;
 
 public class Flat
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid BuildingId { get; set; }
     public int Floor { get; set; }
     public int RoomNumber { get; set; }
     public Owner? OwnerAssigned { get; set; }
