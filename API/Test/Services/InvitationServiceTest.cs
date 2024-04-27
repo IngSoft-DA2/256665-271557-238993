@@ -91,7 +91,7 @@ public class InvitationServiceTest
 
     #endregion
 
-    #region Get invitation by Id
+    #region Get invitation By Id
 
     [TestMethod]
     public void GetInvitationById_InvitationIsReturned()
@@ -296,7 +296,7 @@ public class InvitationServiceTest
 
     #endregion
 
-    #region Update Invitation by Id
+    #region Update Invitation By Id
 
     //Happy path
     [TestMethod]
@@ -484,5 +484,22 @@ public class InvitationServiceTest
 
     #endregion
 
+    #region Delete Invitation By Id
+ 
+    //Happy path
+    [TestMethod]
+    public void DeleteInvitationById_InvitationIsDeleted()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+        _invitationRepository.Setup(invitationRepository => invitationRepository.DeleteInvitation(It.IsAny<Invitation>()));
+
+        _invitationService.DeleteInvitation(_invitationExample.Id);
+
+        _invitationRepository.VerifyAll();
+    }
+    
+
+    #endregion
   
 }

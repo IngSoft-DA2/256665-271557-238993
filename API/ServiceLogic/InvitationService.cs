@@ -148,4 +148,10 @@ public class InvitationService
     }
 
     #endregion
+
+    public void DeleteInvitation(Guid invitationIdToDelete)
+    {
+        Invitation invitationToDelete = GetInvitationById(invitationIdToDelete);
+        _invitationRepository.DeleteInvitation(invitationToDelete);
+    }
 }
