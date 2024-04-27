@@ -497,7 +497,7 @@ public class InvitationServiceTest
             .Returns(_invitationExample);
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.DeleteInvitation(It.IsAny<Invitation>()));
-
+        
         _invitationService.DeleteInvitation(_invitationExample.Id);
 
         _invitationRepository.VerifyAll();
@@ -526,6 +526,17 @@ public class InvitationServiceTest
             .Returns(() => null);
         
         Assert.ThrowsException<ObjectNotFoundServiceException>(()=> _invitationService.DeleteInvitation(Guid.NewGuid()));
+    }
+    
+    [TestMethod]
+    public void DeleteInvitation_ThrowsUnknownServiceException()
+    {
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+        _invitationRepository.Setup(invitationRepository => invitationRepository.DeleteInvitation(It.IsAny<Invitation>()))
+            .Throws(new UnknownRepositoryException("Internal Error"));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _invitationService.DeleteInvitation(_invitationExample.Id));
     }
 
     #endregion
