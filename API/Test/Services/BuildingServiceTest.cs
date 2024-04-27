@@ -9,11 +9,19 @@ namespace Test.Services;
 [TestClass]
 public class BuildingServiceTest
 {
+    private Mock<IBuildingRepository> _mockRepository;
+    private BuildingService _buildingService;
+    
+    [TestInitialize]
+    public void Initialize()
+    {
+        _mockRepository = new Mock<IBuildingRepository>(MockBehavior.Strict);
+        _buildingService = new BuildingService(_mockRepository.Object);
+    }
+    
     [TestMethod]
     public void GetAllBuildingsTest_ReturnsAllBuildingsCorrectly()
     {
-        Mock<IBuildingRepository> mockRepository = new Mock<IBuildingRepository>(MockBehavior.Strict);
-
         IEnumerable<Building> expectedBuildings = new List<Building>
         {
             new Building
@@ -56,10 +64,9 @@ public class BuildingServiceTest
             }
         };
 
-        mockRepository.Setup(repo => repo.GetAllBuildings()).Returns(expectedBuildings);
-        BuildingService buildingService = new BuildingService(mockRepository.Object);
+        _mockRepository.Setup(repo => repo.GetAllBuildings()).Returns(expectedBuildings);
 
-        IEnumerable<Building> serviceResponse = buildingService.GetAllBuildings();
+        IEnumerable<Building> serviceResponse = _buildingService.GetAllBuildings();
 
         Assert.IsTrue(expectedBuildings.SequenceEqual(serviceResponse));
     }
@@ -67,13 +74,10 @@ public class BuildingServiceTest
     [TestMethod]
     public void GetAllBuildingsTest_ThrowsException()
     {
-        Mock<IBuildingRepository> mockRepository = new Mock<IBuildingRepository>(MockBehavior.Strict);
+        _mockRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
 
-        mockRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
-        BuildingService buildingService = new BuildingService(mockRepository.Object);
-
-        Assert.ThrowsException<UnknownServiceException>(() => buildingService.GetAllBuildings());
+        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.GetAllBuildings());
         
-        mockRepository.VerifyAll();
+        _mockRepository.VerifyAll();
     }
 }
