@@ -8,7 +8,7 @@ public interface IMaintenanceAdapter
     public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests();
     public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid categoryId);
     public CreateRequestMaintenanceResponse CreateMaintenanceRequest(CreateRequestMaintenanceRequest requestToCreate);
-    public void AssignMaintenanceRequest(AssignMaintenanceRequestRequest requestToAssign);
+    public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker);
     public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByRequestHandler(Guid requestHandlerId);
     public void UpdateMaintenanceRequestStatus(Guid isAny, UpdateMaintenanceRequestStatusRequest updateMaintenanceRequestStatusRequest);
 }

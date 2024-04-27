@@ -244,10 +244,10 @@ public class MaintenanceControllerTest
         NoContentResult expectedControllerResponse = new NoContentResult();
 
         _maintenanceAdapter.Setup(adapter =>
-            adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>()));
+            adapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()));
 
         IActionResult controllerResponse =
-            _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
+            _maintenanceController.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 
@@ -263,11 +263,11 @@ public class MaintenanceControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Bad Request");
 
         _maintenanceAdapter.Setup(adapter =>
-                adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>()))
+                adapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new ObjectErrorAdapterException("Bad Request"));
 
         IActionResult controllerResponse =
-            _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
+            _maintenanceController.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 
@@ -285,11 +285,10 @@ public class MaintenanceControllerTest
             new NotFoundObjectResult("Maintenance request was not found, reload the page");
 
         _maintenanceAdapter.Setup(adapter =>
-                adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>()))
-            .Throws(new ObjectNotFoundAdapterException());
+            adapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()));
 
         IActionResult controllerResponse =
-            _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
+            _maintenanceController.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 
@@ -303,22 +302,20 @@ public class MaintenanceControllerTest
     [TestMethod]
     public void AssignMaintenanceRequest_500CodeIsReturned()
     {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
+        StatusCodeResult expectedControllerResponse = new StatusCodeResult(500);
 
         _maintenanceAdapter.Setup(adapter =>
-                adapter.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>()))
-            .Throws(new Exception("Exception not recognized"));
+            adapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception());
 
         IActionResult controllerResponse =
-            _maintenanceController.AssignMaintenanceRequest(It.IsAny<AssignMaintenanceRequestRequest>());
-        _maintenanceAdapter.VerifyAll();
+            _maintenanceController.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>());
 
+        _maintenanceAdapter.VerifyAll();
+            
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
     #endregion

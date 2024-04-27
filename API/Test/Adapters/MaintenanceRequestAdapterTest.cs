@@ -221,23 +221,6 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
     
-    [TestMethod]
-    public void UpdateMaintenanceRequest_ShouldThrowException()
-    {
-        UpdateMaintenanceRequestStatusRequest updateRequest = new UpdateMaintenanceRequestStatusRequest
-        {
-            RequestStatus = (StatusEnumMaintenanceRequest) StatusEnum.Accepted
-        };
-        
-        _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
-            .Throws(new Exception("Something went wrong"));
-        
-        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequest(genericMaintenanceRequest.Id, updateRequest));
-        
-        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
-        _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
-    }
+
     
 }

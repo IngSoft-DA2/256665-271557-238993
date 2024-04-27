@@ -72,11 +72,11 @@ namespace BuildingBuddy.API.Controllers
         
         [HttpPut]
         [Route("/request-handler/requests")]
-        public IActionResult AssignMaintenanceRequest([FromBody] AssignMaintenanceRequestRequest request)
+        public IActionResult AssignMaintenanceRequest(Guid idOfRequestToUpdate, Guid idOfWorker)
         {
             try
             {
-                _maintenanceAdapter.AssignMaintenanceRequest(request);
+                _maintenanceAdapter.AssignMaintenanceRequest(idOfRequestToUpdate, idOfWorker);
                 return NoContent();
             }
             catch (ObjectNotFoundAdapterException)
