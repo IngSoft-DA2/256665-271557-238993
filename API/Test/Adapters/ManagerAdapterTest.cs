@@ -122,13 +122,13 @@ public class ManagerAdapterTest
     }
     
     [TestMethod]
-    public void CreateManager_ShouldThrowException()
+    public void CreateManager_ShouldThrowObjectNotFoundAdapterException()
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Throws(new Exception("Something went wrong"));
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Throws(new ObjectNotFoundServiceException());
 
-        Assert.ThrowsException<Exception>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
 
         _managerService.VerifyAll();
     }
