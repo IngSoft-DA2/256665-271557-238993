@@ -139,7 +139,7 @@ public class ManagerControllerTest
     }
 
     #endregion
-
+    
     [TestMethod]
     public void CreateManager_CreatedAtActionIsReturned()
     {
@@ -163,5 +163,24 @@ public class ManagerControllerTest
 
         Assert.IsTrue(dummyResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+    
+    [TestMethod]
+    public void CreateManager_NotFoundIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager was not found in database");
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            .Throws(new ObjectNotFoundAdapterException());
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        _managerAdapter.VerifyAll();
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 }
