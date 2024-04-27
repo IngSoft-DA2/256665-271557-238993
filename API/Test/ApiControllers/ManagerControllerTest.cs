@@ -143,17 +143,14 @@ public class ManagerControllerTest
     [TestMethod]
     public void CreateManager_CreatedAtActionIsReturned()
     {
-        CreateManagerResponse expectedResponse = new CreateManagerResponse
-        {
-            Id = Guid.NewGuid(),
-        };
+        CreateManagerResponse dummyResponse = new CreateManagerResponse();
 
         CreatedAtActionResult expectedControllerResponse =
             new CreatedAtActionResult("CreateManager", "CreateManager"
-                , expectedResponse.Id, expectedResponse);
+                , dummyResponse.Id, dummyResponse);
 
         _managerAdapter.Setup(adapter =>
-            adapter.CreateManager(It.IsAny<CreateManagerRequest>())).Returns(expectedResponse);
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>())).Returns(dummyResponse);
 
         IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
         _managerAdapter.VerifyAll();
@@ -164,7 +161,7 @@ public class ManagerControllerTest
         CreateManagerResponse? controllerResponseValue = controllerResponseCasted.Value as CreateManagerResponse;
         Assert.IsNotNull(controllerResponseValue);
 
-        Assert.IsTrue(expectedResponse.Equals(controllerResponseValue));
+        Assert.IsTrue(dummyResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 }
