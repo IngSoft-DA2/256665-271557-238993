@@ -115,7 +115,7 @@ public class MaintenanceRequestAdapterTest
     }
     
     [TestMethod]
-    public void GetMaintenanceRequestById_ShouldThrowObjectNotFoundAdapterException()
+    public void GetMaintenanceRequestByCategory_ShouldThrowObjectNotFoundAdapterException()
     {
         _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestByCategory(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
@@ -329,5 +329,17 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.VerifyAll();
 
         Assert.AreEqual(genericMaintenanceRequestResponse, adapterResponse);
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
+        
+        _maintenanceRequestService.VerifyAll();
     }
 }
