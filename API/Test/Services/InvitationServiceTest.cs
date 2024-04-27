@@ -156,7 +156,14 @@ public class InvitationServiceTest
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(invitationWithEmptyName));
     }
-
+    
+    [TestMethod]
+    public void GivenFirstnameWithSpecialChars_ShouldThrowException()
+    {
+        _invitationExample.Firstname = "Michael@";
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _invitationService.CreateInvitation(_invitationExample));
+    }
+    
     [TestMethod]
     public void CreateInvitationWithNumericFirstname_ThrowsObjectErrorServiceException()
     {
