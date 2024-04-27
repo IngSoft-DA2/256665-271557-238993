@@ -256,6 +256,25 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void AssignMaintenanceRequest_ShouldThrowObjectNotFoundAdapterException()
+    {
+        Guid idOfRequest = genericMaintenanceRequest.Id;
+        Guid idOfWorker = Guid.NewGuid();
+    
+        _maintenanceRequestService
+            .Setup(service => service.AssignMaintenanceRequest(idOfRequest, idOfWorker))
+            .Throws(new ObjectNotFoundServiceException());
+
+        _maintenanceRequestService.Setup(service =>
+            service.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(genericMaintenanceRequest);
+        
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _maintenanceRequestAdapter.AssignMaintenanceRequest(idOfRequest, idOfWorker));
+        
+        _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+    }
 
     
 }

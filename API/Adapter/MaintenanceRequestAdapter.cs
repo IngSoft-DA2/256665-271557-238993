@@ -134,7 +134,14 @@ public class MaintenanceRequestAdapter
 
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
     {
-        MaintenanceRequest maintenanceRequest = _maintenanceRequestService.GetMaintenanceRequestById(idToUpdate);
-        _maintenanceRequestService.AssignMaintenanceRequest(idToUpdate, idOfWorker);
+        try
+        {
+            MaintenanceRequest maintenanceRequest = _maintenanceRequestService.GetMaintenanceRequestById(idToUpdate);
+            _maintenanceRequestService.AssignMaintenanceRequest(idToUpdate, idOfWorker);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 }
