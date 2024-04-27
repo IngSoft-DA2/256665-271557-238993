@@ -320,6 +320,27 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    //Happy path
+    public void PendingInvitation_ExpirationDateCanBeUpdated()
+    {
+        _invitationExample.ExpirationDate = DateTime.Now.AddDays(1);
+
+        Invitation invitationWithUpdates = new Invitation
+        {
+            Status = StatusEnum.Pending,
+            ExpirationDate = DateTime.MaxValue
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(_invitationExample);
+        _invitationRepository.Setup(_invitationRepository => _invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
+
+        _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates);
+
+        _invitationRepository.VerifyAll();
+    }
 
     #region Update Invitation By Id, Repository Validations
 
@@ -395,29 +416,6 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-
-    [TestMethod]
-    //Happy path
-    public void PendingInvitation_ExpirationDateCanBeUpdated()
-    {
-        _invitationExample.ExpirationDate = DateTime.Now.AddDays(1);
-
-        Invitation invitationWithUpdates = new Invitation
-        {
-            Status = StatusEnum.Pending,
-            ExpirationDate = DateTime.MaxValue
-        };
-
-        _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
-            .Returns(_invitationExample);
-        _invitationRepository.Setup(_invitationRepository => _invitationRepository.UpdateInvitation(It.IsAny<Invitation>()));
-
-        _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates);
-
-        _invitationRepository.VerifyAll();
-    }
-    
-    
     
     [TestMethod]
     public void WhenStatusIsPending_InvitationThatIsNotNearToExpire_CannotUpdateExpirationDate()
