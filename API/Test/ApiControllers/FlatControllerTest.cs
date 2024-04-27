@@ -111,31 +111,20 @@ namespace Test.ApiControllers
         #region CreateFlat
 
         [TestMethod]
-        public void CreateFlatRequest_OkIsReturned()
+        public void CreateFlatRequest_AcceptedIsReturned()
         {
-            CreateFlatResponse expectedAdapterResponse = new CreateFlatResponse()
-            {
-                Id = Guid.NewGuid()
-            };
+            AcceptedResult expectedControllerResponse = new AcceptedResult();
 
-            OkObjectResult expectedControllerResponse = new OkObjectResult(expectedAdapterResponse);
-
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
-                .Returns(expectedAdapterResponse);
+            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()));
 
             IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
 
             _flatAdapter.VerifyAll();
 
-            OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+            AcceptedResult? controllerResponseCasted = controllerResponse as AcceptedResult;
             Assert.IsNotNull(controllerResponseCasted);
 
-            CreateFlatResponse? controllerResponseValueCasted =
-                controllerResponseCasted.Value as CreateFlatResponse;
-            Assert.IsNotNull(controllerResponseValueCasted);
-
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-            Assert.AreEqual(controllerResponseValueCasted.Id, controllerResponseValueCasted.Id);
         }
 
         [TestMethod]

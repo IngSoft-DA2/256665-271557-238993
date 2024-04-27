@@ -156,7 +156,9 @@ public class CategoryAdapterTest
     {
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<Category>())).Throws(new Exception("Something went wrong"));
         
-        Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(It.IsAny<CreateCategoryRequest>()));
+        Assert.ThrowsException<Exception>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
+        
+        _categoryServiceLogic.Verify(service => service.CreateCategory(It.IsAny<Category>()), Times.Once);
     }
     
     [TestMethod]
@@ -166,6 +168,8 @@ public class CategoryAdapterTest
             Throws(new ObjectRepeatedServiceException());
         
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
+        
+        _categoryServiceLogic.VerifyAll();
     }
     
     [TestMethod]
@@ -175,6 +179,8 @@ public class CategoryAdapterTest
             Throws(new ObjectErrorServiceException("Name can't be empty"));
         
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _categoryAdapter.CreateCategory(genericCreateCategoryRequest));
+        
+        _categoryServiceLogic.VerifyAll();
     }
     
     #endregion
