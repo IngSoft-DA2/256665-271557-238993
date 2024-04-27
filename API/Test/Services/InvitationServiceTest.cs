@@ -75,6 +75,8 @@ public class InvitationServiceTest
 
     #endregion
 
+    #region Get invitation by Id
+
     [TestMethod]
     public void GetInvitationById_InvitationIsReturned()
     {
@@ -103,10 +105,11 @@ public class InvitationServiceTest
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(() => null);
 
-        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _invitationService.GetInvitationById(Guid.NewGuid()));
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _invitationService.GetInvitationById(Guid.NewGuid()));
         _invitationRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void GetInvitationById_UnknownServiceExceptionIsThrown()
     {
@@ -117,9 +120,5 @@ public class InvitationServiceTest
         _invitationRepository.VerifyAll();
     }
 
-
-
-
-
-
+    #endregion
 }

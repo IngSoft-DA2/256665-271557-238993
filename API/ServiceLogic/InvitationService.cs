@@ -7,6 +7,8 @@ namespace ServiceLogic;
 
 public class InvitationService
 {
+    #region Constructor and Dependency Injection
+
     private readonly IInvitationRepository _invitationRepository;
 
     public InvitationService(IInvitationRepository invitationRepository)
@@ -14,6 +16,9 @@ public class InvitationService
         _invitationRepository = invitationRepository;
     }
 
+    #endregion
+    
+    #region Get all invitations
 
     public IEnumerable<Invitation> GetAllInvitations()
     {
@@ -27,6 +32,11 @@ public class InvitationService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+
+    #endregion
+
+    #region Get Invitation by Id
+
     public Invitation GetInvitationById(Guid invitationId)
     {
         Invitation invitationFound;
@@ -38,8 +48,10 @@ public class InvitationService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
+
         if (invitationFound is null) throw new ObjectNotFoundServiceException();
         return invitationFound;
     }
+
+    #endregion
 }
