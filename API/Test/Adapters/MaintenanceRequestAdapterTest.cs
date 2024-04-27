@@ -342,4 +342,18 @@ public class MaintenanceRequestAdapterTest
         
         _maintenanceRequestService.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestById_ShouldThrowException()
+    {
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
+            _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
+
+        Assert.AreEqual("Something went wrong", exceptionCaught.Message);
+        
+        _maintenanceRequestService.VerifyAll();
+    }
 }
