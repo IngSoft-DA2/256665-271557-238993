@@ -64,21 +64,26 @@ public class InvitationService
         {
             invitationToAdd.InvitationValidator();
 
-            IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
-            
-            foreach (Invitation invitation in invitations)
-            {
-                if (invitation.Email == invitationToAdd.Email && invitation.Status != StatusEnum.Rejected)
-                {
-                    throw new ObjectRepeatedServiceException();
-                }
-            }
+            CheckIfEmailHasAlreadyAInvitation(invitationToAdd);
 
             _invitationRepository.CreateInvitation(invitationToAdd);
         }
         catch (InvalidInvitationException exceptionFromDomain)
         {
             throw new ObjectErrorServiceException(exceptionFromDomain.Message);
+        }
+    }
+
+    private void CheckIfEmailHasAlreadyAInvitation(Invitation invitationToAdd)
+    {
+        IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
+
+        foreach (Invitation invitation in invitations)
+        {
+            if (invitation.Email == invitationToAdd.Email && invitation.Status != StatusEnum.Rejected)
+            {
+                throw new ObjectRepeatedServiceException();
+            }
         }
     }
 
