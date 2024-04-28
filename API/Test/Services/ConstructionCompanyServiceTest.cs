@@ -213,6 +213,30 @@ public class ConstructionCompanyServiceTest
         
         _constructionCompanyRepository.VerifyAll();
     }
+
+    [TestMethod]
+    public void CreateConstructionCompany_UnknownServiceExceptionIsThrown()
+    {
+        ConstructionCompany constructionCompanyToAdd = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Company 1"
+        };
+        
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+            constructionCompanyRepository.CreateConstructionCompany(It.IsAny<ConstructionCompany>())).Throws(new Exception());
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+            constructionCompanyRepository.GetAllConstructionCompanies()).Returns(new List<ConstructionCompany>());
+        
+        
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd));
+        
+        _constructionCompanyRepository.VerifyAll();
+    }
+    
+    
+    
     
     #endregion
 

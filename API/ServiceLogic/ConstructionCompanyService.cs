@@ -71,6 +71,15 @@ public class ConstructionCompanyService : IConstructionCompanyService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
+        catch(ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private void CheckIfNameIsUsed(string nameToCheck)
