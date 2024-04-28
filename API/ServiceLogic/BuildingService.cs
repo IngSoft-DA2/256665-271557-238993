@@ -14,11 +14,11 @@ public class BuildingService
         _buildingRepository = buildingRepository;
     }
 
-    public IEnumerable<Building> GetAllBuildings()
+    public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
         try
         {
-            return _buildingRepository.GetAllBuildings();
+            return _buildingRepository.GetAllBuildings(managerId);
         }
         catch (Exception exceptionCaught)
         {
@@ -51,20 +51,16 @@ public class BuildingService
         try
         {
             building.BuildingValidator();
-
             IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
-
             CheckIfNameAlreadyExists(building, buildings);
-
             CheckIfLocationAndAddressAlreadyExists(building, buildings);
-
             _buildingRepository.CreateBuilding(building);
         }
         catch (InvalidBuildingException exception)
         {
             throw new ObjectErrorServiceException(exception.Message);
         }
-        catch(ObjectRepeatedServiceException)
+        catch (ObjectRepeatedServiceException)
         {
             throw new ObjectRepeatedServiceException();
         }
@@ -73,12 +69,13 @@ public class BuildingService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
+    
     private static void CheckIfLocationAndAddressAlreadyExists(Building building, IEnumerable<Building> buildings)
     {
         double minGap = 0.000001;
         if (buildings.Any(b => Math.Abs(b.Location.Latitude - building.Location.Latitude) < minGap &&
-                               Math.Abs(b.Location.Longitude - building.Location.Longitude) < minGap && b.Address == building.Address))
+                               Math.Abs(b.Location.Longitude - building.Location.Longitude) < minGap &&
+                               b.Address == building.Address))
         {
             throw new ObjectRepeatedServiceException();
         }
@@ -91,4 +88,5 @@ public class BuildingService
             throw new ObjectRepeatedServiceException();
         }
     }
+
 }

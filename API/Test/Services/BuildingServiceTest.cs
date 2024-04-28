@@ -64,9 +64,9 @@ public class BuildingServiceTest
     {
         IEnumerable<Building> expectedBuildings = new List<Building> { _genericBuilding };
 
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(expectedBuildings);
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(expectedBuildings);
 
-        IEnumerable<Building> serviceResponse = _buildingService.GetAllBuildings();
+        IEnumerable<Building> serviceResponse = _buildingService.GetAllBuildings(It.IsAny<Guid>());
 
         Assert.IsTrue(expectedBuildings.SequenceEqual(serviceResponse));
 
@@ -76,9 +76,9 @@ public class BuildingServiceTest
     [TestMethod]
     public void GetAllBuildingsTest_ThrowsUnknownServiceException()
     {
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Throws(new Exception());
 
-        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.GetAllBuildings());
+        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.GetAllBuildings(It.IsAny<Guid>()));
 
         _buildingRepository.VerifyAll();
     }
@@ -120,7 +120,7 @@ public class BuildingServiceTest
     {
         _buildingRepository.Setup(repo => repo.CreateBuilding(_genericBuilding));
 
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building>());
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building>());
 
         _buildingService.CreateBuilding(_genericBuilding);
 
@@ -187,11 +187,11 @@ public class BuildingServiceTest
     [ExpectedException(typeof(ObjectRepeatedServiceException))]
     public void GivenBuildingWithRepeatedName_ThrowsObjectRepeatedServiceException()
     {
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building> { _genericBuilding });
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building> { _genericBuilding });
 
         _buildingService.CreateBuilding(_genericBuilding);
 
-        _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+        _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
     }
 
     [TestMethod]
@@ -200,31 +200,31 @@ public class BuildingServiceTest
     {
         _genericBuilding.Name = "Building 2";
 
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building> { _genericBuilding });
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building> { _genericBuilding });
 
         _buildingService.CreateBuilding(_genericBuilding);
 
-        _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+        _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
     }
     
     [TestMethod]
     public void CreateBuilding_ThrowsObjectRepeatedServiceException()
     {
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building> { _genericBuilding });
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building> { _genericBuilding });
 
         Assert.ThrowsException<ObjectRepeatedServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
 
-        _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+        _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
     }
     
     [TestMethod]
     public void CreateBuilding_ThrowsUnknownServiceException()
     {
-        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
+        _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
 
-        _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+        _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
     }
 
 }
