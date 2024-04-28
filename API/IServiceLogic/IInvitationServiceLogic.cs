@@ -9,5 +9,6 @@ public interface IInvitationServiceLogic
     public void CreateInvitation(Invitation invitationToCreate);
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationToUpdate);
     public void DeleteInvitation(Guid idOfInvitationToDelete);
+    public IEnumerable<Invitation> GetAllInvitationsByEmail(string email);
     
 }

@@ -11,5 +11,5 @@ public interface IInvitationAdapter
     public CreateInvitationResponse CreateInvitation(CreateInvitationRequest invitationToCreate);
     public void UpdateInvitation(Guid id, UpdateInvitationRequest invitationWithUpdates);
     public void DeleteInvitation(Guid idOfInvitationToDelete);
-    public GetInvitationResponse GetAllInvitationsByEmail(string email);
+    public IEnumerable<GetInvitationResponse> GetAllInvitationsByEmail(string email);
 }

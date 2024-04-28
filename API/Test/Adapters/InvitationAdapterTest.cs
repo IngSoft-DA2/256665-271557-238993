@@ -101,6 +101,23 @@ public class InvitationAdapterTest
     
     #endregion
     
+    [TestMethod]
+    public void GetAllInvitationsByEmail_ShouldReturnAllInvitationsConvertedFromDomainToResponse()
+    {
+        IEnumerable<Invitation> invitations = new List<Invitation> { _genericInvitation1 };
+
+        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>
+            { _genericInvitationResponse };
+
+        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>())).Returns(invitations);
+
+        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitationsByEmail(_email);
+
+        _invitationServiceLogic.VerifyAll();
+
+        Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponse));
+    }
+    
     #region Get Invitation By Id
 
     [TestMethod]

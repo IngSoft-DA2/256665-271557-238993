@@ -1,6 +1,7 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
 using Domain.Enums;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.InvitationRequests;
@@ -8,7 +9,7 @@ using WebModel.Responses.InvitationResponses;
 
 namespace Adapter;
 
-public class InvitationAdapter
+public class InvitationAdapter : IInvitationAdapter
 {
     #region Constructor and attributes
     
@@ -81,7 +82,24 @@ public class InvitationAdapter
     }
     
     #endregion
-    
+    public IEnumerable<GetInvitationResponse> GetAllInvitationsByEmail(string email)
+    {
+        IEnumerable<Invitation> serviceResponse = _invitationServiceLogic.GetAllInvitationsByEmail(email);
+        
+        IEnumerable<GetInvitationResponse> adapterResponse = serviceResponse.Select(invitation =>
+            new GetInvitationResponse
+            {
+                Id = invitation.Id,
+                Status = (StatusEnumResponse)invitation.Status,
+                ExpirationDate = invitation.ExpirationDate,
+                Email = invitation.Email,
+                Firstname = invitation.Firstname,
+                Lastname = invitation.Lastname
+            });
+        
+        return adapterResponse;
+    }
+
     #region Create Invitation
 
     public CreateInvitationResponse CreateInvitation(CreateInvitationRequest invitationToCreate)
