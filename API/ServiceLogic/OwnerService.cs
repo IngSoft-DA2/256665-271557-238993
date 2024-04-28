@@ -78,11 +78,18 @@ public class OwnerService : IOwnerService
 
     public void UpdateOwnerById(Owner ownerWithUpdates)
     {
-        
         Owner ownerWithoutUpdates = GetOwnerById(ownerWithUpdates.Id);
-        MapProperties(ownerWithUpdates, ownerWithoutUpdates);
-        
-        _ownerRepository.UpdateOwnerById(ownerWithUpdates);
+        try
+        {
+            ownerWithUpdates.OwnerValidator();
+            MapProperties(ownerWithUpdates, ownerWithoutUpdates);
+            _ownerRepository.UpdateOwnerById(ownerWithUpdates);
+        }
+        catch (InvalidOwnerException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+     
     }
     
     private static void MapProperties(Owner ownerWithUpdates, Owner ownerWithoutUpdates)

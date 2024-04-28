@@ -331,5 +331,46 @@ public class OwnerServiceTest
         _ownerRepository.Verify(ownerRepository => ownerRepository.UpdateOwnerById(ownerWithUpdates), Times.Once);
     }
 
+    #region Update Owner By Id, Domain Validations
+
+    [TestMethod]
+    public void UpdateOwnerWithIncorrectNewData_ThrowsObjectErrorException()
+    {
+        
+        Owner ownerInDb = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "John",
+            Lastname = "Doe",
+            Email = "mail@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        Owner ownerWithUpdates = new Owner
+        {
+            Id = ownerInDb.Id,
+            Firstname = "",
+            Lastname = "",
+            Email = "@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>())).Returns(ownerInDb);
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.UpdateOwnerById(ownerWithUpdates));
+
+        _ownerRepository.VerifyAll();
+    }
+        
+        
     #endregion
-}
+
+    #endregion
+    
+    
+    }
+    
+
+   
+    
+    
