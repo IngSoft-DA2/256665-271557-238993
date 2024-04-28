@@ -117,6 +117,16 @@ public class FlatServiceTest
             _flatService.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()));
         _flatRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetFlatById_ThrowsUnknownErrorServiceException()
+    {
+        _flatRepository.Setup(flatRepository => flatRepository.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
+            .Throws(new UnknownRepositoryException("Unknown error"));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _flatService.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()));
+        _flatRepository.VerifyAll();
+    }
 
     #endregion
 
