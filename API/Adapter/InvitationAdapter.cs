@@ -82,6 +82,8 @@ public class InvitationAdapter : IInvitationAdapter
     }
     
     #endregion
+    
+    #region Get All Invitations By Email
     public IEnumerable<GetInvitationResponse> GetAllInvitationsByEmail(string email)
     {
         try
@@ -110,6 +112,8 @@ public class InvitationAdapter : IInvitationAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 
     #region Create Invitation
 

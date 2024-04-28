@@ -191,7 +191,7 @@ public class MaintenanceRequestAdapterTest
     {
         _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()));
         
-        _maintenanceRequestAdapter.UpdateMaintenanceRequest(genericMaintenanceRequest.Id, dummyUpdateRequest);
+        _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest);
         
         _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
@@ -203,7 +203,7 @@ public class MaintenanceRequestAdapterTest
             .Throws(new ObjectErrorServiceException("Request status can't be empty"));
         
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequest(genericMaintenanceRequest.Id, dummyUpdateRequest));
+            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest));
         
         _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
@@ -215,7 +215,7 @@ public class MaintenanceRequestAdapterTest
             .Throws(new ObjectNotFoundServiceException());
         
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequest(genericMaintenanceRequest.Id, dummyUpdateRequest));
+            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest));
         
         _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
@@ -227,7 +227,7 @@ public class MaintenanceRequestAdapterTest
             .Throws(new Exception("Something went wrong"));
         
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequest(genericMaintenanceRequest.Id, dummyUpdateRequest));
+            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest));
         
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
         

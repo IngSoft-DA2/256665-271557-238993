@@ -101,6 +101,8 @@ public class InvitationAdapterTest
     
     #endregion
     
+    #region Get All Invitations By Email
+    
     [TestMethod]
     public void GetAllInvitationsByEmail_ShouldReturnAllInvitationsConvertedFromDomainToResponse()
     {
@@ -139,6 +141,8 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.VerifyAll();
     }
+    
+    #endregion
     
     #region Get Invitation By Id
 
@@ -320,6 +324,4 @@ public class InvitationAdapterTest
     }
 
     #endregion
-    
-    
 }

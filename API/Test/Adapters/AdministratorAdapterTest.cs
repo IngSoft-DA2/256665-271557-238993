@@ -1,8 +1,10 @@
 ﻿using Adapter;
 using Adapter.CustomExceptions;
+using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.AdministratorRequests;
 using WebModel.Responses.AdministratorResponses;
 
 namespace Test.Adapters;
@@ -14,12 +16,19 @@ public class AdministratorAdapterTest
     
     private Mock<IAdministratorService> _administratorService;
     private AdministratorAdapter _administratorAdapter;
+    private CreateAdministratorRequest _dummyCreateAdministratorRequest;
     
     [TestInitialize]
     public void TestInitialize()
     {
         _administratorService = new Mock<IAdministratorService>(MockBehavior.Strict);
         _administratorAdapter = new AdministratorAdapter(_administratorService.Object);
+        _dummyCreateAdministratorRequest = new CreateAdministratorRequest(){
+            Firstname = "Gustavo",
+            Lastname = "Dealva",
+            Email = "gustavo@gmail.com",
+            Password = "123123123dd"
+        };
     }
     
     #endregion
@@ -27,15 +36,17 @@ public class AdministratorAdapterTest
     #region Create Administrator
     
     [TestMethod]
-    public void CreateAdministrator_ShouldCreateAdminsitrator()
+    public void CreateAdministrator_ShouldCreateAdministrator()
     {
-        Guid administratorId = Guid.NewGuid();
+        Administrator expectedAdmin = new Administrator(){Id = new Guid()};
         
-        _administratorService.Setup(service => service.CreateAdministrator(administratorId));
+        _administratorService.Setup(service => service.CreateAdministrator(It.IsAny<Administrator>())).Returns(expectedAdmin);
         
-        CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(administratorId);
+        CreateAdministratorResponse adapterResponse = _administratorAdapter.CreateAdministrator(_dummyCreateAdministratorRequest);
         
-        Assert.AreEqual(administratorId, response.Id);
+        Assert.AreEqual(expectedAdmin.Id, adapterResponse.Id);
+        
+        _administratorService.VerifyAll();
     }
     
     [TestMethod]
@@ -43,10 +54,12 @@ public class AdministratorAdapterTest
     {
         Guid administratorId = Guid.NewGuid();
         
-        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectRepeatedServiceException());
+        _administratorService.Setup(service => service.CreateAdministrator(It.IsAny<Administrator>())).Throws(new ObjectRepeatedServiceException());
         AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
         
-        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => administratorAdapter.CreateAdministrator(administratorId));
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() => administratorAdapter.CreateAdministrator(_dummyCreateAdministratorRequest));
+        
+        _administratorService.VerifyAll();
     }
     
     [TestMethod]
@@ -54,10 +67,10 @@ public class AdministratorAdapterTest
     {
         Guid administratorId = Guid.NewGuid();
         
-        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new ObjectErrorServiceException("Error creating administrator"));
+        _administratorService.Setup(service => service.CreateAdministrator(It.IsAny<Administrator>())).Throws(new ObjectErrorServiceException("Error creating administrator"));
         AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
         
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => administratorAdapter.CreateAdministrator(administratorId));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => administratorAdapter.CreateAdministrator(_dummyCreateAdministratorRequest));
     }
     
     [TestMethod]
@@ -65,10 +78,12 @@ public class AdministratorAdapterTest
     {
         Guid administratorId = Guid.NewGuid();
         
-        _administratorService.Setup(service => service.CreateAdministrator(administratorId)).Throws(new Exception("Error creating administrator"));
+        _administratorService.Setup(service => service.CreateAdministrator(It.IsAny<Administrator>())).Throws(new Exception("Error creating administrator"));
         AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
         
-        Assert.ThrowsException<Exception>(() => administratorAdapter.CreateAdministrator(administratorId));
+        Assert.ThrowsException<Exception>(() => administratorAdapter.CreateAdministrator(_dummyCreateAdministratorRequest));
+        
+        _administratorService.VerifyAll();
     }
     
     #endregion
