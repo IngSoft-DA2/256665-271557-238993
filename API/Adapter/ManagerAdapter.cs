@@ -35,7 +35,7 @@ public class ManagerAdapter : IManagerAdapter
                 {
                     Id = manager.Id,
                     Email = manager.Email,
-                    Name = manager.Name,
+                    Name = manager.Firstname,
                 });
 
             return adapterResponse;
@@ -77,7 +77,7 @@ public class ManagerAdapter : IManagerAdapter
             Manager manager = new Manager
             {
                 Id = Guid.NewGuid(),
-                Name = createRequest.FirstName,
+                Firstname = createRequest.FirstName,
                 Email = createRequest.Email,
                 Password = createRequest.Password,
             };

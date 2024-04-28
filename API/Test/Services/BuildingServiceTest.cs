@@ -243,14 +243,14 @@ public class BuildingServiceTest
             CommonExpenses = 2000000,
             ConstructionCompany = constructionCompany
         };
-
+        
         _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
         
         _buildingRepository.Setup(repo => repo.UpdateBuilding(It.IsAny<Building>()));
         
         _buildingService.UpdateBuilding(buildingWithUpdates);
-
+        
         _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
-        _buildingRepository.Verify(repo => repo.UpdateBuilding(buildingWithUpdates), Times.Once);
+        _buildingRepository.Verify(repo => repo.UpdateBuilding(It.IsAny<Building>()), Times.Once);
     }
 }

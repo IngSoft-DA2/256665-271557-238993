@@ -36,7 +36,7 @@ public class ManagerAdapterTest
             new Manager
             {
                 Id = Guid.NewGuid(),
-                Name = "Michael Kent",
+                Firstname = "Michael Kent",
                 Email = "michaelKent@gmail.com",
                 Password = "random238"
             }
@@ -47,7 +47,7 @@ public class ManagerAdapterTest
             new GetManagerResponse
             {
                 Id = domainResponse.First().Id,
-                Name = domainResponse.First().Name,
+                Name = domainResponse.First().Firstname,
                 Email = domainResponse.First().Email
             }
         };

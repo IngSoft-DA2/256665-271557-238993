@@ -104,11 +104,22 @@ public class BuildingService
             object? originalValue = property.GetValue(buildingNotUpdated);
             object? updatedValue = property.GetValue(buildingWithUpdates);
 
+            if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
+            {
+                if (id == Guid.Empty)
+                {
+                    property.SetValue(buildingWithUpdates, originalValue);
+                }
+            }
+
             if (updatedValue == null && originalValue != null)
             {
                 property.SetValue(buildingWithUpdates, originalValue);
             }
         }
+        
+        buildingWithUpdates.BuildingValidator();
+        
         _buildingRepository.UpdateBuilding(buildingWithUpdates);
     }
     
