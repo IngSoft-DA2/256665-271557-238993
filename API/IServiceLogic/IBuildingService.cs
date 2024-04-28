@@ -6,9 +6,9 @@ namespace IServiceLogic;
 
 public interface IBuildingService
 {
-    public IEnumerable<Building> GetAllBuildings(Guid userId);
+    public IEnumerable<Building> GetAllBuildings(Guid managerId);
     public Building GetBuildingById (Guid buildingId);
     public void CreateBuilding(Building buildingToCreate);
-    public void UpdateBuildingById(Guid id, Building buildingWithChanges);
+    public void UpdateBuildingById(Building buildingWithChanges);
     public void DeleteBuilding(Guid buildingToDelete);
 }

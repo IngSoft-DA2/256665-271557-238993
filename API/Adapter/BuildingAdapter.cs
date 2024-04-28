@@ -31,11 +31,11 @@ public class BuildingAdapter : IBuildingAdapter
 
     #region Get all buildings
 
-    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid userId)
+    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid managerId)
     {
         try
         {
-            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(userId);
+            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(managerId);
             List<GetBuildingResponse> buildingsToReturn = buildingsInDb.Select(building => new GetBuildingResponse
             {
                 Id = building.Id,
@@ -217,7 +217,7 @@ public class BuildingAdapter : IBuildingAdapter
                 ConstructionCompany = newConstructionCompany
             };
 
-            _buildingService.UpdateBuildingById(buildingIdToUpd, buildingToUpd);
+            _buildingService.UpdateBuildingById(buildingToUpd);
         }
         catch (ObjectNotFoundServiceException)
         {

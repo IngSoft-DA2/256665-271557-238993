@@ -373,7 +373,7 @@ public class BuildingAdapterTest
     [TestMethod]
     public void UpdateBuildingById_UpdatesSuccessfully()
     {
-        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<Building>()));
+        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Building>()));
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
 
@@ -382,13 +382,13 @@ public class BuildingAdapterTest
         _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest);
 
         _constructionCompanyService.VerifyAll();
-        _buildingService.Verify(service => service.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<Building>()), Times.Once);
+        _buildingService.Verify(service => service.UpdateBuildingById(It.IsAny<Building>()), Times.Once);
     }
 
     [TestMethod]
     public void UpdateBuildingById_ThrowsNotFoundAdapterException()
     {
-        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Guid>(),It.IsAny<Building>()))
+        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Building>()))
             .Throws(new ObjectNotFoundServiceException());
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
@@ -405,7 +405,7 @@ public class BuildingAdapterTest
     [TestMethod]
     public void UpdateBuildingId_ThrowsObjectErrorException()
     {
-        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Guid>(),It.IsAny<Building>()))
+        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Building>()))
             .Throws(new ObjectErrorServiceException("Specific Error"));
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
@@ -419,7 +419,7 @@ public class BuildingAdapterTest
     [TestMethod]
     public void UpdateBuildingId_ThrowsUnknownAdapterException()
     {
-        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Guid>(),It.IsAny<Building>()))
+        _buildingService.Setup(service => service.UpdateBuildingById(It.IsAny<Building>()))
             .Throws(new Exception());
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
