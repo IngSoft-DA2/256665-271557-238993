@@ -82,14 +82,12 @@ public class OwnerService : IOwnerService
         try
         {
             ownerWithUpdates.OwnerValidator();
-            
             IEnumerable<Owner> ownersInDb = GetAllOwners();
-            
             if (ownersInDb.Any(owner => owner.Email.Equals(ownerWithUpdates.Email) && owner.Id != ownerWithUpdates.Id))
             {
                 throw new ObjectRepeatedServiceException();
             }
-            
+
             MapProperties(ownerWithUpdates, ownerWithoutUpdates);
             _ownerRepository.UpdateOwnerById(ownerWithUpdates);
         }
@@ -97,11 +95,17 @@ public class OwnerService : IOwnerService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
      
     }
     
     private static void MapProperties(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
+        if (ownerWithUpdates.Equals(ownerWithoutUpdates)) throw new ObjectRepeatedServiceException();
+        
         foreach (PropertyInfo property in typeof(Owner).GetProperties())
         {
             object? originalValue = property.GetValue(ownerWithoutUpdates);

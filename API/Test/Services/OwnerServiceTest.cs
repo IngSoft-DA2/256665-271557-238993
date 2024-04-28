@@ -326,6 +326,7 @@ public class OwnerServiceTest
 
         _ownerRepository.Setup(ownerRepository => ownerRepository.UpdateOwnerById(It.IsAny<Owner>()));
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>())).Returns(ownerInDb);
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(new List<Owner>());
 
         _ownerService.UpdateOwnerById(ownerWithUpdates);
 
@@ -400,6 +401,36 @@ public class OwnerServiceTest
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(owners);
 
         Assert.ThrowsException<ObjectRepeatedServiceException>(() => _ownerService.UpdateOwnerById(ownerWithUpdates));
+        _ownerRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void UpdateOwnerByIdButWithoutChanges_ThrowsObjectRepeatedException()
+    {
+        Owner ownerInDbWithoutUpdate = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Mick",
+            Lastname = "Mon",
+            Email = "mick@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        Owner ownerWithoutChanges = new Owner
+        {
+            Id = ownerInDbWithoutUpdate.Id,
+            Firstname = "Mick",
+            Lastname = "Mon",
+            Email = "mick@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
+            .Returns(ownerInDbWithoutUpdate);
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners())
+            .Returns(new List<Owner>());
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _ownerService.UpdateOwnerById(ownerWithoutChanges));
         _ownerRepository.VerifyAll();
     }
 
