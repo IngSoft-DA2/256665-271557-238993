@@ -73,4 +73,12 @@ public class ManagerServiceTest
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
+    
+    [TestMethod]
+    public void GivenEmptyEmailOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager", Email = "" };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
 }
