@@ -40,7 +40,9 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
-        throw new NotImplementedException();
+        ConstructionCompany constructionCompanyFound =
+            _constructionCompanyRepository.GetConstructionCompanyById(idOfConstructionCompany);
+        return constructionCompanyFound;
     }
 
     #endregion

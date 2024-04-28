@@ -42,14 +42,15 @@ public class ConstructionCompanyServiceTest
                 Name = "Company 2"
             }
         };
-        
+
         _constructionCompanyRepository.Setup(constructionCompanyRepository =>
-                constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
-        
-        IEnumerable<ConstructionCompany> constructionCompaniesObtained = _constructionCompanyService.GetAllConstructionCompanies();
-    
+            constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
+
+        IEnumerable<ConstructionCompany> constructionCompaniesObtained =
+            _constructionCompanyService.GetAllConstructionCompanies();
+
         _constructionCompanyRepository.VerifyAll();
-        
+
         Assert.AreEqual(constructionCompaniesInDb.Count(), constructionCompaniesObtained.Count());
         Assert.IsTrue(constructionCompaniesInDb.SequenceEqual(constructionCompaniesObtained));
     }
@@ -62,13 +63,39 @@ public class ConstructionCompanyServiceTest
         _constructionCompanyRepository.Setup(constructionCompanyRepository =>
                 constructionCompanyRepository.GetAllConstructionCompanies())
             .Throws(new Exception());
-        
+
         Assert.ThrowsException<UnknownServiceException>(() =>
             _constructionCompanyService.GetAllConstructionCompanies());
         _constructionCompanyRepository.VerifyAll();
     }
 
     #endregion
+
+    #endregion
+
+    #region Get Construction Company By Id
+
+    //Happy path
+    [TestMethod]
+    public void GetCategoryById_ReturnsCategory()
+    {
+        ConstructionCompany constructionCompanyInDb = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Company 1"
+        };
+
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(constructionCompanyInDb);
+
+        ConstructionCompany constructionCompanyObtained =
+            _constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>());
+
+        _constructionCompanyRepository.VerifyAll();
+
+        Assert.AreEqual(constructionCompanyInDb, constructionCompanyObtained);
+    }
 
     #endregion
 }

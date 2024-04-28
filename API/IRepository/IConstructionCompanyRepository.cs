@@ -5,4 +5,5 @@ namespace IRepository;
 public interface IConstructionCompanyRepository
 {
     public IEnumerable<ConstructionCompany> GetAllConstructionCompanies();
+    public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany);
 }
