@@ -163,12 +163,12 @@ public class OwnerServiceTest
 
         _ownerRepository.Setup(ownerRepository => ownerRepository.CreateOwner(ownerToCreate));
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(new List<Owner>());
-        
+
         _ownerService.CreateOwner(ownerToCreate);
-        
+
         _ownerRepository.VerifyAll();
     }
-    
+
     #region Create Owner, Domain Validations
 
     [TestMethod]
@@ -181,11 +181,11 @@ public class OwnerServiceTest
             Email = "john@gmail.com",
             Flats = new List<Flat>()
         };
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyFirstname));
-        
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _ownerService.CreateOwner(ownerToCreateWithEmptyFirstname));
     }
-    
+
     [TestMethod]
     public void CreateOwnerWithFirstnameThatHasSpecialDigits_ThrowsObjectErrorServiceException()
     {
@@ -196,10 +196,11 @@ public class OwnerServiceTest
             Email = "john@gmail.com",
             Flats = new List<Flat>()
         };
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
     }
-    
+
     [TestMethod]
     public void CreateOwnerWithEmptyLastname_ThrowsObjectErrorServiceException()
     {
@@ -210,10 +211,11 @@ public class OwnerServiceTest
             Email = "john@gmail.com",
             Flats = new List<Flat>()
         };
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
     }
-    
+
     [TestMethod]
     public void CreateOwnerWithLastnameThatHasSpecialDigits_ThrowsObjectErrorServiceException()
     {
@@ -224,10 +226,11 @@ public class OwnerServiceTest
             Email = "john@gmail.com",
             Flats = new List<Flat>()
         };
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
     }
-    
+
     [TestMethod]
     public void CreateOwnerWithIncorrectPatternEmail_ThrowsObjectErrorServiceException()
     {
@@ -238,12 +241,10 @@ public class OwnerServiceTest
             Email = "gms.com",
             Flats = new List<Flat>()
         };
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithWrongEmail));
+        Assert.ThrowsException<ObjectErrorServiceException>(
+            () => _ownerService.CreateOwner(ownerToCreateWithWrongEmail));
     }
-        
-    
-    
-    
+
     #endregion
 
     #region Create Owner, Repository Validations
@@ -251,7 +252,6 @@ public class OwnerServiceTest
     [TestMethod]
     public void CreateOwnerWithEmailUsed_ThrowsObjectRepeatedException()
     {
-        
         Owner ownerInDb = new Owner
         {
             Firstname = "John",
@@ -261,7 +261,6 @@ public class OwnerServiceTest
         };
 
         IEnumerable<Owner> ownersInDb = new List<Owner> { ownerInDb };
-      
         Owner ownerToCreate = new Owner
         {
             Firstname = "Johnnie",
@@ -269,16 +268,33 @@ public class OwnerServiceTest
             Email = "john@gmail.com",
             Flats = new List<Flat>()
         };
-        
+
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(ownersInDb);
-        
+
         Assert.ThrowsException<ObjectRepeatedServiceException>(() => _ownerService.CreateOwner(ownerToCreate));
-        
+
         _ownerRepository.VerifyAll();
     }
-    
+
+    [TestMethod]
+    public void CreateOwner_ThrowsUnknownServiceException()
+    {
+        Owner ownerToCreate = new Owner
+        {
+            Firstname = "John",
+            Lastname = "Doe",
+            Email = "jhon@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.CreateOwner(ownerToCreate))
+            .Throws(new UnknownRepositoryException("Unknown error in repository layer."));
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(new List<Owner>());    
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _ownerService.CreateOwner(ownerToCreate));
+    }
 
     #endregion
-    
+
     #endregion
 }
