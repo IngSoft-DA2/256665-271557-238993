@@ -8,7 +8,7 @@ public class Building
     public string Address { get; set; }
     public Location Location { get; set; }
     public ConstructionCompany ConstructionCompany { get; set; }
-    public int CommonExpenses { get; set; }
+    public double CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
 
     public void BuildingValidator()
@@ -16,6 +16,7 @@ public class Building
         NameValidation();
         AddressValidation();
         LocationValidation();
+        ConstructionCompanyValidation();
     }
     private void NameValidation()
     {
@@ -41,11 +42,19 @@ public class Building
         }
     }
     
-    public void ConstructionCompanyValidation()
+    private void ConstructionCompanyValidation()
     {
         if (ConstructionCompany == null)
         {
             throw new InvalidBuildingException("Construction company cannot be empty");
+        }
+    }
+    
+    public void CommonExpensesValidation()
+    {
+        if (CommonExpenses < 0)
+        {
+            throw new InvalidBuildingException("Common expenses cannot be negative");
         }
     }
 }

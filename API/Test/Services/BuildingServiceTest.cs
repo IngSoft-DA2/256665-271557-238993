@@ -157,4 +157,12 @@ public class BuildingServiceTest
         Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
     
+    [TestMethod]
+    public void GivenBuildingWithCommonExpensesNegative_ThrowsInvalidBuildingException()
+    {
+        _genericBuilding.CommonExpenses = -1;
+        
+        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+    }
+    
 }
