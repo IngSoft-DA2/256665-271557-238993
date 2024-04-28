@@ -111,6 +111,22 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         if (maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate) throw new InvalidMaintenanceRequestException("ClosedDate cannot be changed");
         
     }
+
+    public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
+    {
+        try
+        {
+            MaintenanceRequest maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate);
+            if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
+            maintenanceRequest.RequestHandlerId = idOfWorker;
+            _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
     public MaintenanceRequest GetMaintenanceRequestById(Guid id)
     {
         MaintenanceRequest maintenanceRequest;

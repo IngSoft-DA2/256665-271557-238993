@@ -271,7 +271,35 @@ public class MaintenanceRequestServiceTest
     }
     
     
-    
+    [TestMethod]
+    public void AssignMaintenanceRequest_MaintenanceRequestIsAssigned()
+    {
+        Guid idToUpdate = Guid.NewGuid();
+        Guid idOfWorker = Guid.NewGuid();
+        
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest
+        {
+            Id = idToUpdate,
+            BuildingId = Guid.NewGuid(),
+            Description = "Fix the door",
+            FlatId = Guid.NewGuid(),
+            OpenedDate = DateTime.Now,
+            RequestHandlerId = Guid.NewGuid(),
+            Category = Guid.NewGuid(),
+            RequestStatus = StatusEnum.Accepted
+        };
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate)).Returns(maintenanceRequest);
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest));
+        
+        _maintenanceRequestService.AssignMaintenanceRequest(idToUpdate, idOfWorker);
+        
+        _maintenanceRequestRepository.VerifyAll();
+    }
+
     #endregion
     
 
