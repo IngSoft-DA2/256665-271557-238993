@@ -25,11 +25,11 @@ namespace BuildingBuddy.API.Controllers
         #region GetConstructionCompanies
 
         [HttpGet]
-        public IActionResult GetConstructionCompanies()
+        public IActionResult GetAllConstructionCompanies()
         {
             try
             {
-                return Ok(_constructionCompanyAdapter.GetConstructionCompanies());
+                return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
             }
             catch (Exception exceptionCaught)
             {

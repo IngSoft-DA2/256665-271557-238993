@@ -1,5 +1,6 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.BuildingRequests;
@@ -10,7 +11,7 @@ using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
 
-public class BuildingAdapter
+public class BuildingAdapter : IBuildingAdapter
 {
     #region Constructor and Attributes
 
@@ -30,11 +31,11 @@ public class BuildingAdapter
 
     #region Get all buildings
 
-    public IEnumerable<GetBuildingResponse> GetAllBuildings()
+    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid userId)
     {
         try
         {
-            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings();
+            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(userId);
             List<GetBuildingResponse> buildingsToReturn = buildingsInDb.Select(building => new GetBuildingResponse
             {
                 Id = building.Id,
@@ -216,7 +217,7 @@ public class BuildingAdapter
                 ConstructionCompany = newConstructionCompany
             };
 
-            _buildingService.UpdateBuilding(buildingToUpd);
+            _buildingService.UpdateBuildingById(buildingIdToUpd, buildingToUpd);
         }
         catch (ObjectNotFoundServiceException)
         {

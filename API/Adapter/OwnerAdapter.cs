@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLogic.CustomExceptions;
@@ -8,7 +9,7 @@ using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
 
-public class OwnerAdapter
+public class OwnerAdapter : IOwnerAdapter
 {
     private readonly IOwnerService _ownerService;
 
@@ -91,6 +92,7 @@ public class OwnerAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
 
     public void UpdateOwnerById(Guid idOfOwnerToUpdate, UpdateOwnerRequest updateRequest)
     {

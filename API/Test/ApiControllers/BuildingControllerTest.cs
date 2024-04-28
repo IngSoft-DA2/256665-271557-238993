@@ -333,13 +333,13 @@ public class BuildingControllerTest
         NoContentResult expectedControllerResponse = new NoContentResult();
 
         _buildingAdapter.Setup(adapter =>
-            adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()));
+            adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()));
 
         IActionResult controllerResponse =
-            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
 
         _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
 
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -354,14 +354,14 @@ public class BuildingControllerTest
             new NotFoundObjectResult("Building was not found in database");
 
         _buildingAdapter.Setup(adapter =>
-                adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+                adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
             .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse =
-            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
 
         _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -376,14 +376,14 @@ public class BuildingControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
 
         _buildingAdapter.Setup(adapter =>
-                adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+                adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
             .Throws(new ObjectErrorAdapterException("Specific error message"));
 
         IActionResult controllerResponse =
-            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
 
         _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -399,14 +399,14 @@ public class BuildingControllerTest
         expectedControllerResponse.StatusCode = 500;
 
         _buildingAdapter.Setup(adapter =>
-                adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
+                adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
             .Throws(new Exception("Unknown error"));
 
         IActionResult controllerResponse =
-            _buildingController.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
 
         _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuilding(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
+            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -424,10 +424,10 @@ public class BuildingControllerTest
     {
         NoContentResult expectedControllerResponse = new NoContentResult();
 
-        _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()));
+        _buildingAdapter.Setup(adapter => adapter.DeleteBuildingById(It.IsAny<Guid>()));
 
-        IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
-        _buildingAdapter.Verify(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()), Times.Once());
+        IActionResult controllerResponse = _buildingController.DeleteBuildingById(It.IsAny<Guid>());
+        _buildingAdapter.Verify(adapter => adapter.DeleteBuildingById(It.IsAny<Guid>()), Times.Once());
 
         NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
         Assert.IsNotNull(controllerResponseCasted);
@@ -441,10 +441,10 @@ public class BuildingControllerTest
         NotFoundObjectResult expectedControllerResponse =
             new NotFoundObjectResult("Building was not found in database");
 
-        _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()))
+        _buildingAdapter.Setup(adapter => adapter.DeleteBuildingById(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundAdapterException());
 
-        IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.DeleteBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -460,10 +460,10 @@ public class BuildingControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _buildingAdapter.Setup(adapter => adapter.DeleteBuilding(It.IsAny<Guid>()))
+        _buildingAdapter.Setup(adapter => adapter.DeleteBuildingById(It.IsAny<Guid>()))
             .Throws(new Exception("Unknown error"));
 
-        IActionResult controllerResponse = _buildingController.DeleteBuilding(It.IsAny<Guid>());
+        IActionResult controllerResponse = _buildingController.DeleteBuildingById(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;

@@ -4,6 +4,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using WebModel.Requests.ManagerRequests;
 using WebModel.Responses.ManagerResponses;
 
 namespace Test.ApiControllers;
@@ -137,5 +138,92 @@ public class ManagerControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
+    #endregion
+    
+    #region Create Manager
+    
+    [TestMethod]
+    public void CreateManager_CreatedAtActionIsReturned()
+    {
+        CreateManagerResponse dummyResponse = new CreateManagerResponse();
+
+        CreatedAtActionResult expectedControllerResponse =
+            new CreatedAtActionResult("CreateManager", "CreateManager"
+                , dummyResponse.Id, dummyResponse);
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>())).Returns(dummyResponse);
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        _managerAdapter.VerifyAll();
+
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        CreateManagerResponse? controllerResponseValue = controllerResponseCasted.Value as CreateManagerResponse;
+        Assert.IsNotNull(controllerResponseValue);
+
+        Assert.IsTrue(dummyResponse.Equals(controllerResponseValue));
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+    
+    [TestMethod]
+    public void CreateManager_NotFoundIsReturned()
+    {
+        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager was not found in database");
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            .Throws(new ObjectNotFoundAdapterException());
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        _managerAdapter.VerifyAll();
+
+        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void CreateManager_BadRequestIsReturned()
+    {
+        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error message");
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            .Throws(new ObjectErrorAdapterException("Error message"));
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        _managerAdapter.VerifyAll();
+
+        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
+    [TestMethod]
+    public void CreateManager_500StatusCodeIsReturned()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+
+        _managerAdapter.Setup(adapter =>
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            .Throws(new Exception("Unknown error"));
+
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        _managerAdapter.VerifyAll();
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
     #endregion
 }
