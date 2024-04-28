@@ -1,11 +1,14 @@
 using Domain;
 using IRepository;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
 public class ConstructionCompanyService : IConstructionCompanyService
 {
+    #region Constructor and dependency injection
+
     private readonly IConstructionCompanyRepository _constructionCompanyRepository;
 
     public ConstructionCompanyService(IConstructionCompanyRepository constructionCompanyRepository)
@@ -13,19 +16,41 @@ public class ConstructionCompanyService : IConstructionCompanyService
         _constructionCompanyRepository = constructionCompanyRepository;
     }
 
+    #endregion
+
+    #region Get All Construction Companies
+
     public IEnumerable<ConstructionCompany> GetAllConstructionCompanies()
     {
-
-        return _constructionCompanyRepository.GetAllConstructionCompanies();
+        try
+        {
+            IEnumerable<ConstructionCompany> constructionCompanies =
+                _constructionCompanyRepository.GetAllConstructionCompanies();
+            return constructionCompanies;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
+
+    #endregion
+
+    #region Get Construction Company By Id
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
         throw new NotImplementedException();
     }
 
+    #endregion
+
+    #region Create Construction Company
+
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd)
     {
         throw new NotImplementedException();
     }
+
+    #endregion
 }
