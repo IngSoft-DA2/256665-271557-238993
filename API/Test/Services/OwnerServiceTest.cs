@@ -132,6 +132,16 @@ public class OwnerServiceTest
         _ownerRepository.VerifyAll();
     }
 
+    [TestMethod]
+    public void GetOwnerById_ThrowsUnknownServiceException()
+    {
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
+            .Throws(new UnknownRepositoryException("Unknown error in repository layer."));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _ownerService.GetOwnerById(Guid.NewGuid()));
+        _ownerRepository.VerifyAll();
+    }
+
     #endregion
     
 

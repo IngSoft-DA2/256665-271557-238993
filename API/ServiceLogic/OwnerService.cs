@@ -28,9 +28,18 @@ public class OwnerService : IOwnerService
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
     {
-        Owner ownerObtained = _ownerRepository.GetOwnerById(ownerIdToObtain);
-        if (ownerObtained is null) throw new ObjectNotFoundServiceException();
+        Owner ownerObtained;
+        try
+        {
+            ownerObtained = _ownerRepository.GetOwnerById(ownerIdToObtain);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
         
+        if (ownerObtained is null) throw new ObjectNotFoundServiceException();
+
         return ownerObtained;
     }
 
