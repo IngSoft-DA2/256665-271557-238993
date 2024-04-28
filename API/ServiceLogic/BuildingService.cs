@@ -92,35 +92,42 @@ public class BuildingService
 
     public void UpdateBuilding(Building buildingWithUpdates)
     {
-        Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
-        
-        if (buildingWithUpdates.Equals(buildingNotUpdated))
+        try
         {
-            throw new ObjectRepeatedServiceException();
-        }
-        
-        foreach (PropertyInfo property in typeof(Building).GetProperties())
-        {
-            object? originalValue = property.GetValue(buildingNotUpdated);
-            object? updatedValue = property.GetValue(buildingWithUpdates);
+            Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
 
-            if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
+            if (buildingWithUpdates.Equals(buildingNotUpdated))
             {
-                if (id == Guid.Empty)
+                throw new ObjectRepeatedServiceException();
+            }
+
+            foreach (PropertyInfo property in typeof(Building).GetProperties())
+            {
+                object? originalValue = property.GetValue(buildingNotUpdated);
+                object? updatedValue = property.GetValue(buildingWithUpdates);
+
+                if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
+                {
+                    if (id == Guid.Empty)
+                    {
+                        property.SetValue(buildingWithUpdates, originalValue);
+                    }
+                }
+
+                if (updatedValue == null && originalValue != null)
                 {
                     property.SetValue(buildingWithUpdates, originalValue);
                 }
             }
 
-            if (updatedValue == null && originalValue != null)
-            {
-                property.SetValue(buildingWithUpdates, originalValue);
-            }
+            buildingWithUpdates.BuildingValidator();
+
+            _buildingRepository.UpdateBuilding(buildingWithUpdates);
         }
-        
-        buildingWithUpdates.BuildingValidator();
-        
-        _buildingRepository.UpdateBuilding(buildingWithUpdates);
+        catch (InvalidBuildingException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
     }
     
 }

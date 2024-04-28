@@ -253,4 +253,27 @@ public class BuildingServiceTest
         _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
         _buildingRepository.Verify(repo => repo.UpdateBuilding(It.IsAny<Building>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void GivenUpdate_WithErrorOnProperties_ThrowsInvalidBuildingException()
+    {
+        ConstructionCompany constructionCompany = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company Updated"
+        };
+        
+        Building buildingWithUpdates = new Building
+        {
+            Id = _genericBuilding.Id,
+            CommonExpenses = -1,
+            ConstructionCompany = constructionCompany
+        };
+        
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.UpdateBuilding(buildingWithUpdates));
+        
+        _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
+    }
 }
