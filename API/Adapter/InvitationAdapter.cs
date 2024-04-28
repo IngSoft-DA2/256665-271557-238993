@@ -123,6 +123,7 @@ public class InvitationAdapter : IInvitationAdapter
         {
             Invitation invitation = new Invitation
             {
+                Id = Guid.NewGuid(),
                 Firstname = invitationToCreate.Firstname,
                 Lastname = invitationToCreate.Lastname,
                 Email = invitationToCreate.Email,

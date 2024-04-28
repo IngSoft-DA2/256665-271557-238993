@@ -34,19 +34,19 @@ public class AdministratorAdapterTest
     #endregion
     
     #region Create Administrator
-    
+
     [TestMethod]
     public void CreateAdministrator_ShouldCreateAdministrator()
     {
-        Administrator expectedAdmin = new Administrator(){Id = new Guid()};
+        _administratorService.Setup(service => service.CreateAdministrator(It.IsAny<Administrator>()));
+        AdministratorAdapter administratorAdapter = new AdministratorAdapter(_administratorService.Object);
         
-        _administratorService.Setup(service => service.CreateAdministrator(It.IsAny<Administrator>())).Returns(expectedAdmin);
+        CreateAdministratorResponse response = administratorAdapter.CreateAdministrator(_dummyCreateAdministratorRequest);
         
-        CreateAdministratorResponse adapterResponse = _administratorAdapter.CreateAdministrator(_dummyCreateAdministratorRequest);
+        Assert.IsNotNull(response.Id);
         
-        Assert.AreEqual(expectedAdmin.Id, adapterResponse.Id);
+        _administratorService.Verify(service => service.CreateAdministrator(It.IsAny<Administrator>()), Times.Once);
         
-        _administratorService.VerifyAll();
     }
     
     [TestMethod]
