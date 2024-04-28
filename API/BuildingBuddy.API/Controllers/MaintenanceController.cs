@@ -66,7 +66,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Category Id
 
         [HttpGet]
-        [Route("/category/{categoryId:Guid}/requests")]
+        [Route("/category/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
             try
@@ -169,7 +169,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Id
 
         [HttpGet]
-        [Route("/{id:Guid}")]
+        [Route("/requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)
         {
             try
