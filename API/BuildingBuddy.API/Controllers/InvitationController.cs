@@ -19,11 +19,22 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllInvitations()
+        public IActionResult GetAllInvitations([FromQuery] string email)
         {
             try
             {
-                return Ok(_invitationAdapter.GetAllInvitations());
+                if (!string.IsNullOrEmpty(email))
+                {
+                    return Ok(_invitationAdapter.GetAllInvitations(email));
+                }
+                else
+                {
+                    return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
+                }
+            }
+            catch (ObjectNotFoundAdapterException)
+            {
+                return NotFound("No invitations were found in Database");
             }
             catch (Exception exceptionCaught)
             {

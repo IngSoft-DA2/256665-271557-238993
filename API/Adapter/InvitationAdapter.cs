@@ -23,7 +23,7 @@ public class InvitationAdapter
     
     #region Get All Invitations
 
-    public IEnumerable<GetInvitationResponse> GetAllInvitations()
+    public IEnumerable<GetInvitationResponse> GetAllInvitations(string email)
     {
         try
         {

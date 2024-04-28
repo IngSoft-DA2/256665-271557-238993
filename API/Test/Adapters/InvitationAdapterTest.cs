@@ -22,6 +22,8 @@ public class InvitationAdapterTest
     private CreateInvitationRequest _genericInvitationToCreate;
     private UpdateInvitationRequest _invitationWithUpdatesRequest;
 
+    private string _email;
+
     [TestInitialize]
     public void Initialize()
     {
@@ -61,6 +63,8 @@ public class InvitationAdapterTest
             Status = StatusEnumRequest.Rejected,
             ExpirationDate = DateTime.Now.AddDays(1)
         };
+
+        _email = "someone@example.com";
     }
     
     #endregion  
@@ -77,7 +81,7 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.Setup(service => service.GetAllInvitations()).Returns(invitations);
 
-        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations();
+        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations(_email);
 
         _invitationServiceLogic.VerifyAll();
 
@@ -90,7 +94,7 @@ public class InvitationAdapterTest
         _invitationServiceLogic.Setup(service => service.GetAllInvitations())
             .Throws(new Exception("Something went wrong"));
 
-        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations());
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations(_email));
 
         _invitationServiceLogic.VerifyAll();
     }
