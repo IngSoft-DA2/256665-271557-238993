@@ -11,12 +11,18 @@ namespace BuildingBuddy.API.Controllers
     [ApiController]
     public class InvitationController : ControllerBase
     {
+        #region Constructor and attributes
+        
         private readonly IInvitationAdapter _invitationAdapter;
 
         public InvitationController(IInvitationAdapter invitationAdapter)
         {
             _invitationAdapter = invitationAdapter;
         }
+        
+        #endregion
+        
+        #region Get All Invitations
 
         [HttpGet]
         public IActionResult GetAllInvitations([FromQuery] string email)
@@ -42,6 +48,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Get Invitation By Id
 
         [HttpGet]
         [Route("{id:Guid}")]
@@ -62,6 +72,10 @@ namespace BuildingBuddy.API.Controllers
             }
         }
         
+        #endregion     
+        
+        #region Create Invitation
+        
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
@@ -80,6 +94,10 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
+        #endregion
+        
+        #region Update Invitation
 
         [HttpPut]
         [Route("{id:Guid}")]
@@ -105,6 +123,10 @@ namespace BuildingBuddy.API.Controllers
             }
         
         }
+        
+        #endregion
+        
+        #region Delete Invitation
 
         [HttpDelete]
         [Route("{id:Guid}")]
@@ -128,7 +150,8 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(internalException.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-         
         }
+        
+        #endregion
     }
 }
