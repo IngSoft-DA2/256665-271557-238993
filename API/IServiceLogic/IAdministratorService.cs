@@ -1,6 +1,8 @@
-﻿namespace IServiceLogic;
+﻿using Domain;
+
+namespace IServiceLogic;
 
 public interface IAdministratorService
 {
-    public void CreateAdministrator(Guid administratorId);
+    public Administrator CreateAdministrator(Administrator administratorToCreate);
 }

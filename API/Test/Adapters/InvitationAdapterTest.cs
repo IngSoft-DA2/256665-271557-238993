@@ -22,6 +22,8 @@ public class InvitationAdapterTest
     private CreateInvitationRequest _genericInvitationToCreate;
     private UpdateInvitationRequest _invitationWithUpdatesRequest;
 
+    private string _email;
+
     [TestInitialize]
     public void Initialize()
     {
@@ -61,6 +63,8 @@ public class InvitationAdapterTest
             Status = StatusEnumRequest.Rejected,
             ExpirationDate = DateTime.Now.AddDays(1)
         };
+
+        _email = "someone@example.com";
     }
     
     #endregion  
@@ -77,7 +81,7 @@ public class InvitationAdapterTest
 
         _invitationServiceLogic.Setup(service => service.GetAllInvitations()).Returns(invitations);
 
-        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations();
+        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations(_email);
 
         _invitationServiceLogic.VerifyAll();
 
@@ -90,7 +94,50 @@ public class InvitationAdapterTest
         _invitationServiceLogic.Setup(service => service.GetAllInvitations())
             .Throws(new Exception("Something went wrong"));
 
-        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations());
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations(_email));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
+    #endregion
+    
+    #region Get All Invitations By Email
+    
+    [TestMethod]
+    public void GetAllInvitationsByEmail_ShouldReturnAllInvitationsConvertedFromDomainToResponse()
+    {
+        IEnumerable<Invitation> invitations = new List<Invitation> { _genericInvitation1 };
+
+        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>
+            { _genericInvitationResponse };
+
+        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>())).Returns(invitations);
+
+        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitationsByEmail(_email);
+
+        _invitationServiceLogic.VerifyAll();
+
+        Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponse));
+    }
+    
+    [TestMethod]
+    public void GetAllInvitationByEmail_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetAllInvitationByEmail_ShouldThrowException()
+    {
+        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
 
         _invitationServiceLogic.VerifyAll();
     }
@@ -277,6 +324,4 @@ public class InvitationAdapterTest
     }
 
     #endregion
-    
-    
 }

@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.FlatRequests;
@@ -8,8 +9,10 @@ using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
 
-public class FlatAdapter
+public class FlatAdapter : IFlatAdapter
 {
+    #region Constructor and attributes
+    
     private readonly IOwnerService _ownerService;
     private readonly IFlatService _flatService;
 
@@ -18,8 +21,10 @@ public class FlatAdapter
         _ownerService = ownerService;
         _flatService = flatService;
     }
-
-
+    
+    #endregion
+    
+    #region Get All Flats
     public IEnumerable<GetFlatResponse> GetAllFlats(Guid buildingId)
     {
         try
@@ -54,6 +59,10 @@ public class FlatAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get Flat By Id
 
     public GetFlatResponse GetFlatById(Guid buildingId, Guid flatId)
     {
@@ -89,6 +98,10 @@ public class FlatAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Create Flat
 
     public void CreateFlat(CreateFlatRequest flat)
     {
@@ -124,7 +137,7 @@ public class FlatAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
-        
-        
     }
+    
+    #endregion
 }

@@ -1,33 +1,45 @@
 ﻿using Adapter.CustomExceptions;
+using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.AdministratorRequests;
 using WebModel.Responses.AdministratorResponses;
 
 namespace Adapter;
 
-public class AdministratorAdapter
+public class AdministratorAdapter : IAdministratorAdapter
 {
     #region Constructor and Attributes
-    
-    private readonly IAdministratorService _administratorAdapter;
-    
-    public AdministratorAdapter(IAdministratorService administratorAdapter)
+
+    private readonly IAdministratorService _administratorService;
+
+    public AdministratorAdapter(IAdministratorService administratorService)
     {
-        _administratorAdapter = administratorAdapter;
+        _administratorService = administratorService;
     }
-    
+
     #endregion
-    
+
     #region Create Administrator
-    
-    public CreateAdministratorResponse CreateAdministrator(Guid administratorId)
+
+    public CreateAdministratorResponse CreateAdministrator(CreateAdministratorRequest request)
     {
         try
         {
-            _administratorAdapter.CreateAdministrator(administratorId);
+            Administrator adminToCreate = new Administrator()
+            {
+                Firstname = request.Firstname,
+                LastName = request.Lastname,
+                Email = request.Email,
+                Password = request.Password
+            };
+            
+            Administrator serviceResponse = _administratorService.CreateAdministrator(adminToCreate);
+            
             CreateAdministratorResponse adapterResponse = new CreateAdministratorResponse()
             {
-                Id = administratorId
+                Id = serviceResponse.Id
             };
 
             return adapterResponse;
@@ -44,8 +56,7 @@ public class AdministratorAdapter
         {
             throw new Exception(exceptionCaught.Message);
         }
-        
     }
-    
+
     #endregion
 }

@@ -11,8 +11,8 @@ public interface IBuildingAdapter
 
     public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid userId);
     public GetBuildingResponse GetBuildingById(Guid buildingId);
-    public void UpdateBuilding(Guid idOfBuilding, UpdateBuildingRequest buildingWithUpdates);
+    public void UpdateBuildingById(Guid idOfBuilding, UpdateBuildingRequest buildingWithUpdates);
     public CreateBuildingResponse CreateBuilding(CreateBuildingRequest buildingToCreate);
-    public void DeleteBuilding(Guid buildingId);
+    public void DeleteBuildingById(Guid buildingId);
 
 }

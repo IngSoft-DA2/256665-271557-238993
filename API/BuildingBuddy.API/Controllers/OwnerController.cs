@@ -66,11 +66,11 @@ namespace BuildingBuddy.API.Controllers
         #region UpdateOwner
 
         [HttpPut("{id:Guid}")]
-        public IActionResult UpdateOwner([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
+        public IActionResult UpdateOwnerById([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
         {
             try
             {
-                _ownerAdapter.UpdateOwner(id, updateOwnerRequest);
+                _ownerAdapter.UpdateOwnerById(id, updateOwnerRequest);
                 return NoContent();
             }
             catch (ObjectErrorAdapterException exceptionCaught)

@@ -71,12 +71,12 @@ namespace BuildingBuddy.API.Controllers
         
         [HttpPut]
         [Route("{buildingId:Guid}")]
-        public IActionResult UpdateBuilding([FromRoute] Guid buildingId,
+        public IActionResult UpdateBuildingById([FromRoute] Guid buildingId,
             [FromBody] UpdateBuildingRequest buildingWithUpdates)
         {
             try
             {
-                _buildingAdapter.UpdateBuilding(buildingId, buildingWithUpdates);
+                _buildingAdapter.UpdateBuildingById(buildingId, buildingWithUpdates);
                 return NoContent();
             }
             catch (ObjectNotFoundAdapterException)
@@ -123,11 +123,11 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpDelete]
         [Route("{buildingId:Guid}")]
-        public IActionResult DeleteBuilding([FromRoute] Guid buildingId)
+        public IActionResult DeleteBuildingById([FromRoute] Guid buildingId)
         {
             try
             {
-                _buildingAdapter.DeleteBuilding(buildingId);
+                _buildingAdapter.DeleteBuildingById(buildingId);
                 return NoContent();
             }
             catch (ObjectNotFoundAdapterException)
