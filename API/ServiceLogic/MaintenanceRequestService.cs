@@ -127,6 +127,22 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         }
     }
 
+    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
+    {
+        IEnumerable<MaintenanceRequest> maintenanceRequests;
+        try
+        {
+            maintenanceRequests = _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+        
+        if (maintenanceRequests is null) throw new ObjectNotFoundServiceException();
+        return maintenanceRequests;
+    }
+
     public MaintenanceRequest GetMaintenanceRequestById(Guid id)
     {
         MaintenanceRequest maintenanceRequest;
@@ -138,9 +154,8 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-    
+        
         if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
         return maintenanceRequest;
     }
-
 }

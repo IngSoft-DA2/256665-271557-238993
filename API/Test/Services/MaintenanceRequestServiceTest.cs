@@ -338,4 +338,69 @@ public class MaintenanceRequestServiceTest
 
     #endregion
     
+    #region Get Maintenance Requests By Request Handler
+    
+    [TestMethod]
+    public void GetMaintenanceRequestsByRequestHandler_MaintenanceRequestsAreReturned()
+    {
+        Guid requestHandlerId = Guid.NewGuid();
+        
+        IEnumerable<MaintenanceRequest> expectedRepositoryResponse = new List<MaintenanceRequest>
+        {
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid(),
+                Description = "Fix the door",
+                FlatId = Guid.NewGuid(),
+                OpenedDate = DateTime.Now,
+                RequestHandlerId = requestHandlerId,
+                Category = Guid.NewGuid(),
+                RequestStatus = StatusEnum.Accepted
+            },
+            
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid(),
+                Description = "Fix the window",
+                FlatId = Guid.NewGuid(),
+                OpenedDate = DateTime.Now,
+                RequestHandlerId = requestHandlerId,
+                Category = Guid.NewGuid(),
+                RequestStatus = StatusEnum.Accepted
+            }
+        };
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId)).Returns(expectedRepositoryResponse);
+        
+        IEnumerable<MaintenanceRequest> actualResponse = _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
+        
+        Assert.AreEqual(expectedRepositoryResponse, actualResponse);
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestsByRequestHandler_RequestHandlerNotFound_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>())).Returns(() => null);
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => 
+            _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestsByRequestHandler_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
+    {
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>())).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => 
+            _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
+    }
+    
+    #endregion
+    
 }
