@@ -177,7 +177,11 @@ public class ConstructionCompanyServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyWithError));
     }
+    
+    #endregion
 
+    #region Create Construction Company, Repository Validations
+    
     [TestMethod]
     public void CreateConstructionCompanyWithUsedName_ThrowsRepeatedObjectErrorException()
     {
