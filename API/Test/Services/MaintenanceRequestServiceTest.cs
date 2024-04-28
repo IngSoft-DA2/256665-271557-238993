@@ -20,7 +20,7 @@ public class MaintenanceRequestServiceTest
     [TestInitialize]
     public void Initialize()
     {
-        _maintenanceRequestRepository = new Mock<IMaintenanceRequestRepository>();
+        _maintenanceRequestRepository = new Mock<IMaintenanceRequestRepository>(MockBehavior.Strict);
         _maintenanceRequestService = new MaintenanceRequestService(_maintenanceRequestRepository.Object);
         _maintenanceRequestSample = new MaintenanceRequest
         {
@@ -129,6 +129,69 @@ public class MaintenanceRequestServiceTest
     
     #endregion
     
+    #region Create Maintenance Request
 
+   
 
+    #region Create Maintenance Requests - Domain Validations
+
+    [TestMethod]
+    public void CreateMaintenanceRequestWithEmptyDescription_ThrowsObjectErrorServiceException()
+    {
+        _maintenanceRequestSample.Description = string.Empty;
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequestWithEmptyBuildingId_ThrowsObjectErrorServiceException()
+    {
+        _maintenanceRequestSample.BuildingId = Guid.Empty;
+    
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequestWithEmptyFlatId_ThrowsObjectErrorServiceException()
+    {
+        _maintenanceRequestSample.FlatId = Guid.Empty;
+    
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequestWithEmptyCategory_ThrowsObjectErrorServiceException()
+    {
+        _maintenanceRequestSample.Category = Guid.Empty;
+    
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    }
+    
+    [TestMethod]
+    public void CreateMaintenanceRequestWithEmptyRequestHandlerId_ThrowsObjectErrorServiceException()
+    {
+        _maintenanceRequestSample.RequestHandlerId = Guid.Empty;
+    
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    }
+
+    [TestMethod]
+    public void CreateMaintenanceWithEmptyOpenDate_ThrowsObjectErrorServiceException()
+    {
+        _maintenanceRequestSample.OpenedDate = null;
+    
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    }
+    
+    
+    #endregion
+    
+    #endregion
+    
 }

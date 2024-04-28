@@ -50,7 +50,15 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     public void CreateMaintenanceRequest(MaintenanceRequest maintenanceRequest)
     {
-        throw new NotImplementedException();
+        try
+        {
+            maintenanceRequest.MaintenanceRequestValidator();
+            _maintenanceRequestRepository.CreateMaintenanceRequest(maintenanceRequest);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateMaintenanceRequest(Guid idToUpdate, MaintenanceRequest maintenanceRequest)

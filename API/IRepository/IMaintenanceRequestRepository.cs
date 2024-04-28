@@ -6,6 +6,7 @@ namespace IRepository;
 public interface IMaintenanceRequestRepository
 {
     public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests();
-    public MaintenanceRequest GetMaintenanceRequestByCategory(Guid id);
+    public MaintenanceRequest GetMaintenanceRequestByCategory(Guid categoryId);
+    public void CreateMaintenanceRequest(MaintenanceRequest requestToCreate);
     
 }
