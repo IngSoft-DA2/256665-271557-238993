@@ -217,7 +217,7 @@ public class BuildingAdapter : IBuildingAdapter
                 ConstructionCompany = newConstructionCompany
             };
 
-            _buildingService.UpdateBuildingById(buildingToUpd);
+            _buildingService.UpdateBuilding(buildingToUpd);
         }
         catch (ObjectNotFoundServiceException)
         {

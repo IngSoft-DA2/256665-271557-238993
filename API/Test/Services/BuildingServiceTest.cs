@@ -3,6 +3,7 @@ using IRepository;
 using Moq;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;
+using WebModel.Requests.BuildingRequests;
 
 namespace Test.Services;
 
@@ -227,4 +228,29 @@ public class BuildingServiceTest
         _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
     }
 
+    [TestMethod]
+    public void UpdateBuildingTest_UpdatesBuildingCorrectly()
+    {
+        ConstructionCompany constructionCompany = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company Updated"
+        };
+        
+        Building buildingWithUpdates = new Building
+        {
+            Id = _genericBuilding.Id,
+            CommonExpenses = 2000000,
+            ConstructionCompany = constructionCompany
+        };
+
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
+        
+        _buildingRepository.Setup(repo => repo.UpdateBuilding(It.IsAny<Building>()));
+        
+        _buildingService.UpdateBuilding(buildingWithUpdates);
+
+        _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
+        _buildingRepository.Verify(repo => repo.UpdateBuilding(buildingWithUpdates), Times.Once);
+    }
 }

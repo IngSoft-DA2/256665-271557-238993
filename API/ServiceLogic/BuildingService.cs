@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using System.Reflection;
+using Domain;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -51,7 +52,7 @@ public class BuildingService
         try
         {
             building.BuildingValidator();
-            IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
+            IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings(building.ManagerId);
             CheckIfNameAlreadyExists(building, buildings);
             CheckIfLocationAndAddressAlreadyExists(building, buildings);
             _buildingRepository.CreateBuilding(building);
@@ -69,7 +70,7 @@ public class BuildingService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
     private static void CheckIfLocationAndAddressAlreadyExists(Building building, IEnumerable<Building> buildings)
     {
         double minGap = 0.000001;
@@ -89,4 +90,26 @@ public class BuildingService
         }
     }
 
+    public void UpdateBuilding(Building buildingWithUpdates)
+    {
+        Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
+        
+        if (buildingWithUpdates.Equals(buildingNotUpdated))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        
+        foreach (PropertyInfo property in typeof(Building).GetProperties())
+        {
+            object? originalValue = property.GetValue(buildingNotUpdated);
+            object? updatedValue = property.GetValue(buildingWithUpdates);
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(buildingWithUpdates, originalValue);
+            }
+        }
+        _buildingRepository.UpdateBuilding(buildingWithUpdates);
+    }
+    
 }
