@@ -110,6 +110,10 @@ public class BuildingService
         {
             throw new ObjectRepeatedServiceException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private static void MapProperties(Building buildingWithUpdates, Building buildingNotUpdated)

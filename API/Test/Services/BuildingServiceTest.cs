@@ -280,9 +280,19 @@ public class BuildingServiceTest
     [TestMethod]
     public void GivenUpdateBuilding_ThrowsObjectRepeatedServiceException()
     {
-        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);    
         
         Assert.ThrowsException<ObjectRepeatedServiceException>(() => _buildingService.UpdateBuilding(_genericBuilding));
+        
+        _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void GivenUpdateBuilding_ThrowsUnknownServiceException()
+    {
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.UpdateBuilding(_genericBuilding));
         
         _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
     }
