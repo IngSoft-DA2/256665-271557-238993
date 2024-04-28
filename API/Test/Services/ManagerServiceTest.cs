@@ -101,4 +101,19 @@ public class ManagerServiceTest
 
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
+
+    [TestMethod]
+    public void GivenPasswordLessThan8CharactersOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "person@gmail.com",
+            Password = "1234567"
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+        
+    }
 }

@@ -35,6 +35,11 @@ public class ManagerService
             {
                 throw new InvalidManagerException("Password is required");
             }
+            
+            if(manager.Password.Length < 8)
+            {
+                throw new InvalidManagerException("Password must have at least 8 characters");
+            }
 
             _managerRepository.CreateManager(manager);
         }
@@ -47,4 +52,7 @@ public class ManagerService
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
     }
+    
+    
+    
 }
