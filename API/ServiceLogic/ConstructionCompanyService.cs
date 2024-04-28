@@ -42,6 +42,9 @@ public class ConstructionCompanyService : IConstructionCompanyService
     {
         ConstructionCompany constructionCompanyFound =
             _constructionCompanyRepository.GetConstructionCompanyById(idOfConstructionCompany);
+
+        if (constructionCompanyFound is null) throw new ObjectNotFoundServiceException();
+        
         return constructionCompanyFound;
     }
 

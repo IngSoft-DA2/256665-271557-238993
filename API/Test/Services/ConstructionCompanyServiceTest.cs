@@ -97,5 +97,21 @@ public class ConstructionCompanyServiceTest
         Assert.AreEqual(constructionCompanyInDb, constructionCompanyObtained);
     }
 
+    #region Get Construction Company By Id, Repository Validations
+
+    [TestMethod]
+    public void GetConstructionCompanyById_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()));
+        _constructionCompanyRepository.VerifyAll();
+    }
+
+    #endregion
+
     #endregion
 }
