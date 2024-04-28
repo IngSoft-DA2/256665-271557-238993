@@ -8,12 +8,18 @@ namespace ServiceLogic;
 
 public class OwnerService : IOwnerService
 {
+    #region Constructor and dependency injection
+
     private readonly IOwnerRepository _ownerRepository;
 
     public OwnerService(IOwnerRepository ownerRepository)
     {
         _ownerRepository = ownerRepository;
     }
+
+    #endregion
+
+    #region Get all Owners
 
     public IEnumerable<Owner> GetAllOwners()
     {
@@ -26,7 +32,11 @@ public class OwnerService : IOwnerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
+    #endregion
+
+    #region Get Owner By Id
+
     public Owner GetOwnerById(Guid ownerIdToObtain)
     {
         Owner ownerObtained;
@@ -43,6 +53,10 @@ public class OwnerService : IOwnerService
 
         return ownerObtained;
     }
+
+    #endregion
+
+    #region Create Owner
 
     public void CreateOwner(Owner ownerToCreate)
     {
@@ -65,7 +79,11 @@ public class OwnerService : IOwnerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
+    #endregion
+
+    #region Update Owner By Id
+
     public void UpdateOwnerById(Owner ownerWithUpdates)
     {
         Owner ownerWithoutUpdates = GetOwnerById(ownerWithUpdates.Id);
@@ -83,18 +101,22 @@ public class OwnerService : IOwnerService
         {
             throw new ObjectRepeatedServiceException();
         }
-        catch(Exception exceptionCaught)
+        catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-     
     }
+
+    #endregion
+
+    #region Auxiliary Functions
 
     private void ValidationsForBeingPossibleToUpdate(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
         CheckIfEmailIsUsed(ownerWithUpdates);
         MapProperties(ownerWithUpdates, ownerWithoutUpdates);
     }
+
     private void CheckIfEmailIsUsed(Owner ownerWithUpdates)
     {
         IEnumerable<Owner> ownersInDb = GetAllOwners();
@@ -103,6 +125,7 @@ public class OwnerService : IOwnerService
             throw new ObjectRepeatedServiceException();
         }
     }
+
     private static void MapProperties(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
         ValidateThatAreNotEqual(ownerWithUpdates, ownerWithoutUpdates);
@@ -118,8 +141,11 @@ public class OwnerService : IOwnerService
             }
         }
     }
+
     private static void ValidateThatAreNotEqual(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
         if (ownerWithUpdates.Equals(ownerWithoutUpdates)) throw new ObjectRepeatedServiceException();
     }
+
+    #endregion
 }

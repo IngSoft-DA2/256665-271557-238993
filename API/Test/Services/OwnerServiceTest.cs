@@ -299,7 +299,6 @@ public class OwnerServiceTest
 
     #endregion
 
-
     #region Update Owner By Id
 
     //Happy path
@@ -446,8 +445,8 @@ public class OwnerServiceTest
             Email = "mick@gmail.com",
             Flats = new List<Flat>()
         };
-        
-        Owner ownerInDbWithChanges= new Owner
+
+        Owner ownerInDbWithChanges = new Owner
         {
             Id = Guid.NewGuid(),
             Firstname = "Mickael",
@@ -455,8 +454,7 @@ public class OwnerServiceTest
             Email = "mick@gmail.com",
             Flats = new List<Flat>()
         };
-        
-        
+
 
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
             .Returns(ownerInDbWithoutChanges);
