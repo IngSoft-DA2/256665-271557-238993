@@ -39,7 +39,7 @@ public class OwnerService : IOwnerService
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
     {
-        Owner ownerObtained;
+        Owner ownerObtained = new Owner();
         try
         {
             ownerObtained = _ownerRepository.GetOwnerById(ownerIdToObtain);
@@ -62,7 +62,7 @@ public class OwnerService : IOwnerService
     {
         try
         {
-            ownerToCreate.OwnerValidator();
+            ownerToCreate.PersonValidator();
             CheckIfEmailIsUsed(ownerToCreate);
             _ownerRepository.CreateOwner(ownerToCreate);
         }
@@ -89,7 +89,7 @@ public class OwnerService : IOwnerService
         Owner ownerWithoutUpdates = GetOwnerById(ownerWithUpdates.Id);
         try
         {
-            ownerWithUpdates.OwnerValidator();
+            ownerWithUpdates.PersonValidator();
             ValidationsForBeingPossibleToUpdate(ownerWithUpdates, ownerWithoutUpdates);
             _ownerRepository.UpdateOwnerById(ownerWithUpdates);
         }

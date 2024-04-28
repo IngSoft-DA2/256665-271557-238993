@@ -253,6 +253,7 @@ public class OwnerServiceTest
     {
         Owner ownerInDb = new Owner
         {
+            Id = Guid.NewGuid(),
             Firstname = "John",
             Lastname = "Kent",
             Email = "john@gmail.com",
@@ -260,8 +261,11 @@ public class OwnerServiceTest
         };
 
         IEnumerable<Owner> ownersInDb = new List<Owner> { ownerInDb };
+        
+        
         Owner ownerToCreate = new Owner
         {
+            Id = Guid.NewGuid(),
             Firstname = "Johnnie",
             Lastname = "Doe",
             Email = "john@gmail.com",
