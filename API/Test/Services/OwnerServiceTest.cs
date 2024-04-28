@@ -84,6 +84,7 @@ public class OwnerServiceTest
 
     #region Get Owner By Id
 
+    //Happy path
     [TestMethod]
     public void GetOwnerById_OwnerIsReturned()
     {
@@ -118,6 +119,21 @@ public class OwnerServiceTest
         
         _ownerRepository.VerifyAll();
     }
+
+    #region Get owner By Id, Repository Validations
+    
+    [TestMethod]
+    public void GetOwnerById_ThrowsOwnerNotFoundServiceException()
+    {
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
+            .Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _ownerService.GetOwnerById(Guid.NewGuid()));
+        _ownerRepository.VerifyAll();
+    }
+
+    #endregion
+    
 
     #endregion
 }
