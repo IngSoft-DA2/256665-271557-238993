@@ -1,3 +1,4 @@
+using System.Reflection;
 using Domain;
 using IRepository;
 using IServiceLogic;
@@ -77,6 +78,24 @@ public class OwnerService : IOwnerService
 
     public void UpdateOwnerById(Owner ownerWithUpdates)
     {
-        throw new NotImplementedException();
+        
+        Owner ownerWithoutUpdates = GetOwnerById(ownerWithUpdates.Id);
+        MapProperties(ownerWithUpdates, ownerWithoutUpdates);
+        
+        _ownerRepository.UpdateOwnerById(ownerWithUpdates);
+    }
+    
+    private static void MapProperties(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
+    {
+        foreach (PropertyInfo property in typeof(Owner).GetProperties())
+        {
+            object? originalValue = property.GetValue(ownerWithoutUpdates);
+            object? updatedValue = property.GetValue(ownerWithUpdates);
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(ownerWithUpdates, originalValue);
+            }
+        }
     }
 }
