@@ -56,6 +56,8 @@ public class CategoryService : ICategoryService
 
     #endregion
 
+    #region Create Category
+
     public void CreateCategory(Category categoryToCreate)
     {
         try
@@ -71,6 +73,7 @@ public class CategoryService : ICategoryService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-      
     }
+
+    #endregion
 }

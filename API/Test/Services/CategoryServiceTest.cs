@@ -25,7 +25,6 @@ public class CategoryServiceTest
 
     #endregion
 
-
     #region Get all categories
 
     [TestMethod]
