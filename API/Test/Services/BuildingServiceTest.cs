@@ -114,4 +114,14 @@ public class BuildingServiceTest
         
         _buildingRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateBuilding_CreatesBuildingCorrectly()
+    {
+        _buildingRepository.Setup(repo => repo.CreateBuilding(It.IsAny<Building>()));
+        
+        _buildingService.CreateBuilding(_genericBuilding);
+        
+        _buildingRepository.VerifyAll();
+    }
 }
