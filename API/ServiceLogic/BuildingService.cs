@@ -46,4 +46,8 @@ public class BuildingService
         return buildingFound;
     }
 
+    public void CreateBuilding(Building building)
+    {
+        _buildingRepository.CreateBuilding(building);
+    }
 }

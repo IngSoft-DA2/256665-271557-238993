@@ -90,6 +90,7 @@ public class InvitationAdapter
         {
             Invitation invitation = new Invitation
             {
+                Id = Guid.NewGuid(),
                 Firstname = invitationToCreate.Firstname,
                 Lastname = invitationToCreate.Lastname,
                 Email = invitationToCreate.Email,
