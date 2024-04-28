@@ -18,6 +18,7 @@ public class Building
         LocationValidation();
         ConstructionCompanyValidation();
         CommonExpensesValidation();
+        ManagerIdValidation();
     }
     private void NameValidation()
     {
@@ -56,6 +57,14 @@ public class Building
         if (CommonExpenses < 0)
         {
             throw new InvalidBuildingException("Common expenses cannot be negative");
+        }
+    }
+    
+    private void ManagerIdValidation()
+    {
+        if (ManagerId == Guid.Empty)
+        {
+            throw new InvalidBuildingException("Manager id cannot be empty");
         }
     }
 }
