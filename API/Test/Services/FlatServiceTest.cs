@@ -1,4 +1,5 @@
 ﻿using Domain;
+using IRepository;
 using IServiceLogic;
 using Moq;
 using Repositories.CustomExceptions;
@@ -23,39 +24,35 @@ public class FlatServiceTest
     }
 
     #endregion
-    
+
     #region Get all Flats
+
     //Happy Path
     [TestMethod]
     public void GetAllFlats_FlatsAreReturn()
     {
-        Owner ownerOfFlatInDb = new Owner
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "John",
-            Lastname = "Doe",
-            Email = "owner@gmail.com",
-        };
+        Building dummyBuilding = new Building();
+        Owner dummyOwner = new Owner();
 
         Flat flatExampleInDb = new Flat
         {
             Id = Guid.NewGuid(),
-            BuildingId = Guid.NewGuid(),
+            BuildingId = dummyBuilding.Id,
             Floor = 1,
             RoomNumber = 102,
-            OwnerAssigned = ownerOfFlatInDb,
+            OwnerAssigned = dummyOwner,
             TotalRooms = 3,
             TotalBaths = 2,
             HasTerrace = false
         };
 
-        ownerOfFlatInDb.Flats = new List<Flat> { flatExampleInDb };
+        dummyOwner.Flats = new List<Flat> { flatExampleInDb };
 
         IEnumerable<Flat> flatsInDb = new List<Flat> { flatExampleInDb };
 
-        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats()).Returns(flatsInDb);
+        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats(It.IsAny<Guid>())).Returns(flatsInDb);
 
-        IEnumerable<Flat> flats = _flatService.GetAllFlats();
+        IEnumerable<Flat> flats = _flatService.GetAllFlats(dummyBuilding.Id);
         _flatRepository.VerifyAll();
 
         Assert.IsTrue(flats.SequenceEqual(flatsInDb));
@@ -66,17 +63,46 @@ public class FlatServiceTest
     [TestMethod]
     public void GetAllFlats_ThrowsUnknownErrorServiceException()
     {
-        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats())
+        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats(It.IsAny<Guid>()))
             .Throws(new UnknownRepositoryException("Unknown error"));
-        Assert.ThrowsException<UnknownServiceException>(() => _flatService.GetAllFlats());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _flatService.GetAllFlats(It.IsAny<Guid>()));
         _flatRepository.VerifyAll();
     }
 
     #endregion
 
     #endregion
-    
-    
-    
-    
+
+
+    #region Get Flat By Id
+
+    [TestMethod]
+    public void GetFlatById_FlatIsReturn()
+    {
+        Owner dummyOwner = new Owner();
+        Building dummyBuilding = new Building();
+
+        Flat flatInDb = new Flat
+        {
+            Id = Guid.NewGuid(),
+            BuildingId = dummyBuilding.Id,
+            Floor = 1,
+            RoomNumber = 102,
+            OwnerAssigned = dummyOwner,
+            TotalRooms = 3,
+            TotalBaths = 2,
+            HasTerrace = false
+        };
+
+
+        _flatRepository.Setup(flatRepository => 
+                flatRepository.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(flatInDb);
+        
+        Flat flatFound = _flatService.GetFlatById(dummyBuilding.Id, flatInDb.Id);
+        Assert.IsTrue(flatInDb.Equals(flatFound));
+        _flatRepository.VerifyAll();
+    }
+
+    #endregion
 }
