@@ -64,6 +64,11 @@ public class BuildingService
         {
             throw new ObjectErrorServiceException(exception.Message);
         }
+        catch(ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+
     }
 
     private static void CheckIfLocationAndAddressAlreadyExists(Building building, IEnumerable<Building> buildings)

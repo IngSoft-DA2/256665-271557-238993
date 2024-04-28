@@ -119,7 +119,7 @@ public class BuildingServiceTest
     public void GivenCorrectBuilding_CreatesBuildingCorrectly()
     {
         _buildingRepository.Setup(repo => repo.CreateBuilding(_genericBuilding));
-        
+
         _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building>());
 
         _buildingService.CreateBuilding(_genericBuilding);
@@ -188,22 +188,33 @@ public class BuildingServiceTest
     public void GivenBuildingWithRepeatedName_ThrowsObjectRepeatedServiceException()
     {
         _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building> { _genericBuilding });
-        
+
         _buildingService.CreateBuilding(_genericBuilding);
-        
+
         _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
     }
-    
+
     [TestMethod]
     [ExpectedException(typeof(ObjectRepeatedServiceException))]
     public void GivenBuildingWithRepeatedLocation_ThrowsObjectRepeatedServiceException()
     {
         _genericBuilding.Name = "Building 2";
-        
+
         _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building> { _genericBuilding });
-        
+
         _buildingService.CreateBuilding(_genericBuilding);
-        
+
         _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
     }
+    
+    [TestMethod]
+    public void CreateBuilding_ThrowsObjectRepeatedServiceException()
+    {
+        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(new List<Building> { _genericBuilding });
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
+
+        _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+    }
+
 }
