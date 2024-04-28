@@ -10,6 +10,20 @@ namespace Test.Services;
 [TestClass]
 public class OwnerServiceTest
 {
+    #region Initialize
+
+    private Mock<IOwnerRepository> _ownerRepository;
+    private OwnerService _ownerService;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _ownerRepository = new Mock<IOwnerRepository>(MockBehavior.Strict);
+        _ownerService = new OwnerService(_ownerRepository.Object);
+    }
+
+    #endregion
+
     #region Get All Owners
 
     //Happy path
@@ -43,13 +57,10 @@ public class OwnerServiceTest
             ownerInDb
         };
 
-        Mock<IOwnerRepository> ownerRepository = new Mock<IOwnerRepository>(MockBehavior.Strict);
-        ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(ownersInDb);
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(ownersInDb);
 
-        OwnerService ownerService = new OwnerService(ownerRepository.Object);
-
-        IEnumerable<Owner> ownersResponse = ownerService.GetAllOwners();
-        ownerRepository.VerifyAll();
+        IEnumerable<Owner> ownersResponse = _ownerService.GetAllOwners();
+        _ownerRepository.VerifyAll();
 
         Assert.AreEqual(ownersInDb.Count(), ownersResponse.Count());
         Assert.IsTrue(ownersInDb.SequenceEqual(ownersResponse));
@@ -60,14 +71,11 @@ public class OwnerServiceTest
     [TestMethod]
     public void GetAllOwners_ThrowsUnknownErrorServiceException()
     {
-        Mock<IOwnerRepository> ownerRepository = new Mock<IOwnerRepository>(MockBehavior.Strict);
-        ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners())
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners())
             .Throws(new UnknownRepositoryException("Unknown error in repository layer."));
 
-        OwnerService ownerService = new OwnerService(ownerRepository.Object);
-
-        Assert.ThrowsException<UnknownServiceException>(() => ownerService.GetAllOwners());
-        ownerRepository.VerifyAll();
+        Assert.ThrowsException<UnknownServiceException>(() => _ownerService.GetAllOwners());
+        _ownerRepository.VerifyAll();
     }
 
     #endregion
