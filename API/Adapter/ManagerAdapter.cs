@@ -1,5 +1,6 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLogic.CustomExceptions;
@@ -8,7 +9,7 @@ using WebModel.Responses.ManagerResponses;
 
 namespace Adapter;
 
-public class ManagerAdapter
+public class ManagerAdapter : IManagerAdapter
 {
     #region Constructor and attributes
 
