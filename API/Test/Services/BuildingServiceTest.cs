@@ -204,6 +204,14 @@ public class BuildingServiceTest
 
         Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
+    
+    [TestMethod]
+    public void GivenBuildingWithFlatsNullOnCreate_ThrowsInvalidBuildingException()
+    {
+        _genericBuilding.Flats = null;
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
+    }
 
     [TestMethod]
     [ExpectedException(typeof(ObjectRepeatedServiceException))]
