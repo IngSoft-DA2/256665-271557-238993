@@ -36,5 +36,20 @@ public class ReportService
     #endregion
     
     
-
+    #region Get maintenance report by request handler
+    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid isAny)
+    {
+        try
+        {
+            IEnumerable<RequestHandlerReport> reports = _reportRepository.GetMaintenanceReportByRequestHandler(isAny);
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+    
+    #endregion
+  
 }
