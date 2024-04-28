@@ -320,4 +320,14 @@ public class BuildingServiceTest
         
         _buildingRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void DeleteBuildingByIdTest_ThrowsUnknownServiceException()
+    {
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.DeleteBuilding(It.IsAny<Guid>()));
+        
+        _buildingRepository.VerifyAll();
+    }
 }
