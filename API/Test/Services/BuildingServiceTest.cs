@@ -104,4 +104,14 @@ public class BuildingServiceTest
         
         _buildingRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetBuildingByIdTest_ThrowsObjectNotFoundServiceException()
+    {
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns((Building) null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _buildingService.GetBuildingById(Guid.NewGuid()));
+        
+        _buildingRepository.VerifyAll();
+    }
 }

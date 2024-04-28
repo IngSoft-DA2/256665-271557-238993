@@ -28,14 +28,22 @@ public class BuildingService
 
     public Building GetBuildingById(Guid buildingId)
     {
+        Building buildingFound;
         try
         {
-            return _buildingRepository.GetBuildingById(buildingId);
+            buildingFound = _buildingRepository.GetBuildingById(buildingId);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
+
+        if (buildingFound == null)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+
+        return buildingFound;
     }
-    
+
 }
