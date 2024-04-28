@@ -2,6 +2,7 @@
 using IRepository;
 using Moq;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace Test.Services;
 
@@ -25,5 +26,20 @@ public class ManagerServiceTest
         var actualManagers = managerService.GetAllManagers();
         
         Assert.AreEqual(expectedManagers, actualManagers);
+        
+        managerRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetAllManagers_ShouldThrowUnknownServiceException_WhenRepositoryThrowsException()
+    {
+        var managerRepository = new Mock<IManagerRepository>();
+        var managerService = new ManagerService(managerRepository.Object);
+        
+        managerRepository.Setup(x => x.GetAllManagers()).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => managerService.GetAllManagers());
+        
+        managerRepository.VerifyAll();
     }
 }

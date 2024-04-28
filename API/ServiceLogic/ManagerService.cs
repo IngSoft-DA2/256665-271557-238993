@@ -15,6 +15,13 @@ public class ManagerService
 
     public IEnumerable<Manager> GetAllManagers()
     {
-        return _managerRepository.GetAllManagers();
+        try
+        {
+            return _managerRepository.GetAllManagers();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 }
