@@ -30,9 +30,19 @@ public class ManagerService
         try
         {
             manager.PersonValidator();
+            
+            if (string.IsNullOrEmpty(manager.Password))
+            {
+                throw new InvalidManagerException("Password is required");
+            }
+
             _managerRepository.CreateManager(manager);
         }
         catch (InvalidPersonException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (InvalidManagerException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
