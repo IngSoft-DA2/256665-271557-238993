@@ -52,13 +52,11 @@ public class BuildingService
         
         IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
         
-        foreach (Building buildingInList in buildings)
+        if (buildings.Any(b => b.Name == building.Name))
         {
-            if (buildingInList.Name == building.Name)
-            {
-                throw new ObjectRepeatedServiceException();
-            }
+            throw new ObjectRepeatedServiceException();
         }
+
         
         _buildingRepository.CreateBuilding(building);
     }
