@@ -3,7 +3,9 @@
 using Domain;
 using IServiceLogic;
 using Moq;
+using Repositories.CustomExceptions;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace Test.Services;
 
@@ -52,9 +54,15 @@ public class FlatServiceTest
         
     }
     
-    
-    
-    
-    
+    [TestMethod]
+    public void GetAllFlats_ThrowsUnknownErrorServiceException()
+    {
+        Mock<IFlatRepository> flatRepository = new Mock<IFlatRepository>(MockBehavior.Strict);
+        FlatService flatService = new FlatService(flatRepository.Object);
+        
+        flatRepository.Setup(flatRepository => flatRepository.GetAllFlats()).Throws(new UnknownRepositoryException("Unknown error"));
+        Assert.ThrowsException<UnknownServiceException>(() => flatService.GetAllFlats());
+        flatRepository.VerifyAll();
+    }
     
 }

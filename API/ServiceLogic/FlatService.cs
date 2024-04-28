@@ -1,5 +1,6 @@
 using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
@@ -13,7 +14,15 @@ public class FlatService
 
     public IEnumerable<Flat> GetAllFlats()
     {
-        IEnumerable<Flat> flatsInDb = _flatRepository.GetAllFlats();
-        return flatsInDb;
+        try
+        {
+            IEnumerable<Flat> flatsInDb = _flatRepository.GetAllFlats();
+            return flatsInDb;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+      
     }
 }
