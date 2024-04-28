@@ -8,4 +8,5 @@ public interface IBuildingRepository
     public Building GetBuildingById(Guid buildingId);
     public void CreateBuilding(Building building);
     public void UpdateBuilding(Building building);
+    public void DeleteBuilding(Building buildingId);
 }

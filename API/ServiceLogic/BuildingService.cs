@@ -91,11 +91,11 @@ public class BuildingService
     }
 
     public void UpdateBuilding(Building buildingWithUpdates)
-    {   
+    {
         try
         {
             Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
-            
+
             MapProperties(buildingWithUpdates, buildingNotUpdated);
 
             buildingWithUpdates.BuildingValidator();
@@ -122,6 +122,7 @@ public class BuildingService
         {
             throw new ObjectRepeatedServiceException();
         }
+
         foreach (PropertyInfo property in typeof(Building).GetProperties())
         {
             object? originalValue = property.GetValue(buildingNotUpdated);
@@ -141,7 +142,10 @@ public class BuildingService
             }
         }
     }
-    
-    
-    
+
+    public void DeleteBuilding(Guid buildingIdToDelete)
+    {
+        Building buildingToDelete = GetBuildingById(buildingIdToDelete);
+        _buildingRepository.DeleteBuilding(buildingToDelete);
+    }
 }

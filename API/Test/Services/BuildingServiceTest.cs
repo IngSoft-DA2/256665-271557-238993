@@ -296,4 +296,16 @@ public class BuildingServiceTest
         
         _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void DeleteBuildingByIdTest_DeletesBuildingCorrectly()
+    {
+        _buildingRepository.Setup(repo => repo.DeleteBuilding(It.IsAny<Building>()));
+        
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
+        
+        _buildingService.DeleteBuilding(It.IsAny<Guid>());
+        
+        _buildingRepository.Verify(repo => repo.DeleteBuilding(It.IsAny<Building>()), Times.Once);
+    }
 }
