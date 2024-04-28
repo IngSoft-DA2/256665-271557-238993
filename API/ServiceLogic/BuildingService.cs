@@ -52,7 +52,7 @@ public class BuildingService
         try
         {
             building.BuildingValidator();
-            IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings(building.ManagerId);
+            IEnumerable<Building> buildings = GetAllBuildings(building.ManagerId);
             CheckIfNameAlreadyExists(building, buildings);
             CheckIfLocationAndAddressAlreadyExists(building, buildings);
             _buildingRepository.CreateBuilding(building);
@@ -147,12 +147,16 @@ public class BuildingService
     {
         try
         {
-            Building buildingToDelete = _buildingRepository.GetBuildingById(buildingIdToDelete);
+            Building buildingToDelete = GetBuildingById(buildingIdToDelete);
             _buildingRepository.DeleteBuilding(buildingToDelete);
         }
         catch(ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
 }

@@ -313,7 +313,8 @@ public class BuildingServiceTest
     [TestMethod]
     public void DeleteBuildingByIdTest_ThrowsObjectNotFoundServiceException()
     {
-        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
+        Building _dummyBuilding = null;
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_dummyBuilding);
         
         Assert.ThrowsException<ObjectNotFoundServiceException>(() => _buildingService.DeleteBuilding(It.IsAny<Guid>()));
         
