@@ -307,5 +307,16 @@ public class BuildingServiceTest
         _buildingService.DeleteBuilding(It.IsAny<Guid>());
         
         _buildingRepository.Verify(repo => repo.DeleteBuilding(It.IsAny<Building>()), Times.Once);
+        _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void DeleteBuildingByIdTest_ThrowsObjectNotFoundServiceException()
+    {
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _buildingService.DeleteBuilding(It.IsAny<Guid>()));
+        
+        _buildingRepository.VerifyAll();
     }
 }

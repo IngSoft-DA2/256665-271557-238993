@@ -145,7 +145,14 @@ public class BuildingService
 
     public void DeleteBuilding(Guid buildingIdToDelete)
     {
-        Building buildingToDelete = GetBuildingById(buildingIdToDelete);
-        _buildingRepository.DeleteBuilding(buildingToDelete);
+        try
+        {
+            Building buildingToDelete = _buildingRepository.GetBuildingById(buildingIdToDelete);
+            _buildingRepository.DeleteBuilding(buildingToDelete);
+        }
+        catch(ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
     }
 }
