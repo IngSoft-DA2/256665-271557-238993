@@ -50,10 +50,7 @@ public class BuildingService
     {
         building.NameValidation();
         building.AddressValidation();
-        if (building.Location == null)
-        {
-            throw new InvalidBuildingException("Building location cannot be empty");
-        }
+        building.LocationValidation();
 
         _buildingRepository.CreateBuilding(building);
     }

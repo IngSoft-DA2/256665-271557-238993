@@ -27,4 +27,12 @@ public class Building
             throw new InvalidBuildingException("Building address cannot be empty");
         }
     }
+    
+    public void LocationValidation()
+    {
+        if (Location == null)
+        {
+            throw new InvalidBuildingException("Building location cannot be empty");
+        }
+    }
 }
