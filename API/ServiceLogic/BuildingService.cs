@@ -49,6 +49,17 @@ public class BuildingService
     public void CreateBuilding(Building building)
     {
         building.BuildingValidator();
+        
+        IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
+        
+        foreach (Building buildingInList in buildings)
+        {
+            if (buildingInList.Name == building.Name)
+            {
+                throw new ObjectRepeatedServiceException();
+            }
+        }
+        
         _buildingRepository.CreateBuilding(building);
     }
 }
