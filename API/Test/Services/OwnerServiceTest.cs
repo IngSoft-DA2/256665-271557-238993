@@ -169,7 +169,7 @@ public class OwnerServiceTest
     [TestMethod]
     public void CreateOwnerWithEmptyFirstname_ThrowsObjectErrorServiceException()
     {
-        Owner ownerToCreateWithEmptyName = new Owner
+        Owner ownerToCreateWithEmptyFirstname = new Owner
         {
             Firstname = "",
             Lastname = "Doe",
@@ -177,13 +177,13 @@ public class OwnerServiceTest
             Flats = new List<Flat>()
         };
         
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyName));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyFirstname));
         
     }
     [TestMethod]
     public void CreateOwnerWithEmptyLastname_ThrowsObjectErrorServiceException()
     {
-        Owner ownerToCreateWithEmptyName = new Owner
+        Owner ownerToCreateWithEmptyLastname = new Owner
         {
             Firstname = "John",
             Lastname = "",
@@ -191,8 +191,21 @@ public class OwnerServiceTest
             Flats = new List<Flat>()
         };
         
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyName));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
         
+    }
+
+    [TestMethod]
+    public void CreateOwnerWithIncorrectPatternEmail_ThrowsObjectErrorServiceException()
+    {
+        Owner ownerToCreateWithWrongEmail = new Owner
+        {
+            Firstname = "John",
+            Lastname = "Kent",
+            Email = "gms.com",
+            Flats = new List<Flat>()
+        };
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithWrongEmail));
     }
         
     
