@@ -99,6 +99,10 @@ public class OwnerService : IOwnerService
         {
             throw new ObjectRepeatedServiceException();
         }
+        catch(Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
      
     }
     

@@ -424,13 +424,50 @@ public class OwnerServiceTest
             Email = "mick@gmail.com",
             Flats = new List<Flat>()
         };
-        
+
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
             .Returns(ownerInDbWithoutUpdate);
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners())
             .Returns(new List<Owner>());
 
-        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _ownerService.UpdateOwnerById(ownerWithoutChanges));
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _ownerService.UpdateOwnerById(ownerWithoutChanges));
+        _ownerRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void UpdateOwnerById_ThrowsUnknownServiceException()
+    {
+        Owner ownerInDbWithoutChanges = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Mick",
+            Lastname = "Mon",
+            Email = "mick@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        Owner ownerInDbWithChanges= new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Mickael",
+            Lastname = "Monday",
+            Email = "mick@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
+            .Returns(ownerInDbWithoutChanges);
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(new List<Owner>());
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.UpdateOwnerById(It.IsAny<Owner>()))
+            .Throws(new UnknownRepositoryException("Unknown error in repository layer."));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _ownerService.UpdateOwnerById(ownerInDbWithChanges));
+
         _ownerRepository.VerifyAll();
     }
 
