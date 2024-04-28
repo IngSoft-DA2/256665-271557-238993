@@ -60,7 +60,16 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd)
     {
-        _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
+        try
+        {
+            constructionCompanyToAdd.ConstructionCompanyValidator();
+            _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
+        }
+        catch (InvalidConstructionCompanyException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        
     }
 
     #endregion

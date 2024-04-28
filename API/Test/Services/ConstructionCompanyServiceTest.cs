@@ -146,9 +146,26 @@ public class ConstructionCompanyServiceTest
         _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd);
         
         _constructionCompanyRepository.VerifyAll();
-
-
     }
+
+    #region Create Construction Company, Domain Validations
+
+    [TestMethod]
+    public void CreateConstructionCompanyWithEmptyName_ThrowsObjectErrorServiceException()
+    {
+
+        ConstructionCompany constructionCompanyWithError = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = ""
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyService.CreateConstructionCompany(constructionCompanyWithError));
+    }
+    
+    
+    #endregion
 
     #endregion
 }
