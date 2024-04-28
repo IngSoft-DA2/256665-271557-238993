@@ -17,6 +17,7 @@ public class Building
         AddressValidation();
         LocationValidation();
         ConstructionCompanyValidation();
+        CommonExpensesValidation();
     }
     private void NameValidation()
     {
@@ -50,7 +51,7 @@ public class Building
         }
     }
     
-    public void CommonExpensesValidation()
+    private void CommonExpensesValidation()
     {
         if (CommonExpenses < 0)
         {
