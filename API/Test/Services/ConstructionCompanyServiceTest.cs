@@ -1,6 +1,5 @@
 using Domain;
 using IRepository;
-using Microsoft.CodeAnalysis.FlowAnalysis;
 using Moq;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -10,7 +9,7 @@ namespace Test.Services;
 [TestClass]
 public class ConstructionCompanyServiceTest
 {
-    #region TestInitialize
+    #region Initialize 
 
     private Mock<IConstructionCompanyRepository> _constructionCompanyRepository;
     private ConstructionCompanyService _constructionCompanyService;
