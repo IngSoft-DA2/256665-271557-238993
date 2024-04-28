@@ -105,6 +105,10 @@ public class InvitationAdapter : IInvitationAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 
     #region Create Invitation

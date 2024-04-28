@@ -119,13 +119,23 @@ public class InvitationAdapterTest
     }
     
     [TestMethod]
-    
     public void GetAllInvitationByEmail_ShouldThrowObjectNotFoundAdapterException()
     {
         _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetAllInvitationByEmail_ShouldThrowException()
+    {
+        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
 
         _invitationServiceLogic.VerifyAll();
     }
