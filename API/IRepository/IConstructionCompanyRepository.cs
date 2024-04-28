@@ -1,11 +1,10 @@
 using Domain;
 
-namespace IServiceLogic;
+namespace IRepository;
 
-public interface IConstructionCompanyService
+public interface IConstructionCompanyRepository
 {
     public IEnumerable<ConstructionCompany> GetAllConstructionCompanies();
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany);
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd);
-    
 }
