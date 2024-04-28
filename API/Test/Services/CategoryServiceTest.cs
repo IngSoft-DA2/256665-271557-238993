@@ -28,8 +28,8 @@ public class CategoryServiceTest
 
     #region Get all categories
 
-    //Happy path
     [TestMethod]
+    //Happy path
     public void GetAllCategories_CategoriesAreReturned()
     {
         IEnumerable<Category> categoriesInDb = new List<Category>
@@ -66,6 +66,28 @@ public class CategoryServiceTest
     }
 
     #endregion
+
+    #endregion
+
+    #region Get Category By Id
+
+    [TestMethod]
+    //Happy path
+    public void GetCategoryById_ReturnsCategory()
+    {
+        Category categoryInDb = new Category()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
+            .Returns(categoryInDb);
+
+        Category categoryFound = _categoryService.GetCategoryById(It.IsAny<Guid>());
+        
+        Assert.AreEqual(categoryFound, categoryInDb);
+    }
 
     #endregion
 }

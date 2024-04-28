@@ -27,4 +27,10 @@ public class CategoryService
         }
        
     }
+
+    public Category GetCategoryById(Guid categoryToGetId)
+    {
+        Category category = _categoryRepository.GetCategoryById(categoryToGetId);
+        return category;
+    }
 }
