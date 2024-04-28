@@ -43,13 +43,14 @@ public class ConstructionCompanyService : IConstructionCompanyService
         ConstructionCompany constructionCompanyFound;
         try
         {
-            constructionCompanyFound = _constructionCompanyRepository.GetConstructionCompanyById(idOfConstructionCompany);
+            constructionCompanyFound =
+                _constructionCompanyRepository.GetConstructionCompanyById(idOfConstructionCompany);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
+
         if (constructionCompanyFound is null) throw new ObjectNotFoundServiceException();
         return constructionCompanyFound;
     }
@@ -63,13 +64,21 @@ public class ConstructionCompanyService : IConstructionCompanyService
         try
         {
             constructionCompanyToAdd.ConstructionCompanyValidator();
+
+            IEnumerable<ConstructionCompany> constructionCompaniesInDb =
+                _constructionCompanyRepository.GetAllConstructionCompanies();
+
+            if (constructionCompaniesInDb.Any(constructionCompany =>
+                    constructionCompany.Name.Equals(constructionCompanyToAdd.Name)))
+            {
+                throw new ObjectRepeatedServiceException();
+            }
             _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
         }
         catch (InvalidConstructionCompanyException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-        
     }
 
     #endregion

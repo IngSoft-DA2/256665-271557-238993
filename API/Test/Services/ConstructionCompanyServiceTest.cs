@@ -111,7 +111,7 @@ public class ConstructionCompanyServiceTest
             _constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()));
         _constructionCompanyRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void GetConstructionCompanyById_UnknownServiceExceptionIsThrown()
     {
@@ -129,7 +129,7 @@ public class ConstructionCompanyServiceTest
     #endregion
 
     #region Create Construction Company
-    
+
     //Happy path
     [TestMethod]
     public void CreateConstructionCompany_ConstructionCompanyIsCreated()
@@ -139,12 +139,14 @@ public class ConstructionCompanyServiceTest
             Id = Guid.NewGuid(),
             Name = "Company1"
         };
-        
+
         _constructionCompanyRepository.Setup(constructionCompany =>
             constructionCompany.CreateConstructionCompany(It.IsAny<ConstructionCompany>()));
-        
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+            constructionCompanyRepository.GetAllConstructionCompanies()).Returns(new List<ConstructionCompany>());
+
         _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd);
-        
+
         _constructionCompanyRepository.VerifyAll();
     }
 
@@ -153,17 +155,16 @@ public class ConstructionCompanyServiceTest
     [TestMethod]
     public void CreateConstructionCompanyWithEmptyName_ThrowsObjectErrorServiceException()
     {
-
         ConstructionCompany constructionCompanyWithError = new ConstructionCompany
         {
             Id = Guid.NewGuid(),
             Name = ""
         };
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyWithError));
     }
-    
+
     [TestMethod]
     public void CreateConstructionCompanyWithNameGreaterThan100Chars_ThrowsObjectErrorServiceException()
     {
@@ -172,13 +173,43 @@ public class ConstructionCompanyServiceTest
             Id = Guid.NewGuid(),
             Name = "C".PadRight(101, 'y')
         };
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyWithError));
     }
-    
-    
-    
+
+    [TestMethod]
+    public void CreateConstructionCompanyWithUsedName_ThrowsRepeatedObjectErrorException()
+    {
+        IEnumerable<ConstructionCompany> constructionCompaniesInDb = new List<ConstructionCompany>
+        {
+            new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Company 1"
+            },
+            new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Company 2"
+            }
+        };
+
+        ConstructionCompany constructionCompanyToAdd = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Company 1"
+        };
+
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+            constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd));
+        
+        _constructionCompanyRepository.VerifyAll();
+    }
+
     #endregion
 
     #endregion
