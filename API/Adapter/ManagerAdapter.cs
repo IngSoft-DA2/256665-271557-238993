@@ -76,6 +76,7 @@ public class ManagerAdapter : IManagerAdapter
         {
             Manager manager = new Manager
             {
+                Id = Guid.NewGuid(),
                 Name = createRequest.FirstName,
                 Email = createRequest.Email,
                 Password = createRequest.Password,

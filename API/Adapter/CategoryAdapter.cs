@@ -71,7 +71,11 @@ public class CategoryAdapter : ICategoryAdapter
     {
         try
         {
-            Category category = new Category { Name = categoryToCreate.Name };
+            Category category = new Category
+            {
+                Id = Guid.NewGuid(),
+                Name = categoryToCreate.Name
+            };
 
             _categoryServiceLogic.CreateCategory(category);
 

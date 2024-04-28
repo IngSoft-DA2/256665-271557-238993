@@ -98,6 +98,7 @@ public class MaintenanceRequestAdapter : IMaintenanceAdapter
         {
             MaintenanceRequest maintenanceRequest = new MaintenanceRequest
             {
+                Id = Guid.NewGuid(),
                 BuildingId = maintenanceRequestToCreate.BuildingId,
                 Description = maintenanceRequestToCreate.Description,
                 FlatId = maintenanceRequestToCreate.FlatId,
