@@ -116,12 +116,20 @@ public class BuildingServiceTest
     }
     
     [TestMethod]
-    public void CreateBuilding_CreatesBuildingCorrectly()
+    public void GivenCorrectBuilding_CreatesBuildingCorrectly()
     {
-        _buildingRepository.Setup(repo => repo.CreateBuilding(It.IsAny<Building>()));
+        _buildingRepository.Setup(repo => repo.CreateBuilding(_genericBuilding));
         
         _buildingService.CreateBuilding(_genericBuilding);
         
-        _buildingRepository.VerifyAll();
+        _buildingRepository.Verify(repo => repo.CreateBuilding(_genericBuilding), Times.Once);
+    }
+    
+    [TestMethod]
+    public void GivenBuildingWithNameEmpty_ThrowsInvalidBuildingException()
+    {
+        _genericBuilding.Name = "";
+        
+        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 }
