@@ -1,6 +1,7 @@
 using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
 
@@ -15,12 +16,12 @@ public class ReportAdapter
     }
 
     public IEnumerable<GetMaintenanceReportByBuildingResponse> GetMaintenanceReportByBuilding(
-        GetMaintenanceReportByBuildingRequest request)
+        Guid buildingId)
     {
         try
         {
             IEnumerable<Report> reports =
-                _reportService.GetMaintenanceReportByBuilding(request);
+                _reportService.GetMaintenanceReportByBuilding(buildingId);
 
             IEnumerable<GetMaintenanceReportByBuildingResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByBuildingResponse()
@@ -30,7 +31,6 @@ public class ReportAdapter
                     OnAttendanceRequests = report.OnAttendanceRequests,
                     BuildingId = report.IdOfResourceToReport
                 });
-
             return maintenanceReportResponses;
         }
         catch (Exception exceptionCaught)
@@ -38,15 +38,16 @@ public class ReportAdapter
             Console.WriteLine(exceptionCaught);
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
+
     }
 
     public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceReportByRequestHandler(
-        GetMaintenanceReportByRequestHandlerResponse request)
+        Guid requestHandlerId)
     {
         try
         {
             IEnumerable<RequestHandlerReport> reports =
-                _reportService.GetMaintenanceReportByRequestHandler(request);
+                _reportService.GetMaintenanceReportByRequestHandler(requestHandlerId);
 
             IEnumerable<GetMaintenanceReportByRequestHandlerResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByRequestHandlerResponse()
@@ -55,7 +56,6 @@ public class ReportAdapter
                     OpenRequests = report.OpenRequests,
                     OnAttendanceRequests = report.OnAttendanceRequests,
                     AverageTimeToCloseRequest = report.AvgTimeToCloseRequest,
-                    RequestHandlerId = report.RequestHandlerId,
                 });
 
             return maintenanceReportResponses;
@@ -68,12 +68,12 @@ public class ReportAdapter
     }
 
     public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceReportByCategory(
-        GetMaintenanceReportByCategoryResponse request)
+        Guid categoryId)
     {
         try
         {
             IEnumerable<Report> reports =
-                _reportService.GetMaintenanceReportByCategory(request);
+                _reportService.GetMaintenanceReportByCategory(categoryId);
 
             IEnumerable<GetMaintenanceReportByCategoryResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByCategoryResponse()

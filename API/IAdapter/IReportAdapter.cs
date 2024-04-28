@@ -6,7 +6,7 @@ namespace IAdapter;
 public interface IReportAdapter
 {
     public IEnumerable<GetMaintenanceReportByBuildingResponse> GetMaintenanceRequestsByBuilding(
-        GetMaintenanceReportByBuildingRequest getMaintenanceReportRequestByBuilding);
-    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceRequestsByRequestHandler(GetMaintenanceReportRequest getMaintenanceReportRequestByUser);
-    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceRequestsByCategory(Guid buildingId, GetMaintenanceReportRequest getMaintenanceReportRequestByCategory);
+        Guid buildingId);
+    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId);
+    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceRequestsByCategory(Guid categoryId);
 }

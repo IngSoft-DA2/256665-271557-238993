@@ -25,11 +25,11 @@ namespace BuildingBuddy.API.Controllers
 
         [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByBuilding([FromBody] GetMaintenanceReportByBuildingRequest getMaintenanceReportRequestByBuilding)
+        public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid buildingId)
         {
             try
             {
-                return Ok(_reportAdapter.GetMaintenanceRequestsByBuilding(getMaintenanceReportRequestByBuilding));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByBuilding(buildingId));
             }
             catch (Exception exceptionCaught)
             {
@@ -45,10 +45,10 @@ namespace BuildingBuddy.API.Controllers
         [Route("/request-handler/maintenance-requests/reports")]
         
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByRequestHandler([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequest)
+        public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId)
         {
             try{
-                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(getMaintenanceReportRequest));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(requestHandlerId));
             }
             catch (Exception exceptionCaught)
             {
@@ -63,11 +63,11 @@ namespace BuildingBuddy.API.Controllers
         
         [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByCategory)
+        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId)
         {
             try
             {
-                return Ok(_reportAdapter.GetMaintenanceRequestsByCategory(categoryId, getMaintenanceReportRequestByCategory));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByCategory(categoryId));
             }
             catch (Exception exceptionCaught)
             {

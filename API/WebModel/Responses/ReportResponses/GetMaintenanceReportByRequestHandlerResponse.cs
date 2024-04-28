@@ -16,6 +16,10 @@ public class GetMaintenanceReportByRequestHandlerResponse
         
         if (objectToCompare is null) return false;
 
-        return RequestHandlerId == objectToCompare.RequestHandlerId;
+        return RequestHandlerId == objectToCompare.RequestHandlerId &&
+               OpenRequests == objectToCompare.OpenRequests &&
+               ClosedRequests == objectToCompare.ClosedRequests &&
+               OnAttendanceRequests == objectToCompare.OnAttendanceRequests &&
+               AverageTimeToCloseRequest == objectToCompare.AverageTimeToCloseRequest;
     }
 }

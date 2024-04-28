@@ -6,9 +6,9 @@ namespace IServiceLogic;
 
 public interface IReportService
 {
-    IEnumerable<Report> GetMaintenanceReportByBuilding(GetMaintenanceReportByBuildingRequest request);
+    IEnumerable<Report> GetMaintenanceReportByBuilding(Guid request);
     IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(
-        GetMaintenanceReportByRequestHandlerResponse request);
+        Guid request);
 
-    IEnumerable<Report> GetMaintenanceReportByCategory(GetMaintenanceReportByCategoryResponse request);
+    IEnumerable<Report> GetMaintenanceReportByCategory(Guid request);
 }
