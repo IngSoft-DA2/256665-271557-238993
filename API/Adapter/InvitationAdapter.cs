@@ -84,20 +84,27 @@ public class InvitationAdapter : IInvitationAdapter
     #endregion
     public IEnumerable<GetInvitationResponse> GetAllInvitationsByEmail(string email)
     {
-        IEnumerable<Invitation> serviceResponse = _invitationServiceLogic.GetAllInvitationsByEmail(email);
-        
-        IEnumerable<GetInvitationResponse> adapterResponse = serviceResponse.Select(invitation =>
-            new GetInvitationResponse
-            {
-                Id = invitation.Id,
-                Status = (StatusEnumResponse)invitation.Status,
-                ExpirationDate = invitation.ExpirationDate,
-                Email = invitation.Email,
-                Firstname = invitation.Firstname,
-                Lastname = invitation.Lastname
-            });
-        
-        return adapterResponse;
+        try
+        {
+            IEnumerable<Invitation> serviceResponse = _invitationServiceLogic.GetAllInvitationsByEmail(email);
+
+            IEnumerable<GetInvitationResponse> adapterResponse = serviceResponse.Select(invitation =>
+                new GetInvitationResponse
+                {
+                    Id = invitation.Id,
+                    Status = (StatusEnumResponse)invitation.Status,
+                    ExpirationDate = invitation.ExpirationDate,
+                    Email = invitation.Email,
+                    Firstname = invitation.Firstname,
+                    Lastname = invitation.Lastname
+                });
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 
     #region Create Invitation

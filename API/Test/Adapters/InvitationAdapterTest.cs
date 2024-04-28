@@ -118,6 +118,18 @@ public class InvitationAdapterTest
         Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponse));
     }
     
+    [TestMethod]
+    
+    public void GetAllInvitationByEmail_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
+
+        _invitationServiceLogic.VerifyAll();
+    }
+    
     #region Get Invitation By Id
 
     [TestMethod]
