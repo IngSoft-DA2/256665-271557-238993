@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
@@ -15,7 +16,15 @@ public class CategoryService
 
     public IEnumerable<Category> GetAllCategories()
     {
-        IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
-        return categories;
+        try
+        {
+            IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
+            return categories;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+       
     }
 }
