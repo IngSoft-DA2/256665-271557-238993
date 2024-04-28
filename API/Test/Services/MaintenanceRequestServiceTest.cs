@@ -90,6 +90,45 @@ public class MaintenanceRequestServiceTest
     
     #endregion
     
+    #region Get Maintenance Request By Category
+
+    [TestMethod]
+    public void GetMaintenanceRequestByCategory_MaintenanceRequestIsReturned()
+    {
+        Guid categoryId = Guid.NewGuid();
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId)).Returns(_maintenanceRequestSample);
+        
+        MaintenanceRequest actualResponse = _maintenanceRequestService.GetMaintenanceRequestByCategory(categoryId);
+        
+        Assert.AreEqual(_maintenanceRequestSample, actualResponse);
+    }
+
+    [TestMethod]
+    public void GetMaintenanceRequestByCategory_CategoryNotFound()
+    {
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestByCategory(It.IsAny<Guid>())).Returns(() => null);
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => 
+            _maintenanceRequestService.GetMaintenanceRequestByCategory(Guid.NewGuid()));
+        
+        _maintenanceRequestRepository.VerifyAll();
+    }
     
+    [TestMethod]
+    public void GetMaintenanceRequestByCategory_UnknownServiceExceptionIsThrown()
+    {
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestByCategory(It.IsAny<Guid>())).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => 
+            _maintenanceRequestService.GetMaintenanceRequestByCategory(Guid.NewGuid()));
+    }
     
+    #endregion
+    
+
+
 }

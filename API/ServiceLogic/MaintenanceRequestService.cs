@@ -33,8 +33,20 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     public MaintenanceRequest GetMaintenanceRequestByCategory(Guid id)
     {
-        throw new NotImplementedException();
-    }
+        MaintenanceRequest maintenanceRequest;
+             try
+             {
+                 maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(id);
+             }
+             catch (Exception exceptionCaught)
+             {
+                 throw new UnknownServiceException(exceptionCaught.Message);
+             }
+             
+             if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
+             
+             return maintenanceRequest;
+         }
 
     public void CreateMaintenanceRequest(MaintenanceRequest maintenanceRequest)
     {
