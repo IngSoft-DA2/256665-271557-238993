@@ -9,6 +9,16 @@ namespace Test.Services;
 [TestClass]
 public class BuildingServiceTest
 {
+    private Mock<IBuildingRepository> _buildingRepository;
+    private BuildingService _buildingService;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _buildingRepository = new Mock<IBuildingRepository>(MockBehavior.Strict);
+        _buildingService = new BuildingService(_buildingRepository.Object);
+    }
+    
     [TestMethod]
     public void GetAllBuildingsTest_ReturnsAllBuildingsCorrectly()
     {
@@ -53,28 +63,23 @@ public class BuildingServiceTest
                 }
             }
         };
-
-        Mock<IBuildingRepository> buildingRepository = new Mock<IBuildingRepository>();
-        buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(expectedBuildings);
-
-        BuildingService buildingService = new BuildingService(buildingRepository.Object);
-        IEnumerable<Building> serviceResponse = buildingService.GetAllBuildings();
+        
+        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Returns(expectedBuildings);
+        
+        IEnumerable<Building> serviceResponse = _buildingService.GetAllBuildings();
 
         Assert.IsTrue(expectedBuildings.SequenceEqual(serviceResponse));
         
-        buildingRepository.VerifyAll();
+        _buildingRepository.VerifyAll();
     }
     
     [TestMethod]
     public void GetAllBuildingsTest_ThrowsUnknownServiceException()
     {
-        Mock<IBuildingRepository> buildingRepository = new Mock<IBuildingRepository>();
-        buildingRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
+        _buildingRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
 
-        BuildingService buildingService = new BuildingService(buildingRepository.Object);
-
-        Assert.ThrowsException<UnknownServiceException>(() => buildingService.GetAllBuildings());
+        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.GetAllBuildings());
         
-        buildingRepository.VerifyAll();
+        _buildingRepository.VerifyAll();
     }
 }
