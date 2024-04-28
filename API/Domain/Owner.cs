@@ -39,6 +39,10 @@ public class Owner
         {
             throw new InvalidOwnerException("Firstname cannot contain special characters.");
         }
+        if (!Lastname.All(char.IsLetter))
+        {
+            throw new InvalidOwnerException("Lastname cannot contain special characters.");
+        }
     }
 
 

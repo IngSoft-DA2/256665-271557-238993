@@ -180,20 +180,7 @@ public class OwnerServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyFirstname));
         
     }
-    [TestMethod]
-    public void CreateOwnerWithEmptyLastname_ThrowsObjectErrorServiceException()
-    {
-        Owner ownerToCreateWithEmptyLastname = new Owner
-        {
-            Firstname = "John",
-            Lastname = "",
-            Email = "john@gmail.com",
-            Flats = new List<Flat>()
-        };
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
-    }
-
+    
     [TestMethod]
     public void CreateOwnerWithFirstnameThatHasSpecialDigits_ThrowsObjectErrorServiceException()
     {
@@ -207,7 +194,35 @@ public class OwnerServiceTest
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
     }
-
+    
+    [TestMethod]
+    public void CreateOwnerWithEmptyLastname_ThrowsObjectErrorServiceException()
+    {
+        Owner ownerToCreateWithEmptyLastname = new Owner
+        {
+            Firstname = "John",
+            Lastname = "",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
+    }
+    
+    [TestMethod]
+    public void CreateOwnerWithLastnameThatHasSpecialDigits_ThrowsObjectErrorServiceException()
+    {
+        Owner ownerToCreateWithEmptyLastname = new Owner
+        {
+            Firstname = "John",
+            Lastname = "",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
+    }
+    
     [TestMethod]
     public void CreateOwnerWithIncorrectPatternEmail_ThrowsObjectErrorServiceException()
     {
