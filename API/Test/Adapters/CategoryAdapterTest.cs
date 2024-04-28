@@ -15,7 +15,7 @@ public class CategoryAdapterTest
 {
     #region Initializing Aspects
     
-    private Mock<ICategoryServiceLogic> _categoryServiceLogic;
+    private Mock<ICategoryService> _categoryServiceLogic;
     private CategoryAdapter _categoryAdapter;
     private Category genericCategory1;
     private Category genericCategory2;
@@ -24,7 +24,7 @@ public class CategoryAdapterTest
     [TestInitialize]
     public void Initialize()
     {
-        _categoryServiceLogic = new Mock<ICategoryServiceLogic>(MockBehavior.Strict);
+        _categoryServiceLogic = new Mock<ICategoryService>(MockBehavior.Strict);
         _categoryAdapter = new CategoryAdapter(_categoryServiceLogic.Object);
         genericCategory1 = new Category
         {

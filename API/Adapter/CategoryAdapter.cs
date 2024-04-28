@@ -1,5 +1,6 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.CategoryRequests;
@@ -7,13 +8,13 @@ using WebModel.Responses.CategoryResponses;
 
 namespace Adapter;
 
-public class CategoryAdapter
+public class CategoryAdapter : ICategoryAdapter
 {
     #region Constructor and atributtes
 
-    private readonly ICategoryServiceLogic _categoryServiceLogic;
+    private readonly ICategoryService _categoryServiceLogic;
 
-    public CategoryAdapter(ICategoryServiceLogic categoryServiceLogic)
+    public CategoryAdapter(ICategoryService categoryServiceLogic)
     {
         _categoryServiceLogic = categoryServiceLogic;
     }
