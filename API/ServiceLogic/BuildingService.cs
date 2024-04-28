@@ -6,7 +6,7 @@ using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
-public class BuildingService
+public class BuildingService : IBuildingService
 {
     #region Constructor and Atributtes
     
