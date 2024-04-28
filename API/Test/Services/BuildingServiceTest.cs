@@ -61,5 +61,20 @@ public class BuildingServiceTest
         IEnumerable<Building> serviceResponse = buildingService.GetAllBuildings();
 
         Assert.IsTrue(expectedBuildings.SequenceEqual(serviceResponse));
+        
+        buildingRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void GetAllBuildingsTest_ThrowsUnknownServiceException()
+    {
+        Mock<IBuildingRepository> buildingRepository = new Mock<IBuildingRepository>();
+        buildingRepository.Setup(repo => repo.GetAllBuildings()).Throws(new Exception());
+
+        BuildingService buildingService = new BuildingService(buildingRepository.Object);
+
+        Assert.ThrowsException<UnknownServiceException>(() => buildingService.GetAllBuildings());
+        
+        buildingRepository.VerifyAll();
     }
 }

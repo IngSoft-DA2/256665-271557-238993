@@ -15,6 +15,13 @@ public class BuildingService
 
     public IEnumerable<Building> GetAllBuildings()
     {
-        return _buildingRepository.GetAllBuildings();
+        try
+        {
+            return _buildingRepository.GetAllBuildings();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 }
