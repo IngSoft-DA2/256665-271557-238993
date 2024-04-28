@@ -48,4 +48,15 @@ public class ManagerServiceTest
         
         _managerRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateManager_ShouldCreateManager()
+    {
+        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager 1" };
+        
+        _managerRepository.Setup(service => service.CreateManager(manager));
+        _managerService.CreateManager(manager);
+        
+        _managerRepository.Verify(x => x.CreateManager(manager), Times.Once);
+    }
 }

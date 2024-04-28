@@ -24,4 +24,9 @@ public class ManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+
+    public void CreateManager(Manager manager)
+    {
+        _managerRepository.CreateManager(manager);
+    }
 }
