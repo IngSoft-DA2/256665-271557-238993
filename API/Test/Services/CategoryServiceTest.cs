@@ -88,6 +88,20 @@ public class CategoryServiceTest
         
         Assert.AreEqual(categoryFound, categoryInDb);
     }
+    
+    #region Get Category By Id, repository validations
+    
+    [TestMethod]
+    public void GetCategoryById_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
+            .Returns(() => null);
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _categoryService.GetCategoryById(It.IsAny<Guid>()));
+    }
+    
+    
+    #endregion
 
     #endregion
 }

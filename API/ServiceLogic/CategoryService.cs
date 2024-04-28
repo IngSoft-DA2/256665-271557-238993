@@ -31,6 +31,8 @@ public class CategoryService
     public Category GetCategoryById(Guid categoryToGetId)
     {
         Category category = _categoryRepository.GetCategoryById(categoryToGetId);
+        if (category is null) throw new ObjectNotFoundServiceException();
+            
         return category;
     }
 }
