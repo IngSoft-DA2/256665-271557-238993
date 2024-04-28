@@ -421,7 +421,7 @@ public class InvitationServiceTest
     [TestMethod]
     public void WhenStatusIsPending_InvitationThatIsNotNearToExpire_CannotUpdateExpirationDate()
     {
-        _invitationExample.ExpirationDate = DateTime.Now.AddDays(2);
+        _invitationExample.ExpirationDate = DateTime.Now.AddDays(10);
 
         Invitation invitationWithUpdates = new Invitation
         {
@@ -456,6 +456,20 @@ public class InvitationServiceTest
             _invitationService.UpdateInvitation(_invitationExample.Id, invitationWithUpdates));
 
         _invitationRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void UpdateInvitationButWithoutChanges_ThrowsObjectRepeatedException()
+    {
+
+        _invitationExample.ExpirationDate = DateTime.MinValue;
+        
+        _invitationRepository.Setup(invitationRepository =>
+            invitationRepository.GetInvitationById(It.IsAny<Guid>())).Returns(_invitationExample);
+
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _invitationService.UpdateInvitation(It.IsAny<Guid>(), _invitationExample));
     }
 
     #endregion
@@ -496,7 +510,7 @@ public class InvitationServiceTest
             .Returns(_invitationExample);
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.DeleteInvitation(It.IsAny<Invitation>()));
-        
+
         _invitationService.DeleteInvitation(_invitationExample.Id);
 
         _invitationRepository.VerifyAll();
@@ -523,19 +537,22 @@ public class InvitationServiceTest
     {
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(() => null);
-        
-        Assert.ThrowsException<ObjectNotFoundServiceException>(()=> _invitationService.DeleteInvitation(Guid.NewGuid()));
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(
+            () => _invitationService.DeleteInvitation(Guid.NewGuid()));
     }
-    
+
     [TestMethod]
     public void DeleteInvitation_ThrowsUnknownServiceException()
     {
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
             .Returns(_invitationExample);
-        _invitationRepository.Setup(invitationRepository => invitationRepository.DeleteInvitation(It.IsAny<Invitation>()))
+        _invitationRepository
+            .Setup(invitationRepository => invitationRepository.DeleteInvitation(It.IsAny<Invitation>()))
             .Throws(new UnknownRepositoryException("Internal Error"));
 
-        Assert.ThrowsException<UnknownServiceException>(() => _invitationService.DeleteInvitation(_invitationExample.Id));
+        Assert.ThrowsException<UnknownServiceException>(
+            () => _invitationService.DeleteInvitation(_invitationExample.Id));
     }
 
     #endregion

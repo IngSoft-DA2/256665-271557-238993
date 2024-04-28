@@ -104,6 +104,10 @@ public class InvitationService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
@@ -134,6 +138,12 @@ public class InvitationService
 
     private static void MapProperties(Invitation invitationWithUpdates, Invitation invitationWithoutUpdates)
     {
+
+        if (invitationWithUpdates.Equals(invitationWithoutUpdates))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        
         foreach (PropertyInfo property in typeof(Invitation).GetProperties())
         {
             object? originalValue = property.GetValue(invitationWithoutUpdates);
