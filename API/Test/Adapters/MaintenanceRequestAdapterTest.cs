@@ -104,14 +104,22 @@ public class MaintenanceRequestAdapterTest
     [TestMethod]
     public void GetMaintenanceRequestByCategoryId_ReturnsMaintenanceRequestResponse()
     {
-        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestByCategory(It.IsAny<Guid>()))
-            .Returns(genericMaintenanceRequest);
+        IEnumerable<MaintenanceRequest> expectedServiceResponse = new List<MaintenanceRequest>
+            { genericMaintenanceRequest };
 
-        GetMaintenanceRequestResponse adapterResponse =
+        IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse = new List<GetMaintenanceRequestResponse>
+        {
+            genericMaintenanceRequestResponse
+        };
+        
+        _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestByCategory(It.IsAny<Guid>()))
+            .Returns(expectedServiceResponse);
+
+        IEnumerable<GetMaintenanceRequestResponse> adapterResponse =
             _maintenanceRequestAdapter.GetMaintenanceRequestByCategory(genericMaintenanceRequest.Id);
         _maintenanceRequestService.VerifyAll();
 
-        Assert.AreEqual(genericMaintenanceRequestResponse, adapterResponse);
+        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
     
     [TestMethod]

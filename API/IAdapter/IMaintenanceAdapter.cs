@@ -6,7 +6,7 @@ namespace IAdapter;
 public interface IMaintenanceAdapter
 {
     public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests();
-    public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid categoryId);
+    public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByCategory(Guid categoryId);
     public CreateRequestMaintenanceResponse CreateMaintenanceRequest(CreateRequestMaintenanceRequest requestToCreate);
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker);
     public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId);
