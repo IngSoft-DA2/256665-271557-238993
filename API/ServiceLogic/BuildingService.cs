@@ -91,7 +91,7 @@ public class BuildingService
     }
 
     public void UpdateBuilding(Building buildingWithUpdates)
-    {
+    {   
         try
         {
             Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
@@ -105,6 +105,10 @@ public class BuildingService
         catch (InvalidBuildingException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
         }
     }
 
@@ -133,4 +137,7 @@ public class BuildingService
             }
         }
     }
+    
+    
+    
 }
