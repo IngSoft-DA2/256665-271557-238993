@@ -52,11 +52,25 @@ public class ManagerServiceTest
     [TestMethod]
     public void CreateManager_ShouldCreateManager()
     {
-        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager 1" };
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(), 
+            Firstname = "Manager",
+            Email = "person@gmail.com"
+            
+        };
         
         _managerRepository.Setup(service => service.CreateManager(manager));
         _managerService.CreateManager(manager);
         
         _managerRepository.Verify(x => x.CreateManager(manager), Times.Once);
+    }
+
+    [TestMethod]
+    public void GivenEmptyNameOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "" };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
 }

@@ -27,6 +27,14 @@ public class ManagerService
 
     public void CreateManager(Manager manager)
     {
-        _managerRepository.CreateManager(manager);
+        try
+        {
+            manager.PersonValidator();
+            _managerRepository.CreateManager(manager);
+        }
+        catch (InvalidPersonException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace Domain;
 
-public class Manager : User
+public class Manager : Person
 {
     public IEnumerable<Guid> Buildings { get; set; }
+    public string Password { get; set; }
 }

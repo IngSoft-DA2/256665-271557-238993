@@ -66,7 +66,7 @@ public class OwnerService : IOwnerService
             CheckIfEmailIsUsed(ownerToCreate);
             _ownerRepository.CreateOwner(ownerToCreate);
         }
-        catch (InvalidOwnerException exceptionCaught)
+        catch (InvalidPersonException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
@@ -93,7 +93,7 @@ public class OwnerService : IOwnerService
             ValidationsForBeingPossibleToUpdate(ownerWithUpdates, ownerWithoutUpdates);
             _ownerRepository.UpdateOwnerById(ownerWithUpdates);
         }
-        catch (InvalidOwnerException exceptionCaught)
+        catch (InvalidPersonException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }

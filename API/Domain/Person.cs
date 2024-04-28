@@ -31,12 +31,12 @@ public abstract class Person
     {
         if (string.IsNullOrEmpty(name))
         {
-            throw new InvalidOwnerException($"{fieldName} is required");
+            throw new InvalidPersonException($"{fieldName} is required");
         }
 
         if (!name.All(char.IsLetter))
         {
-            throw new InvalidOwnerException($"{fieldName} cannot contain special characters.");
+            throw new InvalidPersonException($"{fieldName} cannot contain special characters.");
         }
     }
 
@@ -50,7 +50,7 @@ public abstract class Person
 
         if (!hasCorrectPattern)
         {
-            throw new InvalidOwnerException("Error on email pattern");
+            throw new InvalidPersonException("Error on email pattern");
         }
     }
 }
