@@ -163,6 +163,28 @@ public class OwnerServiceTest
         _ownerRepository.Setup(ownerRepository => ownerRepository.CreateOwner(ownerToCreate));
         _ownerService.CreateOwner(ownerToCreate);
     }
+    
+    #region Create Owner, Domain Validations
 
+    [TestMethod]
+    public void CreateOwnerWithEmptyName_ThrowsObjectErrorServiceException()
+    {
+        Owner ownerToCreateWithEmptyName = new Owner
+        {
+            Firstname = "",
+            Lastname = "Doe",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyName));
+        
+    }
+        
+    
+    
+    
+    #endregion
+    
     #endregion
 }

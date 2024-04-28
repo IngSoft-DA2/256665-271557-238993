@@ -9,6 +9,16 @@ public class Owner
 
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
 
+    
+    
+    public void OwnerValidator()
+    {
+        if (string.IsNullOrEmpty(Firstname))
+        {
+            throw new InvalidOwnerException("Firstname is required");
+        }
+    }
+    
 
     public override bool Equals(object? objectToCompare)
     {
@@ -18,4 +28,6 @@ public class Owner
         return Id == ownerToCompare.Id && Firstname == ownerToCompare.Firstname &&
                Lastname == ownerToCompare.Lastname && Email == ownerToCompare.Email;
     }
+
+   
 }

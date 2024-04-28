@@ -37,7 +37,7 @@ public class OwnerService : IOwnerService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
+
         if (ownerObtained is null) throw new ObjectNotFoundServiceException();
 
         return ownerObtained;
@@ -45,7 +45,15 @@ public class OwnerService : IOwnerService
 
     public void CreateOwner(Owner ownerToCreate)
     {
-        _ownerRepository.CreateOwner(ownerToCreate);
+        try
+        {
+            ownerToCreate.OwnerValidator();
+            _ownerRepository.CreateOwner(ownerToCreate);
+        }
+        catch (InvalidOwnerException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateOwnerById(Owner ownerWithUpdates)
