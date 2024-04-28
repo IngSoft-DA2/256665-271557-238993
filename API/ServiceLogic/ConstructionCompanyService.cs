@@ -60,7 +60,7 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd)
     {
-        throw new NotImplementedException();
+        _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
     }
 
     #endregion

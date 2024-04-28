@@ -1,5 +1,6 @@
 using Domain;
 using IRepository;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Moq;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -124,6 +125,30 @@ public class ConstructionCompanyServiceTest
     }
 
     #endregion
+
+    #endregion
+
+    #region Create Construction Company
+    
+    //Happy path
+    [TestMethod]
+    public void CreateConstructionCompany_ConstructionCompanyIsCreated()
+    {
+        ConstructionCompany constructionCompanyToAdd = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Company1"
+        };
+        
+        _constructionCompanyRepository.Setup(constructionCompany =>
+            constructionCompany.CreateConstructionCompany(It.IsAny<ConstructionCompany>()));
+        
+        _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd);
+        
+        _constructionCompanyRepository.VerifyAll();
+
+
+    }
 
     #endregion
 }
