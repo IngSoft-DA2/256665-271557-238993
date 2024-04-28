@@ -19,6 +19,7 @@ public class Building
         ConstructionCompanyValidation();
         CommonExpensesValidation();
         ManagerIdValidation();
+        IdValidation();
     }
     private void NameValidation()
     {
@@ -65,6 +66,14 @@ public class Building
         if (ManagerId == Guid.Empty)
         {
             throw new InvalidBuildingException("Manager id cannot be empty");
+        }
+    }
+
+    private void IdValidation()
+    {
+        if (Id == Guid.Empty)
+        {
+            throw new InvalidBuildingException("Id cannot be empty");
         }
     }
 }
