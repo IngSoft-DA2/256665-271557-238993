@@ -114,12 +114,38 @@ public class CategoryServiceTest
 
     #endregion
 
+    #region Create Category
+
     [TestMethod]
     public void CreateCategory_CategoryIsCreated()
     {
-        Category categoryDummy = new Category();
-        
+        Category categoryToCreateWithValidData = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+
         _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<Category>()));
-        _categoryService.CreateCategory(categoryDummy);
+        _categoryService.CreateCategory(categoryToCreateWithValidData);
+        _categoryRepository.VerifyAll();
     }
+
+    #region Create Category Domain Validations
+
+    [TestMethod]
+    public void CreateCategoryWithEmptyName_ThrowsObjectErrorException()
+    {
+        Category categoryExample = new Category()
+        {
+            Id = Guid.NewGuid(),
+            Name = ""
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _categoryService.CreateCategory(categoryExample));
+        _categoryRepository.VerifyAll();
+    }
+
+    #endregion
+
+    #endregion
 }

@@ -58,6 +58,15 @@ public class CategoryService : ICategoryService
 
     public void CreateCategory(Category categoryToCreate)
     {
-        _categoryRepository.CreateCategory(categoryToCreate);
+        try
+        {
+            categoryToCreate.CategoryValidator();
+            _categoryRepository.CreateCategory(categoryToCreate);
+        }
+        catch (InvalidCategoryException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+      
     }
 }
