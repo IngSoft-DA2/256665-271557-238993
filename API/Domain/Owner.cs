@@ -17,6 +17,10 @@ public class Owner
         {
             throw new InvalidOwnerException("Firstname is required");
         }
+        if (string.IsNullOrEmpty(Lastname))
+        {
+            throw new InvalidOwnerException("Lastname is required");
+        }
     }
     
 
