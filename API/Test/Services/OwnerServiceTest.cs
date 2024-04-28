@@ -192,7 +192,20 @@ public class OwnerServiceTest
         };
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
+    }
+
+    [TestMethod]
+    public void CreateOwnerWithFirstnameThatHasSpecialDigits_ThrowsObjectErrorServiceException()
+    {
+        Owner ownerToCreateWithEmptyLastname = new Owner
+        {
+            Firstname = "John!!!",
+            Lastname = "Kent",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
         
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
     }
 
     [TestMethod]

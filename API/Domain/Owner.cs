@@ -34,6 +34,11 @@ public class Owner
         {
             throw new InvalidOwnerException("Error on email pattern");
         }
+        
+        if (!Firstname.All(char.IsLetter))
+        {
+            throw new InvalidOwnerException("Firstname cannot contain special characters.");
+        }
     }
 
 
