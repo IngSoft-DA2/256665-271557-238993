@@ -27,19 +27,20 @@ public class AdministratorAdapter : IAdministratorAdapter
     {
         try
         {
-            Administrator adminToCreate = new Administrator()
+            Administrator administrator = new Administrator()
             {
+                Id = Guid.NewGuid(),
                 Firstname = request.Firstname,
                 LastName = request.Lastname,
                 Email = request.Email,
                 Password = request.Password
             };
             
-            Administrator serviceResponse = _administratorService.CreateAdministrator(adminToCreate);
+            _administratorService.CreateAdministrator(administrator);
             
             CreateAdministratorResponse adapterResponse = new CreateAdministratorResponse()
             {
-                Id = serviceResponse.Id
+                Id = administrator.Id
             };
 
             return adapterResponse;

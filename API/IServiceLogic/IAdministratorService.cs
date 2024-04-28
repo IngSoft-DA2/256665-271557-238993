@@ -4,5 +4,5 @@ namespace IServiceLogic;
 
 public interface IAdministratorService
 {
-    public Administrator CreateAdministrator(Administrator administratorToCreate);
+    public void CreateAdministrator(Administrator administratorToCreate);
 }
