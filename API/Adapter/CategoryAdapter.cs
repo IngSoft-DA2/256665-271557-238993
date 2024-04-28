@@ -12,9 +12,9 @@ public class CategoryAdapter : ICategoryAdapter
 {
     #region Constructor and atributtes
 
-    private readonly ICategoryServiceLogic _categoryServiceLogic;
+    private readonly ICategoryService _categoryServiceLogic;
 
-    public CategoryAdapter(ICategoryServiceLogic categoryServiceLogic)
+    public CategoryAdapter(ICategoryService categoryServiceLogic)
     {
         _categoryServiceLogic = categoryServiceLogic;
     }

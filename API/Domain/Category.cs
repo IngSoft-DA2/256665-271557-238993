@@ -4,6 +4,22 @@ public class Category
 {
     public Guid Id = Guid.NewGuid();
     public string Name { get; set; }
+
+
+    public void CategoryValidator()
+    {
+        if (string.IsNullOrEmpty(Name))
+        {
+            throw new InvalidCategoryException("Category name is required");
+        }
+    }
     
     
+    public override bool Equals(object? obj)
+    {
+        Category? objectToCompareWith = obj as Category;
+        if (objectToCompareWith is null) return false;
+
+        return Id == objectToCompareWith.Id && Name == objectToCompareWith.Name;
+    }
 }

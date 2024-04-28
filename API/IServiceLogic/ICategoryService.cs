@@ -2,7 +2,7 @@
 
 namespace IServiceLogic;
 
-public interface ICategoryServiceLogic
+public interface ICategoryService
 {
     public IEnumerable<Category> GetAllCategories();
     public Category GetCategoryById(Guid idOfCategoryToFind);
