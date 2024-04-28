@@ -149,4 +149,12 @@ public class BuildingServiceTest
         Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
     
+    [TestMethod]
+    public void GivenBuildingWithConstructionCompanyNull_ThrowsInvalidBuildingException()
+    {
+        _genericBuilding.ConstructionCompany = null;
+        
+        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+    }
+    
 }

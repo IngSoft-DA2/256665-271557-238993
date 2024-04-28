@@ -40,4 +40,12 @@ public class Building
             throw new InvalidBuildingException("Building location cannot be empty");
         }
     }
+    
+    public void ConstructionCompanyValidation()
+    {
+        if (ConstructionCompany == null)
+        {
+            throw new InvalidBuildingException("Construction company cannot be empty");
+        }
+    }
 }

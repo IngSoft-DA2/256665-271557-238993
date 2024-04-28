@@ -49,7 +49,7 @@ public class BuildingService
     public void CreateBuilding(Building building)
     {
         building.BuildingValidator();
-
+        building.ConstructionCompanyValidation();
         _buildingRepository.CreateBuilding(building);
     }
 }
