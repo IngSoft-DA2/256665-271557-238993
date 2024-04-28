@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ConstructionCompanyRequests;
@@ -7,7 +8,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace Adapter;
 
-public class ConstructionCompanyAdapter
+public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
 {
     #region Constructor and atributes
 

@@ -41,9 +41,9 @@ public class ConstructionCompanyControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompanies);
         
-        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Returns(expectedConstructionCompanies);
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetAllConstructionCompanies()).Returns(expectedConstructionCompanies);
         
-        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanies();
+        IActionResult controllerResponse = _constructionCompanyController.GetAllConstructionCompanies();
 
         _constructionCompanyAdapter.VerifyAll();
 
@@ -64,9 +64,9 @@ public class ConstructionCompanyControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
         
-        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanies()).Throws(new Exception("Something went wrong"));
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetAllConstructionCompanies()).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanies();
+        IActionResult controllerResponse = _constructionCompanyController.GetAllConstructionCompanies();
 
         _constructionCompanyAdapter.VerifyAll();
 
