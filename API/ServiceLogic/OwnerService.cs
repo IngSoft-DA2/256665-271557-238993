@@ -45,7 +45,7 @@ public class OwnerService : IOwnerService
 
     public void CreateOwner(Owner ownerToCreate)
     {
-        throw new NotImplementedException();
+        _ownerRepository.CreateOwner(ownerToCreate);
     }
 
     public void UpdateOwnerById(Owner ownerWithUpdates)

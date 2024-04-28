@@ -112,16 +112,16 @@ public class OwnerServiceTest
 
 
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>())).Returns(ownerInDb);
-        
+
         Owner ownerObtained = _ownerService.GetOwnerById(ownerInDb.Id);
-        
+
         Assert.IsTrue(ownerInDb.Equals(ownerObtained));
-        
+
         _ownerRepository.VerifyAll();
     }
 
     #region Get owner By Id, Repository Validations
-    
+
     [TestMethod]
     public void GetOwnerById_ThrowsOwnerNotFoundServiceException()
     {
@@ -143,7 +143,26 @@ public class OwnerServiceTest
     }
 
     #endregion
-    
+
+    #endregion
+
+    #region Create Owner
+
+    //Happy path
+    [TestMethod]
+    public void CreateOwner_OwnerIsCreated()
+    {
+        Owner ownerToCreate = new Owner
+        {
+            Firstname = "John",
+            Lastname = "Doe",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.CreateOwner(ownerToCreate));
+        _ownerService.CreateOwner(ownerToCreate);
+    }
 
     #endregion
 }
