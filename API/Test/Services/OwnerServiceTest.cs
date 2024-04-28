@@ -81,4 +81,43 @@ public class OwnerServiceTest
     #endregion
 
     #endregion
+
+    #region Get Owner By Id
+
+    [TestMethod]
+    public void GetOwnerById_OwnerIsReturned()
+    {
+        Owner ownerInDb = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "John",
+            Lastname = "Doe",
+            Email = "owner@gmail.com"
+        };
+
+        Flat flatOfOwner = new Flat
+        {
+            Id = Guid.NewGuid(),
+            BuildingId = Guid.NewGuid(),
+            Floor = 1,
+            RoomNumber = 102,
+            OwnerAssigned = ownerInDb,
+            TotalRooms = 3,
+            TotalBaths = 2,
+            HasTerrace = false
+        };
+
+        ownerInDb.Flats = new List<Flat> { flatOfOwner };
+
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>())).Returns(ownerInDb);
+        
+        Owner ownerObtained = _ownerService.GetOwnerById(ownerInDb.Id);
+        
+        Assert.IsTrue(ownerInDb.Equals(ownerObtained));
+        
+        _ownerRepository.VerifyAll();
+    }
+
+    #endregion
 }

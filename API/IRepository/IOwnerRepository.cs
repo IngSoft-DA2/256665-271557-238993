@@ -5,4 +5,5 @@ namespace IRepository;
 public interface IOwnerRepository
 {
     public IEnumerable<Owner> GetAllOwners();
+    public Owner GetOwnerById(Guid ownerIdToObtain);
 }

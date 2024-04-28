@@ -7,12 +7,13 @@ namespace ServiceLogic;
 
 public class OwnerService : IOwnerService
 {
-
     private readonly IOwnerRepository _ownerRepository;
+
     public OwnerService(IOwnerRepository ownerRepository)
     {
         _ownerRepository = ownerRepository;
     }
+
     public IEnumerable<Owner> GetAllOwners()
     {
         try
@@ -23,12 +24,11 @@ public class OwnerService : IOwnerService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
     }
 
-    public Owner GetOwnerById(Guid ownerId)
+    public Owner GetOwnerById(Guid ownerIdToObtain)
     {
-        throw new NotImplementedException();
+        return _ownerRepository.GetOwnerById(ownerIdToObtain);
     }
 
     public void CreateOwner(Owner ownerToCreate)
