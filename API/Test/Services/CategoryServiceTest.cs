@@ -99,6 +99,15 @@ public class CategoryServiceTest
         
         Assert.ThrowsException<ObjectNotFoundServiceException>(() => _categoryService.GetCategoryById(It.IsAny<Guid>()));
     }
+
+    [TestMethod]
+    public void GetCategoryById_UnknownExceptionIsThrown()
+    {
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
+            .Throws(new UnknownRepositoryException("Unknown Error"));
+        
+        Assert.ThrowsException<UnknownRepositoryException>(()=> _categoryService.GetCategoryById(It.IsAny<Guid>()));
+    }
     
     
     #endregion
