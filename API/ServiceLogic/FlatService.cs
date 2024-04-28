@@ -30,6 +30,8 @@ public class FlatService : IFlatService
     {
         
         Flat flatFound = _flatRepository.GetFlatById(buildingId,flatId);
+        if (flatFound is null) throw new ObjectNotFoundServiceException();
+        
         return flatFound;
 
     }

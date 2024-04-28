@@ -77,6 +77,7 @@ public class FlatServiceTest
 
     #region Get Flat By Id
 
+    //Happy Path
     [TestMethod]
     public void GetFlatById_FlatIsReturn()
     {
@@ -96,13 +97,28 @@ public class FlatServiceTest
         };
 
 
-        _flatRepository.Setup(flatRepository => 
-                flatRepository.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(flatInDb);
-        
+        _flatRepository.Setup(flatRepository =>
+            flatRepository.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(flatInDb);
+
         Flat flatFound = _flatService.GetFlatById(dummyBuilding.Id, flatInDb.Id);
         Assert.IsTrue(flatInDb.Equals(flatFound));
         _flatRepository.VerifyAll();
     }
+
+    #region Get Flat By Id, Repository Validations
+
+    [TestMethod]
+    public void GetFlatById_FlatIsNotFound()
+    {
+        _flatRepository.Setup(flatRepository =>
+            flatRepository.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _flatService.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()));
+        _flatRepository.VerifyAll();
+    }
+
+    #endregion
 
     #endregion
 }
