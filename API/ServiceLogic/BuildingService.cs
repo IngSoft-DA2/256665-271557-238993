@@ -48,10 +48,7 @@ public class BuildingService
 
     public void CreateBuilding(Building building)
     {
-        if (string.IsNullOrEmpty(building.Name))
-        {
-            throw new InvalidBuildingException("Building name cannot be empty");
-        }
+        building.NameValidation();
         _buildingRepository.CreateBuilding(building);
     }
 }

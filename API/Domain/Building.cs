@@ -10,4 +10,13 @@ public class Building
     public ConstructionCompany ConstructionCompany { get; set; }
     public int CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
+
+    
+    public void NameValidation()
+    {
+        if (string.IsNullOrEmpty(Name))
+        {
+            throw new InvalidBuildingException("Building name cannot be empty");
+        }
+    }
 }
