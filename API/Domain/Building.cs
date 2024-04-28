@@ -11,8 +11,13 @@ public class Building
     public int CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
 
-    
-    public void NameValidation()
+    public void BuildingValidator()
+    {
+        NameValidation();
+        AddressValidation();
+        LocationValidation();
+    }
+    private void NameValidation()
     {
         if (string.IsNullOrEmpty(Name))
         {
@@ -20,7 +25,7 @@ public class Building
         }
     }
     
-    public void AddressValidation()
+    private void AddressValidation()
     {
         if (string.IsNullOrEmpty(Address))
         {
@@ -28,7 +33,7 @@ public class Building
         }
     }
     
-    public void LocationValidation()
+    private void LocationValidation()
     {
         if (Location == null)
         {

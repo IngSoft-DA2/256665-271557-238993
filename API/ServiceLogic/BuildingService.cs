@@ -48,9 +48,7 @@ public class BuildingService
 
     public void CreateBuilding(Building building)
     {
-        building.NameValidation();
-        building.AddressValidation();
-        building.LocationValidation();
+        building.BuildingValidator();
 
         _buildingRepository.CreateBuilding(building);
     }
