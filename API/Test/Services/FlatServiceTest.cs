@@ -1,6 +1,4 @@
-﻿
-
-using Domain;
+﻿using Domain;
 using IServiceLogic;
 using Moq;
 using Repositories.CustomExceptions;
@@ -12,7 +10,22 @@ namespace Test.Services;
 [TestClass]
 public class FlatServiceTest
 {
+    #region Initialize
 
+    private FlatService _flatService;
+    private Mock<IFlatRepository> _flatRepository;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _flatRepository = new Mock<IFlatRepository>(MockBehavior.Strict);
+        _flatService = new FlatService(_flatRepository.Object);
+    }
+
+    #endregion
+    
+    #region Get all Flats
+    //Happy Path
     [TestMethod]
     public void GetAllFlats_FlatsAreReturn()
     {
@@ -40,29 +53,30 @@ public class FlatServiceTest
 
         IEnumerable<Flat> flatsInDb = new List<Flat> { flatExampleInDb };
 
+        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats()).Returns(flatsInDb);
 
-        Mock<IFlatRepository> flatRepository = new Mock<IFlatRepository>(MockBehavior.Strict);
-        FlatService flatService = new FlatService(flatRepository.Object);
-        
-        
-        flatRepository.Setup(flatRepository => flatRepository.GetAllFlats()).Returns(flatsInDb);
-        
-        IEnumerable<Flat> flats = flatService.GetAllFlats();
-        flatRepository.VerifyAll();
-        
+        IEnumerable<Flat> flats = _flatService.GetAllFlats();
+        _flatRepository.VerifyAll();
+
         Assert.IsTrue(flats.SequenceEqual(flatsInDb));
-        
     }
-    
+
+    #region Get all Flats, Repository Validations
+
     [TestMethod]
     public void GetAllFlats_ThrowsUnknownErrorServiceException()
     {
-        Mock<IFlatRepository> flatRepository = new Mock<IFlatRepository>(MockBehavior.Strict);
-        FlatService flatService = new FlatService(flatRepository.Object);
-        
-        flatRepository.Setup(flatRepository => flatRepository.GetAllFlats()).Throws(new UnknownRepositoryException("Unknown error"));
-        Assert.ThrowsException<UnknownServiceException>(() => flatService.GetAllFlats());
-        flatRepository.VerifyAll();
+        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats())
+            .Throws(new UnknownRepositoryException("Unknown error"));
+        Assert.ThrowsException<UnknownServiceException>(() => _flatService.GetAllFlats());
+        _flatRepository.VerifyAll();
     }
+
+    #endregion
+
+    #endregion
+    
+    
+    
     
 }
