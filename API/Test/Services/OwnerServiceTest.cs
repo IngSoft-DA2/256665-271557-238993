@@ -1,16 +1,18 @@
-
-
 using Domain;
 using IRepository;
 using Moq;
+using Repositories.CustomExceptions;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace Test.Services;
 
 [TestClass]
 public class OwnerServiceTest
 {
+    #region Get All Owners
 
+    //Happy path
     [TestMethod]
     public void GetAllOwners_OwnersAreReturn()
     {
@@ -33,8 +35,8 @@ public class OwnerServiceTest
             TotalBaths = 2,
             HasTerrace = false
         };
-        
-        ownerInDb.Flats = new List<Flat> {flatOfOwner};
+
+        ownerInDb.Flats = new List<Flat> { flatOfOwner };
 
         IEnumerable<Owner> ownersInDb = new List<Owner>
         {
@@ -43,15 +45,32 @@ public class OwnerServiceTest
 
         Mock<IOwnerRepository> ownerRepository = new Mock<IOwnerRepository>(MockBehavior.Strict);
         ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(ownersInDb);
-        
+
         OwnerService ownerService = new OwnerService(ownerRepository.Object);
-        
+
         IEnumerable<Owner> ownersResponse = ownerService.GetAllOwners();
         ownerRepository.VerifyAll();
 
         Assert.AreEqual(ownersInDb.Count(), ownersResponse.Count());
         Assert.IsTrue(ownersInDb.SequenceEqual(ownersResponse));
     }
-    
-    
+
+    #region Get all Owners, Repository Validations
+
+    [TestMethod]
+    public void GetAllOwners_ThrowsUnknownErrorServiceException()
+    {
+        Mock<IOwnerRepository> ownerRepository = new Mock<IOwnerRepository>(MockBehavior.Strict);
+        ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners())
+            .Throws(new UnknownRepositoryException("Unknown error in repository layer."));
+
+        OwnerService ownerService = new OwnerService(ownerRepository.Object);
+
+        Assert.ThrowsException<UnknownServiceException>(() => ownerService.GetAllOwners());
+        ownerRepository.VerifyAll();
+    }
+
+    #endregion
+
+    #endregion
 }

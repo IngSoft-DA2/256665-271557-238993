@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
@@ -14,7 +15,15 @@ public class OwnerService : IOwnerService
     }
     public IEnumerable<Owner> GetAllOwners()
     {
-        return _ownerRepository.GetAllOwners();
+        try
+        {
+            return _ownerRepository.GetAllOwners();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+        
     }
 
     public Owner GetOwnerById(Guid ownerId)
