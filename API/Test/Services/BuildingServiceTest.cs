@@ -132,7 +132,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.Name = "";
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]
@@ -140,7 +140,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.Address = "";
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]
@@ -148,7 +148,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.Location = null;
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]
@@ -156,7 +156,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.ConstructionCompany = null;
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]
@@ -164,7 +164,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.CommonExpenses = -1;
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]
@@ -172,7 +172,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.ManagerId = Guid.Empty;
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]
@@ -180,7 +180,7 @@ public class BuildingServiceTest
     {
         _genericBuilding.Id = Guid.Empty;
 
-        Assert.ThrowsException<InvalidBuildingException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
     }
 
     [TestMethod]

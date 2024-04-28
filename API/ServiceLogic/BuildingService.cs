@@ -48,15 +48,22 @@ public class BuildingService
 
     public void CreateBuilding(Building building)
     {
-        building.BuildingValidator();
-        
-        IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
-        
-        CheckIfNameAlreadyExists(building, buildings);
-        
-        CheckIfLocationAndAddressAlreadyExists(building, buildings);
+        try
+        {
+            building.BuildingValidator();
 
-        _buildingRepository.CreateBuilding(building);
+            IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
+
+            CheckIfNameAlreadyExists(building, buildings);
+
+            CheckIfLocationAndAddressAlreadyExists(building, buildings);
+
+            _buildingRepository.CreateBuilding(building);
+        }
+        catch (InvalidBuildingException exception)
+        {
+            throw new ObjectErrorServiceException(exception.Message);
+        }
     }
 
     private static void CheckIfLocationAndAddressAlreadyExists(Building building, IEnumerable<Building> buildings)
