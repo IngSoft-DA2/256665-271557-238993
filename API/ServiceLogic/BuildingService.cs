@@ -53,7 +53,13 @@ public class BuildingService
         IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
         
         CheckIfNameAlreadyExists(building, buildings);
-
+        
+        double minGap =  0.000001; 
+        if(buildings.Any(b => Math.Abs(b.Location.Latitude - building.Location.Latitude) < minGap && 
+                              Math.Abs(b.Location.Longitude - building.Location.Longitude) < minGap))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
         
         _buildingRepository.CreateBuilding(building);
     }
