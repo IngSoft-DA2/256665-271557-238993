@@ -110,6 +110,18 @@ public class ConstructionCompanyServiceTest
             _constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()));
         _constructionCompanyRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetConstructionCompanyById_UnknownServiceExceptionIsThrown()
+    {
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetConstructionCompanyById(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()));
+        _constructionCompanyRepository.VerifyAll();
+    }
 
     #endregion
 

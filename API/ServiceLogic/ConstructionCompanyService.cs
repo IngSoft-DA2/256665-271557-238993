@@ -40,11 +40,17 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
-        ConstructionCompany constructionCompanyFound =
-            _constructionCompanyRepository.GetConstructionCompanyById(idOfConstructionCompany);
-
-        if (constructionCompanyFound is null) throw new ObjectNotFoundServiceException();
+        ConstructionCompany constructionCompanyFound;
+        try
+        {
+            constructionCompanyFound = _constructionCompanyRepository.GetConstructionCompanyById(idOfConstructionCompany);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
         
+        if (constructionCompanyFound is null) throw new ObjectNotFoundServiceException();
         return constructionCompanyFound;
     }
 
