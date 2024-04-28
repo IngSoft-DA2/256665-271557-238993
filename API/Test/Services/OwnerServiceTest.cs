@@ -342,23 +342,21 @@ public class OwnerServiceTest
             Id = Guid.NewGuid(),
             Firstname = "John",
             Lastname = "Doe",
-            Email = "mail@gmail.com",
+            Email = "gmail@gmail.com",
             Flats = new List<Flat>()
         };
 
         Owner ownerWithUpdates = new Owner
         {
             Id = ownerInDb.Id,
-            Firstname = "",
-            Lastname = "",
+            Firstname = "John",
+            Lastname = "Doe",
             Email = "@gmail.com",
             Flats = new List<Flat>()
         };
         
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>())).Returns(ownerInDb);
-        
         Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.UpdateOwnerById(ownerWithUpdates));
-
         _ownerRepository.VerifyAll();
     }
         
