@@ -94,4 +94,14 @@ public class BuildingServiceTest
         
         _buildingRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetBuildingByIdTest_ThrowsUnknownServiceException()
+    {
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _buildingService.GetBuildingById(Guid.NewGuid()));
+        
+        _buildingRepository.VerifyAll();
+    }
 }
