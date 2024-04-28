@@ -52,12 +52,17 @@ public class BuildingService
         
         IEnumerable<Building> buildings = _buildingRepository.GetAllBuildings();
         
+        CheckIfNameAlreadyExists(building, buildings);
+
+        
+        _buildingRepository.CreateBuilding(building);
+    }
+
+    private static void CheckIfNameAlreadyExists(Building building, IEnumerable<Building> buildings)
+    {
         if (buildings.Any(b => b.Name == building.Name))
         {
             throw new ObjectRepeatedServiceException();
         }
-
-        
-        _buildingRepository.CreateBuilding(building);
     }
 }
