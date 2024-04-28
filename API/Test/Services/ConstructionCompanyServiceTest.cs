@@ -77,7 +77,7 @@ public class ConstructionCompanyServiceTest
 
     //Happy path
     [TestMethod]
-    public void GetCategoryById_ReturnsCategory()
+    public void GetConstructionCompanyById_ReturnsConstructionCompany()
     {
         ConstructionCompany constructionCompanyInDb = new ConstructionCompany
         {
