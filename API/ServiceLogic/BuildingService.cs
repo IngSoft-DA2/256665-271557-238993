@@ -66,12 +66,6 @@ public class BuildingService
         try
         {
             building.BuildingValidator();
-            
-            if (building.Flats == null)
-            {
-                throw new InvalidBuildingException("Building list can't be null, you must provide a list of flats");
-            }
-            
             IEnumerable<Building> buildings = GetAllBuildings(building.ManagerId);
             CheckIfNameAlreadyExists(building, buildings);
             CheckIfLocationAndAddressAlreadyExists(building, buildings);

@@ -20,7 +20,9 @@ public class Building
         CommonExpensesValidation();
         ManagerIdValidation();
         IdValidation();
+        FlatValidation();
     }
+
     private void NameValidation()
     {
         if (string.IsNullOrEmpty(Name))
@@ -28,7 +30,7 @@ public class Building
             throw new InvalidBuildingException("Building name cannot be empty");
         }
     }
-    
+
     private void AddressValidation()
     {
         if (string.IsNullOrEmpty(Address))
@@ -36,7 +38,7 @@ public class Building
             throw new InvalidBuildingException("Building address cannot be empty");
         }
     }
-    
+
     private void LocationValidation()
     {
         if (Location == null)
@@ -44,7 +46,7 @@ public class Building
             throw new InvalidBuildingException("Building location cannot be empty");
         }
     }
-    
+
     private void ConstructionCompanyValidation()
     {
         if (ConstructionCompany == null)
@@ -52,7 +54,7 @@ public class Building
             throw new InvalidBuildingException("Construction company cannot be empty");
         }
     }
-    
+
     private void CommonExpensesValidation()
     {
         if (CommonExpenses < 0)
@@ -60,7 +62,7 @@ public class Building
             throw new InvalidBuildingException("Common expenses cannot be negative");
         }
     }
-    
+
     private void ManagerIdValidation()
     {
         if (ManagerId == Guid.Empty)
@@ -74,6 +76,14 @@ public class Building
         if (Id == Guid.Empty)
         {
             throw new InvalidBuildingException("Id cannot be empty");
+        }
+    }
+
+    private void FlatValidation()
+    {
+        if (Flats == null)
+        {
+            throw new InvalidBuildingException("Flats list can't be null, you must provide a list of flats");
         }
     }
 }
