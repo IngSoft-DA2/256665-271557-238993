@@ -51,5 +51,20 @@ public class ReportService
     }
     
     #endregion
-  
+    
+    #region Get maintenance report by category
+    public IEnumerable<Report> GetMaintenanceReportByCategory(Guid isAny)
+    {
+        try
+        {
+            IEnumerable<Report> reports = _reportRepository.GetMaintenanceReportByCategory(isAny);
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+    
+    #endregion
 }

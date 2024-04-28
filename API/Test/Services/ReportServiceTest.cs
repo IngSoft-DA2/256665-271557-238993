@@ -131,5 +131,57 @@ public class ReportServiceTest
 
     #endregion
     
+    #region Get maintenance report by category
+    
+    [TestMethod]
+    public void GetMaintenanceReportByCategory_ReportsAreReturned()
+    {
+        
+        IEnumerable<Report> expectedRepositoryResponse = new List<Report>
+        {
+            new Report()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OnAttendanceRequests = 1,
+                OpenRequests = 23,
+                ClosedRequests = 10,
+                
+            },
+            new Report()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OnAttendanceRequests = 2,
+                OpenRequests = 20,
+                ClosedRequests = 12,
+            }
+        };
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
+            .Returns(expectedRepositoryResponse);
+        
+        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>());
+        
+        _reportRepository.VerifyAll();
+        
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceReportByCategory_NoReportsAreReturned()
+    {
+        
+        IEnumerable<Report> expectedRepositoryResponse = new List<Report>();
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
+            .Returns(expectedRepositoryResponse);
+        
+        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>());
+        
+        _reportRepository.VerifyAll();
+        
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+    
+    #endregion
     
 }

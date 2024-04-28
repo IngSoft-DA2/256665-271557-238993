@@ -8,4 +8,5 @@ public interface IReportRepository
 
     public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid requestHandlerId);
 
+    public IEnumerable<Report> GetMaintenanceReportByCategory(Guid categoryId);
 }
