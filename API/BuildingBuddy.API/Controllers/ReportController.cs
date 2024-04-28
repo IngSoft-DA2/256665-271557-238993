@@ -2,6 +2,7 @@ using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ReportRequests;
+using WebModel.Responses.ReportResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -44,10 +45,10 @@ namespace BuildingBuddy.API.Controllers
         [Route("/request-handler/maintenance-requests/reports")]
         
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByRequestHandler([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByRequestHandler)
+        public IActionResult GetMaintenanceRequestsByRequestHandler([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequest)
         {
             try{
-                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(getMaintenanceReportRequestByRequestHandler));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(getMaintenanceReportRequest));
             }
             catch (Exception exceptionCaught)
             {
