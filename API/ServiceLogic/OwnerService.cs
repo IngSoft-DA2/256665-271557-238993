@@ -48,14 +48,7 @@ public class OwnerService : IOwnerService
         try
         {
             ownerToCreate.OwnerValidator();
-
-            IEnumerable<Owner> ownersInDb = GetAllOwners();
-
-            if (ownersInDb.Any(owner => owner.Email.Equals(ownerToCreate.Email)))
-            {
-                throw new ObjectRepeatedServiceException();
-            }
-
+            CheckThatEmailIsNotUsed(ownerToCreate);
             _ownerRepository.CreateOwner(ownerToCreate);
         }
         catch (InvalidOwnerException exceptionCaught)
@@ -69,6 +62,16 @@ public class OwnerService : IOwnerService
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    private void CheckThatEmailIsNotUsed(Owner ownerToCreate)
+    {
+        IEnumerable<Owner> ownersInDb = GetAllOwners();
+
+        if (ownersInDb.Any(owner => owner.Email.Equals(ownerToCreate.Email)))
+        {
+            throw new ObjectRepeatedServiceException();
         }
     }
 
