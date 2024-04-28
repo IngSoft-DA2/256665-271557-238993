@@ -26,7 +26,7 @@ public class OwnerService : IOwnerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
+    
     public Owner GetOwnerById(Guid ownerIdToObtain)
     {
         Owner ownerObtained;
@@ -49,7 +49,7 @@ public class OwnerService : IOwnerService
         try
         {
             ownerToCreate.OwnerValidator();
-            CheckThatEmailIsNotUsed(ownerToCreate);
+            CheckIfEmailIsUsed(ownerToCreate);
             _ownerRepository.CreateOwner(ownerToCreate);
         }
         catch (InvalidOwnerException exceptionCaught)
@@ -65,30 +65,14 @@ public class OwnerService : IOwnerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
-    private void CheckThatEmailIsNotUsed(Owner ownerToCreate)
-    {
-        IEnumerable<Owner> ownersInDb = GetAllOwners();
-
-        if (ownersInDb.Any(owner => owner.Email.Equals(ownerToCreate.Email)))
-        {
-            throw new ObjectRepeatedServiceException();
-        }
-    }
-
+    
     public void UpdateOwnerById(Owner ownerWithUpdates)
     {
         Owner ownerWithoutUpdates = GetOwnerById(ownerWithUpdates.Id);
         try
         {
             ownerWithUpdates.OwnerValidator();
-            IEnumerable<Owner> ownersInDb = GetAllOwners();
-            if (ownersInDb.Any(owner => owner.Email.Equals(ownerWithUpdates.Email) && owner.Id != ownerWithUpdates.Id))
-            {
-                throw new ObjectRepeatedServiceException();
-            }
-
-            MapProperties(ownerWithUpdates, ownerWithoutUpdates);
+            ValidationsForBeingPossibleToUpdate(ownerWithUpdates, ownerWithoutUpdates);
             _ownerRepository.UpdateOwnerById(ownerWithUpdates);
         }
         catch (InvalidOwnerException exceptionCaught)
@@ -105,11 +89,24 @@ public class OwnerService : IOwnerService
         }
      
     }
-    
+
+    private void ValidationsForBeingPossibleToUpdate(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
+    {
+        CheckIfEmailIsUsed(ownerWithUpdates);
+        MapProperties(ownerWithUpdates, ownerWithoutUpdates);
+    }
+    private void CheckIfEmailIsUsed(Owner ownerWithUpdates)
+    {
+        IEnumerable<Owner> ownersInDb = GetAllOwners();
+        if (ownersInDb.Any(owner => owner.Email.Equals(ownerWithUpdates.Email) && owner.Id != ownerWithUpdates.Id))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+    }
     private static void MapProperties(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
-        if (ownerWithUpdates.Equals(ownerWithoutUpdates)) throw new ObjectRepeatedServiceException();
-        
+        ValidateThatAreNotEqual(ownerWithUpdates, ownerWithoutUpdates);
+
         foreach (PropertyInfo property in typeof(Owner).GetProperties())
         {
             object? originalValue = property.GetValue(ownerWithoutUpdates);
@@ -120,5 +117,9 @@ public class OwnerService : IOwnerService
                 property.SetValue(ownerWithUpdates, originalValue);
             }
         }
+    }
+    private static void ValidateThatAreNotEqual(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
+    {
+        if (ownerWithUpdates.Equals(ownerWithoutUpdates)) throw new ObjectRepeatedServiceException();
     }
 }
