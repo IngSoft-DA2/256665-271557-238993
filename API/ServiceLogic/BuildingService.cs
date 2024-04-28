@@ -95,30 +95,8 @@ public class BuildingService
         try
         {
             Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
-
-            if (buildingWithUpdates.Equals(buildingNotUpdated))
-            {
-                throw new ObjectRepeatedServiceException();
-            }
-
-            foreach (PropertyInfo property in typeof(Building).GetProperties())
-            {
-                object? originalValue = property.GetValue(buildingNotUpdated);
-                object? updatedValue = property.GetValue(buildingWithUpdates);
-
-                if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
-                {
-                    if (id == Guid.Empty)
-                    {
-                        property.SetValue(buildingWithUpdates, originalValue);
-                    }
-                }
-
-                if (updatedValue == null && originalValue != null)
-                {
-                    property.SetValue(buildingWithUpdates, originalValue);
-                }
-            }
+            
+            MapProperties(buildingWithUpdates, buildingNotUpdated);
 
             buildingWithUpdates.BuildingValidator();
 
@@ -129,5 +107,30 @@ public class BuildingService
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
     }
-    
+
+    private static void MapProperties(Building buildingWithUpdates, Building buildingNotUpdated)
+    {
+        if (buildingWithUpdates.Equals(buildingNotUpdated))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        foreach (PropertyInfo property in typeof(Building).GetProperties())
+        {
+            object? originalValue = property.GetValue(buildingNotUpdated);
+            object? updatedValue = property.GetValue(buildingWithUpdates);
+
+            if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
+            {
+                if (id == Guid.Empty)
+                {
+                    property.SetValue(buildingWithUpdates, originalValue);
+                }
+            }
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(buildingWithUpdates, originalValue);
+            }
+        }
+    }
 }
