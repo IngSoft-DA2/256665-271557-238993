@@ -48,11 +48,23 @@ public class OwnerService : IOwnerService
         try
         {
             ownerToCreate.OwnerValidator();
+
+            IEnumerable<Owner> ownersInDb = GetAllOwners();
+
+            if (ownersInDb.Any(owner => owner.Email.Equals(ownerToCreate.Email)))
+            {
+                throw new ObjectRepeatedServiceException();
+            }
+
             _ownerRepository.CreateOwner(ownerToCreate);
         }
         catch (InvalidOwnerException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
         }
     }
 

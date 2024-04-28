@@ -1,3 +1,4 @@
+using Adapter.CustomExceptions;
 using Domain;
 using IRepository;
 using Moq;
@@ -161,7 +162,11 @@ public class OwnerServiceTest
         };
 
         _ownerRepository.Setup(ownerRepository => ownerRepository.CreateOwner(ownerToCreate));
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(new List<Owner>());
+        
         _ownerService.CreateOwner(ownerToCreate);
+        
+        _ownerRepository.VerifyAll();
     }
     
     #region Create Owner, Domain Validations
@@ -239,6 +244,40 @@ public class OwnerServiceTest
     
     
     
+    #endregion
+
+    #region Create Owner, Repository Validations
+
+    [TestMethod]
+    public void CreateOwnerWithEmailUsed_ThrowsObjectRepeatedException()
+    {
+        
+        Owner ownerInDb = new Owner
+        {
+            Firstname = "John",
+            Lastname = "Kent",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        IEnumerable<Owner> ownersInDb = new List<Owner> { ownerInDb };
+      
+        Owner ownerToCreate = new Owner
+        {
+            Firstname = "Johnnie",
+            Lastname = "Doe",
+            Email = "john@gmail.com",
+            Flats = new List<Flat>()
+        };
+        
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(ownersInDb);
+        
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _ownerService.CreateOwner(ownerToCreate));
+        
+        _ownerRepository.VerifyAll();
+    }
+    
+
     #endregion
     
     #endregion
