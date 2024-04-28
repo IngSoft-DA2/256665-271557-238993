@@ -2,6 +2,7 @@ namespace Domain;
 
 public class Building
 {
+    #region Properties
     public Guid Id { get; set; }
     public Guid ManagerId { get; set; }
     public string Name { get; set; }
@@ -10,6 +11,10 @@ public class Building
     public ConstructionCompany ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
+    
+    #endregion
+    
+    #region Validations
 
     public void BuildingValidator()
     {
@@ -86,4 +91,6 @@ public class Building
             throw new InvalidBuildingException("Flats list can't be null, you must provide a list of flats");
         }
     }
+    
+    #endregion
 }
