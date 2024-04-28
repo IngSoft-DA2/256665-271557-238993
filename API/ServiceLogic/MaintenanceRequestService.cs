@@ -1,3 +1,4 @@
+using System.Reflection;
 using Domain;
 using IRepository;
 using IServiceLogic;
@@ -61,23 +62,69 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         }
     }
 
-    public void UpdateMaintenanceRequest(Guid idToUpdate, MaintenanceRequest maintenanceRequest)
+    public void UpdateMaintenanceRequest(Guid idToUpdate, MaintenanceRequest maintenanceRequestUpdated)
     {
-        throw new NotImplementedException();
+        MaintenanceRequest maintenanceRequestNotUpdated = _maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate);
+        try
+        {
+            ValidateRequestsBeforeUpdate(maintenanceRequestNotUpdated, maintenanceRequestUpdated);
+            MapProperties(maintenanceRequestNotUpdated, maintenanceRequestUpdated);
+            maintenanceRequestUpdated.MaintenanceRequestValidator();
+            _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequestUpdated);
+        }
+        catch (InvalidMaintenanceRequestException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+        
     }
 
-    public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
+    private void MapProperties(MaintenanceRequest maintenanceRequestNotUpdated, MaintenanceRequest maintenanceRequestUpdated)
     {
-        throw new NotImplementedException();
+        foreach (PropertyInfo property in maintenanceRequestNotUpdated.GetType().GetProperties())
+        {
+            object? originalValue = property.GetValue(maintenanceRequestNotUpdated);
+            object? updatedValue = property.GetValue(maintenanceRequestUpdated);
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(maintenanceRequestUpdated, originalValue);
+            }
+        }
+
     }
 
-    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
+    private void ValidateRequestsBeforeUpdate(MaintenanceRequest maintenanceRequestNotUpdated, MaintenanceRequest maintenanceRequestUpdated)
     {
-        throw new NotImplementedException();
+        if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
+        if (maintenanceRequestNotUpdated.BuildingId != maintenanceRequestUpdated.BuildingId) throw new InvalidMaintenanceRequestException("BuildingId cannot be changed");
+        if (maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId) throw new InvalidMaintenanceRequestException("FlatId cannot be changed");
+        if (maintenanceRequestNotUpdated.OpenedDate != maintenanceRequestUpdated.OpenedDate) throw new InvalidMaintenanceRequestException("OpenedDate cannot be changed");
+        if (maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate) throw new InvalidMaintenanceRequestException("ClosedDate cannot be changed");
+        
     }
-
     public MaintenanceRequest GetMaintenanceRequestById(Guid id)
     {
-        throw new NotImplementedException();
+        MaintenanceRequest maintenanceRequest;
+        try
+        {
+            maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestById(id);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    
+        if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
+        return maintenanceRequest;
     }
+
 }

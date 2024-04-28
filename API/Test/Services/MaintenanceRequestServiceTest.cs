@@ -201,5 +201,78 @@ public class MaintenanceRequestServiceTest
     
     #endregion
     
+    #region Update Maintenance Request
+
+    [TestMethod]
+    public void UpdateMaintenanceRequest_MaintenanceRequestIsUpdated()
+    {
+        Guid idToUpdate = Guid.NewGuid();
+        
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest
+        {
+            Id = idToUpdate,
+            BuildingId = Guid.NewGuid(),
+            Description = "Fix the door",
+            FlatId = Guid.NewGuid(),
+            OpenedDate = DateTime.Now,
+            RequestHandlerId = Guid.NewGuid(),
+            Category = Guid.NewGuid(),
+            RequestStatus = StatusEnum.Accepted
+        };
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate)).Returns(maintenanceRequest);
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest));
+        
+        _maintenanceRequestService.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
+        
+        _maintenanceRequestRepository.VerifyAll();
+    }
     
+    
+    [TestMethod]
+    public void UpdateMaintenanceRequest_MaintenanceRequestNotFound_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(() => null);
+        
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => 
+            _maintenanceRequestService.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestSample));
+        
+        _maintenanceRequestRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void UpdateMaintenanceRequest_InvalidCloseDate_ThrowsObjectErrorServiceException()
+    {
+        
+        MaintenanceRequest maintenanceRequestCloseDateValidation = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            BuildingId = Guid.NewGuid(),
+            Description = "Fix the door",
+            FlatId = Guid.NewGuid(),
+            OpenedDate = DateTime.Now,
+            RequestHandlerId = Guid.NewGuid(),
+            Category = Guid.NewGuid(),
+            RequestStatus = StatusEnum.Accepted,
+            ClosedDate = DateTime.Now.AddDays(-1)
+        };
+        
+        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+            maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(maintenanceRequestCloseDateValidation);
+        
+        
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+            _maintenanceRequestService.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestSample));
+    }
+    
+    
+    
+    #endregion
+    
+
 }
