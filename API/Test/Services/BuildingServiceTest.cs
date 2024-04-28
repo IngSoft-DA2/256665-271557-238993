@@ -106,7 +106,7 @@ public class BuildingServiceTest
     }
     
     [TestMethod]
-    public void GetBuildingByIdTest_ThrowsObjectNotFoundServiceException()
+    public void GivenBuildingThatDoesNotExist_ThrowsObjectNotFoundServiceException()
     {
         _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns((Building) null);
 
