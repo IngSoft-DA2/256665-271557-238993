@@ -1,6 +1,7 @@
 using Adapter.CustomExceptions;
 using Domain;
 using IRepository;
+using IServiceLogic;
 using Moq;
 using Repositories.CustomExceptions;
 using ServiceLogic;
@@ -336,7 +337,6 @@ public class OwnerServiceTest
     [TestMethod]
     public void UpdateOwnerWithIncorrectNewData_ThrowsObjectErrorException()
     {
-        
         Owner ownerInDb = new Owner
         {
             Id = Guid.NewGuid(),
@@ -354,21 +354,56 @@ public class OwnerServiceTest
             Email = "@gmail.com",
             Flats = new List<Flat>()
         };
-        
+
         _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>())).Returns(ownerInDb);
         Assert.ThrowsException<ObjectErrorServiceException>(() => _ownerService.UpdateOwnerById(ownerWithUpdates));
         _ownerRepository.VerifyAll();
     }
-        
-        
-    #endregion
 
     #endregion
-    
-    
+
+    #region Update Owner By Id, Repository Validations
+
+    [TestMethod]
+    public void UpdateOwnerByIdWithUpdatedEmailUsed_ThrowsRepeatedObjectServiceException()
+    {
+        Owner ownerInDbWithoutUpdate = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Mick",
+            Lastname = "Mon",
+            Email = "mick@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        Owner ownerWithThatUsedEmail = new Owner()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "John",
+            Lastname = "Doe",
+            Email = "jhon@gmail.com"
+        };
+
+        IEnumerable<Owner> owners = new List<Owner> { ownerInDbWithoutUpdate, ownerWithThatUsedEmail };
+
+        Owner ownerWithUpdates = new Owner
+        {
+            Id = ownerInDbWithoutUpdate.Id,
+            Firstname = "Mick",
+            Lastname = "Mon",
+            Email = "jhon@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetOwnerById(It.IsAny<Guid>()))
+            .Returns(ownerInDbWithoutUpdate);
+        _ownerRepository.Setup(ownerRepository => ownerRepository.GetAllOwners()).Returns(owners);
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _ownerService.UpdateOwnerById(ownerWithUpdates));
+        _ownerRepository.VerifyAll();
     }
-    
 
-   
-    
-    
+    #endregion
+
+    #endregion
+}

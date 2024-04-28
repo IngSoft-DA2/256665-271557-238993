@@ -70,6 +70,14 @@ public class InvitationService
         {
             throw new ObjectErrorServiceException(exceptionFromDomain.Message);
         }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private void CheckIfEmailHasAlreadyAInvitation(Invitation invitationToAdd)

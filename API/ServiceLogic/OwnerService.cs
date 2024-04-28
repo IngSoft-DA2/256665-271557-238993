@@ -82,6 +82,14 @@ public class OwnerService : IOwnerService
         try
         {
             ownerWithUpdates.OwnerValidator();
+            
+            IEnumerable<Owner> ownersInDb = GetAllOwners();
+            
+            if (ownersInDb.Any(owner => owner.Email.Equals(ownerWithUpdates.Email) && owner.Id != ownerWithUpdates.Id))
+            {
+                throw new ObjectRepeatedServiceException();
+            }
+            
             MapProperties(ownerWithUpdates, ownerWithoutUpdates);
             _ownerRepository.UpdateOwnerById(ownerWithUpdates);
         }
