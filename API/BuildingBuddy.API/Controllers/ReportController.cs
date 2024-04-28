@@ -2,10 +2,11 @@ using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ReportRequests;
+using WebModel.Responses.ReportResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/reports")]
+    [Route("api/v1/")]
     [ApiController]
     public class ReportController : ControllerBase
     {
@@ -22,13 +23,13 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByBuilding
 
-        [Route("/buildings/maintenance-requests")]
+        [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByBuilding([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByBuilding)
+        public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid buildingId)
         {
             try
             {
-                return Ok(_reportAdapter.GetMaintenanceRequestsByBuilding(getMaintenanceReportRequestByBuilding));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByBuilding(buildingId));
             }
             catch (Exception exceptionCaught)
             {
@@ -41,13 +42,13 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByRequestHandler
         
-        [Route("/request-handler/maintenance-requests")]
+        [Route("/request-handler/maintenance-requests/reports")]
         
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByRequestHandler([FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByRequestHandler)
+        public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId)
         {
             try{
-                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(getMaintenanceReportRequestByRequestHandler));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByRequestHandler(requestHandlerId));
             }
             catch (Exception exceptionCaught)
             {
@@ -60,13 +61,13 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByCategory
         
-        [Route("/categories/maintenance-requests")]
+        [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId, [FromBody] GetMaintenanceReportRequest getMaintenanceReportRequestByCategory)
+        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId)
         {
             try
             {
-                return Ok(_reportAdapter.GetMaintenanceRequestsByCategory(categoryId, getMaintenanceReportRequestByCategory));
+                return Ok(_reportAdapter.GetMaintenanceRequestsByCategory(categoryId));
             }
             catch (Exception exceptionCaught)
             {
@@ -76,5 +77,7 @@ namespace BuildingBuddy.API.Controllers
         }
         
         #endregion
+
+        
     }
 }
