@@ -11,6 +11,23 @@ namespace Test.Services;
 [TestClass]
 public class CategoryServiceTest
 {
+    #region Initialize
+
+    private Mock<ICategoryRepository> _categoryRepository;
+    private CategoryService _categoryService;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _categoryRepository = new Mock<ICategoryRepository>(MockBehavior.Strict);
+        _categoryService = new CategoryService(_categoryRepository.Object);
+    }
+
+    #endregion
+
+
+    #region Get all categories
+
     //Happy path
     [TestMethod]
     public void GetAllCategories_CategoriesAreReturned()
@@ -29,28 +46,26 @@ public class CategoryServiceTest
             }
         };
 
-        Mock<ICategoryRepository> categoryRepository = new Mock<ICategoryRepository>(MockBehavior.Strict);
 
-        categoryRepository.Setup(categoryRepository => categoryRepository.GetAllCategories()).Returns(categoriesInDb);
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetAllCategories()).Returns(categoriesInDb);
 
-        CategoryService service = new CategoryService(categoryRepository.Object);
-
-        IEnumerable<Category> categories = service.GetAllCategories();
+        IEnumerable<Category> categories = _categoryService.GetAllCategories();
 
         Assert.AreEqual(categoriesInDb.Count(), categories.Count());
         Assert.IsTrue(categories.SequenceEqual(categoriesInDb));
     }
 
+    #region Get all categories, repository validations
+
     [TestMethod]
     public void GetAllCategories_UnknownServiceExceptionIsThrown()
     {
-        Mock<ICategoryRepository> categoryRepository = new Mock<ICategoryRepository>(MockBehavior.Strict);
-
-        categoryRepository.Setup(categoryRepository => categoryRepository.GetAllCategories())
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetAllCategories())
             .Throws(new UnknownRepositoryException("Unknown Error"));
-
-        CategoryService service = new CategoryService(categoryRepository.Object);
-
-        Assert.ThrowsException<UnknownServiceException>(() => service.GetAllCategories());
+        Assert.ThrowsException<UnknownServiceException>(() => _categoryService.GetAllCategories());
     }
+
+    #endregion
+
+    #endregion
 }
