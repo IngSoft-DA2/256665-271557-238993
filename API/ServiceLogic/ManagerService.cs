@@ -30,16 +30,7 @@ public class ManagerService
         try
         {
             manager.PersonValidator();
-            
-            if (string.IsNullOrEmpty(manager.Password))
-            {
-                throw new InvalidManagerException("Password is required");
-            }
-            
-            if(manager.Password.Length < 8)
-            {
-                throw new InvalidManagerException("Password must have at least 8 characters");
-            }
+            manager.PasswordValidator();
 
             _managerRepository.CreateManager(manager);
         }

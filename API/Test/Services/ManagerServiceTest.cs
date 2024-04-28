@@ -114,6 +114,5 @@ public class ManagerServiceTest
         };
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
-        
     }
 }
