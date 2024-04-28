@@ -213,7 +213,7 @@ public class ConstructionCompanyServiceTest
         
         _constructionCompanyRepository.VerifyAll();
     }
-
+    
     #endregion
 
     #endregion

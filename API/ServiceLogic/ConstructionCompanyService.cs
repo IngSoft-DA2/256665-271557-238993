@@ -64,20 +64,23 @@ public class ConstructionCompanyService : IConstructionCompanyService
         try
         {
             constructionCompanyToAdd.ConstructionCompanyValidator();
-
-            IEnumerable<ConstructionCompany> constructionCompaniesInDb =
-                _constructionCompanyRepository.GetAllConstructionCompanies();
-
-            if (constructionCompaniesInDb.Any(constructionCompany =>
-                    constructionCompany.Name.Equals(constructionCompanyToAdd.Name)))
-            {
-                throw new ObjectRepeatedServiceException();
-            }
+            CheckIfNameIsUsed(constructionCompanyToAdd.Name);
             _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
         }
         catch (InvalidConstructionCompanyException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+    }
+
+    private void CheckIfNameIsUsed(string nameToCheck)
+    {
+        IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();
+        
+        if (constructionCompaniesInDb.Any(constructionCompany =>
+                constructionCompany.Name.Equals(nameToCheck)))
+        {
+            throw new ObjectRepeatedServiceException();
         }
     }
 
