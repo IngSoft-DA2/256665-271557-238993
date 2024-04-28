@@ -54,14 +54,19 @@ public class BuildingService
         
         CheckIfNameAlreadyExists(building, buildings);
         
-        double minGap =  0.000001; 
-        if(buildings.Any(b => Math.Abs(b.Location.Latitude - building.Location.Latitude) < minGap && 
-                              Math.Abs(b.Location.Longitude - building.Location.Longitude) < minGap))
+        CheckIfLocationAlreadyExists(building, buildings);
+
+        _buildingRepository.CreateBuilding(building);
+    }
+
+    private static void CheckIfLocationAlreadyExists(Building building, IEnumerable<Building> buildings)
+    {
+        double minGap = 0.000001;
+        if (buildings.Any(b => Math.Abs(b.Location.Latitude - building.Location.Latitude) < minGap &&
+                               Math.Abs(b.Location.Longitude - building.Location.Longitude) < minGap))
         {
             throw new ObjectRepeatedServiceException();
         }
-        
-        _buildingRepository.CreateBuilding(building);
     }
 
     private static void CheckIfNameAlreadyExists(Building building, IEnumerable<Building> buildings)
