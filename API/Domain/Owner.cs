@@ -14,16 +14,29 @@ public class Owner
 
     public void OwnerValidator()
     {
-        if (string.IsNullOrEmpty(Firstname))
+        ValidatingFirstnameAndLastnameAspects();
+        ValidatingCorrectPatternEmail();
+    }
+
+    private void ValidatingFirstnameAndLastnameAspects()
+    {
+        ValidateName(Firstname, "Firstname");
+        ValidateName(Lastname, "Lastname");
+    }
+    private void ValidateName(string name, string fieldName)
+    {
+        if (string.IsNullOrEmpty(name))
         {
-            throw new InvalidOwnerException("Firstname is required");
+            throw new InvalidOwnerException($"{fieldName} is required");
         }
 
-        if (string.IsNullOrEmpty(Lastname))
+        if (!name.All(char.IsLetter))
         {
-            throw new InvalidOwnerException("Lastname is required");
+            throw new InvalidOwnerException($"{fieldName} cannot contain special characters.");
         }
-        
+    }
+    private void ValidatingCorrectPatternEmail()
+    {
         // Pattern has all the available letters and digits that an email can have
         const string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 
@@ -34,18 +47,7 @@ public class Owner
         {
             throw new InvalidOwnerException("Error on email pattern");
         }
-        
-        if (!Firstname.All(char.IsLetter))
-        {
-            throw new InvalidOwnerException("Firstname cannot contain special characters.");
-        }
-        if (!Lastname.All(char.IsLetter))
-        {
-            throw new InvalidOwnerException("Lastname cannot contain special characters.");
-        }
     }
-
-
     public override bool Equals(object? objectToCompare)
     {
         Owner? ownerToCompare = objectToCompare as Owner;
