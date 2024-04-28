@@ -85,19 +85,20 @@ public class CategoryServiceTest
             .Returns(categoryInDb);
 
         Category categoryFound = _categoryService.GetCategoryById(It.IsAny<Guid>());
-        
+
         Assert.AreEqual(categoryFound, categoryInDb);
     }
-    
+
     #region Get Category By Id, repository validations
-    
+
     [TestMethod]
     public void GetCategoryById_ObjectNotFoundServiceExceptionIsThrown()
     {
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
             .Returns(() => null);
-        
-        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _categoryService.GetCategoryById(It.IsAny<Guid>()));
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _categoryService.GetCategoryById(It.IsAny<Guid>()));
     }
 
     [TestMethod]
@@ -105,12 +106,20 @@ public class CategoryServiceTest
     {
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
             .Throws(new UnknownRepositoryException("Unknown Error"));
-        
-        Assert.ThrowsException<UnknownRepositoryException>(()=> _categoryService.GetCategoryById(It.IsAny<Guid>()));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _categoryService.GetCategoryById(It.IsAny<Guid>()));
     }
-    
-    
+
     #endregion
 
     #endregion
+
+    [TestMethod]
+    public void CreateCategory_CategoryIsCreated()
+    {
+        Category categoryDummy = new Category();
+        
+        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<Category>()));
+        _categoryService.CreateCategory(categoryDummy);
+    }
 }
