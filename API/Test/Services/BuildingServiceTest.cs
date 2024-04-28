@@ -82,4 +82,55 @@ public class BuildingServiceTest
         
         _buildingRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetBuildingByIdTest_ReturnsBuildingCorrectly()
+    {
+        Building expectedBuilding = new Building
+        {
+            Id = Guid.NewGuid(),
+            Name = "Building 1",
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction Company 1"
+            },
+            ManagerId = Guid.NewGuid(),
+            Address = "Address 1",
+            CommonExpenses = 100,
+            Location = new Location
+            {
+                Latitude = 1.0,
+                Longitude = 1.0
+            },
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    RoomNumber = 1,
+                    OwnerAssigned = new Owner()
+                    {
+                        Id = Guid.NewGuid(),
+                        Firstname = "OwnerName",
+                        Lastname = "LastName",
+                        Email = "owner@gmail.com"
+                    },
+                    BuildingId = Guid.NewGuid(),
+                    TotalRooms = 3,
+                    TotalBaths = 2,
+                    Floor = 2,
+                    HasTerrace = false
+                }
+            }
+        };
+        
+        _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(expectedBuilding);
+        
+        Building serviceResponse = _buildingService.GetBuildingById(Guid.NewGuid());
+        
+        Assert.AreEqual(expectedBuilding, serviceResponse);
+        
+        _buildingRepository.VerifyAll();
+    }
 }

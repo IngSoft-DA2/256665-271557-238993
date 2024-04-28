@@ -1,5 +1,6 @@
 ﻿using Domain;
 using IRepository;
+using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
@@ -23,5 +24,10 @@ public class BuildingService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
+    }
+
+    public Building GetBuildingById(Guid buildingId)
+    {
+        return _buildingRepository.GetBuildingById(buildingId);
     }
 }
