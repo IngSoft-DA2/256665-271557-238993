@@ -188,10 +188,18 @@ public class MaintenanceRequestServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() => 
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
+
+    [TestMethod]
+    public void WhenMaintenanceRequestCreated_CloseDateIsNull()
+    {
+        MaintenanceRequest maintenanceRequestCloseDateValidation = new MaintenanceRequest();
+        Assert.AreEqual(maintenanceRequestCloseDateValidation.ClosedDate, null);
+    }
     
     
     #endregion
     
     #endregion
+    
     
 }
