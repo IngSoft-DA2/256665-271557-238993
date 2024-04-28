@@ -41,8 +41,8 @@ public class FlatService : IFlatService
         return flatFound;
     }
 
-    public void CreateFlat(Flat flatToCreate)
+    public void CreateFlat(Flat flatToAdd)
     {
-        throw new NotImplementedException();
+        _flatRepository.CreateFlat(flatToAdd);
     }
 }

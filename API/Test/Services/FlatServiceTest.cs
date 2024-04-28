@@ -73,8 +73,7 @@ public class FlatServiceTest
     #endregion
 
     #endregion
-
-
+    
     #region Get Flat By Id
 
     //Happy Path
@@ -130,5 +129,33 @@ public class FlatServiceTest
 
     #endregion
 
+    #endregion
+    
+    #region Create Flat
+
+     //Happy Path
+     [TestMethod]
+     public void CreateFlat_FlatIsCreated()
+     {
+         Flat flatToAdd = new Flat
+         {
+             Id = Guid.NewGuid(),
+             Floor = 1,
+             RoomNumber = 101,
+             OwnerAssigned = new Owner(),
+             TotalRooms = 2,
+             TotalBaths = 1,
+             HasTerrace = true
+         };
+         
+            _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatToAdd));
+            
+            _flatService.CreateFlat(flatToAdd);
+            _flatRepository.VerifyAll();
+            
+     }
+    
+    
+    
     #endregion
 }

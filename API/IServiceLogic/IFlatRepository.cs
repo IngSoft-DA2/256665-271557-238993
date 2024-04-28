@@ -5,5 +5,6 @@ namespace IServiceLogic;
 public interface IFlatRepository
 {
     public IEnumerable<Flat> GetAllFlats(Guid buildingId);
-    public Flat GetFlatById(Guid buildingId,Guid idOfFlatToFind);
+    public Flat GetFlatById(Guid buildingId, Guid idOfFlatToFind);
+    public void CreateFlat(Flat flatToAdd);
 }
