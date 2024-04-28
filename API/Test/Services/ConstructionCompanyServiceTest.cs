@@ -164,6 +164,20 @@ public class ConstructionCompanyServiceTest
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyWithError));
     }
     
+    [TestMethod]
+    public void CreateConstructionCompanyWithNameGreaterThan100Chars_ThrowsObjectErrorServiceException()
+    {
+        ConstructionCompany constructionCompanyWithError = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "C".PadRight(101, 'y')
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyService.CreateConstructionCompany(constructionCompanyWithError));
+    }
+    
+    
     
     #endregion
 

@@ -14,6 +14,12 @@ public class ConstructionCompany
         {
             throw new InvalidConstructionCompanyException("Name cannot be empty.");
         }
+        
+        if(Name.Length > 100)
+        {
+            throw new InvalidConstructionCompanyException("Name cannot be greater than 100 characters.");
+        }
+        
     }
     public override bool Equals(object? objectToCompareWith)
     {
