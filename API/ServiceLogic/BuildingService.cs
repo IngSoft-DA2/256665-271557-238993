@@ -8,12 +8,18 @@ namespace ServiceLogic;
 
 public class BuildingService
 {
+    #region Constructor and Atributtes
+    
     private readonly IBuildingRepository _buildingRepository;
 
     public BuildingService(IBuildingRepository buildingRepository)
     {
         _buildingRepository = buildingRepository;
     }
+    
+    #endregion
+    
+    #region Get All Buildings
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
@@ -26,6 +32,10 @@ public class BuildingService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get Building By Id
 
     public Building GetBuildingById(Guid buildingId)
     {
@@ -46,6 +56,10 @@ public class BuildingService
 
         return buildingFound;
     }
+    
+    #endregion
+    
+    #region Create Building
 
     public void CreateBuilding(Building building)
     {
@@ -89,6 +103,10 @@ public class BuildingService
             throw new ObjectRepeatedServiceException();
         }
     }
+    
+    #endregion
+    
+    #region Update Building
 
     public void UpdateBuilding(Building buildingWithUpdates)
     {
@@ -142,6 +160,10 @@ public class BuildingService
             }
         }
     }
+    
+    #endregion
+    
+    #region Delete Building
 
     public void DeleteBuilding(Guid buildingIdToDelete)
     {
@@ -159,4 +181,6 @@ public class BuildingService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }

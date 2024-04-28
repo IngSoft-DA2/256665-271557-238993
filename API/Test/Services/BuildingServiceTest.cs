@@ -10,9 +10,12 @@ namespace Test.Services;
 [TestClass]
 public class BuildingServiceTest
 {
+    #region Initializing Aspects
+    
     private Mock<IBuildingRepository> _buildingRepository;
     private BuildingService _buildingService;
     private Building _genericBuilding;
+    private ConstructionCompany _constructionCompany;
 
     [TestInitialize]
     public void Initialize()
@@ -58,7 +61,17 @@ public class BuildingServiceTest
                 }
             }
         };
+        
+        _constructionCompany = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company Updated"
+        };
     }
+    
+    #endregion
+    
+    #region Get All Buildings
 
     [TestMethod]
     public void GetAllBuildingsTest_ReturnsAllBuildingsCorrectly()
@@ -83,7 +96,11 @@ public class BuildingServiceTest
 
         _buildingRepository.VerifyAll();
     }
+    
+    #endregion
 
+    #region Get Building By Id
+    
     [TestMethod]
     public void GetBuildingByIdTest_ReturnsBuildingCorrectly()
     {
@@ -115,6 +132,10 @@ public class BuildingServiceTest
 
         _buildingRepository.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Create Building
 
     [TestMethod]
     public void GivenCorrectBuilding_CreatesBuildingCorrectly()
@@ -129,7 +150,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithNameEmpty_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithNameEmptyaOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.Name = "";
 
@@ -137,7 +158,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithAddressEmpty_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithAddressEmptyOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.Address = "";
 
@@ -145,7 +166,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithLocationNull_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithLocationNullOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.Location = null;
 
@@ -153,7 +174,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithConstructionCompanyNull_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithConstructionCompanyNullOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.ConstructionCompany = null;
 
@@ -161,7 +182,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithCommonExpensesNegative_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithCommonExpensesNegativeOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.CommonExpenses = -1;
 
@@ -169,7 +190,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithManagerIdEmpty_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithManagerIdEmptyOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.ManagerId = Guid.Empty;
 
@@ -177,7 +198,7 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    public void GivenBuildingWithIdEmpty_ThrowsInvalidBuildingException()
+    public void GivenBuildingWithIdEmptyOnCreate_ThrowsInvalidBuildingException()
     {
         _genericBuilding.Id = Guid.Empty;
 
@@ -186,7 +207,7 @@ public class BuildingServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(ObjectRepeatedServiceException))]
-    public void GivenBuildingWithRepeatedName_ThrowsObjectRepeatedServiceException()
+    public void GivenBuildingWithRepeatedNameOnCreate_ThrowsObjectRepeatedServiceException()
     {
         _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building> { _genericBuilding });
 
@@ -197,7 +218,7 @@ public class BuildingServiceTest
 
     [TestMethod]
     [ExpectedException(typeof(ObjectRepeatedServiceException))]
-    public void GivenBuildingWithRepeatedLocation_ThrowsObjectRepeatedServiceException()
+    public void GivenBuildingWithRepeatedLocationOnCreate_ThrowsObjectRepeatedServiceException()
     {
         _genericBuilding.Name = "Building 2";
 
@@ -227,21 +248,19 @@ public class BuildingServiceTest
 
         _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
     }
+    
+    #endregion
+    
+    #region Update Building
 
     [TestMethod]
     public void UpdateBuildingTest_UpdatesBuildingCorrectly()
     {
-        ConstructionCompany constructionCompany = new ConstructionCompany
-        {
-            Id = Guid.NewGuid(),
-            Name = "Construction Company Updated"
-        };
-        
         Building buildingWithUpdates = new Building
         {
             Id = _genericBuilding.Id,
             CommonExpenses = 2000000,
-            ConstructionCompany = constructionCompany
+            ConstructionCompany = _constructionCompany
         };
         
         _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
@@ -257,17 +276,11 @@ public class BuildingServiceTest
     [TestMethod]
     public void GivenUpdate_WithErrorOnProperties_ThrowsInvalidBuildingException()
     {
-        ConstructionCompany constructionCompany = new ConstructionCompany
-        {
-            Id = Guid.NewGuid(),
-            Name = "Construction Company Updated"
-        };
-        
         Building buildingWithUpdates = new Building
         {
             Id = _genericBuilding.Id,
             CommonExpenses = -1,
-            ConstructionCompany = constructionCompany
+            ConstructionCompany = _constructionCompany
         };
         
         _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_genericBuilding);
@@ -297,8 +310,12 @@ public class BuildingServiceTest
         _buildingRepository.Verify(repo => repo.GetBuildingById(It.IsAny<Guid>()), Times.Once);
     }
     
+    #endregion
+    
+    #region Delete Building
+    
     [TestMethod]
-    public void DeleteBuildingByIdTest_DeletesBuildingCorrectly()
+    public void DeleteBuildingTest_DeletesBuildingCorrectly()
     {
         _buildingRepository.Setup(repo => repo.DeleteBuilding(It.IsAny<Building>()));
         
@@ -311,7 +328,7 @@ public class BuildingServiceTest
     }
     
     [TestMethod]
-    public void DeleteBuildingByIdTest_ThrowsObjectNotFoundServiceException()
+    public void DeleteBuildingTest_ThrowsObjectNotFoundServiceException()
     {
         Building _dummyBuilding = null;
         _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Returns(_dummyBuilding);
@@ -322,7 +339,7 @@ public class BuildingServiceTest
     }
     
     [TestMethod]
-    public void DeleteBuildingByIdTest_ThrowsUnknownServiceException()
+    public void DeleteBuildingTest_ThrowsUnknownServiceException()
     {
         _buildingRepository.Setup(repo => repo.GetBuildingById(It.IsAny<Guid>())).Throws(new Exception());
         
@@ -330,4 +347,6 @@ public class BuildingServiceTest
         
         _buildingRepository.VerifyAll();
     }
+    
+    #endregion
 }
