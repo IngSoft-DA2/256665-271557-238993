@@ -49,10 +49,7 @@ public class BuildingService
     public void CreateBuilding(Building building)
     {
         building.NameValidation();
-        if (string.IsNullOrEmpty(building.Address))
-        {
-            throw new InvalidBuildingException("Building address cannot be empty");
-        }
+        building.AddressValidation();
         
         _buildingRepository.CreateBuilding(building);
     }

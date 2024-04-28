@@ -19,4 +19,12 @@ public class Building
             throw new InvalidBuildingException("Building name cannot be empty");
         }
     }
+    
+    public void AddressValidation()
+    {
+        if (string.IsNullOrEmpty(Address))
+        {
+            throw new InvalidBuildingException("Building address cannot be empty");
+        }
+    }
 }
