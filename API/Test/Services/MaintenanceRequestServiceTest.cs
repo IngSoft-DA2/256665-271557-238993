@@ -96,13 +96,18 @@ public class MaintenanceRequestServiceTest
     public void GetMaintenanceRequestByCategory_MaintenanceRequestIsReturned()
     {
         Guid categoryId = Guid.NewGuid();
+
+        IEnumerable<MaintenanceRequest> maintenanceRequestSample = new List<MaintenanceRequest>
+        {
+            _maintenanceRequestSample
+        };
         
         _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
-            maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId)).Returns(_maintenanceRequestSample);
+            maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId)).Returns(maintenanceRequestSample);
         
-        MaintenanceRequest actualResponse = _maintenanceRequestService.GetMaintenanceRequestByCategory(categoryId);
+        IEnumerable<MaintenanceRequest> actualResponse = _maintenanceRequestService.GetMaintenanceRequestByCategory(categoryId);
         
-        Assert.AreEqual(_maintenanceRequestSample, actualResponse);
+        Assert.IsTrue(maintenanceRequestSample.SequenceEqual(actualResponse));
     }
 
     [TestMethod]
