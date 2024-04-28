@@ -23,7 +23,7 @@ public class ConstructionCompanyServiceTest
 
     #endregion
 
-    #region GetAllConstructionCompanies
+    #region Get All Construction Companies
 
     //Happy Path
     [TestMethod]
@@ -42,20 +42,14 @@ public class ConstructionCompanyServiceTest
                 Name = "Company 2"
             }
         };
-
-        Mock<IConstructionCompanyRepository> constructionCompanyRepository =
-            new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-
-        constructionCompanyRepository.Setup(constructionCompanyRepository =>
-                constructionCompanyRepository.GetAllConstructionCompanies())
-            .Returns(constructionCompaniesInDb);
-
-        ConstructionCompanyService constructionCompanyService =
-            new ConstructionCompanyService(constructionCompanyRepository.Object);
-
-        IEnumerable<ConstructionCompany> constructionCompaniesObtained =
-            constructionCompanyService.GetAllConstructionCompanies();
-
+        
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
+        
+        IEnumerable<ConstructionCompany> constructionCompaniesObtained = _constructionCompanyService.GetAllConstructionCompanies();
+    
+        _constructionCompanyRepository.VerifyAll();
+        
         Assert.AreEqual(constructionCompaniesInDb.Count(), constructionCompaniesObtained.Count());
         Assert.IsTrue(constructionCompaniesInDb.SequenceEqual(constructionCompaniesObtained));
     }
@@ -65,22 +59,16 @@ public class ConstructionCompanyServiceTest
     [TestMethod]
     public void GetAllConstructionCompanies_UnknownServiceExceptionIsThrown()
     {
-        Mock<IConstructionCompanyRepository> constructionCompanyRepository =
-            new Mock<IConstructionCompanyRepository>(MockBehavior.Strict);
-
-        constructionCompanyRepository.Setup(constructionCompanyRepository =>
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
                 constructionCompanyRepository.GetAllConstructionCompanies())
             .Throws(new Exception());
-
-        ConstructionCompanyService constructionCompanyService =
-            new ConstructionCompanyService(constructionCompanyRepository.Object);
-
-        Assert.ThrowsException<UnknownServiceException>(() => constructionCompanyService.GetAllConstructionCompanies());
+        
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyService.GetAllConstructionCompanies());
+        _constructionCompanyRepository.VerifyAll();
     }
 
     #endregion
 
     #endregion
-    
-    
 }
