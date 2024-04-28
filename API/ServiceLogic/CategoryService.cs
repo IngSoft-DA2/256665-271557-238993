@@ -67,6 +67,10 @@ public class CategoryService : ICategoryService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
       
     }
 }

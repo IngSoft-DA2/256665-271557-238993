@@ -130,7 +130,7 @@ public class CategoryServiceTest
         _categoryRepository.VerifyAll();
     }
 
-    #region Create Category Domain Validations
+    #region Create Category, Domain Validations
 
     [TestMethod]
     public void CreateCategoryWithEmptyName_ThrowsObjectErrorException()
@@ -140,8 +140,28 @@ public class CategoryServiceTest
             Id = Guid.NewGuid(),
             Name = ""
         };
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() => _categoryService.CreateCategory(categoryExample));
+        _categoryRepository.VerifyAll();
+    }
+
+    #endregion
+
+    #region Create Category, Repository Validations
+
+    [TestMethod]
+    public void CreateCategory_ThrowsUnknownServiceException()
+    {
+        Category categoryToAdd = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "category1"
+        };
+
+        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<Category>()))
+            .Throws(new UnknownRepositoryException("Unknown Error"));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _categoryService.CreateCategory(categoryToAdd));
         _categoryRepository.VerifyAll();
     }
 
