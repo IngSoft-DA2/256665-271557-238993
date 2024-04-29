@@ -55,7 +55,8 @@ public class ManagerServiceTest
             Id = Guid.NewGuid(),
             Firstname = "Manager",
             Email = "person@gmail.com",
-            Password = "password"
+            Password = "password",
+            Buildings = new List<Guid>()
         };
 
         _managerRepository.Setup(service => service.CreateManager(manager));
@@ -113,6 +114,20 @@ public class ManagerServiceTest
             Password = "1234567"
         };
         
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenNullBuildingsOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "person@gmail.com",
+            Password = "1234567"
+        };
+
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
 }

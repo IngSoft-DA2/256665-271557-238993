@@ -31,6 +31,7 @@ public class ManagerService
         {
             manager.PersonValidator();
             manager.PasswordValidator();
+            manager.BuildingValidator();
 
             _managerRepository.CreateManager(manager);
         }

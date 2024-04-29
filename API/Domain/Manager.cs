@@ -12,4 +12,12 @@ public class Manager : Person
             throw new InvalidManagerException("Password must have at least 8 characters");
         }
     }
+    
+    public void BuildingValidator()
+    {
+        if (Buildings == null)
+        {
+            throw new InvalidManagerException("Manager must have a list of buildings");
+        }
+    }
 }
