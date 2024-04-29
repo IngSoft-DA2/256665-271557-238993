@@ -18,6 +18,11 @@ public class Administrator : Person
         }
 
         PasswordValidator();
+        
+        if(string.IsNullOrEmpty(LastName))
+        {
+            throw new InvalidAdministratorException("Last name is required");
+        }
     }
     private void PasswordValidator()
     {
@@ -26,4 +31,6 @@ public class Administrator : Person
             throw new InvalidAdministratorException("Password must have at least 8 characters");
         }
     }
+    
+    
 }

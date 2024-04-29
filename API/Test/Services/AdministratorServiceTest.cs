@@ -82,4 +82,17 @@ public class AdministratorServiceTest
         Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
     }
+    
+    [TestMethod]
+public void GivenNullLastNameOnCreate_ShouldThrowObjectErrorServiceException()
+    {
+        _genericAdministrator.LastName = null;
+
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
+            .Throws(new InvalidAdministratorException("Last name is required"));
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _administratorService.CreateAdministrator(_genericAdministrator));
+    }
+    
 }
