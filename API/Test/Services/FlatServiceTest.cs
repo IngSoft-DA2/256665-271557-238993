@@ -191,21 +191,13 @@ public class FlatServiceTest
     [TestMethod]    
     public void CreateFlat_ThrowsUnknownErrorServiceException()
     {
-        Flat flatToAdd = new Flat
-        {
-            Id = Guid.NewGuid(),
-            Floor = 1,
-            RoomNumber = 101,
-            OwnerAssigned = new Owner(),
-            TotalRooms = 2,
-            TotalBaths = 1,
-            HasTerrace = true
-        };
 
-        _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatToAdd))
+        Flat flatdummy = new Flat();
+
+        _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatdummy))
             .Throws(new UnknownRepositoryException("Unknown error"));
 
-        Assert.ThrowsException<UnknownServiceException>(() => _flatService.CreateFlat(flatToAdd));
+        Assert.ThrowsException<UnknownServiceException>(() => _flatService.CreateFlat(flatdummy));
         _flatRepository.VerifyAll();
     }
     
