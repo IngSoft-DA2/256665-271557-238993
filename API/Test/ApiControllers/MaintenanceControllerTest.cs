@@ -105,10 +105,17 @@ public class MaintenanceControllerTest
     [TestMethod]
     public void GetMaintenanceRequestByCategory_200CodeIsReturned()
     {
-        OkObjectResult expectedControllerResponse = new OkObjectResult(_expectedMaintenanceRequest);
+        IEnumerable<GetMaintenanceRequestResponse> expectedMaintenanceRequestsResponse =
+            new List<GetMaintenanceRequestResponse>()
+            {
+                _expectedMaintenanceRequest
+               
+            };
+        
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedMaintenanceRequestsResponse);
 
         _maintenanceAdapter.Setup(adapter => adapter.GetMaintenanceRequestByCategory(_categoryFromRoute))
-            .Returns(_expectedMaintenanceRequest);
+            .Returns(expectedMaintenanceRequestsResponse);
 
         IActionResult controllerResponse = _maintenanceController.GetMaintenanceRequestByCategory(_categoryFromRoute);
 
@@ -117,12 +124,12 @@ public class MaintenanceControllerTest
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);
 
-        GetMaintenanceRequestResponse? controllerResponseValueCasted =
-            controllerResponseCasted.Value as GetMaintenanceRequestResponse;
+        IEnumerable<GetMaintenanceRequestResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as IEnumerable<GetMaintenanceRequestResponse>;
         Assert.IsNotNull(controllerResponseValueCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.IsTrue(_expectedMaintenanceRequest.Equals(controllerResponseValueCasted));
+        Assert.IsTrue(expectedMaintenanceRequestsResponse.SequenceEqual(controllerResponseValueCasted));
     }
 
     [TestMethod]

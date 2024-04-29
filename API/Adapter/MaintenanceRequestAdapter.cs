@@ -56,24 +56,25 @@ public class MaintenanceRequestAdapter : IMaintenanceAdapter
 
     #region Get Maintenance Request By Category Id
 
-    public GetMaintenanceRequestResponse GetMaintenanceRequestByCategory(Guid id)
+    public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByCategory(Guid id)
     {
         try
         {
-            MaintenanceRequest maintenanceRequestInDb = _maintenanceRequestService.GetMaintenanceRequestByCategory(id);
-
-            GetMaintenanceRequestResponse maintenanceRequestToReturn = new GetMaintenanceRequestResponse
-            {
-                Id = maintenanceRequestInDb.Id,
-                Description = maintenanceRequestInDb.Description,
-                BuildingId = maintenanceRequestInDb.BuildingId,
-                RequestHandlerId = maintenanceRequestInDb.RequestHandlerId,
-                Category = maintenanceRequestInDb.Category,
-                RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequestInDb.RequestStatus,
-                OpenedDate = maintenanceRequestInDb.OpenedDate,
-                ClosedDate = maintenanceRequestInDb.ClosedDate,
-                FlatId = maintenanceRequestInDb.FlatId
-            };
+            IEnumerable<MaintenanceRequest> maintenanceRequestsInDb = _maintenanceRequestService.GetMaintenanceRequestByCategory(id);
+            
+            IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestToReturn = maintenanceRequestsInDb
+                .Select(maintenanceRequest => new GetMaintenanceRequestResponse
+                {
+                    Id = maintenanceRequest.Id,
+                    Description = maintenanceRequest.Description,
+                    BuildingId = maintenanceRequest.BuildingId,
+                    RequestHandlerId = maintenanceRequest.RequestHandlerId,
+                    Category = maintenanceRequest.Category,
+                    RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
+                    OpenedDate = maintenanceRequest.OpenedDate,
+                    ClosedDate = maintenanceRequest.ClosedDate,
+                    FlatId = maintenanceRequest.FlatId
+                });
 
             return maintenanceRequestToReturn;
         }

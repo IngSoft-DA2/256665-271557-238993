@@ -32,12 +32,12 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         }
     }
 
-    public MaintenanceRequest GetMaintenanceRequestByCategory(Guid id)
+    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid id)
     {
-        MaintenanceRequest maintenanceRequest;
+        IEnumerable<MaintenanceRequest> maintenanceRequest;
              try
              {
-                 maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(id);
+                    maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(id);
              }
              catch (Exception exceptionCaught)
              {
