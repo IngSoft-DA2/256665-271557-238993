@@ -7,12 +7,18 @@ namespace ServiceLogic;
 
 public class ManagerService :IManagerService
 {
+    #region Constructor and Atributes
+    
     private readonly IManagerRepository _managerRepository;
 
     public ManagerService(IManagerRepository managerRepository)
     {
         _managerRepository = managerRepository;
     }
+    
+    #endregion
+    
+    #region Get All Managers
 
     public IEnumerable<Manager> GetAllManagers()
     {
@@ -25,6 +31,10 @@ public class ManagerService :IManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Create Manager
 
     public void CreateManager(Manager manager)
     {
@@ -61,6 +71,10 @@ public class ManagerService :IManagerService
             throw new ObjectRepeatedServiceException();
         }
     }
+    
+    #endregion
+    
+    #region Delete Manager
 
     public void DeleteManagerById(Guid managerId)
     {
@@ -80,4 +94,6 @@ public class ManagerService :IManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }
