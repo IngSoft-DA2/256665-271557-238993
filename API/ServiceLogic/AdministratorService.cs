@@ -31,6 +31,10 @@ public class AdministratorService : IAdministratorService
         {
             throw new ObjectRepeatedServiceException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private static void CheckIfEmailAlreadyExists(Administrator administratorToAdd, IEnumerable<Administrator> allAdministrators)

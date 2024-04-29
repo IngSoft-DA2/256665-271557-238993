@@ -10,17 +10,16 @@ namespace Test.Services;
 [TestClass]
 public class AdministratorServiceTest
 {
-    
     private AdministratorService _administratorService;
     private Mock<IAdministratorRepository> _administratorRepository;
     private Administrator _genericAdministrator;
-    
+
     [TestInitialize]
     public void Setup()
     {
         _administratorRepository = new Mock<IAdministratorRepository>(MockBehavior.Strict);
         _administratorService = new AdministratorService(_administratorRepository.Object);
-        
+
         _genericAdministrator = new Administrator
         {
             Id = Guid.NewGuid(),
@@ -29,9 +28,8 @@ public class AdministratorServiceTest
             Email = "person@gmail.com",
             Password = "12345678"
         };
-        
     }
-    
+
     [TestMethod]
     public void CreateAdministrator_ShouldCreateAdministrator()
     {
@@ -49,10 +47,12 @@ public class AdministratorServiceTest
     public void GivenEmptyEmailOnCreate_ShouldThrowObjectErrorServiceException()
     {
         _genericAdministrator.Email = "";
-        
-        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator)).Throws(new InvalidAdministratorException("Email is required"));
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _administratorService.CreateAdministrator(_genericAdministrator));
+
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
+            .Throws(new InvalidAdministratorException("Email is required"));
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _administratorService.CreateAdministrator(_genericAdministrator));
     }
 
     [TestMethod]
@@ -62,12 +62,11 @@ public class AdministratorServiceTest
 
         _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
             .Throws(new InvalidManagerException("Password must have at least 8 characters"));
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
-
     }
-    
+
     [TestMethod]
     public void GivenRepeatedEmailOnCreate_ShouldThrowObjectRepeatedServiceException()
     {
@@ -78,21 +77,46 @@ public class AdministratorServiceTest
 
         _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
             .Throws(new ObjectRepeatedServiceException());
-        
+
         Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
     }
-    
+
     [TestMethod]
-public void GivenNullLastNameOnCreate_ShouldThrowObjectErrorServiceException()
+    public void GivenNullLastNameOnCreate_ShouldThrowObjectErrorServiceException()
     {
         _genericAdministrator.LastName = null;
 
         _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
             .Throws(new InvalidAdministratorException("Last name is required"));
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
     }
     
+    [TestMethod]
+    public void GivenNullPasswordOnCreate_ShouldThrowObjectErrorServiceException()
+    {
+        _genericAdministrator.Password = null;
+
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
+            .Throws(new InvalidAdministratorException("Password must have at least 8 characters"));
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _administratorService.CreateAdministrator(_genericAdministrator));
+    }
+    
+    [TestMethod]
+    public void CreateAdministrator_ShouldThrowUnknownServiceException()
+    {
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
+            .Throws(new Exception("Unknown exception"));
+        
+        _administratorRepository.Setup(repo => repo.GetAllAdministrators()).Returns(new List<Administrator>());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _administratorService.CreateAdministrator(_genericAdministrator));
+        
+        _administratorRepository.VerifyAll();
+    }
 }
