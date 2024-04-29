@@ -51,7 +51,11 @@ public class FlatService : IFlatService
         }
         catch (InvalidFlatException exceptionCaught)
         {
-           throw new ObjectErrorServiceException(exceptionCaught.Message);
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
         }
  
     }

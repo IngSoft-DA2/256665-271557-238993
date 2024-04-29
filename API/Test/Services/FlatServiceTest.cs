@@ -155,6 +155,8 @@ public class FlatServiceTest
         _flatRepository.VerifyAll();
     }
 
+    #region Create Flat, Domain Validations
+
     [TestMethod]
     public void CreateFlatWithNoTotalRooms_ThrowsObjectErrorServiceException()
     {
@@ -168,10 +170,37 @@ public class FlatServiceTest
             TotalBaths = 1,
             HasTerrace = true
         };
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() => _flatService.CreateFlat(flatWithNoRooms));
     }
+
+    #endregion
+
+    #region Create Flat, Repository Validations
+
+    [TestMethod]    
+    public void CreateFlat_ThrowsUnknownErrorServiceException()
+    {
+        Flat flatToAdd = new Flat
+        {
+            Id = Guid.NewGuid(),
+            Floor = 1,
+            RoomNumber = 101,
+            OwnerAssigned = new Owner(),
+            TotalRooms = 2,
+            TotalBaths = 1,
+            HasTerrace = true
+        };
+
+        _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatToAdd))
+            .Throws(new UnknownRepositoryException("Unknown error"));
+
+        Assert.ThrowsException<UnknownServiceException>(() => _flatService.CreateFlat(flatToAdd));
+        _flatRepository.VerifyAll();
+    }
+    
+
+    #endregion
+
     #endregion
 }
-
-
