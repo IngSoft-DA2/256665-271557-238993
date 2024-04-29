@@ -21,10 +21,7 @@ public class AdministratorService : IAdministratorService
             administratorToAdd.PersonValidator();
             administratorToAdd.PasswordValidator();
             IEnumerable<Administrator> allAdministrators = _administratorRepository.GetAllAdministrators();
-            if(allAdministrators.Any(a => a.Email == administratorToAdd.Email))
-            {
-                throw new ObjectRepeatedServiceException();
-            }
+            CheckIfEmailAlreadyExists(administratorToAdd, allAdministrators);
             _administratorRepository.CreateAdministrator(administratorToAdd);
         }
         catch (InvalidPersonException exceptionCaught)
@@ -36,6 +33,14 @@ public class AdministratorService : IAdministratorService
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
         catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+    }
+
+    private static void CheckIfEmailAlreadyExists(Administrator administratorToAdd, IEnumerable<Administrator> allAdministrators)
+    {
+        if (allAdministrators.Any(a => a.Email == administratorToAdd.Email))
         {
             throw new ObjectRepeatedServiceException();
         }
