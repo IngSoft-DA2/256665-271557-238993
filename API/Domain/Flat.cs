@@ -15,6 +15,7 @@ public class Flat
     public void FlatValidator()
     {
         if (TotalRooms <= 0) throw new InvalidFlatException("Total rooms must be greater than 0");
+        if(TotalBaths < 0) throw new InvalidFlatException("Total baths must be greater than or equal to 0");
     }
 
 

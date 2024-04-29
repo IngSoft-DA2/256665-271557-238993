@@ -183,6 +183,23 @@ public class FlatServiceTest
 
         Assert.ThrowsException<ObjectErrorServiceException>(() => _flatService.CreateFlat(flatWithNoRooms));
     }
+    
+    [TestMethod]
+    public void CreateFlatWithNegativeTotalBaths_ThrowsObjectErrorServiceException()
+    {
+        Flat flatWithNegativeRooms = new Flat
+        {
+            Id = Guid.NewGuid(),
+            Floor = 1,
+            RoomNumber = 101,
+            OwnerAssigned = new Owner(),
+            TotalRooms = 1,
+            TotalBaths = -1,
+            HasTerrace = true
+        };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _flatService.CreateFlat(flatWithNegativeRooms));
+    }
 
     #endregion
 
@@ -192,12 +209,21 @@ public class FlatServiceTest
     public void CreateFlat_ThrowsUnknownErrorServiceException()
     {
 
-        Flat flatdummy = new Flat();
+        Flat flatToAdd = new Flat
+        {
+            Id = Guid.NewGuid(),
+            Floor = 1,
+            RoomNumber = 101,
+            OwnerAssigned = new Owner(),
+            TotalRooms = 1,
+            TotalBaths = 1,
+            HasTerrace = true
+        };
 
-        _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatdummy))
+        _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatToAdd))
             .Throws(new UnknownRepositoryException("Unknown error"));
 
-        Assert.ThrowsException<UnknownServiceException>(() => _flatService.CreateFlat(flatdummy));
+        Assert.ThrowsException<UnknownServiceException>(() => _flatService.CreateFlat(flatToAdd));
         _flatRepository.VerifyAll();
     }
     
