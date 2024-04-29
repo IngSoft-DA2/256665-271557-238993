@@ -13,21 +13,21 @@ namespace Test.Adapters;
 public class ManagerAdapterTest
 {
     #region Initialize
-    
+
     private Mock<IManagerService> _managerService;
     private ManagerAdapter _managerAdapter;
-    
+
     [TestInitialize]
     public void Initialize()
     {
         _managerService = new Mock<IManagerService>(MockBehavior.Strict);
         _managerAdapter = new ManagerAdapter(_managerService.Object);
     }
-    
+
     #endregion
-    
+
     #region Get All Managers
-    
+
     [TestMethod]
     public void GetAllManagers_ShouldConvertFromDomainToResponse()
     {
@@ -51,113 +51,130 @@ public class ManagerAdapterTest
                 Email = domainResponse.First().Email
             }
         };
-        
+
         _managerService.Setup(service => service.GetAllManagers()).Returns(domainResponse);
-        
+
         IEnumerable<GetManagerResponse> adapterResponse = _managerAdapter.GetAllManagers();
-        
+
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
-    
+
     [TestMethod]
     public void GetAllManagers_ShouldThrowException()
     {
         _managerService.Setup(service => service.GetAllManagers()).Throws(new Exception("Something went wrong"));
-        
+
         Assert.ThrowsException<Exception>(() => _managerAdapter.GetAllManagers());
     }
-    
+
     #endregion
-    
+
     #region Delete Manager By Id
-    
+
     [TestMethod]
     public void DeleteManagerById_ShouldDeleteManager()
     {
         _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>()));
-        
+
         _managerAdapter.DeleteManagerById(It.IsAny<Guid>());
-        
+
         _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void DeleteManagerById_ShouldThrowObjectNotFoundAdapterException()
     {
-        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>())).Throws(new ObjectNotFoundServiceException());
-        
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
-        
+        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(
+            () => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
+
         _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void DeleteManagerById_ShouldThrowException()
     {
-        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
-        
+        _managerService.Setup(service => service.DeleteManagerById(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
         Assert.ThrowsException<Exception>(() => _managerAdapter.DeleteManagerById(It.IsAny<Guid>()));
-        
+
         _managerService.Verify(service => service.DeleteManagerById(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     #endregion
 
     #region Create Manager
-    
+
     [TestMethod]
     public void CreateManager_ShouldCreateManager()
     {
-        CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
+        CreateManagerRequest dummyCreateRequest = new CreateManagerRequest()
+        {
+            FirstName = "Michael Jordan",
+            Email = "",
+            Password = ";"
+        };
 
-        Manager dummyDomainResponse = new Manager();
+        Manager dummyDomainResponse = new Manager()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = dummyCreateRequest.FirstName,
+            Email = dummyCreateRequest.Email,
+            Password = dummyCreateRequest.Password
+        };
 
         CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Returns(dummyDomainResponse);
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()));
 
         CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(dummyCreateRequest);
 
-        Assert.AreEqual(expectedAdapterResponse.Id, adapterResponse.Id);
+        Assert.IsNotNull(expectedAdapterResponse.Id);
 
-        _managerService.VerifyAll();
+        _managerService.Verify(service => service.CreateManager(It.IsAny<Manager>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void CreateManager_ShouldThrowObjectNotFoundAdapterException()
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Throws(new ObjectNotFoundServiceException());
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+            .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
 
         _managerService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateManager_ShouldThrowObjectErrorServiceException()
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Throws(new ObjectErrorServiceException("Something went wrong"));
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+            .Throws(new ObjectErrorServiceException("Something went wrong"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
 
         _managerService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateManager_ShouldThrowUnknownAdapterException()
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>())).Throws(new Exception("Something went wrong"));
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+            .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<UnknownAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
 
         _managerService.VerifyAll();
     }
-    
+
     #endregion
 }

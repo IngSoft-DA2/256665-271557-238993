@@ -1,10 +1,11 @@
 ﻿using Domain;
 using IRepository;
+using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
-public class ManagerService
+public class ManagerService :IManagerService
 {
     private readonly IManagerRepository _managerRepository;
 
@@ -59,5 +60,10 @@ public class ManagerService
         {
             throw new ObjectRepeatedServiceException();
         }
+    }
+
+    public void DeleteManagerById(Guid managerId)
+    {
+        _managerRepository.DeleteManagerById(managerId);
     }
 }

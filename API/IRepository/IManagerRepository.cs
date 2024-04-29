@@ -6,5 +6,6 @@ public interface IManagerRepository
 {
     public IEnumerable<Manager> GetAllManagers();
     public void CreateManager(Manager manager);
+    public void DeleteManagerById(Guid id);
 
 }
