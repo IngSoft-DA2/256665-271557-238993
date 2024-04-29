@@ -16,14 +16,18 @@ public class Administrator : Person
         {
             throw new InvalidAdministratorException(exceptionCaught.Message);
         }
-
         PasswordValidator();
-        
-        if(string.IsNullOrEmpty(LastName))
+        LastnameValidator();
+    }
+
+    private void LastnameValidator()
+    {
+        if (string.IsNullOrEmpty(LastName))
         {
             throw new InvalidAdministratorException("Last name is required");
         }
     }
+
     private void PasswordValidator()
     {
         if (string.IsNullOrEmpty(Password) || Password.Length < 8)
