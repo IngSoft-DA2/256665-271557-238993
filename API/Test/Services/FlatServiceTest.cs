@@ -61,6 +61,16 @@ public class FlatServiceTest
     #region Get all Flats, Repository Validations
 
     [TestMethod]
+    public void GetAllFlats_BuildingIsNotFound_ThrowsObjectNotFoundServiceException()
+    {
+        _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats(It.IsAny<Guid>()))
+            .Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _flatService.GetAllFlats(It.IsAny<Guid>()));
+        _flatRepository.VerifyAll();
+    }
+    
+    [TestMethod]
     public void GetAllFlats_ThrowsUnknownErrorServiceException()
     {
         _flatRepository.Setup(flatRepository => flatRepository.GetAllFlats(It.IsAny<Guid>()))

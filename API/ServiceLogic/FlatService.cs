@@ -15,15 +15,19 @@ public class FlatService : IFlatService
 
     public IEnumerable<Flat> GetAllFlats(Guid buildingId)
     {
+        IEnumerable<Flat> flatsInDb;
         try
         {
-            IEnumerable<Flat> flatsInDb = _flatRepository.GetAllFlats(buildingId);
-            return flatsInDb;
+            flatsInDb = _flatRepository.GetAllFlats(buildingId);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
+        
+        if (flatsInDb is null) throw new ObjectNotFoundServiceException();
+
+        return flatsInDb;
     }
 
     public Flat GetFlatById(Guid buildingId, Guid flatId)
@@ -37,13 +41,13 @@ public class FlatService : IFlatService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
+
         if (flatFound is null) throw new ObjectNotFoundServiceException();
         return flatFound;
     }
 
     public void CreateFlat(Flat flatToAdd)
     {
-
         try
         {
             flatToAdd.FlatValidator();
@@ -57,6 +61,5 @@ public class FlatService : IFlatService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
- 
     }
 }
