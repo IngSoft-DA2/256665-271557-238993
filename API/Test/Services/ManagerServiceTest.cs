@@ -9,6 +9,8 @@ namespace Test.Services;
 [TestClass]
 public class ManagerServiceTest
 {
+    #region Initializing Aspects
+    
     private Mock<IManagerRepository> _managerRepository;
     private ManagerService _managerService;
 
@@ -18,6 +20,10 @@ public class ManagerServiceTest
         _managerRepository = new Mock<IManagerRepository>();
         _managerService = new ManagerService(_managerRepository.Object);
     }
+    
+    #endregion
+    
+    #region Get All Managers
 
     [TestMethod]
     public void GetAllManagers_ShouldReturnsAllManagers()
@@ -46,6 +52,10 @@ public class ManagerServiceTest
 
         _managerRepository.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Create Manager
 
     [TestMethod]
     public void CreateManager_ShouldCreateManager()
@@ -168,6 +178,10 @@ public class ManagerServiceTest
 
         _managerRepository.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Delete Manager
 
     [TestMethod]
     public void DeleteManagerById_ShouldDeleteManager()
@@ -214,4 +228,6 @@ public class ManagerServiceTest
 
         _managerRepository.VerifyAll();
     }
+    
+    #endregion
 }
