@@ -118,14 +118,6 @@ public class ManagerAdapterTest
             Password = ";"
         };
 
-        Manager dummyDomainResponse = new Manager()
-        {
-            Id = Guid.NewGuid(),
-            Firstname = dummyCreateRequest.FirstName,
-            Email = dummyCreateRequest.Email,
-            Password = dummyCreateRequest.Password
-        };
-
         CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse();
 
         _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()));
