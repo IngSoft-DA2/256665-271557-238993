@@ -10,10 +10,18 @@ namespace Test.Services;
 [TestClass]
 public class AdministratorServiceTest
 {
-    [TestMethod]
-    public void CreateAdministrator_ShouldCreateAdministrator()
+    
+    private AdministratorService _administratorService;
+    private Mock<IAdministratorRepository> _administratorRepository;
+    private Administrator _genericAdministrator;
+    
+    [TestInitialize]
+    public void Setup()
     {
-        Administrator administrator = new Administrator
+        _administratorRepository = new Mock<IAdministratorRepository>(MockBehavior.Strict);
+        _administratorService = new AdministratorService(_administratorRepository.Object);
+        
+        _genericAdministrator = new Administrator
         {
             Id = Guid.NewGuid(),
             Firstname = "Administrator",
@@ -21,64 +29,41 @@ public class AdministratorServiceTest
             Email = "person@gmail.com",
             Password = "12345678"
         };
+        
+    }
+    
+    [TestMethod]
+    public void CreateAdministrator_ShouldCreateAdministrator()
+    {
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator));
 
-        Mock<IAdministratorRepository> administratorRepository =
-            new Mock<IAdministratorRepository>(MockBehavior.Strict);
-        administratorRepository.Setup(repo => repo.CreateAdministrator(administrator));
+        _administratorService.CreateAdministrator(_genericAdministrator);
 
-        AdministratorService administratorService = new AdministratorService(administratorRepository.Object);
+        Assert.IsNotNull(_genericAdministrator);
 
-        administratorService.CreateAdministrator(administrator);
-
-        Assert.IsNotNull(administrator);
-
-        administratorRepository.VerifyAll();
+        _administratorRepository.VerifyAll();
     }
 
     [TestMethod]
     public void GivenEmptyEmailOnCreate_ShouldThrowObjectErrorServiceException()
     {
-        Administrator administrator = new Administrator
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "Administrator",
-            LastName = "AdministratorLastName",
-            Email = "",
-            Password = "12345678"
-        };
+        _genericAdministrator.Email = "";
         
-        Mock<IAdministratorRepository> administratorRepository =
-            new Mock<IAdministratorRepository>(MockBehavior.Strict);
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator)).Throws(new InvalidPersonException("Email is required"));
         
-        administratorRepository.Setup(repo => repo.CreateAdministrator(administrator)).Throws(new InvalidPersonException("Email is required"));
-        
-        AdministratorService administratorService = new AdministratorService(administratorRepository.Object);
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => administratorService.CreateAdministrator(administrator));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _administratorService.CreateAdministrator(_genericAdministrator));
     }
 
     [TestMethod]
     public void GivenEmptyPasswordOnCreate_ShouldThrowObjectErrorServiceException()
     {
-        Administrator administrator = new Administrator
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "Administrator",
-            LastName = "AdministratorLastName",
-            Email = "person@email.com",
-            Password = "",
-        };
+        _genericAdministrator.Password = "";
 
-        Mock<IAdministratorRepository> administratorRepository =
-            new Mock<IAdministratorRepository>(MockBehavior.Strict);
-
-        administratorRepository.Setup(repo => repo.CreateAdministrator(administrator))
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
             .Throws(new InvalidManagerException("Password must have at least 8 characters"));
-
-        AdministratorService administratorService = new AdministratorService(administratorRepository.Object);
-
+        
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            administratorService.CreateAdministrator(administrator));
+            _administratorService.CreateAdministrator(_genericAdministrator));
 
     }
 }
