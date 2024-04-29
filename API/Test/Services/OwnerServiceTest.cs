@@ -195,7 +195,7 @@ public class OwnerServiceTest
             Email = "john@gmail.com",
             Flats = new List<Flat>()
         };
-
+        
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _ownerService.CreateOwner(ownerToCreateWithEmptyLastname));
     }

@@ -82,11 +82,11 @@ public class ManagerAdapter : IManagerAdapter
                 Password = createRequest.Password,
             };
 
-            Manager serviceResponse = _managerServiceLogic.CreateManager(manager);
+            _managerServiceLogic.CreateManager(manager);
 
             CreateManagerResponse adapterResponse = new CreateManagerResponse
             {
-                Id = serviceResponse.Id
+                Id = manager.Id
             };
 
             return adapterResponse;

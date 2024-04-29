@@ -1,0 +1,233 @@
+﻿using Domain;
+using IRepository;
+using Moq;
+using ServiceLogic;
+using ServiceLogic.CustomExceptions;
+
+namespace Test.Services;
+
+[TestClass]
+public class ManagerServiceTest
+{
+    #region Initializing Aspects
+    
+    private Mock<IManagerRepository> _managerRepository;
+    private ManagerService _managerService;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        _managerRepository = new Mock<IManagerRepository>();
+        _managerService = new ManagerService(_managerRepository.Object);
+    }
+    
+    #endregion
+    
+    #region Get All Managers
+
+    [TestMethod]
+    public void GetAllManagers_ShouldReturnsAllManagers()
+    {
+        IEnumerable<Manager> expectedManagers = new List<Manager>
+        {
+            new Manager { Id = Guid.NewGuid(), Firstname = "Manager 1" },
+            new Manager { Id = Guid.NewGuid(), Firstname = "Manager 2" }
+        };
+
+        _managerRepository.Setup(x => x.GetAllManagers()).Returns(expectedManagers);
+
+        var actualManagers = _managerService.GetAllManagers();
+
+        Assert.AreEqual(expectedManagers, actualManagers);
+
+        _managerRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetAllManagers_ShouldThrowUnknownServiceException()
+    {
+        _managerRepository.Setup(x => x.GetAllManagers()).Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _managerService.GetAllManagers());
+
+        _managerRepository.VerifyAll();
+    }
+    
+    #endregion
+    
+    #region Create Manager
+
+    [TestMethod]
+    public void CreateManager_ShouldCreateManager()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "person@gmail.com",
+            Password = "password",
+            Buildings = new List<Guid>()
+        };
+
+        _managerRepository.Setup(service => service.CreateManager(manager));
+        _managerService.CreateManager(manager);
+
+        _managerRepository.Verify(x => x.CreateManager(manager), Times.Once);
+    }
+
+    [TestMethod]
+    public void GivenEmptyNameOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "" };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenEmptyEmailOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager", Email = "" };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenInvalidEmailOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager", Email = "invalidemail" };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenNullPasswordOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "person@gmail.com",
+            Password = ""
+        };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenPasswordLessThan8CharactersOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "person@gmail.com",
+            Password = "1234567"
+        };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenNullBuildingsOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "person@gmail.com",
+            Password = "1234567"
+        };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
+    }
+
+    [TestMethod]
+    public void GivenRepeatedEmailOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "persona@gmail.com",
+            Password = "12345678",
+            Buildings = new List<Guid>()
+        };
+
+        _managerRepository.Setup(x => x.GetAllManagers()).Returns(new List<Manager> { manager });
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _managerService.CreateManager(manager));
+
+        _managerRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateManager_ShouldThrowUnknownServiceException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "persona@gmail.com",
+            Password = "12345678",
+            Buildings = new List<Guid>()
+        };
+
+        _managerRepository.Setup(x => x.CreateManager(manager)).Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _managerService.CreateManager(manager));
+
+        _managerRepository.VerifyAll();
+    }
+    
+    #endregion
+    
+    #region Delete Manager
+
+    [TestMethod]
+    public void DeleteManagerById_ShouldDeleteManager()
+    {
+        Guid managerId = Guid.NewGuid();
+
+        Manager manager = new Manager
+        {
+            Id = managerId,
+            Firstname = "Manager",
+            Email = "",
+        };
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Returns(manager);
+        _managerRepository.Setup(repo => repo.DeleteManagerById(managerId));
+
+
+        _managerService.DeleteManagerById(managerId);
+
+        _managerRepository.Verify(x => x.DeleteManagerById(managerId), Times.Once);
+    }
+
+    [TestMethod]
+    public void DeleteManagerById_ShouldThrowObjectNotFoundServiceException()
+    {
+        Guid managerId = Guid.NewGuid();
+        Manager manager = null;
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Returns(manager);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _managerService.DeleteManagerById(managerId));
+
+        _managerRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void DeleteManagerById_ShouldThrowUnknownServiceException()
+    {
+        Guid managerId = Guid.NewGuid();
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _managerService.DeleteManagerById(managerId));
+
+        _managerRepository.VerifyAll();
+    }
+    
+    #endregion
+}
