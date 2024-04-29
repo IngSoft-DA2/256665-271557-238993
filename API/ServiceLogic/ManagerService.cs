@@ -29,10 +29,7 @@ public class ManagerService
     {
         try
         {
-            manager.PersonValidator();
-            manager.PasswordValidator();
-            manager.BuildingValidator();
-
+            manager.ManagerValidator();
             _managerRepository.CreateManager(manager);
         }
         catch (InvalidPersonException exceptionCaught)

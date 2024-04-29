@@ -4,8 +4,15 @@ public class Manager : Person
 {
     public IEnumerable<Guid> Buildings { get; set; }
     public string Password { get; set; }
+    
+    public void ManagerValidator()
+    {
+        PersonValidator();
+        PasswordValidator();
+        BuildingValidator();
+    }
 
-    public void PasswordValidator()
+    private void PasswordValidator()
     {
         if (string.IsNullOrEmpty(Password) || Password.Length < 8)
         {
@@ -13,7 +20,7 @@ public class Manager : Person
         }
     }
     
-    public void BuildingValidator()
+    private void BuildingValidator()
     {
         if (Buildings == null)
         {
