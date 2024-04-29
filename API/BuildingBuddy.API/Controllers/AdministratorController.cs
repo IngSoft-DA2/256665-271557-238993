@@ -13,12 +13,18 @@ namespace BuildingBuddy.API.Controllers
     [ApiController]
     public class AdministratorController : ControllerBase
     {
+        #region Constructor and attributes
+        
         private readonly IAdministratorAdapter _administratorAdapter;
 
         public AdministratorController(IAdministratorAdapter administratorAdapter)
         {
             _administratorAdapter = administratorAdapter;
         }
+        
+        #endregion
+        
+        #region Create Administrator
         
         [HttpPost]
         public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequest request)
@@ -37,8 +43,8 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-       
-            
         }
+        
+        #endregion
     }
 }
