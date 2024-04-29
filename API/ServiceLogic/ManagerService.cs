@@ -46,6 +46,10 @@ public class ManagerService
         {
             throw new ObjectRepeatedServiceException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private void CheckIfEmailIsAlreadyRegistered(Manager manager)

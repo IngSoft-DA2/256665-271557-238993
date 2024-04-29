@@ -149,4 +149,23 @@ public class ManagerServiceTest
 
         _managerRepository.VerifyAll();
     }
+
+    [TestMethod]
+    public void CreateManager_ShouldThrowUnknownServiceException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "persona@gmail.com",
+            Password = "12345678",
+            Buildings = new List<Guid>()
+        };
+        
+        _managerRepository.Setup(x => x.CreateManager(manager)).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _managerService.CreateManager(manager));
+        
+        _managerRepository.VerifyAll(); 
+    }
 }
