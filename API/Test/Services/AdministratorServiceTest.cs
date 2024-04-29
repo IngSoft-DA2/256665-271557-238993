@@ -55,8 +55,30 @@ public class AdministratorServiceTest
         AdministratorService administratorService = new AdministratorService(administratorRepository.Object);
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => administratorService.CreateAdministrator(administrator));
-        
-        
-        
+    }
+
+    [TestMethod]
+    public void GivenEmptyPasswordOnCreate_ShouldThrowObjectErrorServiceException()
+    {
+        Administrator administrator = new Administrator
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Administrator",
+            LastName = "AdministratorLastName",
+            Email = "person@email.com",
+            Password = "",
+        };
+
+        Mock<IAdministratorRepository> administratorRepository =
+            new Mock<IAdministratorRepository>(MockBehavior.Strict);
+
+        administratorRepository.Setup(repo => repo.CreateAdministrator(administrator))
+            .Throws(new InvalidManagerException("Password must have at least 8 characters"));
+
+        AdministratorService administratorService = new AdministratorService(administratorRepository.Object);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            administratorService.CreateAdministrator(administrator));
+
     }
 }
