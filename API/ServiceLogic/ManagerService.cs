@@ -75,5 +75,9 @@ public class ManagerService :IManagerService
         {
             throw new ObjectNotFoundServiceException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 }
