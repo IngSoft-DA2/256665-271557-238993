@@ -130,4 +130,23 @@ public class ManagerServiceTest
 
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
+
+    [TestMethod]
+    public void GivenRepeatedEmailOnCreate_ShouldThrowException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "persona@gmail.com",
+            Password = "12345678",
+            Buildings = new List<Guid>()
+        };
+
+        _managerRepository.Setup(x => x.GetAllManagers()).Returns(new List<Manager> { manager });
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _managerService.CreateManager(manager));
+
+        _managerRepository.VerifyAll();
+    }
 }

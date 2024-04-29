@@ -30,6 +30,12 @@ public class ManagerService
         try
         {
             manager.ManagerValidator();
+            IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
+            if (managers.Any(m => m.Email == manager.Email))
+            {
+                throw new ObjectRepeatedServiceException();
+            }
+
             _managerRepository.CreateManager(manager);
         }
         catch (InvalidPersonException exceptionCaught)
@@ -39,6 +45,10 @@ public class ManagerService
         catch (InvalidManagerException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
         }
     }
     
