@@ -10,6 +10,8 @@ namespace Test.Services;
 [TestClass]
 public class AdministratorServiceTest
 {
+    #region Initialize
+
     private AdministratorService _administratorService;
     private Mock<IAdministratorRepository> _administratorRepository;
     private Administrator _genericAdministrator;
@@ -29,6 +31,10 @@ public class AdministratorServiceTest
             Password = "12345678"
         };
     }
+
+    #endregion
+
+    #region Create Administrator
 
     [TestMethod]
     public void CreateAdministrator_ShouldCreateAdministrator()
@@ -93,7 +99,7 @@ public class AdministratorServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
     }
-    
+
     [TestMethod]
     public void GivenNullPasswordOnCreate_ShouldThrowObjectErrorServiceException()
     {
@@ -105,18 +111,20 @@ public class AdministratorServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
     }
-    
+
     [TestMethod]
     public void CreateAdministrator_ShouldThrowUnknownServiceException()
     {
         _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
             .Throws(new Exception("Unknown exception"));
-        
+
         _administratorRepository.Setup(repo => repo.GetAllAdministrators()).Returns(new List<Administrator>());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
-        
+
         _administratorRepository.VerifyAll();
     }
+
+    #endregion
 }

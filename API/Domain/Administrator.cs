@@ -2,9 +2,14 @@
 
 public class Administrator : Person
 {
+    #region Properties
     public string LastName { get; set; }
     public string Password { get; set; }
     public IEnumerable<Invitation> Invitations { get; set; }
+    
+    #endregion
+    
+    #region Validators
     
     public void AdministratorValidator()
     {
@@ -36,5 +41,5 @@ public class Administrator : Person
         }
     }
     
-    
+    #endregion
 }

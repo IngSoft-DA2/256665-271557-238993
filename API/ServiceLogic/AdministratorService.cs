@@ -7,12 +7,18 @@ namespace ServiceLogic;
 
 public class AdministratorService : IAdministratorService
 {
+    #region Constructor and Attributes
+    
     private readonly IAdministratorRepository _administratorRepository;
 
     public AdministratorService(IAdministratorRepository administratorRepository)
     {
         _administratorRepository = administratorRepository;
     }
+    
+    #endregion
+    
+    #region Create Administrator
 
     public void CreateAdministrator(Administrator administratorToAdd)
     {
@@ -44,4 +50,6 @@ public class AdministratorService : IAdministratorService
             throw new ObjectRepeatedServiceException();
         }
     }
+    
+    #endregion
 }
