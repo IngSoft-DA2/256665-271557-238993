@@ -43,6 +43,16 @@ public class FlatService : IFlatService
 
     public void CreateFlat(Flat flatToAdd)
     {
-        _flatRepository.CreateFlat(flatToAdd);
+
+        try
+        {
+            flatToAdd.FlatValidator();
+            _flatRepository.CreateFlat(flatToAdd);
+        }
+        catch (InvalidFlatException exceptionCaught)
+        {
+           throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+ 
     }
 }

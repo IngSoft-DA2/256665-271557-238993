@@ -73,7 +73,7 @@ public class FlatServiceTest
     #endregion
 
     #endregion
-    
+
     #region Get Flat By Id
 
     //Happy Path
@@ -116,46 +116,62 @@ public class FlatServiceTest
             _flatService.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()));
         _flatRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void GetFlatById_ThrowsUnknownErrorServiceException()
     {
         _flatRepository.Setup(flatRepository => flatRepository.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new UnknownRepositoryException("Unknown error"));
 
-        Assert.ThrowsException<UnknownServiceException>(() => _flatService.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()));
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _flatService.GetFlatById(It.IsAny<Guid>(), It.IsAny<Guid>()));
         _flatRepository.VerifyAll();
     }
 
     #endregion
 
     #endregion
-    
+
     #region Create Flat
 
-     //Happy Path
-     [TestMethod]
-     public void CreateFlat_FlatIsCreated()
-     {
-         Flat flatToAdd = new Flat
-         {
-             Id = Guid.NewGuid(),
-             Floor = 1,
-             RoomNumber = 101,
-             OwnerAssigned = new Owner(),
-             TotalRooms = 2,
-             TotalBaths = 1,
-             HasTerrace = true
-         };
-         
-            _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatToAdd));
-            
-            _flatService.CreateFlat(flatToAdd);
-            _flatRepository.VerifyAll();
-            
-     }
-    
-    
-    
+    //Happy Path
+    [TestMethod]
+    public void CreateFlat_FlatIsCreated()
+    {
+        Flat flatToAdd = new Flat
+        {
+            Id = Guid.NewGuid(),
+            Floor = 1,
+            RoomNumber = 101,
+            OwnerAssigned = new Owner(),
+            TotalRooms = 2,
+            TotalBaths = 1,
+            HasTerrace = true
+        };
+
+        _flatRepository.Setup(flatRepository => flatRepository.CreateFlat(flatToAdd));
+
+        _flatService.CreateFlat(flatToAdd);
+        _flatRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateFlatWithNoTotalRooms_ThrowsObjectErrorServiceException()
+    {
+        Flat flatWithNoRooms = new Flat
+        {
+            Id = Guid.NewGuid(),
+            Floor = 1,
+            RoomNumber = 101,
+            OwnerAssigned = new Owner(),
+            TotalRooms = 0,
+            TotalBaths = 1,
+            HasTerrace = true
+        };
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _flatService.CreateFlat(flatWithNoRooms));
+    }
     #endregion
 }
+
+
