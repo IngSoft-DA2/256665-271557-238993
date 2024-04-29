@@ -30,11 +30,7 @@ public class ManagerService
         try
         {
             manager.ManagerValidator();
-            IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
-            if (managers.Any(m => m.Email == manager.Email))
-            {
-                throw new ObjectRepeatedServiceException();
-            }
+            CheckIfEmailIsAlreadyRegistered(manager);
 
             _managerRepository.CreateManager(manager);
         }
@@ -51,7 +47,13 @@ public class ManagerService
             throw new ObjectRepeatedServiceException();
         }
     }
-    
-    
-    
+
+    private void CheckIfEmailIsAlreadyRegistered(Manager manager)
+    {
+        IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
+        if (managers.Any(m => m.Email == manager.Email))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+    }
 }
