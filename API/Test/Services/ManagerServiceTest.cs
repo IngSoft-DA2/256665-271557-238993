@@ -113,7 +113,7 @@ public class ManagerServiceTest
             Email = "person@gmail.com",
             Password = "1234567"
         };
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
 
@@ -161,23 +161,45 @@ public class ManagerServiceTest
             Password = "12345678",
             Buildings = new List<Guid>()
         };
-        
+
         _managerRepository.Setup(x => x.CreateManager(manager)).Throws(new Exception());
-        
+
         Assert.ThrowsException<UnknownServiceException>(() => _managerService.CreateManager(manager));
-        
-        _managerRepository.VerifyAll(); 
+
+        _managerRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void DeleteManagerById_ShouldDeleteManager()
     {
         Guid managerId = Guid.NewGuid();
-        
-        _managerRepository.Setup(x => x.DeleteManagerById(managerId));
-        
+
+        Manager manager = new Manager
+        {
+            Id = managerId,
+            Firstname = "Manager",
+            Email = "",
+        };
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Returns(manager);
+        _managerRepository.Setup(repo => repo.DeleteManagerById(managerId));
+
+
         _managerService.DeleteManagerById(managerId);
-        
+
         _managerRepository.Verify(x => x.DeleteManagerById(managerId), Times.Once);
+    }
+
+    [TestMethod]
+    public void DeleteManagerById_ShouldThrowObjectNotFoundServiceException()
+    {
+        Guid managerId = Guid.NewGuid();
+        Manager manager = null;
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Returns(manager);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _managerService.DeleteManagerById(managerId));
+
+        _managerRepository.VerifyAll();
     }
 }

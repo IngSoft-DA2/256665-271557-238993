@@ -64,6 +64,16 @@ public class ManagerService :IManagerService
 
     public void DeleteManagerById(Guid managerId)
     {
-        _managerRepository.DeleteManagerById(managerId);
+        try
+        {
+            Manager managerToDelete = _managerRepository.GetManagerById(managerId);
+            
+            if (managerToDelete is null) throw new ObjectNotFoundServiceException();
+            _managerRepository.DeleteManagerById(managerId);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
     }
 }
