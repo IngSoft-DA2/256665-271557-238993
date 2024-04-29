@@ -115,6 +115,7 @@ public class FlatAdapter : IFlatAdapter
             }
             Flat flatToCreate = new Flat
             {
+                Id = Guid.NewGuid(),
                 Floor = flat.Floor,
                 RoomNumber = flat.RoomNumber,
                 OwnerAssigned = ownerAssigned,
