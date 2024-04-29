@@ -36,6 +36,7 @@ public class AdministratorServiceTest
     public void CreateAdministrator_ShouldCreateAdministrator()
     {
         _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator));
+        _administratorRepository.Setup(repo => repo.GetAllAdministrators()).Returns(new List<Administrator>());
 
         _administratorService.CreateAdministrator(_genericAdministrator);
 
@@ -65,5 +66,20 @@ public class AdministratorServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _administratorService.CreateAdministrator(_genericAdministrator));
 
+    }
+    
+    [TestMethod]
+    public void GivenRepeatedEmailOnCreate_ShouldThrowObjectRepeatedServiceException()
+    {
+        _administratorRepository.Setup(repo => repo.GetAllAdministrators()).Returns(new List<Administrator>
+        {
+            _genericAdministrator
+        });
+
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
+            .Throws(new ObjectRepeatedServiceException());
+        
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _administratorService.CreateAdministrator(_genericAdministrator));
     }
 }

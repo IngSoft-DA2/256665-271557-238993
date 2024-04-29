@@ -1,10 +1,11 @@
 ﻿using Domain;
 using IRepository;
+using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
-public class AdministratorService : IAdministratorRepository
+public class AdministratorService : IAdministratorService
 {
     private readonly IAdministratorRepository _administratorRepository;
 
@@ -19,6 +20,11 @@ public class AdministratorService : IAdministratorRepository
         {
             administratorToAdd.PersonValidator();
             administratorToAdd.PasswordValidator();
+            IEnumerable<Administrator> allAdministrators = _administratorRepository.GetAllAdministrators();
+            if(allAdministrators.Any(a => a.Email == administratorToAdd.Email))
+            {
+                throw new ObjectRepeatedServiceException();
+            }
             _administratorRepository.CreateAdministrator(administratorToAdd);
         }
         catch (InvalidPersonException exceptionCaught)
@@ -28,6 +34,10 @@ public class AdministratorService : IAdministratorRepository
         catch (InvalidManagerException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
         }
     }
 }
