@@ -50,7 +50,7 @@ public class AdministratorServiceTest
     {
         _genericAdministrator.Email = "";
         
-        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator)).Throws(new InvalidPersonException("Email is required"));
+        _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator)).Throws(new InvalidAdministratorException("Email is required"));
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _administratorService.CreateAdministrator(_genericAdministrator));
     }

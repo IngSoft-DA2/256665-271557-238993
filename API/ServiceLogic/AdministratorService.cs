@@ -18,17 +18,12 @@ public class AdministratorService : IAdministratorService
     {
         try
         {
-            administratorToAdd.PersonValidator();
-            administratorToAdd.PasswordValidator();
+            administratorToAdd.AdministratorValidator();
             IEnumerable<Administrator> allAdministrators = _administratorRepository.GetAllAdministrators();
             CheckIfEmailAlreadyExists(administratorToAdd, allAdministrators);
             _administratorRepository.CreateAdministrator(administratorToAdd);
         }
-        catch (InvalidPersonException exceptionCaught)
-        {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
-        catch (InvalidManagerException exceptionCaught)
+        catch (InvalidAdministratorException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
