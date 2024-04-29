@@ -18,18 +18,14 @@ public class AdministratorService : IAdministratorRepository
         try
         {
             administratorToAdd.PersonValidator();
-            
-            if (string.IsNullOrEmpty(administratorToAdd.Password) || administratorToAdd.Password.Length < 8)
-            {
-                throw new InvalidManagerException("Password must have at least 8 characters");
-            }
+            administratorToAdd.PasswordValidator();
             _administratorRepository.CreateAdministrator(administratorToAdd);
         }
         catch (InvalidPersonException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-        catch(InvalidManagerException exceptionCaught)
+        catch (InvalidManagerException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
