@@ -168,4 +168,16 @@ public class ManagerServiceTest
         
         _managerRepository.VerifyAll(); 
     }
+    
+    [TestMethod]
+    public void DeleteManagerById_ShouldDeleteManager()
+    {
+        Guid managerId = Guid.NewGuid();
+        
+        _managerRepository.Setup(x => x.DeleteManagerById(managerId));
+        
+        _managerService.DeleteManagerById(managerId);
+        
+        _managerRepository.Verify(x => x.DeleteManagerById(managerId), Times.Once);
+    }
 }
