@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ConstructionCompany> ConstructionCompany { get; set; }
     public DbSet<Invitation> Invitations { get; set; }
     public DbSet<Building> Buildings { get; set; }
+    public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,5 +32,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(b => b.ConstructionCompanyId)
             .OnDelete(DeleteBehavior.Restrict);
     }
+    
     
 }

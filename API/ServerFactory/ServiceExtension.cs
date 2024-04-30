@@ -27,9 +27,9 @@ public static class ServiceExtension
         services.AddScoped<IInvitationAdapter, InvitationAdapter>();
         services.AddScoped<IInvitationService, InvitationService>();
         services.AddScoped<IInvitationRepository, InvitationRepository>();
-
-
-
+        services.AddScoped<IMaintenanceRequestAdapter, MaintenanceRequestAdapter>();
+        services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
+        services.AddScoped<IMaintenanceRequestRepository, MaintenanceRequestRepository>();
         services.AddScoped<IBuildingAdapter, BuildingAdapter>();
         services.AddScoped<IBuildingService, BuildingService>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
