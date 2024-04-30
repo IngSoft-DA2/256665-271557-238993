@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -12,7 +13,6 @@ public class AdministratorRepository : IAdministratorRepository
     {
         _dbContext = dbContext;
     }
-
     public void CreateAdministrator(Administrator administratorToAdd)
     {
         throw new NotImplementedException();
@@ -20,7 +20,15 @@ public class AdministratorRepository : IAdministratorRepository
 
     public IEnumerable<Administrator> GetAllAdministrators()
     {
-        IEnumerable<Administrator> administratorsInDb = _dbContext.Set<Administrator>().ToList();
-        return administratorsInDb;
+        try
+        {
+            IEnumerable<Administrator> administratorsInDb = _dbContext.Set<Administrator>().ToList();
+            return administratorsInDb;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
 }

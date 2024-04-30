@@ -3,6 +3,8 @@ using DataAccess.Repositories;
 using Domain;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
@@ -70,6 +72,16 @@ public class AdministratorRepositoryTest
         Assert.IsTrue(administratorsInDb.SequenceEqual(administratorsResponse));
     }
 
+    [TestMethod]
+    public void GetAllAdministrators_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Administrator>()).Throws(new Exception());
+
+        _administratorRepository = new AdministratorRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _administratorRepository.GetAllAdministrators());
+        _mockDbContext.VerifyAll();
+    }
 
     
     
