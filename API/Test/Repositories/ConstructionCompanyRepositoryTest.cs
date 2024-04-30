@@ -62,6 +62,22 @@ public class ConstructionCompanyRepositoryTest
         
         Assert.ThrowsException<UnknownRepositoryException>(() => constructionCompanyRepository.GetAllConstructionCompanies());
     }
-    
+
+    [TestMethod]
+    public void GetConstructionCompanyById_ConstructionCompanyIsReturn()
+    {
+        ConstructionCompany constructionCompanyInDb = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "ConstructionCompany1"
+        };
+        
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
+        _dbContext.SaveChanges();
+        
+        ConstructionCompany constructionCompanyResponse = _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyInDb.Id);
+        
+        Assert.AreEqual(constructionCompanyInDb, constructionCompanyResponse);
+    }
     
 }

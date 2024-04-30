@@ -29,7 +29,7 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)
     {
-        throw new NotImplementedException();
+        return _dbContext.Set<ConstructionCompany>().Find(idOfConstructionCompany);
     }
 
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd)
