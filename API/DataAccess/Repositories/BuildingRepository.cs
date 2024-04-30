@@ -18,7 +18,7 @@ public class BuildingRepository : IBuildingRepository
     {
         try
         {
-            return _dbContext.Set<Building>().Where(building => building.ManagerId == managerId).ToList();
+            return _dbContext.Set<Building>().Include(building => building.Flats).Where(building => building.ManagerId == managerId).ToList();
         }
         catch (Exception exceptionCaught)
         {
