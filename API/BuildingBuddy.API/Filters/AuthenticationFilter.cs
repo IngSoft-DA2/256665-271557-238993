@@ -1,48 +1,57 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using IServiceLogic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace BuildingBuddy.API.Filters;
 
-
-public class BearerTokenAuthorizationFilter : AuthorizeAttribute
+public class AuthenticationFilter : Attribute, IAuthorizationFilter
 {
-    private string[] _roles;
-
-    public BearerTokenAuthorizationFilter(params string[] roles)
+    public void OnAuthorization(AuthorizationFilterContext context)
     {
-        _roles = roles;
-    }
-
-    protected override bool IsAuthorized(HttpActionContext actionContext)
-    {
-        // Verificar si se proporciona un token Bearer en el encabezado de autorización de la solicitud HTTP
-        var authHeader = actionContext.Request.Headers.Authorization;
-        if (authHeader == null || authHeader.Scheme != "Bearer")
+        string header = context.HttpContext.Request.Headers["Authorization"];
+        if (header is null)
         {
-            return false; // No se proporcionó un token Bearer
-        }
-
-        // Obtener el token Bearer de la solicitud
-        var token = authHeader.Parameter;
-
-        // Decodificar y validar el token Bearer
-        var handler = new JwtSecurityTokenHandler();
-        var tokenS = handler.ReadToken(token) as JwtSecurityToken;
-
-        // Verificar la validez del token y obtener los claims (incluidos los roles)
-        var roles = tokenS.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
-
-        // Verificar si el usuario tiene alguno de los roles requeridos
-        foreach (var role in _roles)
-        {
-            if (roles.Contains(role))
+            context.Result = new ObjectResult("Authorization header is required.")
             {
-                return true; // El usuario tiene al menos uno de los roles requeridos
+                StatusCode = 401
+            };
+        }
+        else
+        {
+            try 
+            {
+                Guid sessionString = Guid.Parse(header);
+                VerifySessionString(sessionString, context);
+            }
+            catch (FormatException)
+            {
+                context.Result = new ObjectResult("Invalid token format.")
+                {
+                    StatusCode = 401
+                };
             }
         }
+    }
 
-        // Si el usuario no tiene ninguno de los roles requeridos, devolver false
-        return false;
+    private void VerifySessionString(Guid headerValidationString, AuthorizationFilterContext context)
+    {
+        var sessionService = GetSessionService(context);
+        if (!sessionService.IsValidToken(headerValidationString))
+        {
+            context.Result = new ObjectResult("Invalid token.")
+            {
+                StatusCode = 401
+            };
+        }
+        else
+        {
+            var user = sessionService.GetUserBySessionString(headerValidationString);
+            context.HttpContext.Items.Add("user", user);
+        }
+    }
+
+    private ISessionService GetSessionService(AuthorizationFilterContext context)
+    {
+        return context.HttpContext.RequestServices.GetService(typeof(ISessionService)) as ISessionService;
     }
 }
