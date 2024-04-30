@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -15,13 +16,21 @@ public class ReportRepository : IReportRepository
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByBuilding(Guid personId, Guid buildingId)
     {
-        if (!(Guid.Empty == buildingId))
+        try
         {
-            return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.Flat.BuildingId == buildingId && mr.ManagerId == personId);
+            if (!(Guid.Empty == buildingId))
+            {
+                return _dbContext.Set<MaintenanceRequest>()
+                    .Where(mr => mr.Flat.BuildingId == buildingId && mr.ManagerId == personId);
+            }
+            else
+            {
+                return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.ManagerId == personId);
+            }
         }
-        else
+        catch (Exception exceptionCaught)
         {
-            return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.ManagerId == personId);
+            throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
 

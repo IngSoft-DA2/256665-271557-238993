@@ -3,6 +3,8 @@ using DataAccess.Repositories;
 using Domain;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
@@ -143,4 +145,18 @@ public class ReportRepositoryTest
 
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
+    
+    [TestMethod]
+    public void GetMaintenanceReportByBuilding_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
+        
+        _reportRepository = new ReportRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _reportRepository.GetMaintenanceReportByBuilding(Guid.NewGuid(), Guid.NewGuid()));
+        _mockDbContext.VerifyAll();
+    }
+    
+
+    
 }
