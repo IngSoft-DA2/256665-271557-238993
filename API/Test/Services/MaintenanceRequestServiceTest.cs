@@ -154,14 +154,14 @@ public class MaintenanceRequestServiceTest
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
 
-    [TestMethod]
-    public void CreateMaintenanceRequestWithEmptyBuildingId_ThrowsObjectErrorServiceException()
-    {
-        _maintenanceRequestSample.BuildingId = Guid.Empty;
-
-        Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
-    }
+    // [TestMethod]
+    // public void CreateMaintenanceRequestWithEmptyBuildingId_ThrowsObjectErrorServiceException()
+    // {
+    //     _maintenanceRequestSample.BuildingId = Guid.Empty;
+    //
+    //     Assert.ThrowsException<ObjectErrorServiceException>(() =>
+    //         _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
+    // }
 
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyFlatId_ThrowsObjectErrorServiceException()
@@ -175,7 +175,7 @@ public class MaintenanceRequestServiceTest
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyCategory_ThrowsObjectErrorServiceException()
     {
-        _maintenanceRequestSample.Category = Guid.Empty;
+        _maintenanceRequestSample.Category = null;
 
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));

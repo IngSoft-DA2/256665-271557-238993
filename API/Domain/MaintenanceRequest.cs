@@ -23,7 +23,7 @@ public class MaintenanceRequest
     {
         MaintenanceRequest? maintenanceRequestToCompare = obj as MaintenanceRequest;
         
-        return Id == maintenanceRequestToCompare.Id && BuildingId == maintenanceRequestToCompare.BuildingId &&
+        return Id == maintenanceRequestToCompare.Id &&
                Description == maintenanceRequestToCompare.Description && FlatId == maintenanceRequestToCompare.FlatId &&
                OpenedDate == maintenanceRequestToCompare.OpenedDate && ClosedDate == maintenanceRequestToCompare.ClosedDate &&
                RequestHandlerId == maintenanceRequestToCompare.RequestHandlerId && CategoryId == maintenanceRequestToCompare.CategoryId &&
