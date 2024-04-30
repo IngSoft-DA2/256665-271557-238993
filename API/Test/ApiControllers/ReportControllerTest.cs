@@ -245,7 +245,7 @@ public class ReportControllerTest
 
         _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByCategory(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByCategory(It.IsAny<Guid>());
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByCategory(_sampleCategoryId);
 
         _reportAdapter.VerifyAll();
 
