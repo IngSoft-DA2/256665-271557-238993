@@ -29,8 +29,16 @@ public class BuildingRepository : IBuildingRepository
 
     public Building GetBuildingById(Guid buildingId)
     {
-        return _dbContext.Set<Building>().Include(building => building.Flats)
-            .Where(building => building.Id == buildingId).FirstOrDefault();
+        try
+        {
+            return _dbContext.Set<Building>().Include(building => building.Flats)
+                .Where(building => building.Id == buildingId).FirstOrDefault();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+       
     }
 
     public void CreateBuilding(Building building)

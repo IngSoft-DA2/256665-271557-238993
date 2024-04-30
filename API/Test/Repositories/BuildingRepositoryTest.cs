@@ -125,5 +125,17 @@ public class BuildingRepositoryTest
         Assert.AreEqual(buildingInDb, buildingReturn);
     }
     
+    [TestMethod]
+    public void GetBuildingById_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Building>()).Throws(new Exception("Unknown exception"));
+
+        BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.GetBuildingById(Guid.NewGuid()));
+    }
+
+    
+    
     
 }
