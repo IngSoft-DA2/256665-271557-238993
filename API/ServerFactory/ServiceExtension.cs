@@ -18,6 +18,25 @@ public static class ServiceExtension
         services.AddScoped<ICategoryAdapter,CategoryAdapter>();
         services.AddScoped<ICategoryService , CategoryService>();
         services.AddScoped<ICategoryRepository , CategoryRepository>();
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        services.AddScoped<IInvitationAdapter, InvitationAdapter>();
+        services.AddScoped<IInvitationService, InvitationService>();
+        services.AddScoped<IInvitationRepository, InvitationRepository>();
+        
+        
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
     }
 
