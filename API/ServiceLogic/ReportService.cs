@@ -94,7 +94,15 @@ public class ReportService : IReportService
 
     public IEnumerable<Report> GetAllMaintenanceRequestsByCategory()
     {
-        throw new NotImplementedException();
+        try
+        {
+            IEnumerable<Report> reports = _reportRepository.GetAllMaintenanceRequestsByCategory();
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     #endregion
