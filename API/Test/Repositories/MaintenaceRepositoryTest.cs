@@ -36,7 +36,7 @@ public class MaintenaceRepositoryTest
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.Empty,
-            RequestStatus = StatusEnum.Rejected,
+            RequestStatus = RequestStatusEnum.Closed,
             Category = Guid.NewGuid(),
             Description = "Bath broken",
         };
@@ -49,7 +49,7 @@ public class MaintenaceRepositoryTest
             ClosedDate = DateTime.Now.AddDays(3),
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.Empty,
-            RequestStatus = StatusEnum.Rejected,
+            RequestStatus = RequestStatusEnum.Closed,
             Category = Guid.NewGuid(),
             Description = "Room broken",
         };
@@ -159,7 +159,7 @@ public class MaintenaceRepositoryTest
         _dbContext.SaveChanges();
         
         _maintenanceRequestInDb.Description = "Room fixed";
-        _maintenanceRequestInDb.RequestStatus = StatusEnum.Accepted;
+        _maintenanceRequestInDb.RequestStatus = RequestStatusEnum.Closed;
         _maintenanceRequestRepository.UpdateMaintenanceRequest(_maintenanceRequestInDb.Id, _maintenanceRequestInDb);
         
         MaintenanceRequest maintenanceRequestResponse = _dbContext.Set<MaintenanceRequest>().Find(_maintenanceRequestInDb.Id);

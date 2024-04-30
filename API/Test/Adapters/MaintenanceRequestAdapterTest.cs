@@ -39,7 +39,7 @@ public class MaintenanceRequestAdapterTest
             Description = "Test Description Random",
             FlatId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
-            RequestStatus = StatusEnum.Accepted,
+            RequestStatus = RequestStatusEnum.Open,
             OpenedDate = DateTime.Now,
             ClosedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid()
