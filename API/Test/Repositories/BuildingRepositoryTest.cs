@@ -285,6 +285,61 @@ public class BuildingRepositoryTest
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.UpdateBuilding(new Building()));
     }
+
+    [TestMethod]
+    public void DeleteBuilding_DeletesBuilding()
+    {
+        Guid ownerId = Guid.NewGuid();
+        Guid buildingIdToCreate = Guid.NewGuid();
+
+        Building buildingToDelete = new Building
+        {
+            Id = buildingIdToCreate,
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = new Location
+            {
+                Id = Guid.NewGuid(),
+                Latitude = 1.23,
+                Longitude = 6.56
+            },
+            CommonExpenses = 100,
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction Company 1",
+            },
+            ManagerId = Guid.NewGuid(),
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    BuildingId = buildingIdToCreate,
+                    Floor = 1,
+                    RoomNumber = 101,
+                    OwnerId = ownerId,
+                    OwnerAssigned = new Owner
+                    {
+                        Id = ownerId,
+                        Firstname = "Owner 1",
+                        Lastname = "Owner 1",
+                        Email = "owner@gmail.com",
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+        
+        _dbContext.Set<Building>().Add(buildingToDelete);
+        _dbContext.SaveChanges();
+        
+        _buildingRepository.DeleteBuilding(buildingToDelete);
+        Building buildingInDb = _dbContext.Set<Building>().Find(buildingToDelete.Id);
+        Assert.IsNull(buildingInDb);
+    }
     
 
 }
