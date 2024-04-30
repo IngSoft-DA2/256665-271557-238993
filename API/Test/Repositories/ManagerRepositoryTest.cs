@@ -223,6 +223,16 @@ public class ManagerRepositoryTest
         Manager managerInDb = _dbContext.Set<Manager>().Find(managerToDelete.Id);
         Assert.IsNull(managerInDb);
     }
+    [TestMethod]
+    public void DeleteManager_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Manager>()).Throws(new Exception());
+
+        _managerRepository = new ManagerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _managerRepository.DeleteManager(new Manager()));
+        _mockDbContext.VerifyAll();
+    }
     
     
     

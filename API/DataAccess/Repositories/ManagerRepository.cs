@@ -53,8 +53,17 @@ public class ManagerRepository : IManagerRepository
 
     public void DeleteManager(Manager managerToDelete)
     {
-        _dbContext.Set<Manager>().Remove(managerToDelete);
-        _dbContext.Entry(managerToDelete).State = EntityState.Deleted;
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Manager>().Remove(managerToDelete);
+            _dbContext.Entry(managerToDelete).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
+    
     }
 }
