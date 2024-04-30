@@ -92,4 +92,19 @@ public class CategoryRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
+    [TestMethod]
+    public void CreateCategory_CategoryIsAdded()
+    {
+        Category categoryToAdd = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+        
+        _categoryRepository.CreateCategory(categoryToAdd);
+        Category categoryInDb = _dbContext.Set<Category>().Find(categoryToAdd.Id);
+        
+        Assert.AreEqual(categoryToAdd, categoryInDb);
+    }
+    
 }

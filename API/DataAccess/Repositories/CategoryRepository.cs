@@ -6,9 +6,10 @@ using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
-public class CategoryRepository :  ICategoryRepository
+public class CategoryRepository : ICategoryRepository
 {
     private readonly DbContext _dbContext;
+
     public CategoryRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
@@ -42,6 +43,7 @@ public class CategoryRepository :  ICategoryRepository
 
     public void CreateCategory(Category categoryToAdd)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Category>().Add(categoryToAdd);
+        _dbContext.SaveChanges();
     }
 }
