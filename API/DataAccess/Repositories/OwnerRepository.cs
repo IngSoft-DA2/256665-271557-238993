@@ -30,7 +30,15 @@ public class OwnerRepository : IOwnerRepository
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
     {
-        return _dbContext.Set<Owner>().Find(ownerIdToObtain);
+        try
+        {
+            return _dbContext.Set<Owner>().Find(ownerIdToObtain);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
 
     public void CreateOwner(Owner ownerToCreate)
