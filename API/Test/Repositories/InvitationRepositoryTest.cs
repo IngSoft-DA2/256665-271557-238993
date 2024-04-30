@@ -156,7 +156,17 @@ public class InvitationRepositoryTest
         
         Assert.IsNull(_invitationRepository.GetInvitationById(_invitationInDb.Id));
     }
-
+    
+    [TestMethod]
+    public void DeleteInvitation_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
+        
+        _invitationRepository = new InvitationRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.DeleteInvitation(new Invitation()));
+        _mockDbContext.VerifyAll();
+    }
 
 
 }
