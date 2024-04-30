@@ -78,6 +78,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
     {
-        throw new NotImplementedException();
+        return _context.Set<MaintenanceRequest>()
+            .Where(maintenanceRequest => maintenanceRequest.RequestHandlerId == requestHandlerId).ToList();
     }
 }
