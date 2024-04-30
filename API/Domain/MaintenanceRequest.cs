@@ -12,7 +12,7 @@ public class MaintenanceRequest
     public DateTime? ClosedDate { get; set; }
     public Guid RequestHandlerId { get; set; }
     public Guid Category { get; set; }
-    public StatusEnum RequestStatus { get; set; }
+    public RequestStatusEnum RequestStatus { get; set; }
     
     public override bool Equals(object? obj)
     {

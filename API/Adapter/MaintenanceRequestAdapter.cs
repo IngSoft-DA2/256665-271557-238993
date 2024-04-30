@@ -133,7 +133,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
         {
             MaintenanceRequest maintenanceRequestWithUpdates = new MaintenanceRequest
             {
-                RequestStatus = (StatusEnum)maintenanceRequestToUpdate.RequestStatus
+                RequestStatus = (RequestStatusEnum)maintenanceRequestToUpdate.RequestStatus
             };
 
             _maintenanceRequestService.UpdateMaintenanceRequest(id, maintenanceRequestWithUpdates);

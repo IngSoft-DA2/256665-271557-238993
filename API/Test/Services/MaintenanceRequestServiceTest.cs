@@ -30,7 +30,8 @@ public class MaintenanceRequestServiceTest
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
-            RequestStatus = StatusEnum.Accepted
+            RequestStatus = RequestStatusEnum.Closed
+            
         };
     }
     
@@ -52,7 +53,7 @@ public class MaintenanceRequestServiceTest
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = Guid.NewGuid(),
                 Category = Guid.NewGuid(),
-                RequestStatus = StatusEnum.Accepted
+                RequestStatus = RequestStatusEnum.Closed
             },
             
             new MaintenanceRequest()
@@ -64,7 +65,7 @@ public class MaintenanceRequestServiceTest
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = Guid.NewGuid(),
                 Category = Guid.NewGuid(),
-                RequestStatus = StatusEnum.Accepted
+                RequestStatus = RequestStatusEnum.Closed
             }
         };
         
@@ -221,7 +222,7 @@ public class MaintenanceRequestServiceTest
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
-            RequestStatus = StatusEnum.Accepted
+            RequestStatus = RequestStatusEnum.Closed
         };
         
         _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
@@ -261,7 +262,7 @@ public class MaintenanceRequestServiceTest
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
-            RequestStatus = StatusEnum.Accepted,
+            RequestStatus = RequestStatusEnum.Closed,
             ClosedDate = DateTime.Now.AddDays(-1)
         };
         
@@ -290,7 +291,7 @@ public class MaintenanceRequestServiceTest
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
-            RequestStatus = StatusEnum.Accepted
+            RequestStatus = RequestStatusEnum.Closed
         };
         
         _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
@@ -360,7 +361,7 @@ public class MaintenanceRequestServiceTest
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = requestHandlerId,
                 Category = Guid.NewGuid(),
-                RequestStatus = StatusEnum.Accepted
+                RequestStatus = RequestStatusEnum.Closed
             },
             
             new MaintenanceRequest()
@@ -372,7 +373,7 @@ public class MaintenanceRequestServiceTest
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = requestHandlerId,
                 Category = Guid.NewGuid(),
-                RequestStatus = StatusEnum.Accepted
+                RequestStatus = RequestStatusEnum.Closed
             }
         };
         
