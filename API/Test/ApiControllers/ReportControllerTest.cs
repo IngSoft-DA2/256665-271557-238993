@@ -258,10 +258,10 @@ public class ReportControllerTest
     
     #endregion
 
-    #region Get All Building Maintenance Reports 
+    #region Get Maintenance Reports From All Buildings 
     
     [TestMethod]
-    public void GetAllBuildingMaintenanceReports_OkIsReturned()
+    public void GetAllMaintenanceRequestsBuilding_OkIsReturned()
     {
         IEnumerable<GetMaintenanceReportByBuildingResponse> expectedResponseValue = new List<GetMaintenanceReportByBuildingResponse>()
         {
@@ -302,7 +302,7 @@ public class ReportControllerTest
     }
     
     [TestMethod]
-    public void GetAllBuildingMaintenanceReports_500StatusCodeIsReturned()
+    public void GetAllMaintenanceRequestsByBuilding_500StatusCodeIsReturned()
     {
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
@@ -319,6 +319,54 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
+    #endregion
+
+    #region Get Maintenance Reports From All Request Handlers
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByRequestHandler_OkIsReturned()
+    {
+        IEnumerable<GetMaintenanceReportByRequestHandlerResponse> expectedResponseValue = new List<GetMaintenanceReportByRequestHandlerResponse>()
+        {
+            new GetMaintenanceReportByRequestHandlerResponse()
+            {
+                RequestHandlerId = Guid.NewGuid(),
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8,
+                AverageTimeToCloseRequest = 5
+            },
+            new GetMaintenanceReportByRequestHandlerResponse()
+            {
+                RequestHandlerId = Guid.NewGuid(),
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8,
+                AverageTimeToCloseRequest = 5
+            }
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+
+        _reportAdapter.Setup(adapter => adapter.GetAllMaintenanceRequestsByRequestHandler()).Returns(expectedResponseValue);
+
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(Guid.Empty);
+
+        _reportAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetMaintenanceReportByRequestHandlerResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetMaintenanceReportByRequestHandlerResponse>;
+
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
+    }
+    
+
     #endregion
 
 }

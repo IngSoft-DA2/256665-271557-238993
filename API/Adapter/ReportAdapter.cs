@@ -98,4 +98,9 @@ public class ReportAdapter : IReportAdapter
     {
         throw new NotImplementedException();
     }
+
+    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetAllMaintenanceRequestsByRequestHandler()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -52,6 +52,10 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId)
         {
             try{
+                if (requestHandlerId == Guid.Empty)
+                {
+                    return Ok(_reportAdapter.GetAllMaintenanceRequestsByRequestHandler());
+                }
                 return Ok(_reportAdapter.GetMaintenanceReportByRequestHandler(requestHandlerId));
             }
             catch (Exception exceptionCaught)
