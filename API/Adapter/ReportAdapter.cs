@@ -93,4 +93,76 @@ public class ReportAdapter : IReportAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public IEnumerable<GetMaintenanceReportByBuildingResponse> GetAllBuildingMaintenanceReports()
+    {
+        try
+        {
+            IEnumerable<Report> reports = _reportService.GetAllMaintenanceRequestsByBuilding();
+
+            IEnumerable<GetMaintenanceReportByBuildingResponse> maintenanceReportResponses =
+                reports.Select(report => new GetMaintenanceReportByBuildingResponse()
+                {
+                    ClosedRequests = report.ClosedRequests,
+                    OpenRequests = report.OpenRequests,
+                    OnAttendanceRequests = report.OnAttendanceRequests,
+                    BuildingId = report.IdOfResourceToReport
+                });
+
+            return maintenanceReportResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            Console.WriteLine(exceptionCaught);
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
+
+    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetAllMaintenanceRequestsByRequestHandler()
+    {
+        try
+        {
+            IEnumerable<RequestHandlerReport> reports = _reportService.GetAllMaintenanceRequestsByRequestHandler();
+
+            IEnumerable<GetMaintenanceReportByRequestHandlerResponse> maintenanceReportResponses =
+                reports.Select(report => new GetMaintenanceReportByRequestHandlerResponse()
+                {
+                    ClosedRequests = report.ClosedRequests,
+                    OpenRequests = report.OpenRequests,
+                    OnAttendanceRequests = report.OnAttendanceRequests,
+                    AverageTimeToCloseRequest = report.AvgTimeToCloseRequest,
+                });
+
+            return maintenanceReportResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            Console.WriteLine(exceptionCaught);
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
+
+    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetAllMaintenanceRequestsByCategory()
+    {
+        try
+        {
+            IEnumerable<Report> reports = _reportService.GetAllMaintenanceRequestsByCategory();
+
+            IEnumerable<GetMaintenanceReportByCategoryResponse> maintenanceReportResponses =
+                reports.Select(report => new GetMaintenanceReportByCategoryResponse()
+                {
+                    ClosedRequests = report.ClosedRequests,
+                    OpenRequests = report.OpenRequests,
+                    OnAttendanceRequests = report.OnAttendanceRequests,
+                    CategoryId = report.IdOfResourceToReport
+                });
+
+            return maintenanceReportResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            Console.WriteLine(exceptionCaught);
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
 }

@@ -65,6 +65,45 @@ public class ReportService : IReportService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
+    public IEnumerable<Report> GetAllMaintenanceRequestsByBuilding()
+    {
+        try
+        {
+            IEnumerable<Report> reports = _reportRepository.GetAllMaintenanceRequestsByBuilding();
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    public IEnumerable<RequestHandlerReport> GetAllMaintenanceRequestsByRequestHandler()
+    {
+        try
+        {
+            IEnumerable<RequestHandlerReport> reports = _reportRepository.GetAllMaintenanceRequestsByRequestHandler();
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    public IEnumerable<Report> GetAllMaintenanceRequestsByCategory()
+    {
+        try
+        {
+            IEnumerable<Report> reports = _reportRepository.GetAllMaintenanceRequestsByCategory();
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
     #endregion
 }

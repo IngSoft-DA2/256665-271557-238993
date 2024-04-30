@@ -23,8 +23,9 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
         {
             RequestHandler requestHandlerToCreate = new RequestHandler
             {
-                FirstName = createRequest.Firstname,
-                Lastname = createRequest.Lastname,
+                Id = Guid.NewGuid(),
+                Firstname = createRequest.Firstname,
+                LastName = createRequest.Lastname,
                 Email = createRequest.Email,
                 Password = createRequest.Password
             };
