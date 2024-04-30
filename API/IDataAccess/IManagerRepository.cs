@@ -6,7 +6,7 @@ public interface IManagerRepository
 {
     public IEnumerable<Manager> GetAllManagers();
     public void CreateManager(Manager manager);
-    public void DeleteManagerById(Guid id);
-    public Manager GetManagerById(Guid id);
+    public void DeleteManager(Manager managerToDelete);
+    public Manager GetManagerById(Guid managerId);
 
 }

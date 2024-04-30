@@ -83,7 +83,7 @@ public class ManagerService :IManagerService
             Manager managerToDelete = _managerRepository.GetManagerById(managerId);
             
             if (managerToDelete is null) throw new ObjectNotFoundServiceException();
-            _managerRepository.DeleteManagerById(managerId);
+            _managerRepository.DeleteManager(managerToDelete);
         }
         catch (ObjectNotFoundServiceException)
         {

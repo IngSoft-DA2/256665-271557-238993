@@ -23,6 +23,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Building> Buildings { get; set; }
     public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
     public DbSet<Administrator> Administrators { get; set; }
+    public DbSet<Manager> Managers { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
