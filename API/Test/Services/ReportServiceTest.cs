@@ -18,115 +18,29 @@ public class ReportServiceTest
     private Guid _buildingId;
     private Guid _buildingId2;
     
+    private Guid _categoryId1;
+    private Guid _categoryId2;
+    
     private List<MaintenanceRequest> _expectedRepositoryResponse;
     private Guid _requestHandlerId;
     private Guid _requestHandlerId2;
+    private List<Report> _expectedReports;
 
     [TestInitialize]
     public void Initialize()
     {
         _reportRepository = new Mock<IReportRepository>(MockBehavior.Strict);
         _reportService = new ReportService(_reportRepository.Object);
+        
+        _categoryId1 = Guid.NewGuid();
+        _categoryId2 = Guid.NewGuid();
 
         _buildingId = Guid.NewGuid();
         _buildingId2 = Guid.NewGuid();
         
         _requestHandlerId = Guid.NewGuid();
         _requestHandlerId2 = Guid.NewGuid();
-
-        _expectedRepositoryResponse = new List<MaintenanceRequest>
-        {
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.Closed,
-                Category = Guid.NewGuid(),
-                Description = "Bath broken",
-                RequestHandlerId = _requestHandlerId
-            },
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.Closed,
-                Category = Guid.NewGuid(),
-                Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
-            },
-
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.Open,
-                Category = Guid.NewGuid(),
-                Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
-            },
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.Open,
-                Category = Guid.NewGuid(),
-                Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
-            },
-
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.Open,
-                Category = Guid.NewGuid(),
-                Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
-            },
-
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.InProgress,
-                Category = Guid.NewGuid(),
-                Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
-            },
-            new MaintenanceRequest()
-            {
-                Id = Guid.NewGuid(),
-                BuildingId = _buildingId2,
-                ClosedDate =  new DateTime(2029, 12, 31),
-                OpenedDate = new DateTime(2029, 12, 29),
-                RequestStatus = RequestStatusEnum.InProgress,
-                Category = Guid.NewGuid(),
-                Description = "Room broken",
-                RequestHandlerId = _requestHandlerId2
-            },
-        };
-    }
-
-    #endregion
-
-
-    // #region Get maintenance report by building
-
-    [TestMethod]
-    public void GetMaintenanceReportByBuilding_ReportsAreReturned()
-    {
+        
         Report reportNode1 = new Report()
         {
             IdOfResourceToReport = _buildingId,
@@ -143,9 +57,100 @@ public class ReportServiceTest
             OnAttendanceRequests = 1
         };
 
-        IEnumerable<Report> expectedReports = new List<Report>
+        _expectedReports = new List<Report>
             { reportNode1, reportNode2 };
 
+        _expectedRepositoryResponse = new List<MaintenanceRequest>
+        {
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.Closed,
+                Category = _categoryId1,
+                Description = "Bath broken",
+                RequestHandlerId = _requestHandlerId
+            },
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.Closed,
+                Category = _categoryId1,
+                Description = "Room broken",
+                RequestHandlerId = _requestHandlerId
+            },
+
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.Open,
+                Category = _categoryId1,
+                Description = "Room broken",
+                RequestHandlerId = _requestHandlerId
+            },
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.Open,
+                Category = _categoryId1,
+                Description = "Room broken",
+                RequestHandlerId = _requestHandlerId
+            },
+
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.Open,
+                Category = _categoryId1,
+                Description = "Room broken",
+                RequestHandlerId = _requestHandlerId
+            },
+
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.InProgress,
+                Category = _categoryId1,
+                Description = "Room broken",
+                RequestHandlerId = _requestHandlerId
+            },
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = _buildingId2,
+                ClosedDate =  new DateTime(2029, 12, 31),
+                OpenedDate = new DateTime(2029, 12, 29),
+                RequestStatus = RequestStatusEnum.InProgress,
+                Category = _categoryId2,
+                Description = "Room broken",
+                RequestHandlerId = _requestHandlerId2
+            },
+        };
+    }
+
+    #endregion
+    
+
+    [TestMethod]
+    public void GetMaintenanceReportByBuilding_ReportsAreReturned()
+    {
         _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>()))
             .Returns(_expectedRepositoryResponse);
 
@@ -153,7 +158,7 @@ public class ReportServiceTest
 
         _reportRepository.VerifyAll();
 
-        Assert.IsTrue(actualResponse.SequenceEqual(expectedReports));
+        Assert.IsTrue(actualResponse.SequenceEqual(_expectedReports));
     }
     
     [TestMethod]
@@ -168,7 +173,6 @@ public class ReportServiceTest
         _reportRepository.VerifyAll();
     }
     
-    // #region Get maintenance report by request handler
     
     [TestMethod]
     public void GetMaintenanceReportByRequestHandler_ReportsAreReturned()
@@ -207,53 +211,50 @@ public class ReportServiceTest
         Assert.IsTrue(expectedReportResponse.SequenceEqual(actualResponse));
     }
     
-    // [TestMethod]
-    // public void GetMaintenanceReportByRequestHandler_ExceptionThrown()
-    // {
-    //     _reportRepository.Setup(reportRepository =>
-    //             reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
-    //         .Throws(new Exception());
-    //
-    //     Assert.ThrowsException<UnknownServiceException>(() =>
-    //         _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()));
-    //
-    //     _reportRepository.VerifyAll();
-    // }
-    //
-    // #endregion
-    //
-    // #region Get maintenance report by category
-    //
-    // [TestMethod]
-    // public void GetMaintenanceReportByCategory_ReportsAreReturned()
-    // {
-    //     IEnumerable<Report> expectedRepositoryResponse = new List<Report>
-    //     {
-    //         new Report()
-    //         {
-    //             IdOfResourceToReport = Guid.NewGuid(),
-    //             OnAttendanceRequests = 1,
-    //             OpenRequests = 23,
-    //             ClosedRequests = 10,
-    //         },
-    //         new Report()
-    //         {
-    //             IdOfResourceToReport = Guid.NewGuid(),
-    //             OnAttendanceRequests = 2,
-    //             OpenRequests = 20,
-    //             ClosedRequests = 12,
-    //         }
-    //     };
-    //
-    //     _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
-    //         .Returns(expectedRepositoryResponse);
-    //
-    //     IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>());
-    //
-    //     _reportRepository.VerifyAll();
-    //
-    //     Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
-    // }
+    [TestMethod]
+    public void GetMaintenanceReportByRequestHandler_ExceptionThrown()
+    {
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
+            .Throws(new Exception());
+    
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()));
+    
+        _reportRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void GetMaintenanceReportByCategory_ReportsAreReturned()
+    {
+        Report reportNode1 = new Report()
+        {
+            IdOfResourceToReport = _categoryId1,
+            ClosedRequests = 2,
+            OpenRequests = 3,
+            OnAttendanceRequests = 1
+        };
+
+        Report reportNode2 = new Report()
+        {
+            IdOfResourceToReport = _categoryId2,
+            ClosedRequests = 0,
+            OpenRequests = 0,
+            OnAttendanceRequests = 1
+        };
+
+        _expectedReports = new List<Report>
+            { reportNode1, reportNode2 };
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
+            .Returns(_expectedRepositoryResponse);
+    
+        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>());
+    
+        _reportRepository.VerifyAll();
+    
+        Assert.IsTrue(_expectedReports.SequenceEqual(actualResponse));
+    }
     //
     // [TestMethod]
     // public void GetMaintenanceReportByCategory_NoReportsAreReturned()

@@ -50,18 +50,18 @@ public class ReportService : IReportService
         }
     }
 
-    private static void AddByCorespondingStatus(MaintenanceRequest request, Report buildingReport)
+    private static void AddByCorespondingStatus(MaintenanceRequest request, Report report)
     {
         switch (request.RequestStatus)
         {
             case RequestStatusEnum.Open:
-                buildingReport.OpenRequests++;
+                report.OpenRequests++;
                 break;
             case RequestStatusEnum.InProgress:
-                buildingReport.OnAttendanceRequests++;
+                report.OnAttendanceRequests++;
                 break;
             case RequestStatusEnum.Closed:
-                buildingReport.ClosedRequests++;
+                report.ClosedRequests++;
                 break;
         }
     }
@@ -88,40 +88,43 @@ public class ReportService : IReportService
                         IdOfResourceToReport = request.RequestHandlerId
                     };
                 }
-
                 RequestHandlerReport handlerReport = reportsDictionary[request.RequestHandlerId];
-
-                if (request.RequestStatus == RequestStatusEnum.Closed && request.ClosedDate != null &&
-                    request.OpenedDate != null)
-                {
-                    TimeSpan timeToClose = request.ClosedDate.Value - request.OpenedDate.Value;
-                    handlerReport.TotalTime += timeToClose;
-                    handlerReport.ClosedRequests++;
-                }
-                else
-                {
-                    switch (request.RequestStatus)
-                    {
-                        case RequestStatusEnum.Open:
-                            handlerReport.OpenRequests++;
-                            break;
-                        case RequestStatusEnum.InProgress:
-                            handlerReport.OnAttendanceRequests++;
-                            break;
-                    }
-                }
-                
-                if (handlerReport.ClosedRequests > 0)
-                {
-                    handlerReport.AvgTimeToCloseRequest = handlerReport.TotalTime / handlerReport.ClosedRequests;
-                }
+                AddByCorrespondingStatusOnRequestHandlerReport(request, handlerReport);
             }
-
             return reportsDictionary.Values;
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    private static void AddByCorrespondingStatusOnRequestHandlerReport(MaintenanceRequest request,
+        RequestHandlerReport handlerReport)
+    {
+        if (request.RequestStatus == RequestStatusEnum.Closed && request.ClosedDate != null &&
+            request.OpenedDate != null)
+        {
+            TimeSpan timeToClose = request.ClosedDate.Value - request.OpenedDate.Value;
+            handlerReport.TotalTime += timeToClose;
+            handlerReport.ClosedRequests++;
+        }
+        else
+        {
+            switch (request.RequestStatus)
+            {
+                case RequestStatusEnum.Open:
+                    handlerReport.OpenRequests++;
+                    break;
+                case RequestStatusEnum.InProgress:
+                    handlerReport.OnAttendanceRequests++;
+                    break;
+            }
+        }
+
+        if (handlerReport.ClosedRequests > 0)
+        {
+            handlerReport.AvgTimeToCloseRequest = handlerReport.TotalTime / handlerReport.ClosedRequests;
         }
     }
 
@@ -133,53 +136,31 @@ public class ReportService : IReportService
     {
         try
         {
-            IEnumerable<Report> reports = _reportRepository.GetMaintenanceReportByCategory(isAny);
-            return reports;
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownServiceException(exceptionCaught.Message);
-        }
-    }
+            List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedCategory =
+                _reportRepository.GetMaintenanceReportByCategory(isAny).ToList();
 
-    public IEnumerable<Report> GetAllMaintenanceRequestsByBuilding()
-    {
-        try
-        {
-            IEnumerable<Report> reports = _reportRepository.GetAllMaintenanceRequestsByBuilding();
-            return reports;
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownServiceException(exceptionCaught.Message);
-        }
-    }
+            Dictionary<Guid, Report> reportsDictionary = new Dictionary<Guid, Report>();
 
-    public IEnumerable<RequestHandlerReport> GetAllMaintenanceRequestsByRequestHandler()
-    {
-        try
-        {
-            IEnumerable<RequestHandlerReport> reports = _reportRepository.GetAllMaintenanceRequestsByRequestHandler();
-            return reports;
+            foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedCategory)
+            {
+                if (!reportsDictionary.ContainsKey(request.Category))
+                {
+                    reportsDictionary[request.Category] = new Report
+                    {
+                        IdOfResourceToReport = request.Category
+                    };
+                }
+                Report categoryReport = reportsDictionary[request.Category];
+                AddByCorespondingStatus(request, categoryReport);   
+            }
+            return reportsDictionary.Values;
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
-    public IEnumerable<Report> GetAllMaintenanceRequestsByCategory()
-    {
-        try
-        {
-            IEnumerable<Report> reports = _reportRepository.GetAllMaintenanceRequestsByCategory();
-            return reports;
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownServiceException(exceptionCaught.Message);
-        }
-    }
+    
 
     #endregion
 }

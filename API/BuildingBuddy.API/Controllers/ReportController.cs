@@ -29,10 +29,6 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                if (buildingId == Guid.Empty)
-                {
-                    return Ok(_reportAdapter.GetAllBuildingMaintenanceReports());
-                }
                 return Ok(_reportAdapter.GetMaintenanceReportByBuilding(buildingId));
             }
             catch (Exception exceptionCaught)
@@ -52,10 +48,6 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId)
         {
             try{
-                if (requestHandlerId == Guid.Empty)
-                {
-                    return Ok(_reportAdapter.GetAllMaintenanceRequestsByRequestHandler());
-                }
                 return Ok(_reportAdapter.GetMaintenanceReportByRequestHandler(requestHandlerId));
             }
             catch (Exception exceptionCaught)
@@ -75,10 +67,6 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
-                if (categoryId == Guid.Empty)
-                {
-                    return Ok(_reportAdapter.GetAllMaintenanceRequestsByCategory());
-                }
                 return Ok(_reportAdapter.GetMaintenanceReportByCategory(categoryId));
             }
             catch (Exception exceptionCaught)
