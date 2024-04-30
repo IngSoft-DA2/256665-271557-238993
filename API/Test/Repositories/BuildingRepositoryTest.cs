@@ -60,7 +60,7 @@ public class BuildingRepositoryTest
         IEnumerable<Building> buildingsReturn = _buildingRepository.GetAllBuildings(buildingInDb.ManagerId);
         Assert.IsTrue(buildingsReturn.SequenceEqual(buildingsInDb));
     }
-    
+
     [TestMethod]
     public void GetAllBuildings_UnknownExceptionThrown()
     {
@@ -76,7 +76,7 @@ public class BuildingRepositoryTest
     {
         Guid ownerId = Guid.NewGuid();
         Guid buildingInDbId = Guid.NewGuid();
-        
+
         Building buildingInDb = new Building
         {
             Id = buildingInDbId,
@@ -124,7 +124,7 @@ public class BuildingRepositoryTest
         Building buildingReturn = _buildingRepository.GetBuildingById(buildingInDb.Id);
         Assert.AreEqual(buildingInDb, buildingReturn);
     }
-    
+
     [TestMethod]
     public void GetBuildingById_ThrowsUnknownException()
     {
@@ -140,7 +140,7 @@ public class BuildingRepositoryTest
     {
         Guid ownerId = Guid.NewGuid();
         Guid buildingIdToCreate = Guid.NewGuid();
-        
+
         Building buildingToCreate = new Building
         {
             Id = buildingIdToCreate,
@@ -186,6 +186,7 @@ public class BuildingRepositoryTest
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToCreate.Id);
         Assert.AreEqual(buildingToCreate, buildingInDb);
     }
+
     [TestMethod]
     public void CreateBuilding_ThrowsUnknownException()
     {
@@ -195,5 +196,85 @@ public class BuildingRepositoryTest
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.CreateBuilding(new Building()));
     }
+
+    [TestMethod]
+    public void UpdateBuilding_BuildingIsUpdated()
+    {
+        Guid ownerId = Guid.NewGuid();
+        Guid buildingInDbId = Guid.NewGuid();
+
+        ConstructionCompany constructionCompanyInDb = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company 1",
+        };
+        
+        ConstructionCompany constructionCompanyToUpd = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company To Update"
+        };
+
+        Building buildingInDb = new Building
+        {
+            Id = buildingInDbId,
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = new Location
+            {
+                Id = Guid.NewGuid(),
+                Latitude = 1.23,
+                Longitude = 6.56
+            },
+            CommonExpenses = 100,
+            ConstructionCompanyId = constructionCompanyInDb.Id,
+            ConstructionCompany = constructionCompanyInDb,
+            ManagerId = Guid.NewGuid(),
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    BuildingId = buildingInDbId,
+                    Floor = 1,
+                    RoomNumber = 101,
+                    OwnerId = ownerId,
+                    OwnerAssigned = new Owner
+                    {
+                        Id = ownerId,
+                        Firstname = "Owner 1",
+                        Lastname = "Owner 1",
+                        Email = "owner@gmail.com",
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+        
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToUpd);
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
+        _dbContext.Set<Building>().Add(buildingInDb);
+        _dbContext.SaveChanges();
+
+        Building buildingToUpdate = new Building
+        {
+            Id = buildingInDbId,
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = buildingInDb.Location,
+            CommonExpenses = 200,
+            ConstructionCompanyId = constructionCompanyToUpd.Id,
+            ConstructionCompany = constructionCompanyToUpd,
+            ManagerId = buildingInDb.ManagerId,
+            Flats = buildingInDb.Flats
+        };
+
+        _buildingRepository.UpdateBuilding(buildingToUpdate);
+        Building buildingInDbUpdated = _dbContext.Set<Building>().Find(buildingToUpdate.Id);
+        Assert.IsTrue(buildingToUpdate.Equals(buildingInDbUpdated));
+    }
     
+
 }

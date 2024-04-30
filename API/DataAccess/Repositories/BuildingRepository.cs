@@ -38,7 +38,6 @@ public class BuildingRepository : IBuildingRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-       
     }
 
     public void CreateBuilding(Building building)
@@ -54,10 +53,17 @@ public class BuildingRepository : IBuildingRepository
         }
     }
 
-    public void UpdateBuilding(Building building)
+    public void UpdateBuilding(Building buildingWithUpdates)
     {
-        throw new NotImplementedException();
+        var buildingInDb = _dbContext.Set<Building>()
+            .Include(b => b.Flats).Include(b => b.ConstructionCompany)
+            .FirstOrDefault(b => b.Id == buildingWithUpdates.Id);
+        
+        _dbContext.Entry(buildingInDb).CurrentValues.SetValues(buildingWithUpdates);
+        
+        _dbContext.SaveChanges();
     }
+
 
     public void DeleteBuilding(Building buildingId)
     {

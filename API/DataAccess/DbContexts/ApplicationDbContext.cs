@@ -21,4 +21,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<Invitation> Invitations { get; set; }
     public DbSet<Building> Buildings { get; set; }
     
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Building>()
+            .HasOne(b => b.ConstructionCompany)
+            .WithMany() 
+            .HasForeignKey(b => b.ConstructionCompanyId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+    
 }

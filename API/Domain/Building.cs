@@ -8,6 +8,7 @@ public class Building
     public string Name { get; set; }
     public string Address { get; set; }
     public Location Location { get; set; }
+    public Guid ConstructionCompanyId { get; set; }
     public ConstructionCompany ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
@@ -93,4 +94,16 @@ public class Building
     }
     
     #endregion
+
+    public override bool Equals(object? obj)
+    {
+        Building objectToCompare = obj as Building;
+        if (objectToCompare is null) return false;
+        return objectToCompare.Id == Id && objectToCompare.ManagerId == ManagerId &&
+               objectToCompare.Name == Name && objectToCompare.Address == Address &&
+               objectToCompare.Location.Equals(Location) &&
+               objectToCompare.ConstructionCompany.Equals(ConstructionCompany) &&
+               objectToCompare.CommonExpenses.Equals(CommonExpenses) &&
+               objectToCompare.Flats.SequenceEqual(Flats);
+    }
 }
