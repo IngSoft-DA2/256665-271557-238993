@@ -29,19 +29,19 @@ public class ManagerRepository : IManagerRepository
     public Manager GetManagerById(Guid managerId)
     {
         try
-        {   
+        {
             return _dbContext.Set<Manager>().Find(managerId);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-        
     }
 
     public void CreateManager(Manager manager)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Manager>().Add(manager);
+        _dbContext.SaveChanges();
     }
 
     public void DeleteManagerById(Guid id)

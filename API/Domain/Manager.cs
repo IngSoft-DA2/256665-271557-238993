@@ -2,7 +2,7 @@
 
 public class Manager : Person
 {
-    public IEnumerable<Building> Buildings { get; set; }
+    public IEnumerable<Building> Buildings { get; set; } = new List<Building>();
     public string Password { get; set; }
 
     public void ManagerValidator()
