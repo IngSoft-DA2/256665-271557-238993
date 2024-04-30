@@ -1,10 +1,12 @@
-﻿using Adapter;
+﻿using System.Collections;
+using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.BuildingRequests;
+using WebModel.Requests.FlatRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
@@ -259,13 +261,26 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>()))
+            .Returns(new Owner());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
-
+        IEnumerable<CreateFlatRequest> dummyFlats = new List<CreateFlatRequest>
+        {
+            new CreateFlatRequest
+            {
+                Floor = 1,
+                RoomNumber = 101,
+                OwnerAssignedId = Guid.NewGuid(),
+                TotalRooms = 4,
+                TotalBaths = 2,
+                HasTerrace = true
+            }
+        };
         dummyCreateRequest.Location = dummyLocationRequest;
-
-
+        dummyCreateRequest.Flats = dummyFlats;
+        
         CreateBuildingResponse buildingResponse = _buildingAdapter.CreateBuilding(dummyCreateRequest);
 
         _constructionCompanyService.VerifyAll();
