@@ -105,6 +105,31 @@ public class InvitationControllerTest
 
     #endregion
 
+    #region Get All Invitations By Email
+
+    [TestMethod]
+    public void GetAllInvitationsButWithEmail_OkIsReturn()
+    {
+        
+        IEnumerable<GetInvitationResponse> expectedInvitationResponse = new List<GetInvitationResponse>() {_expectedInvitation};
+        
+        _invitationAdapter.Setup(invitationAdapter =>
+            invitationAdapter.GetAllInvitations(It.IsAny<string>())).Returns(expectedInvitationResponse);
+        
+        IActionResult controllerResponse = _invitationController.GetAllInvitations(_expectedInvitation.Email);
+        
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        List<GetInvitationResponse>? controllerResponseValueCasted = controllerResponseCasted.Value as List<GetInvitationResponse>;
+        Assert.IsNotNull(controllerResponseValueCasted);
+        
+        Assert.IsTrue(expectedInvitationResponse.SequenceEqual(controllerResponseValueCasted));
+    }
+    
+
+    #endregion
+
     #region Get Invitation By Id
 
     [TestMethod]
