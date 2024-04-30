@@ -172,6 +172,16 @@ public class MaintenaceRepositoryTest
         Assert.AreEqual(_maintenanceRequestInDb, maintenanceRequestResponse);
     }
     
+    [TestMethod]
+    public void GetMaintenanceRequestById_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
+        
+        _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestById(Guid.NewGuid()));
+        _mockDbContext.VerifyAll();
+    }
     
 
     

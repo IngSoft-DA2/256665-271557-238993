@@ -66,7 +66,14 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate)
     {
-        return _context.Set<MaintenanceRequest>().Find(idToUpdate);
+        try
+        {
+            return _context.Set<MaintenanceRequest>().Find(idToUpdate);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
