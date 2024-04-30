@@ -22,7 +22,6 @@ public class RequestHandlerServiceTest
         _requestHandlerService = new RequestHandlerService(_requestHandlerRepository.Object);
         _requestHandlerSample = new RequestHandler
         {
-            Id = Guid.NewGuid(),
             Email = "some@example.com",
             Password = "admin12345",
             Firstname = "John",

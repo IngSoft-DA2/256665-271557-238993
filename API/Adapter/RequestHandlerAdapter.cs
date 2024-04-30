@@ -22,6 +22,7 @@ public class RequestHandlerAdapter
         {
             RequestHandler requestHandlerToCreate = new RequestHandler
             {
+                Id = Guid.NewGuid(),
                 Firstname = createRequest.Firstname,
                 LastName = createRequest.Lastname,
                 Email = createRequest.Email,
