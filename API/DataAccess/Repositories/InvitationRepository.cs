@@ -54,7 +54,8 @@ public class InvitationRepository : IInvitationRepository
 
     public void UpdateInvitation(Invitation invitationUpdated)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Invitation>().Update(invitationUpdated);
+        _dbContext.SaveChanges();
     }
 
     public void DeleteInvitation(Invitation invitationToDelete)

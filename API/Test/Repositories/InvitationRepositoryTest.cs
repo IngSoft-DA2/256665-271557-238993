@@ -125,6 +125,18 @@ public class InvitationRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.CreateInvitation(new Invitation()));
         _mockDbContext.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateInvitation_InvitationIsUpdated()
+    {
+        _invitationInDb.Status = StatusEnum.Rejected;
+        
+        _invitationRepository.UpdateInvitation(_invitationInDb);
+        
+        Invitation invitationResponse = _invitationRepository.GetInvitationById(_invitationInDb.Id);
+        
+        Assert.AreEqual(_invitationInDb, invitationResponse);
+    }
 
 
 
