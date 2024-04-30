@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using DataAccess.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Invitation> Invitations { get; set; }
     public DbSet<Building> Buildings { get; set; }
     public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
+    public DbSet<Administrator> Administrators { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

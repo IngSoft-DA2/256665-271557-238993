@@ -1,0 +1,76 @@
+﻿using DataAccess.DbContexts;
+using DataAccess.Repositories;
+using Domain;
+using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
+
+namespace Test.Repositories;
+
+[TestClass]
+public class AdministratorRepositoryTest
+{
+    private DbContext _dbContext;
+    private AdministratorRepository _administratorRepository;
+
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        _dbContext = CreateDbContext("AdministratorRepositoryTest");
+        _dbContext.Set<Administrator>();
+        _administratorRepository = new AdministratorRepository(_dbContext);
+    }
+    
+    private DbContext CreateDbContext(string dbName)
+    {
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
+        return new ApplicationDbContext(options);
+    }
+    [TestMethod]
+    public void GetAllAdministrator_ReturnsAllAdministrators()
+    {
+        IEnumerable<Administrator> administratorsInDb = new List<Administrator>
+        {
+            new Administrator
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Administrator1",
+                LastName = "Administrator1",
+                Email = "administrator@gmail.com",
+                Password = "password",
+                Invitations = new List<Invitation>
+                {
+                    new Invitation
+                    {
+                        Id = Guid.NewGuid(),
+                        Firstname = "Invitation1",
+                        Lastname = "Invitation1",
+                        Email = "invitation@example.com",
+                        ExpirationDate = DateTime.MaxValue,
+                        Status = StatusEnum.Pending
+                    }
+                }
+            },
+            new Administrator
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Administrator2",
+                LastName = "Administrator2",
+                Email = "administrato2@gmail.com",
+                Password = "password2",
+                Invitations = new List<Invitation>()
+            }
+        };
+
+        _dbContext.Set<Administrator>().Add(administratorsInDb.ElementAt(0));
+        _dbContext.Set<Administrator>().Add(administratorsInDb.ElementAt(1));
+        _dbContext.SaveChanges();
+
+        IEnumerable<Administrator> administratorsResponse = _administratorRepository.GetAllAdministrators();
+
+        Assert.IsTrue(administratorsInDb.SequenceEqual(administratorsResponse));
+    }
+
+
+    
+    
+}
