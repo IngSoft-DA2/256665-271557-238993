@@ -8,12 +8,12 @@ namespace DataAccess.Repositories;
 public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 {
     private readonly DbContext _context;
-    
+
     public MaintenanceRequestRepository(DbContext context)
     {
         _context = context;
     }
-    
+
     public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests()
     {
         try
@@ -24,7 +24,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-
     }
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid categoryId)
@@ -42,7 +41,8 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public void CreateMaintenanceRequest(MaintenanceRequest requestToCreate)
     {
-        throw new NotImplementedException();
+        _context.Set<MaintenanceRequest>().Add(requestToCreate);
+        _context.SaveChanges();
     }
 
     public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample)
