@@ -68,7 +68,6 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         try
         {
             ValidateRequestsBeforeUpdate(maintenanceRequestNotUpdated, maintenanceRequestUpdated);
-            MapProperties(maintenanceRequestNotUpdated, maintenanceRequestUpdated);
             maintenanceRequestUpdated.MaintenanceRequestValidator();
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequestUpdated);
         }
@@ -86,22 +85,6 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         }
         
     }
-
-    private void MapProperties(MaintenanceRequest maintenanceRequestNotUpdated, MaintenanceRequest maintenanceRequestUpdated)
-    {
-        foreach (PropertyInfo property in maintenanceRequestNotUpdated.GetType().GetProperties())
-        {
-            object? originalValue = property.GetValue(maintenanceRequestNotUpdated);
-            object? updatedValue = property.GetValue(maintenanceRequestUpdated);
-
-            if (updatedValue == null && originalValue != null)
-            {
-                property.SetValue(maintenanceRequestUpdated, originalValue);
-            }
-        }
-
-    }
-
     private void ValidateRequestsBeforeUpdate(MaintenanceRequest maintenanceRequestNotUpdated, MaintenanceRequest maintenanceRequestUpdated)
     {
         if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
