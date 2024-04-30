@@ -2,12 +2,13 @@ namespace Domain;
 
 public class RequestHandler : Person
 {
-    public object LastName { get; set; }
+    public string LastName { get; set; }
     public string Password { get; set; }
 
     public void RequestValidator()
     {
         PersonValidator();
+        if (string.IsNullOrEmpty(LastName)) throw new InvalidRequestHandlerException("Last name is required");
         PasswordValidator();
     }
 
@@ -18,4 +19,5 @@ public class RequestHandler : Person
             throw new InvalidRequestHandlerException("Password must have at least 8 characters");
         }
     }
+   
 }

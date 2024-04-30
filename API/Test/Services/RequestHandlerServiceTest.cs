@@ -100,6 +100,15 @@ public class RequestHandlerServiceTest
         Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
             _requestHandlerService.CreateRequestHandler(requestHandlerToCreate));
     }
+    
+    [TestMethod]
+    public void CreateRequestHanlderWithEmptyLastName_ThrowsObjectErrorServiceException()
+    {
+        _requestHandlerSample.LastName = "";
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+    }
 
     [TestMethod]
     public void CreateRequestHandler_UnknownServiceException()
