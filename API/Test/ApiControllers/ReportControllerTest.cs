@@ -76,7 +76,7 @@ public class ReportControllerTest
 
         _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>());
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(_sampleBuildingId);
 
         _reportAdapter.VerifyAll();
 
