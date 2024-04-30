@@ -135,6 +135,17 @@ public class MaintenanceRequestServiceTest
 
     #region Create Maintenance Request
 
+    [TestMethod]
+    public void CreateMaintenanceRequestWithCorrectData_MaintenanceRequestIsCreated()
+    {
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+            maintenanceRequestRepository.CreateMaintenanceRequest(_maintenanceRequestSample));
+
+        _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample);
+
+        _maintenanceRequestRepository.VerifyAll();
+    }
+    
     #region Create Maintenance Requests - Domain Validations
 
     [TestMethod]
