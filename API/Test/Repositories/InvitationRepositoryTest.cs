@@ -95,6 +95,26 @@ public class InvitationRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
+    [TestMethod]
+    public void CreateInvitation_InvitationIsCreated()
+    {
+        Invitation invitationToAdd = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Email = "New@invita.com",
+            ExpirationDate = DateTime.Now.AddDays(1),
+            Firstname = "New",
+            Lastname = "Invita",
+            Status = StatusEnum.Pending
+        };
+        
+        _invitationRepository.CreateInvitation(invitationToAdd);
+        
+        Invitation invitationResponse = _invitationRepository.GetInvitationById(invitationToAdd.Id);
+        
+        Assert.AreEqual(invitationToAdd, invitationResponse);
+    }
+
 
 
 }

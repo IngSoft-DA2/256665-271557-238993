@@ -41,7 +41,8 @@ public class InvitationRepository : IInvitationRepository
 
     public void CreateInvitation(Invitation invitationToAdd)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Invitation>().Add(invitationToAdd);
+        _dbContext.SaveChanges();
     }
 
     public void UpdateInvitation(Invitation invitationUpdated)
