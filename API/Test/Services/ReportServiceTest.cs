@@ -183,5 +183,44 @@ public class ReportServiceTest
     }
     
     #endregion
+
+    #region Get all maintenance requests by building
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByBuilding_ReportsAreReturned()
+    {
+        
+        IEnumerable<Report> expectedRepositoryResponse = new List<Report>
+        {
+            new Report()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OnAttendanceRequests = 1,
+                OpenRequests = 23,
+                ClosedRequests = 10,
+                
+            },
+            new Report()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OnAttendanceRequests = 2,
+                OpenRequests = 20,
+                ClosedRequests = 12,
+            }
+        };
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetAllMaintenanceRequestsByBuilding())
+            .Returns(expectedRepositoryResponse);
+        
+        IEnumerable<Report> actualResponse = _reportService.GetAllMaintenanceRequestsByBuilding();
+        
+        _reportRepository.VerifyAll();
+        
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+
+    
+
+    #endregion
     
 }
