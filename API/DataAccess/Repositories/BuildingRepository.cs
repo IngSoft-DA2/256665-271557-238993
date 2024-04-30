@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -15,7 +16,14 @@ public class BuildingRepository : IBuildingRepository
 
     public IEnumerable<Building> GetAllBuildings(Guid managerId)
     {
-        return _dbContext.Set<Building>().Where(building => building.ManagerId == managerId).ToList();
+        try
+        {
+            return _dbContext.Set<Building>().Where(building => building.ManagerId == managerId).ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public Building GetBuildingById(Guid buildingId)

@@ -21,7 +21,7 @@ public class BuildingRepositoryTest
         _dbContext.Set<Building>();
         _buildingRepository = new BuildingRepository(_dbContext);
     }
-    
+
     private DbContext CreateDbContext(string dbName)
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
@@ -51,13 +51,23 @@ public class BuildingRepositoryTest
             ManagerId = Guid.NewGuid(),
             Flats = new List<Flat>()
         };
+
         IEnumerable<Building> buildingsInDb = new List<Building> { buildingInDb };
-        
+
         _dbContext.Set<Building>().Add(buildingInDb);
         _dbContext.SaveChanges();
-        
+
         IEnumerable<Building> buildingsReturn = _buildingRepository.GetAllBuildings(buildingInDb.ManagerId);
         Assert.IsTrue(buildingsReturn.SequenceEqual(buildingsInDb));
     }
+    
+    [TestMethod]
+    public void GetAllBuildings_UnkownExceptionThrown()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Building>()).Throws(new Exception("Unknown exception"));
 
+        BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.GetAllBuildings(Guid.NewGuid()));
+    }
 }
