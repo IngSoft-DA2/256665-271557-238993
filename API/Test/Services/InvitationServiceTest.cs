@@ -290,6 +290,16 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateInvitation_UnkownServiceExceptionIsThrown()
+    {
+        _invitationRepository.Setup(invitationRepository =>
+            invitationRepository.CreateInvitation(It.IsAny<Invitation>())).Throws(new UnknownRepositoryException("Internal Error"));
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _invitationService.CreateInvitation(_invitationExample));
+    }
 
     #endregion
 
