@@ -7,6 +7,8 @@ namespace DataAccess.Repositories;
 
 public class InvitationRepository : IInvitationRepository
 {
+    #region Constructor and attributes
+    
     private readonly DbContext _dbContext;
 
     public InvitationRepository(DbContext dbContext)
@@ -14,6 +16,9 @@ public class InvitationRepository : IInvitationRepository
         _dbContext = dbContext;
     }
 
+    #endregion
+    
+    #region Get All Invitations
     public IEnumerable<Invitation> GetAllInvitations()
     {
         try
@@ -25,6 +30,10 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get Invitation By Id
 
     public Invitation GetInvitationById(Guid invitationId)
     {
@@ -38,6 +47,10 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Create Invitation
 
     public void CreateInvitation(Invitation invitationToAdd)
     {
@@ -51,6 +64,10 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Update Invitation
 
     public void UpdateInvitation(Invitation invitationUpdated)
     {
@@ -64,6 +81,10 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Delete Invitation
 
     public void DeleteInvitation(Invitation invitationToDelete)
     {
@@ -77,4 +98,6 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }
