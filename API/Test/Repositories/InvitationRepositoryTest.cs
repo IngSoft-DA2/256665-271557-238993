@@ -74,5 +74,38 @@ public class InvitationRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
+    [TestMethod]
+    public void GetInvitationById_InvitationIsReturn()
+    {
+        Invitation invitationInDb = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Email = "person@gmail.com",
+            ExpirationDate = DateTime.Now.AddDays(1),
+            Firstname = "Someone",
+            Lastname = "Else",
+            Status = StatusEnum.Accepted
+        };
+
+        Invitation invitationInDb2 = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Email = "person2@gmail.com",
+            ExpirationDate = DateTime.Now.AddDays(1),
+            Firstname = "Someone2",
+            Lastname = "Else2",
+            Status = StatusEnum.Rejected
+        };
+        
+        _dbContext.Set<Invitation>().Add(invitationInDb);
+        _dbContext.Set<Invitation>().Add(invitationInDb2);
+        _dbContext.SaveChanges();
+        
+        Invitation invitationResponse = _invitationRepository.GetInvitationById(invitationInDb.Id);
+        
+        Assert.AreEqual(invitationInDb, invitationResponse);
+    }
+
+
 
 }

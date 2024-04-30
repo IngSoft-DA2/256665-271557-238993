@@ -16,7 +16,8 @@ public class InvitationRepository : IInvitationRepository
 
     public IEnumerable<Invitation> GetAllInvitations()
     {
-        try{
+        try
+        {
             return _dbContext.Set<Invitation>().ToList();
         }
         catch (Exception exceptionCaught)
@@ -27,7 +28,8 @@ public class InvitationRepository : IInvitationRepository
 
     public Invitation GetInvitationById(Guid invitationId)
     {
-        throw new NotImplementedException();
+        Invitation invitationFound = _dbContext.Set<Invitation>().Find(invitationId);
+        return invitationFound;
     }
 
     public void CreateInvitation(Invitation invitationToAdd)
