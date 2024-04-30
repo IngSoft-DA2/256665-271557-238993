@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -15,8 +16,15 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
     
     public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests()
     {
-        return _context.Set<MaintenanceRequest>().ToList();
-        
+        try
+        {
+            return _context.Set<MaintenanceRequest>().ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+
     }
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid categoryId)

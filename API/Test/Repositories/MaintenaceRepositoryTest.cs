@@ -4,6 +4,8 @@ using Domain;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
@@ -66,6 +68,17 @@ public class MaintenaceRepositoryTest
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests();
         
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequests_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
+        
+        _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetAllMaintenanceRequests());
+        _mockDbContext.VerifyAll();
     }
 
     
