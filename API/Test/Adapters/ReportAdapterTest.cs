@@ -239,6 +239,18 @@ public class ReportAdapterTest
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
     
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByBuilding_ThrowsUnknownAdapterException()
+    {
+        _reportService.Setup(service => 
+            service.GetAllMaintenanceRequestsByBuilding()).Throws(new Exception("Internal Server Error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() => 
+            _reportAdapter.GetAllBuildingMaintenanceReports());
+        
+        _reportService.VerifyAll();
+    }
+    
 
     #endregion
 }
