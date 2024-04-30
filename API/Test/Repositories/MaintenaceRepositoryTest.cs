@@ -200,9 +200,16 @@ public class MaintenaceRepositoryTest
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
     
-    
-    
-
+    [TestMethod]
+    public void GetMaintenanceRequestsByRequestHandler_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
+        
+        _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
+        _mockDbContext.VerifyAll();
+    }
     
     
 }

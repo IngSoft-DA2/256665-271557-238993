@@ -78,7 +78,14 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
     {
-        return _context.Set<MaintenanceRequest>()
-            .Where(maintenanceRequest => maintenanceRequest.RequestHandlerId == requestHandlerId).ToList();
+        try
+        {
+            return _context.Set<MaintenanceRequest>()
+                .Where(maintenanceRequest => maintenanceRequest.RequestHandlerId == requestHandlerId).ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 }
