@@ -105,7 +105,6 @@ public class MaintenanceRequestService : IMaintenanceRequestService
     private void ValidateRequestsBeforeUpdate(MaintenanceRequest maintenanceRequestNotUpdated, MaintenanceRequest maintenanceRequestUpdated)
     {
         if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
-        if (maintenanceRequestNotUpdated.BuildingId != maintenanceRequestUpdated.BuildingId) throw new InvalidMaintenanceRequestException("BuildingId cannot be changed");
         if (maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId) throw new InvalidMaintenanceRequestException("FlatId cannot be changed");
         if (maintenanceRequestNotUpdated.OpenedDate != maintenanceRequestUpdated.OpenedDate) throw new InvalidMaintenanceRequestException("OpenedDate cannot be changed");
         if (maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate) throw new InvalidMaintenanceRequestException("ClosedDate cannot be changed");

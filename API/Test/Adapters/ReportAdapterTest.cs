@@ -60,10 +60,10 @@ public class ReportAdapterTest
         };
 
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceReportByBuildingResponse> adapterResponse = 
-            _reportAdapter.GetMaintenanceReportByBuilding(_sampleBuildingId);
+            _reportAdapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),_sampleBuildingId);
 
         _reportService.VerifyAll();
 
@@ -74,10 +74,10 @@ public class ReportAdapterTest
     public void GetMaintenanceReportByBuilding_ThrowsUnknownAdapterException()
     {
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Throws<Exception>();
+            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Throws<Exception>();
 
         Assert.ThrowsException<UnknownAdapterException>(() => 
-            _reportAdapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>()));
+            _reportAdapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>()));
         
         _reportService.VerifyAll();
     }

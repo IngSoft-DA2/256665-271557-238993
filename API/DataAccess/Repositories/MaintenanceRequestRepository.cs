@@ -41,7 +41,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
         try
         {
             return _context.Set<MaintenanceRequest>()
-                .Where(maintenanceRequest => maintenanceRequest.Category == categoryId).ToList();
+                .Where(maintenanceRequest => maintenanceRequest.CategoryId == categoryId).ToList();
         }
         catch (Exception exceptionCaught)
         {

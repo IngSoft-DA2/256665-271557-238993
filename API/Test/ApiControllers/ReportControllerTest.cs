@@ -49,10 +49,10 @@ public class ReportControllerTest
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
         _reportAdapter.Setup(adapter => 
-            adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Returns(expectedResponseValue);
+            adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetMaintenanceRequestsByBuilding(_sampleBuildingId);
+            _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>(), _sampleBuildingId);
 
         _reportAdapter.VerifyAll();
 
@@ -75,9 +75,9 @@ public class ReportControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Returns(expectedResponseValue);
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedResponseValue);
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(_sampleBuildingId);
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>(), _sampleBuildingId);
 
         _reportAdapter.VerifyAll();
 
@@ -99,9 +99,9 @@ public class ReportControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(_sampleBuildingId);
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>(),_sampleBuildingId);
 
         _reportAdapter.VerifyAll();
 

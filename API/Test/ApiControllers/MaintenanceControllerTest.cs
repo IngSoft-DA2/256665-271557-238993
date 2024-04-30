@@ -30,7 +30,6 @@ public class MaintenanceControllerTest
         _expectedMaintenanceRequest = new GetMaintenanceRequestResponse()
         {
             Id = Guid.NewGuid(),
-            BuildingId = Guid.NewGuid(),
             Description = "Repair elevator light",
             FlatId = Guid.NewGuid(),
             Category = Guid.NewGuid(),
@@ -55,7 +54,6 @@ public class MaintenanceControllerTest
                 new GetMaintenanceRequestResponse()
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = Guid.NewGuid(),
                     Description = "Fix leaky faucet",
                     FlatId = Guid.NewGuid(),
                     Category = Guid.NewGuid(),
@@ -339,7 +337,6 @@ public class MaintenanceControllerTest
                 new GetMaintenanceRequestResponse()
                 {
                     Id = Guid.NewGuid(),
-                    BuildingId = Guid.NewGuid(),
                     Description = "Fix leaky faucet",
                     FlatId = Guid.NewGuid(),
                     Category = Guid.NewGuid(),

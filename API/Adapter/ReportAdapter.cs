@@ -17,13 +17,13 @@ public class ReportAdapter : IReportAdapter
         _reportService = reportService;
     }
 
-    public IEnumerable<GetMaintenanceReportByBuildingResponse> GetMaintenanceReportByBuilding(
+    public IEnumerable<GetMaintenanceReportByBuildingResponse> GetMaintenanceReportByBuilding(Guid personId,
         Guid buildingId)
     {
         try
         {
             IEnumerable<Report> reports =
-                _reportService.GetMaintenanceReportByBuilding(buildingId);
+                _reportService.GetMaintenanceReportByBuilding(personId, buildingId);
 
             IEnumerable<GetMaintenanceReportByBuildingResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByBuildingResponse()

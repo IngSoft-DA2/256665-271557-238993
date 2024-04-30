@@ -31,27 +31,71 @@ public class MaintenaceRepositoryTest
         _maintenanceRequestInDb = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
-            FlatId = Guid.Empty,
-            BuildingId = Guid.Empty,
+            Flat = new Flat
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid()
+            },
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
-            RequestHandlerId = Guid.Empty,
+            RequestHandler = new RequestHandler()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                LastName = "Lastname",
+                Password = "Password"
+                
+            },
             RequestStatus = RequestStatusEnum.Closed,
-            Category = Guid.NewGuid(),
+            Category = new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category"
+            },
             Description = "Bath broken",
+            Manager = new Manager()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password"
+            }
         };
         
         _maintenanceRequestInDb2 = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
-            FlatId = Guid.Empty,
-            BuildingId = Guid.Empty,
-            ClosedDate = DateTime.Now.AddDays(3),
+            Flat = new Flat
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid()
+            },
+            ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
-            RequestHandlerId = Guid.Empty,
-            RequestStatus = RequestStatusEnum.Closed,
-            Category = Guid.NewGuid(),
-            Description = "Room broken",
+            RequestHandler = new RequestHandler()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                LastName = "Lastname",
+                Email = "Email",
+                Password = "Password"
+                
+            },
+            RequestStatus = RequestStatusEnum.Open,
+            Category = new Category()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category"
+            },
+            Description = "Bath broken",
+            Manager = new Manager()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password"
+            }
         };
     }
     
@@ -98,8 +142,6 @@ public class MaintenaceRepositoryTest
     [TestMethod]
     public void GetMaintenanceRequestByCategory_MaintenanceRequestsAreReturn()
     {
-        Guid categoryId = Guid.NewGuid();
-        _maintenanceRequestInDb.Category = categoryId;
         
         IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {_maintenanceRequestInDb};
 
@@ -107,7 +149,7 @@ public class MaintenaceRepositoryTest
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
         
-        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId);
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(_maintenanceRequestInDb.CategoryId);
         
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
@@ -211,16 +253,13 @@ public class MaintenaceRepositoryTest
     [TestMethod]
     public void GetMaintenanceRequestsByRequestHandler_MaintenanceRequestsAreReturn()
     {
-        Guid requestHandlerId = Guid.NewGuid();
-        _maintenanceRequestInDb.RequestHandlerId = requestHandlerId;
-        
         IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {_maintenanceRequestInDb};
 
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
         
-        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(_maintenanceRequestInDb.RequestHandlerId);
         
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }

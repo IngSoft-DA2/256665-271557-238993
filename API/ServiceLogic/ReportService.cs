@@ -21,25 +21,25 @@ public class ReportService : IReportService
 
     #region Get maintenance report by building
 
-    public IEnumerable<Report> GetMaintenanceReportByBuilding(Guid buildingId)
+    public IEnumerable<Report> GetMaintenanceReportByBuilding(Guid personId, Guid buildingId)
     {
         try
         {
             List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
-                _reportRepository.GetMaintenanceReportByBuilding(buildingId).ToList();
+                _reportRepository.GetMaintenanceReportByBuilding(personId, buildingId).ToList();
 
             Dictionary<Guid, Report> reportsDictionary = new Dictionary<Guid, Report>();
 
             foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
             {
-                if (!reportsDictionary.ContainsKey(request.BuildingId))
+                if (!reportsDictionary.ContainsKey(request.Flat.BuildingId))
                 {
-                    reportsDictionary[request.BuildingId] = new Report
+                    reportsDictionary[request.Flat.BuildingId] = new Report
                     {
-                        IdOfResourceToReport = request.BuildingId
+                        IdOfResourceToReport = request.Flat.BuildingId
                     };
                 }
-                Report buildingReport = reportsDictionary[request.BuildingId];
+                Report buildingReport = reportsDictionary[request.Flat.BuildingId];
                 AddByCorespondingStatus(request, buildingReport);
             }
             return reportsDictionary.Values;
@@ -143,14 +143,14 @@ public class ReportService : IReportService
 
             foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedCategory)
             {
-                if (!reportsDictionary.ContainsKey(request.Category))
+                if (!reportsDictionary.ContainsKey(request.CategoryId))
                 {
-                    reportsDictionary[request.Category] = new Report
+                    reportsDictionary[request.CategoryId] = new Report
                     {
-                        IdOfResourceToReport = request.Category
+                        IdOfResourceToReport = request.CategoryId
                     };
                 }
-                Report categoryReport = reportsDictionary[request.Category];
+                Report categoryReport = reportsDictionary[request.CategoryId];
                 AddByCorespondingStatus(request, categoryReport);   
             }
             return reportsDictionary.Values;

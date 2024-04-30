@@ -41,6 +41,12 @@ public static class ServiceExtension
         services.AddScoped<IManagerService, ManagerService>();
         services.AddScoped<IManagerRepository, ManagerRepository>();
         
+        
+        
+        services.AddScoped<IReportAdapter, ReportAdapter>();
+        services.AddScoped<IReportService, ReportService>();
+        // services.AddScoped<IReportRepository, ReportRepository>();
+        
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
     }
 

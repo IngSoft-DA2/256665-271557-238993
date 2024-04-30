@@ -24,12 +24,11 @@ public class MaintenanceRequestServiceTest
         _maintenanceRequestSample = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
-            BuildingId = Guid.NewGuid(),
             Description = "Fix the door",
             FlatId = Guid.NewGuid(),
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
-            Category = Guid.NewGuid(),
+            CategoryId = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed
             
         };
@@ -47,24 +46,21 @@ public class MaintenanceRequestServiceTest
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid(),
-                Description = "Fix the door",
                 FlatId = Guid.NewGuid(),
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = Guid.NewGuid(),
-                Category = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
                 RequestStatus = RequestStatusEnum.Closed
             },
             
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid(),
                 Description = "Fix the window",
                 FlatId = Guid.NewGuid(),
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = Guid.NewGuid(),
-                Category = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
                 RequestStatus = RequestStatusEnum.Closed
             }
         };
@@ -152,8 +148,6 @@ public class MaintenanceRequestServiceTest
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyBuildingId_ThrowsObjectErrorServiceException()
     {
-        _maintenanceRequestSample.BuildingId = Guid.Empty;
-    
         Assert.ThrowsException<ObjectErrorServiceException>(() => 
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
@@ -170,7 +164,7 @@ public class MaintenanceRequestServiceTest
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyCategory_ThrowsObjectErrorServiceException()
     {
-        _maintenanceRequestSample.Category = Guid.Empty;
+        _maintenanceRequestSample.CategoryId = Guid.Empty;
     
         Assert.ThrowsException<ObjectErrorServiceException>(() => 
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
@@ -216,12 +210,11 @@ public class MaintenanceRequestServiceTest
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest
         {
             Id = idToUpdate,
-            BuildingId = Guid.NewGuid(),
             Description = "Fix the door",
             FlatId = Guid.NewGuid(),
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
-            Category = Guid.NewGuid(),
+            CategoryId = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed
         };
         
@@ -256,12 +249,11 @@ public class MaintenanceRequestServiceTest
         MaintenanceRequest maintenanceRequestCloseDateValidation = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
-            BuildingId = Guid.NewGuid(),
             Description = "Fix the door",
             FlatId = Guid.NewGuid(),
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
-            Category = Guid.NewGuid(),
+            CategoryId = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed,
             ClosedDate = DateTime.Now.AddDays(-1)
         };
@@ -285,12 +277,11 @@ public class MaintenanceRequestServiceTest
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest
         {
             Id = idToUpdate,
-            BuildingId = Guid.NewGuid(),
             Description = "Fix the door",
             FlatId = Guid.NewGuid(),
             OpenedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid(),
-            Category = Guid.NewGuid(),
+            CategoryId = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed
         };
         
@@ -355,24 +346,22 @@ public class MaintenanceRequestServiceTest
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid(),
                 Description = "Fix the door",
                 FlatId = Guid.NewGuid(),
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = requestHandlerId,
-                Category = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
                 RequestStatus = RequestStatusEnum.Closed
             },
             
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid(),
                 Description = "Fix the window",
                 FlatId = Guid.NewGuid(),
                 OpenedDate = DateTime.Now,
                 RequestHandlerId = requestHandlerId,
-                Category = Guid.NewGuid(),
+                CategoryId = Guid.NewGuid(),
                 RequestStatus = RequestStatusEnum.Closed
             }
         };
