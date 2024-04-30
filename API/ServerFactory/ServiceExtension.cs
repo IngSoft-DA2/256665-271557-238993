@@ -1,4 +1,4 @@
-﻿using Adapter;
+using Adapter;
 using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using IAdapter;
@@ -19,9 +19,28 @@ public static class ServiceExtension
         services.AddScoped<ICategoryService , CategoryService>();
         services.AddScoped<ICategoryRepository , CategoryRepository>();
         
+
         services.AddScoped<IConstructionCompanyAdapter,ConstructionCompanyAdapter>();
         services.AddScoped<IConstructionCompanyService , ConstructionCompanyService>();
         services.AddScoped<IConstructionCompanyRepository , ConstructionCompanyRepository>();
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        services.AddScoped<IInvitationAdapter, InvitationAdapter>();
+        services.AddScoped<IInvitationService, InvitationService>();
+        services.AddScoped<IInvitationRepository, InvitationRepository>();
+        
+
         
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
     }

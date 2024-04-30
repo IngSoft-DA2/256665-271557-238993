@@ -9,4 +9,7 @@ public interface IReportAdapter
         Guid buildingId);
     public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceReportByRequestHandler(Guid requestHandlerId);
     public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceReportByCategory(Guid categoryId);
+    public IEnumerable<GetMaintenanceReportByBuildingResponse> GetAllBuildingMaintenanceReports();
+    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetAllMaintenanceRequestsByRequestHandler();
+    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetAllMaintenanceRequestsByCategory();
 }
