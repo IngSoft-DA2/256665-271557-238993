@@ -25,6 +25,7 @@ public class OwnerRepository : IOwnerRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
+        
     }
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
@@ -37,12 +38,20 @@ public class OwnerRepository : IOwnerRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
+        
     }
 
     public void CreateOwner(Owner ownerToCreate)
     {
-        _dbContext.Set<Owner>().Add(ownerToCreate);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Owner>().Add(ownerToCreate);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateOwnerById(Owner ownerWithUpdates)

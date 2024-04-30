@@ -185,5 +185,17 @@ public class OwnerRepositoryTest
         Owner ownerReturn = _ownerRepository.GetOwnerById(ownerToCreate.Id);
         Assert.AreEqual(ownerToCreate, ownerReturn);
     }
+    
+    [TestMethod]
+    public void CreateOwner_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
+        
+        _ownerRepository = new OwnerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.CreateOwner(new Owner()));
+        _mockDbContext.VerifyAll();
+    }
+    
 
 }
