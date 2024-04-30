@@ -70,5 +70,16 @@ public class SessionServiceTest
         Assert.AreEqual(sessionRepoExpectedResponse, result);
     }
     
+    [TestMethod]
+    public void GetUserBySessionString_InvalidSessionString_ReturnsNull()
+    {
+        _sessionRepository.Setup(x => x.GetUserBySessionString(_sampleUserGuid)).Returns((object?)null);
+        
+        object? result = _sessionService.GetUserBySessionString(_sampleUserGuid);
+        
+        _sessionRepository.VerifyAll();
+        Assert.IsNull(result);
+    }
+    
     #endregion
 }
