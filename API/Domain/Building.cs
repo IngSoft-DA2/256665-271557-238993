@@ -99,7 +99,6 @@ public class Building
     public override bool Equals(object? obj)
     {
         Building objectToCompare = obj as Building;
-        if (objectToCompare is null) return false;
         return objectToCompare.Id == Id && objectToCompare.ManagerId == ManagerId &&
                objectToCompare.Name == Name && objectToCompare.Address == Address &&
                objectToCompare.Location.Equals(Location) &&

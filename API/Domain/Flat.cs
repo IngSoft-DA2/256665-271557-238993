@@ -23,8 +23,7 @@ public class Flat
     public override bool Equals(object? objectToCompare)
     {
         Flat? flatToCompare = objectToCompare as Flat;
-        if (flatToCompare is null) return false;
-
+        
         return Id == flatToCompare.Id && BuildingId == flatToCompare.BuildingId && Floor == flatToCompare.Floor &&
                RoomNumber == flatToCompare.RoomNumber && OwnerAssigned.Id == flatToCompare.OwnerAssigned.Id &&
                TotalRooms == flatToCompare.TotalRooms && TotalBaths == flatToCompare.TotalBaths &&

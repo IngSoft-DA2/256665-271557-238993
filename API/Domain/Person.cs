@@ -10,8 +10,6 @@ public abstract class Person
     public override bool Equals(object? objectToCompare)
     {
         Person? ownerToCompare = objectToCompare as Person;
-        if (ownerToCompare is null) return false;
-
         return Id == ownerToCompare.Id && Firstname == ownerToCompare.Firstname &&
                Email == ownerToCompare.Email;
     }

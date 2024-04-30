@@ -17,11 +17,7 @@ public class MaintenanceRequest
     public override bool Equals(object? obj)
     {
         MaintenanceRequest? maintenanceRequestToCompare = obj as MaintenanceRequest;
-        if (maintenanceRequestToCompare == null)
-        {
-            return false;
-        }
-
+        
         return Id == maintenanceRequestToCompare.Id && BuildingId == maintenanceRequestToCompare.BuildingId &&
                Description == maintenanceRequestToCompare.Description && FlatId == maintenanceRequestToCompare.FlatId &&
                OpenedDate == maintenanceRequestToCompare.OpenedDate && ClosedDate == maintenanceRequestToCompare.ClosedDate &&

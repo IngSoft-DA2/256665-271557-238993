@@ -9,9 +9,6 @@ public class GetCategoryResponse
     public override bool Equals(object? toCompare)
     {
         GetCategoryResponse? objectToCompareWith = toCompare as GetCategoryResponse;
-
-        if (objectToCompareWith is null) return false;
-
         return Id == objectToCompareWith.Id && Name == objectToCompareWith.Name;
     }
 }
