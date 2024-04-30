@@ -80,6 +80,46 @@ public class MaintenaceRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetAllMaintenanceRequests());
         _mockDbContext.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestByCategory_MaintenanceRequestsAreReturn()
+    {
+        Guid categoryId = Guid.NewGuid();
+        MaintenanceRequest maintenanceRequestInDb = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            FlatId = Guid.Empty,
+            BuildingId = Guid.Empty,
+            ClosedDate = DateTime.Now.AddDays(1),
+            OpenedDate = DateTime.Now,
+            RequestHandlerId = Guid.Empty,
+            RequestStatus = StatusEnum.Rejected,
+            Category = categoryId,
+            Description = "Bath broken",
+        };
+        MaintenanceRequest maintenanceRequestInDb2 = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            FlatId = Guid.Empty,
+            BuildingId = Guid.Empty,
+            ClosedDate = DateTime.Now.AddDays(3),
+            OpenedDate = DateTime.Now,
+            RequestHandlerId = Guid.Empty,
+            RequestStatus = StatusEnum.Rejected,
+            Category = Guid.NewGuid(),
+            Description = "Room broken",
+        };
+        
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {maintenanceRequestInDb};
+
+        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb);
+        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb2);
+        _dbContext.SaveChanges();
+        
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId);
+        
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
 
     
     
