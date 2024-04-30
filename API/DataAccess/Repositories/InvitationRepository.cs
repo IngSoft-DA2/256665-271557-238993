@@ -54,8 +54,15 @@ public class InvitationRepository : IInvitationRepository
 
     public void UpdateInvitation(Invitation invitationUpdated)
     {
-        _dbContext.Set<Invitation>().Update(invitationUpdated);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Invitation>().Update(invitationUpdated);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void DeleteInvitation(Invitation invitationToDelete)
