@@ -154,6 +154,17 @@ public class ManagerRepositoryTest
         Assert.IsTrue(managerToCreate.Equals(managerInDb));
     }
     
+    [TestMethod]
+    public void CreateManager_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Manager>()).Throws(new Exception());
+
+        _managerRepository = new ManagerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _managerRepository.CreateManager(new Manager()));
+        _mockDbContext.VerifyAll();
+    }
+    
     
     
     

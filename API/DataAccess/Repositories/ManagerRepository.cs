@@ -40,8 +40,16 @@ public class ManagerRepository : IManagerRepository
 
     public void CreateManager(Manager manager)
     {
-        _dbContext.Set<Manager>().Add(manager);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Manager>().Add(manager);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+
     }
 
     public void DeleteManagerById(Guid id)
