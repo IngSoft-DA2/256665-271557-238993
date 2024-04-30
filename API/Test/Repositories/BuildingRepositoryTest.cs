@@ -135,7 +135,56 @@ public class BuildingRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.GetBuildingById(Guid.NewGuid()));
     }
 
-    
-    
+    [TestMethod]
+    public void CreateBuilding_BuildingIsCreated()
+    {
+        Guid ownerId = Guid.NewGuid();
+        Guid buildingIdToCreate = Guid.NewGuid();
+        
+        Building buildingToCreate = new Building
+        {
+            Id = buildingIdToCreate,
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = new Location
+            {
+                Id = Guid.NewGuid(),
+                Latitude = 1.23,
+                Longitude = 6.56
+            },
+            CommonExpenses = 100,
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction Company 1",
+            },
+            ManagerId = Guid.NewGuid(),
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    BuildingId = buildingIdToCreate,
+                    Floor = 1,
+                    RoomNumber = 101,
+                    OwnerId = ownerId,
+                    OwnerAssigned = new Owner
+                    {
+                        Id = ownerId,
+                        Firstname = "Owner 1",
+                        Lastname = "Owner 1",
+                        Email = "owner@gmail.com",
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+
+        _buildingRepository.CreateBuilding(buildingToCreate);
+        Building buildingInDb = _dbContext.Set<Building>().Find(buildingToCreate.Id);
+        Assert.AreEqual(buildingToCreate, buildingInDb);
+    }
     
 }

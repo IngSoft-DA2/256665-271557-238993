@@ -38,12 +38,12 @@ public class BuildingRepository : IBuildingRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-       
     }
 
     public void CreateBuilding(Building building)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Building>().Add(building);
+        _dbContext.SaveChanges();
     }
 
     public void UpdateBuilding(Building building)
