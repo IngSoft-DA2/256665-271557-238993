@@ -18,7 +18,6 @@ namespace WebModel.Responses.OwnerResponses
         public override bool Equals(object objectToCompare)
         {
             GetOwnerResponse? toCompare = objectToCompare as GetOwnerResponse;
-            if (toCompare is null) return false;
                 
             return
                 Id == toCompare.Id &&
