@@ -28,8 +28,15 @@ public class InvitationRepository : IInvitationRepository
 
     public Invitation GetInvitationById(Guid invitationId)
     {
-        Invitation invitationFound = _dbContext.Set<Invitation>().Find(invitationId);
-        return invitationFound;
+        try
+        {
+            Invitation invitationFound = _dbContext.Set<Invitation>().Find(invitationId);
+            return invitationFound;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void CreateInvitation(Invitation invitationToAdd)
