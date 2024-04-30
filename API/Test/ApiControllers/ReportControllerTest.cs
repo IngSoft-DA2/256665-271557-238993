@@ -14,12 +14,18 @@ public class ReportControllerTest
     
     private Mock<IReportAdapter> _reportAdapter;
     private ReportController _reportController;
+    private Guid _sampleBuildingId;
+    private Guid _sampleRequestHandlerId;
+    private Guid _sampleCategoryId;
 
     [TestInitialize]
     public void Initialize()
     {
         _reportAdapter = new Mock<IReportAdapter>(MockBehavior.Strict);
         _reportController = new ReportController(_reportAdapter.Object);
+        _sampleBuildingId = Guid.NewGuid();
+        _sampleRequestHandlerId = Guid.NewGuid();
+        _sampleCategoryId = Guid.NewGuid();
     }
     
     #endregion
@@ -33,7 +39,7 @@ public class ReportControllerTest
         {
             new GetMaintenanceReportByBuildingResponse()
             {
-                BuildingId = Guid.NewGuid(),
+                BuildingId = _sampleBuildingId,
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8
@@ -46,7 +52,7 @@ public class ReportControllerTest
             adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>());
+            _reportController.GetMaintenanceRequestsByBuilding(_sampleBuildingId);
 
         _reportAdapter.VerifyAll();
 
@@ -68,8 +74,7 @@ public class ReportControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => 
-            adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
 
         IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>());
 
