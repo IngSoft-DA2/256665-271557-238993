@@ -320,6 +320,22 @@ public class ReportServiceTest
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
     
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByRequestHandler_NoReportsAreReturned()
+    {
+        
+        IEnumerable<RequestHandlerReport> expectedRepositoryResponse = new List<RequestHandlerReport>();
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
+            .Returns(expectedRepositoryResponse);
+        
+        IEnumerable<RequestHandlerReport> actualResponse = _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>());
+        
+        _reportRepository.VerifyAll();
+        
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+    
     #endregion
     
     
