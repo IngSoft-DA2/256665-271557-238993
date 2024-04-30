@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -14,8 +15,16 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
     }
     public IEnumerable<ConstructionCompany> GetAllConstructionCompanies()
     {
-        IEnumerable<ConstructionCompany> constructionCompanies = _dbContext.Set<ConstructionCompany>().ToList();
-        return constructionCompanies;
+        try
+        {
+            IEnumerable<ConstructionCompany> constructionCompanies = _dbContext.Set<ConstructionCompany>().ToList();
+            return constructionCompanies;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+      
     }
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)

@@ -51,4 +51,17 @@ public class ConstructionCompanyRepositoryTest
         
         Assert.IsTrue(expectedConstructionCompanies.SequenceEqual(constructionCompaniesResponse));
     }
+    
+    [TestMethod]
+    public void GetAllConstructionCompanies_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
+        
+        ConstructionCompanyRepository constructionCompanyRepository = new ConstructionCompanyRepository(_mockDbContext.Object);
+        
+        Assert.ThrowsException<UnknownRepositoryException>(() => constructionCompanyRepository.GetAllConstructionCompanies());
+    }
+    
+    
 }
