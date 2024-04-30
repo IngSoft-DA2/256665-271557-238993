@@ -3,6 +3,8 @@ using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
@@ -18,6 +20,12 @@ public class CategoryRepositoryTest
         _dbContext = CreateDbContext("CategoryRepositoryTest");
         _dbContext.Set<Category>();
         _categoryRepository = new CategoryRepository(_dbContext);
+    }
+    
+    private DbContext CreateDbContext(string dbName)
+    {
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
+        return new ApplicationDbContext(options);
     }
 
     [TestMethod]
@@ -44,10 +52,15 @@ public class CategoryRepositoryTest
         
         Assert.IsTrue(expectedCategories.SequenceEqual(categoriesResponse));
     }
-
-    private DbContext CreateDbContext(string dbName)
+    
+    [TestMethod]
+    public void GetAllCategories_ThrowsUnknownException()
     {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
-        return new ApplicationDbContext(options);
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Category>()).Throws(new Exception());
+        
+        _categoryRepository = new CategoryRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.GetAllCategories());
+        _mockDbContext.VerifyAll();
     }
 }

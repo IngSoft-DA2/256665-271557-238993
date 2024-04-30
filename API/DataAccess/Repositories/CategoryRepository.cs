@@ -2,6 +2,7 @@ using DataAccess.DbContexts;
 using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -16,7 +17,14 @@ public class CategoryRepository :  ICategoryRepository
 
     public IEnumerable<Category> GetAllCategories()
     {
-        return _dbContext.Set<Category>().ToList();
+        try
+        {
+            return _dbContext.Set<Category>().ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public Category GetCategoryById(Guid categoryId)
