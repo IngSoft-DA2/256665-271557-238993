@@ -13,6 +13,7 @@ namespace Test.Repositories;
 
 public class MaintenaceRepositoryTest
 {
+    #region Initialzing Aspects
     
     private DbContext _dbContext;
     private MaintenanceRequestRepository _maintenanceRequestRepository;
@@ -60,6 +61,10 @@ public class MaintenaceRepositoryTest
         return new ApplicationDbContext(options);
     }
     
+    #endregion
+    
+    #region Get All Maintenance Requests
+    
     [TestMethod]
     public void GetAllMaintenanceRequests_MaintenanceRequestsAreReturn()
     {
@@ -85,6 +90,10 @@ public class MaintenaceRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetAllMaintenanceRequests());
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Get Maintenance Request By Category
     
     [TestMethod]
     public void GetMaintenanceRequestByCategory_MaintenanceRequestsAreReturn()
@@ -114,6 +123,10 @@ public class MaintenaceRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
+    #endregion
+    
+    #region Create Maintenance Request
+    
     [TestMethod]
     public void CreateMaintenanceRequest_MaintenanceRequestIsCreated()
     {
@@ -134,6 +147,10 @@ public class MaintenaceRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.CreateMaintenanceRequest(_maintenanceRequestInDb));
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Update Maintenance Request
     
     [TestMethod]
     public void UpdateMaintenanceRequest_MaintenanceRequestIsUpdated()
@@ -161,6 +178,10 @@ public class MaintenaceRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
+    #endregion
+    
+    #region Get Maintenance Request By Id
+    
     [TestMethod]
     public void GetMaintenanceRequestById_MaintenanceRequestIsReturn()
     {
@@ -182,6 +203,10 @@ public class MaintenaceRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestById(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Get Maintenance Requests By Request Handler
     
     [TestMethod]
     public void GetMaintenanceRequestsByRequestHandler_MaintenanceRequestsAreReturn()
@@ -210,6 +235,8 @@ public class MaintenaceRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
     
     
 }
