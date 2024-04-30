@@ -65,6 +65,11 @@ public class ReportService : IReportService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
+    public IEnumerable<Report> GetAllMaintenanceRequestsByBuilding()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

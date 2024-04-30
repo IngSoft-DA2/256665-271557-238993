@@ -186,4 +186,59 @@ public class ReportAdapterTest
     }
     
     #endregion
+
+    #region Get All Maintenance Requests By Building
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByBuilding_ReturnsGetMaintenanceReportResponse()
+    {
+        IEnumerable<GetMaintenanceReportByBuildingResponse> expectedAdapterResponse =
+            new List<GetMaintenanceReportByBuildingResponse>()
+            {
+                new GetMaintenanceReportByBuildingResponse()
+                {
+                    BuildingId = _sampleBuildingId,
+                    OpenRequests = 10,
+                    ClosedRequests = 5,
+                    OnAttendanceRequests = 8
+                },
+                new GetMaintenanceReportByBuildingResponse()
+                {
+                    BuildingId = Guid.NewGuid(),
+                    OpenRequests = 20,
+                    ClosedRequests = 15,
+                    OnAttendanceRequests = 18
+                }
+            };
+        IEnumerable<Report> expectedServiceResponse = new List<Report>()
+        {  
+            new Report
+            {
+                IdOfResourceToReport = expectedAdapterResponse.First().BuildingId,
+                OpenRequests = expectedAdapterResponse.First().OpenRequests,
+                ClosedRequests = expectedAdapterResponse.First().ClosedRequests,
+                OnAttendanceRequests = expectedAdapterResponse.First().OnAttendanceRequests
+            },
+            new Report
+            {
+                IdOfResourceToReport = expectedAdapterResponse.Last().BuildingId,
+                OpenRequests = expectedAdapterResponse.Last().OpenRequests,
+                ClosedRequests = expectedAdapterResponse.Last().ClosedRequests,
+                OnAttendanceRequests = expectedAdapterResponse.Last().OnAttendanceRequests
+            }
+        };
+        
+        _reportService.Setup(service => 
+            service.GetAllMaintenanceRequestsByBuilding()).Returns(expectedServiceResponse);
+
+        IEnumerable<GetMaintenanceReportByBuildingResponse> adapterResponse =
+            _reportAdapter.GetAllBuildingMaintenanceReports();
+        
+        _reportService.VerifyAll();
+        
+        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+    }
+    
+
+    #endregion
 }

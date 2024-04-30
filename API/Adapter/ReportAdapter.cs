@@ -96,7 +96,26 @@ public class ReportAdapter : IReportAdapter
 
     public IEnumerable<GetMaintenanceReportByBuildingResponse> GetAllBuildingMaintenanceReports()
     {
-        throw new NotImplementedException();
+        try
+        {
+            IEnumerable<Report> reports = _reportService.GetAllMaintenanceRequestsByBuilding();
+
+            IEnumerable<GetMaintenanceReportByBuildingResponse> maintenanceReportResponses =
+                reports.Select(report => new GetMaintenanceReportByBuildingResponse()
+                {
+                    ClosedRequests = report.ClosedRequests,
+                    OpenRequests = report.OpenRequests,
+                    OnAttendanceRequests = report.OnAttendanceRequests,
+                    BuildingId = report.IdOfResourceToReport
+                });
+
+            return maintenanceReportResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            Console.WriteLine(exceptionCaught);
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 
     public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetAllMaintenanceRequestsByRequestHandler()

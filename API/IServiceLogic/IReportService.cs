@@ -11,4 +11,5 @@ public interface IReportService
         Guid request);
 
     IEnumerable<Report> GetMaintenanceReportByCategory(Guid request);
+    IEnumerable<Report> GetAllMaintenanceRequestsByBuilding();
 }
