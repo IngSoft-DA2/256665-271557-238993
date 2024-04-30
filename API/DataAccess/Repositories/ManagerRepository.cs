@@ -18,17 +18,17 @@ public class ManagerRepository : IManagerRepository
         return _dbContext.Set<Manager>().Include(manager => manager.Buildings).ToList();
     }
 
+    public Manager GetManagerById(Guid managerId)
+    {
+        return _dbContext.Set<Manager>().Find(managerId);
+    }
+
     public void CreateManager(Manager manager)
     {
         throw new NotImplementedException();
     }
 
     public void DeleteManagerById(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Manager GetManagerById(Guid id)
     {
         throw new NotImplementedException();
     }

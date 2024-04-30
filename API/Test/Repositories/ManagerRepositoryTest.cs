@@ -58,7 +58,6 @@ public class ManagerRepositoryTest
         Assert.IsTrue(managersInDb.SequenceEqual(managersReturn));
     }
 
-
     [TestMethod]
     public void GetAllManagers_ThrowsUnknownException()
     {
@@ -70,4 +69,60 @@ public class ManagerRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
+    [TestMethod]
+    public void GetManagerById_ReturnsManager()
+    {
+        Manager managerInDb = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager1",
+            Email = "manager@gmail.com",
+            Password = "managerPassword",
+            Buildings = new List<Building>
+            {
+                new Building
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Building1",
+                    Address = "Address1",
+                    Location = new Location
+                    {
+                        Id = Guid.NewGuid(),
+                        Latitude = 1,
+                        Longitude = 1
+                    },
+                    ConstructionCompany = new ConstructionCompany
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "ConstructionCompany1",
+                    },
+                    CommonExpenses = 100,
+                    Flats = new List<Flat>
+                    {
+                        new Flat
+                        {
+                            Id = Guid.NewGuid(),
+                            Floor = 1,
+                            RoomNumber = 101,
+                            OwnerAssigned = new Owner
+                            {
+                                Id = Guid.NewGuid(),
+                                Firstname = "Owner1",
+                                Lastname = "Owner1",
+                                Email = "owner@gmail,com",
+                            },
+                            TotalRooms = 4,
+                            TotalBaths = 2,
+                            HasTerrace = true
+                        }
+                    }
+                }
+            }
+        };       
+        _dbContext.Set<Manager>().Add(managerInDb);
+        _dbContext.SaveChanges();
+
+        Manager managerReturn = _managerRepository.GetManagerById(managerInDb.Id);
+        Assert.IsTrue(managerInDb.Equals(managerReturn));
+    }
 }
