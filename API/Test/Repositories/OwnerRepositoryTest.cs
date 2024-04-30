@@ -157,8 +157,7 @@ public class OwnerRepositoryTest
             Email = "owner@gmail.com"
         };
 
-        _dbContext.Set<Owner>().Add(ownerToCreate);
-        _dbContext.SaveChanges();
+        _ownerRepository.CreateOwner(ownerToCreate);
 
         Owner ownerReturn = _ownerRepository.GetOwnerById(ownerToCreate.Id);
         Assert.AreEqual(ownerToCreate, ownerReturn);
