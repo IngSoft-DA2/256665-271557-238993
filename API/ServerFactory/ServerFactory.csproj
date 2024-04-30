@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Adapter\Adapter.csproj" />
+      <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
       <ProjectReference Include="..\IAdapter\IAdapter.csproj" />
       <ProjectReference Include="..\ServiceLogic\ServiceLogic.csproj" />
     </ItemGroup>
