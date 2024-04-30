@@ -141,6 +141,17 @@ public class ReportServiceTest
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
     
+    [TestMethod]
+    public void GetMaintenanceReportByRequestHandler_ExceptionThrown()
+    {
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
+            .Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()));
+        
+        _reportRepository.VerifyAll();
+    }
 
     #endregion
     
