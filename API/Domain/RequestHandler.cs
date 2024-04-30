@@ -8,6 +8,7 @@ public class RequestHandler : Person
 
     public void RequestValidator()
     {
+        PersonValidator();
         PasswordValidator();
     }
     
@@ -18,4 +19,6 @@ public class RequestHandler : Person
             throw new InvalidRequestHandlerException("Password must have at least 8 characters");
         }
     }
+    
+    
 }

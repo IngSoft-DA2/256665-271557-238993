@@ -56,12 +56,22 @@ public class RequestHandlerServiceTest
     }
 
     [TestMethod]
-    public void CreateRequestHandler_ThrowsInvalidPersonException()
+    public void CreateRequestHandler_ObjectErrorServiceException()
     {
         _requestHandlerSample.Password = "";
         
         Assert.ThrowsException<ObjectErrorServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
         
+    }
+    
+    [TestMethod]
+    public void CreateRequestHandler_UnknownServiceException()
+    {
+        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample)).Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+        
+        _requestHandlerRepository.VerifyAll();
     }
     
     
