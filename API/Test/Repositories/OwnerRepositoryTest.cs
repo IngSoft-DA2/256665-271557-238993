@@ -111,6 +111,51 @@ public class OwnerRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetAllOwners());
         _mockDbContext.VerifyAll();
     }
-    
+
+    [TestMethod]
+    public void GetOwnerById_OwnerIsReturn()
+    {
+        Owner ownerInDb = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Owner1",
+            Lastname = "Owner1",
+            Email = "owner@gmail.com"
+        };
+        
+        IEnumerable<Flat> flatsofOwner1 = new List<Flat>
+        {
+            new Flat
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid(),
+                Floor = 1,
+                RoomNumber = 101,
+                OwnerAssigned = ownerInDb,
+                TotalRooms = 4,
+                TotalBaths = 2,
+                HasTerrace = true
+            },
+            new Flat
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid(),
+                Floor = 2,
+                RoomNumber = 201,
+                OwnerAssigned = ownerInDb,
+                TotalRooms = 3,
+                TotalBaths = 1,
+                HasTerrace = false
+            }
+        };
+        
+        ownerInDb.Flats = flatsofOwner1;
+
+        _dbContext.Set<Owner>().Add(ownerInDb);
+        _dbContext.SaveChanges();
+        
+        Owner ownerReturn = _ownerRepository.GetOwnerById(ownerInDb.Id);    
+        Assert.AreEqual(ownerInDb, ownerReturn);
+    }
     
 }

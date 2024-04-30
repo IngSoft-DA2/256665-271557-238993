@@ -30,7 +30,7 @@ public class OwnerRepository : IOwnerRepository
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
     {
-        throw new NotImplementedException();
+        return _dbContext.Set<Owner>().Find(ownerIdToObtain);
     }
 
     public void CreateOwner(Owner ownerToCreate)
