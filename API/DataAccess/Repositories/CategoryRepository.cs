@@ -29,7 +29,9 @@ public class CategoryRepository :  ICategoryRepository
 
     public Category GetCategoryById(Guid categoryId)
     {
-        throw new NotImplementedException();
+        Category categoryFound = _dbContext.Set<Category>().Find(categoryId);
+        return categoryFound;
+
     }
 
     public void CreateCategory(Category categoryToAdd)

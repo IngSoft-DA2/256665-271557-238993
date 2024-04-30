@@ -63,4 +63,22 @@ public class CategoryRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.GetAllCategories());
         _mockDbContext.VerifyAll();
     }
+
+    [TestMethod]
+    public void GetCategoryById_CategoryIsReturn()
+    {
+        Category categoryInDb = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+        
+        _dbContext.Set<Category>().Add(categoryInDb);
+        _dbContext.SaveChanges();
+        
+        Category categoryResponse = _categoryRepository.GetCategoryById(categoryInDb.Id);
+        
+        Assert.AreEqual(categoryInDb, categoryResponse);
+    }
+    
 }
