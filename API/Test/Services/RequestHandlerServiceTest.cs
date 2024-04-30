@@ -38,25 +38,25 @@ public class RequestHandlerServiceTest
     {
         _requestHandlerRepository.Setup(requestHandlerRepository =>
             requestHandlerRepository.CreateRequestHandler(_requestHandlerSample));
-        
+
         _requestHandlerService.CreateRequestHandler(_requestHandlerSample);
         _requestHandlerRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateRequestHandlerWithIncorrectPassword_ThrowsObjectErrorServiceException()
     {
         _requestHandlerSample.Password = "123";
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
     }
-    
+
     [TestMethod]
     public void CreateRequestHandlerWithIncorrectValues_ThrowsObjectErrorServiceException()
     {
         _requestHandlerSample.Password = "";
-        
+
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
     }
@@ -80,6 +80,25 @@ public class RequestHandlerServiceTest
 
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+    }
+
+    [TestMethod]
+    public void CreateRequestHandlerWithUsedEmail_ThrowsObjectRepeatedException()
+    {
+        _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
+            .Returns(new List<RequestHandler> { _requestHandlerSample });
+
+        RequestHandler requestHandlerToCreate = new RequestHandler
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "John",
+            LastName = "Doe",
+            Email = _requestHandlerSample.Email,
+            Password = "admin12345"
+        };
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(requestHandlerToCreate));
     }
 
     [TestMethod]
