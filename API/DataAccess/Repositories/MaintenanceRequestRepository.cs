@@ -54,7 +54,14 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample)
     {
-        _context.Set<MaintenanceRequest>().Update(maintenanceRequestSample);
+        try
+        {
+            _context.Set<MaintenanceRequest>().Update(maintenanceRequestSample);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate)
