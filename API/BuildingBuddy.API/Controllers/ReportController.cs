@@ -29,6 +29,10 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
+                if (buildingId == Guid.Empty)
+                {
+                    return Ok(_reportAdapter.GetAllBuildingMaintenanceReports());
+                }
                 return Ok(_reportAdapter.GetMaintenanceReportByBuilding(buildingId));
             }
             catch (Exception exceptionCaught)
@@ -77,7 +81,6 @@ namespace BuildingBuddy.API.Controllers
         }
         
         #endregion
-
         
     }
 }

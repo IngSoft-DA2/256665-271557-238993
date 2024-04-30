@@ -93,4 +93,9 @@ public class ReportAdapter : IReportAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public IEnumerable<GetMaintenanceReportByBuildingResponse> GetAllBuildingMaintenanceReports()
+    {
+        throw new NotImplementedException();
+    }
 }
