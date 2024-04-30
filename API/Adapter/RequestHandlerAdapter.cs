@@ -22,8 +22,8 @@ public class RequestHandlerAdapter
         {
             RequestHandler requestHandlerToCreate = new RequestHandler
             {
-                FirstName = createRequest.Firstname,
-                Lastname = createRequest.Lastname,
+                Firstname = createRequest.Firstname,
+                LastName = createRequest.Lastname,
                 Email = createRequest.Email,
                 Password = createRequest.Password
             };

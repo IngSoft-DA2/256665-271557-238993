@@ -22,10 +22,11 @@ public class RequestHandlerServiceTest
         _requestHandlerService = new RequestHandlerService(_requestHandlerRepository.Object);
         _requestHandlerSample = new RequestHandler
         {
+            Id = Guid.NewGuid(),
             Email = "some@example.com",
-            FirstName = "John",
-            Lastname = "Doe",
-            Password = "SuperSecretPassword"
+            Password = "SuperSecretPassword",
+            Firstname = "John",
+            LastName = "Doe"
         };
     }
     
@@ -53,7 +54,15 @@ public class RequestHandlerServiceTest
         
         _requestHandlerRepository.VerifyAll();
     }
-    
+
+    [TestMethod]
+    public void CreateRequestHandler_ThrowsInvalidPersonException()
+    {
+        _requestHandlerSample.Password = "";
+        
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+        
+    }
     
     
     #endregion

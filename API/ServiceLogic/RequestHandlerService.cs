@@ -21,10 +21,26 @@ public class RequestHandlerService : IRequestHandlerService
     #region Create Request Handler
     public void CreateRequestHandler(RequestHandler requestHandler)
     {
+        try
+        {
+            requestHandler.RequestValidator();
             CheckIfEmailIsAlreadyRegistered(requestHandler);
-            
+
             _requestHandlerRepository.CreateRequestHandler(requestHandler);
-        
+        }
+        catch (InvalidPersonException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+
         
     }
 
