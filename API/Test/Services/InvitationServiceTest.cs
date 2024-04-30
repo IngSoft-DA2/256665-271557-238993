@@ -143,10 +143,21 @@ public class InvitationServiceTest
     [TestMethod]
     public void CreateInvitation_InvitationIsValidated()
     {
+
+        Invitation invitationToCreate = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Michael",
+            Lastname = "Ken",
+            Email = "Michael@gmail.com",
+            ExpirationDate = DateTime.MaxValue,
+            Status = StatusEnum.Pending
+        };
+        
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.CreateInvitation(It.IsAny<Invitation>()));
         _invitationRepository.Setup(invitationRepository =>
-            invitationRepository.GetAllInvitations()).Returns(new List<Invitation>());
+            invitationRepository.GetAllInvitations()).Returns(new List<Invitation>{invitationToCreate});
 
         _invitationService.CreateInvitation(_invitationExample);
         _invitationRepository.VerifyAll();
