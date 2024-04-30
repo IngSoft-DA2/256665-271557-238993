@@ -7,12 +7,13 @@ namespace DataAccess.Repositories;
 
 public class ConstructionCompanyRepository : IConstructionCompanyRepository
 {
-
     private readonly DbContext _dbContext;
+
     public ConstructionCompanyRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
     }
+
     public IEnumerable<ConstructionCompany> GetAllConstructionCompanies()
     {
         try
@@ -24,7 +25,6 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-      
     }
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)
@@ -37,11 +37,11 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-        
     }
 
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToAdd);
+        _dbContext.SaveChanges();
     }
 }
