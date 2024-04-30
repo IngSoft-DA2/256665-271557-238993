@@ -81,7 +81,15 @@ public class ReportService : IReportService
 
     public IEnumerable<RequestHandlerReport> GetAllMaintenanceRequestsByRequestHandler()
     {
-        throw new NotImplementedException();
+        try
+        {
+            IEnumerable<RequestHandlerReport> reports = _reportRepository.GetAllMaintenanceRequestsByRequestHandler();
+            return reports;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     public IEnumerable<Report> GetAllMaintenanceRequestsByCategory()

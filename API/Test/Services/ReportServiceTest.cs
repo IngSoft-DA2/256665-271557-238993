@@ -285,4 +285,42 @@ public class ReportServiceTest
     
     #endregion
     
+    #region Get all maintenance requests by request handler
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByRequestHandler_ReportsAreReturned()
+    {
+        
+        IEnumerable<RequestHandlerReport> expectedRepositoryResponse = new List<RequestHandlerReport>
+        {
+            new RequestHandlerReport()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OnAttendanceRequests = 1,
+                OpenRequests = 23,
+                ClosedRequests = 10,
+                
+            },
+            new RequestHandlerReport()
+            {
+                IdOfResourceToReport = Guid.NewGuid(),
+                OnAttendanceRequests = 2,
+                OpenRequests = 20,
+                ClosedRequests = 12,
+            }
+        };
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
+            .Returns(expectedRepositoryResponse);
+        
+        IEnumerable<RequestHandlerReport> actualResponse = _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>());
+        
+        _reportRepository.VerifyAll();
+        
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+    
+    #endregion
+    
+    
 }

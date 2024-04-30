@@ -10,4 +10,5 @@ public interface IReportRepository
 
     public IEnumerable<Report> GetMaintenanceReportByCategory(Guid categoryId);
     public IEnumerable<Report> GetAllMaintenanceRequestsByBuilding();
+    public IEnumerable<RequestHandlerReport> GetAllMaintenanceRequestsByRequestHandler();
 }
