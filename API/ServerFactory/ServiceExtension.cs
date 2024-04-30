@@ -18,6 +18,12 @@ public static class ServiceExtension
         services.AddScoped<ICategoryAdapter,CategoryAdapter>();
         services.AddScoped<ICategoryService , CategoryService>();
         services.AddScoped<ICategoryRepository , CategoryRepository>();
+
+
+
+        services.AddScoped<IOwnerAdapter, OwnerAdapter>();
+        services.AddScoped<IOwnerService, OwnerService>();
+        services.AddScoped<IOwnerRepository, OwnerRepository>();
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
     }
 
