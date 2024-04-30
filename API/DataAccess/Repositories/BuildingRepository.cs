@@ -18,7 +18,8 @@ public class BuildingRepository : IBuildingRepository
     {
         try
         {
-            return _dbContext.Set<Building>().Include(building => building.Flats).Where(building => building.ManagerId == managerId).ToList();
+            return _dbContext.Set<Building>().Include(building => building.Flats)
+                .Where(building => building.ManagerId == managerId).ToList();
         }
         catch (Exception exceptionCaught)
         {
@@ -28,7 +29,8 @@ public class BuildingRepository : IBuildingRepository
 
     public Building GetBuildingById(Guid buildingId)
     {
-        throw new NotImplementedException();
+        return _dbContext.Set<Building>().Include(building => building.Flats)
+            .Where(building => building.Id == buildingId).FirstOrDefault();
     }
 
     public void CreateBuilding(Building building)

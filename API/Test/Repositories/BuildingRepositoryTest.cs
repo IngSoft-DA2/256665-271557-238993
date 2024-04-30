@@ -62,7 +62,7 @@ public class BuildingRepositoryTest
     }
     
     [TestMethod]
-    public void GetAllBuildings_UnkownExceptionThrown()
+    public void GetAllBuildings_UnknownExceptionThrown()
     {
         Mock<DbContext> dbContextMock = new Mock<DbContext>();
         dbContextMock.Setup(dbContext => dbContext.Set<Building>()).Throws(new Exception("Unknown exception"));
@@ -70,4 +70,60 @@ public class BuildingRepositoryTest
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.GetAllBuildings(Guid.NewGuid()));
     }
+
+    [TestMethod]
+    public void GetBuildingById_ReturnsBuilding()
+    {
+        Guid ownerId = Guid.NewGuid();
+        Guid buildingInDbId = Guid.NewGuid();
+        
+        Building buildingInDb = new Building
+        {
+            Id = buildingInDbId,
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = new Location
+            {
+                Id = Guid.NewGuid(),
+                Latitude = 1.23,
+                Longitude = 6.56
+            },
+            CommonExpenses = 100,
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction Company 1",
+            },
+            ManagerId = Guid.NewGuid(),
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    BuildingId = buildingInDbId,
+                    Floor = 1,
+                    RoomNumber = 101,
+                    OwnerId = ownerId,
+                    OwnerAssigned = new Owner
+                    {
+                        Id = ownerId,
+                        Firstname = "Owner 1",
+                        Lastname = "Owner 1",
+                        Email = "owner@gmail.com",
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
+        };
+
+        _dbContext.Set<Building>().Add(buildingInDb);
+        _dbContext.SaveChanges();
+
+        Building buildingReturn = _buildingRepository.GetBuildingById(buildingInDb.Id);
+        Assert.AreEqual(buildingInDb, buildingReturn);
+    }
+    
+    
 }
