@@ -333,7 +333,18 @@ public class MaintenanceRequestServiceTest
     [TestMethod]
     public void AssignMaintenanceRequest_ThrowsUnknownErrorException()
     {
-        
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(_maintenanceRequestSample);
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _maintenanceRequestService.AssignMaintenanceRequest(Guid.NewGuid(), Guid.NewGuid()));
+
+        _maintenanceRequestRepository.VerifyAll();
     }
 
     #endregion

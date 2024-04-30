@@ -100,7 +100,6 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         MaintenanceRequest maintenanceRequest = GetMaintenanceRequestById(idToUpdate);
         try
         {
-            if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
             maintenanceRequest.RequestHandlerId = idOfWorker;
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
         }
