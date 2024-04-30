@@ -67,6 +67,31 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
     }
+    
+    [TestMethod]
+    public void GetMaintenanceRequestsByBuilding_NoReportsAreReturned()
+    {
+        IEnumerable<GetMaintenanceReportByBuildingResponse> expectedResponseValue = new List<GetMaintenanceReportByBuildingResponse>();
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Returns(expectedResponseValue);
+
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(_sampleBuildingId);
+
+        _reportAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetMaintenanceReportByBuildingResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetMaintenanceReportByBuildingResponse>;
+
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
+    }
 
     [TestMethod]
     public void GetMaintenanceRequestsByBuilding_500StatusCodeIsReturned()
@@ -87,6 +112,7 @@ public class ReportControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    
     #endregion
 
     #region GetMaintenanceRequestsByRequestHandler
@@ -98,7 +124,7 @@ public class ReportControllerTest
         {
             new GetMaintenanceReportByRequestHandlerResponse()
             {
-                RequestHandlerId = Guid.NewGuid(),
+                RequestHandlerId = _sampleRequestHandlerId,
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8,
@@ -110,7 +136,7 @@ public class ReportControllerTest
 
         _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Returns(expectedResponseValue);
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>());
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId);
 
         _reportAdapter.VerifyAll();
 
