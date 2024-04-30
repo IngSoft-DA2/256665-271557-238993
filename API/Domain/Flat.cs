@@ -6,6 +6,7 @@ public class Flat
     public Guid BuildingId { get; set; }
     public int Floor { get; set; }
     public int RoomNumber { get; set; }
+    public Guid OwnerId { get; set; }
     public Owner? OwnerAssigned { get; set; }
     public int TotalRooms { get; set; }
     public int TotalBaths { get; set; }

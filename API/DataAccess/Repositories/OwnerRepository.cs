@@ -25,7 +25,6 @@ public class OwnerRepository : IOwnerRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-        
     }
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
@@ -38,7 +37,6 @@ public class OwnerRepository : IOwnerRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-        
     }
 
     public void CreateOwner(Owner ownerToCreate)
@@ -56,6 +54,14 @@ public class OwnerRepository : IOwnerRepository
 
     public void UpdateOwnerById(Owner ownerWithUpdates)
     {
-        throw new NotImplementedException();
+        Owner ownerInDb = _dbContext.Set<Owner>().Include(x => x.Flats)
+            .FirstOrDefault(x => x.Id == ownerWithUpdates.Id);
+
+        if (ownerInDb != null)
+        {
+            _dbContext.Set<Owner>().Entry(ownerInDb).CurrentValues.SetValues(ownerWithUpdates);
+            ownerInDb.Flats = ownerWithUpdates.Flats;
+        }
+        _dbContext.SaveChanges();
     }
 }

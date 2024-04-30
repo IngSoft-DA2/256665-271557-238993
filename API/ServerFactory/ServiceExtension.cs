@@ -24,6 +24,8 @@ public static class ServiceExtension
         services.AddScoped<IOwnerAdapter, OwnerAdapter>();
         services.AddScoped<IOwnerService, OwnerService>();
         services.AddScoped<IOwnerRepository, OwnerRepository>();
+        
+        
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
     }
 
