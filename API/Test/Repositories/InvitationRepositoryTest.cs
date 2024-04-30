@@ -14,6 +14,8 @@ public class InvitationRepositoryTest
 {
     private DbContext _dbContext;
     private InvitationRepository _invitationRepository;
+    private Invitation _invitationInDb;
+    private Invitation _invitationInDb2;
 
     [TestInitialize]
     public void TestInitialize()
@@ -21,6 +23,30 @@ public class InvitationRepositoryTest
         _dbContext = CreateDbContext("InvitationRepositoryTest");
         _dbContext.Set<Invitation>();
         _invitationRepository = new InvitationRepository(_dbContext);
+        
+        _invitationInDb = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Email = "person@gmail.com",
+            ExpirationDate = DateTime.Now.AddDays(1),
+            Firstname = "Someone",
+            Lastname = "Else",
+            Status = StatusEnum.Accepted
+        };
+        
+        _invitationInDb2 = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Email = "person2@gmail.com",
+            ExpirationDate = DateTime.Now.AddDays(1),
+            Firstname = "Someone2",
+            Lastname = "Else2",
+            Status = StatusEnum.Rejected
+        };
+
+        _dbContext.Set<Invitation>().Add(_invitationInDb);
+        _dbContext.Set<Invitation>().Add(_invitationInDb2);
+        _dbContext.SaveChanges();
     }
     
     private DbContext CreateDbContext(string dbName)
@@ -32,31 +58,7 @@ public class InvitationRepositoryTest
     [TestMethod]
     public void GetAllInvitations_InvitationsAreReturn()
     {
-        Invitation invitationInDb = new Invitation
-        {
-            Id = Guid.NewGuid(),
-            Email = "person@gmail.com",
-            ExpirationDate = DateTime.Now.AddDays(1),
-            Firstname = "Someone",
-            Lastname = "Else",
-            Status = StatusEnum.Accepted
-        };
-        
-        Invitation invitationInDb2 = new Invitation
-        {
-            Id = Guid.NewGuid(),
-            Email = "person2@gmail.com",
-            ExpirationDate = DateTime.Now.AddDays(1),
-            Firstname = "Someone2",
-            Lastname = "Else2",
-            Status = StatusEnum.Rejected
-        };
-        
-        IEnumerable<Invitation> expectedInvitations = new List<Invitation> {invitationInDb, invitationInDb2};
-
-        _dbContext.Set<Invitation>().Add(invitationInDb);
-        _dbContext.Set<Invitation>().Add(invitationInDb2);
-        _dbContext.SaveChanges();
+        IEnumerable<Invitation> expectedInvitations = new List<Invitation> {_invitationInDb, _invitationInDb2};
         
         IEnumerable<Invitation> invitationsRepositoryResponse= _invitationRepository.GetAllInvitations();
         
@@ -77,33 +79,9 @@ public class InvitationRepositoryTest
     [TestMethod]
     public void GetInvitationById_InvitationIsReturn()
     {
-        Invitation invitationInDb = new Invitation
-        {
-            Id = Guid.NewGuid(),
-            Email = "person@gmail.com",
-            ExpirationDate = DateTime.Now.AddDays(1),
-            Firstname = "Someone",
-            Lastname = "Else",
-            Status = StatusEnum.Accepted
-        };
-
-        Invitation invitationInDb2 = new Invitation
-        {
-            Id = Guid.NewGuid(),
-            Email = "person2@gmail.com",
-            ExpirationDate = DateTime.Now.AddDays(1),
-            Firstname = "Someone2",
-            Lastname = "Else2",
-            Status = StatusEnum.Rejected
-        };
+        Invitation invitationResponse = _invitationRepository.GetInvitationById(_invitationInDb.Id);
         
-        _dbContext.Set<Invitation>().Add(invitationInDb);
-        _dbContext.Set<Invitation>().Add(invitationInDb2);
-        _dbContext.SaveChanges();
-        
-        Invitation invitationResponse = _invitationRepository.GetInvitationById(invitationInDb.Id);
-        
-        Assert.AreEqual(invitationInDb, invitationResponse);
+        Assert.AreEqual(_invitationInDb, invitationResponse);
     }
 
 
