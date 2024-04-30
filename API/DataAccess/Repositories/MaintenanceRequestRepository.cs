@@ -41,8 +41,15 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public void CreateMaintenanceRequest(MaintenanceRequest requestToCreate)
     {
-        _context.Set<MaintenanceRequest>().Add(requestToCreate);
-        _context.SaveChanges();
+        try
+        {
+            _context.Set<MaintenanceRequest>().Add(requestToCreate);
+            _context.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample)
