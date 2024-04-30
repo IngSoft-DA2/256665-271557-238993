@@ -49,11 +49,12 @@ public class ManagerRepository : IManagerRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-
     }
 
-    public void DeleteManagerById(Guid id)
+    public void DeleteManager(Manager managerToDelete)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Manager>().Remove(managerToDelete);
+        _dbContext.Entry(managerToDelete).State = EntityState.Deleted;
+        _dbContext.SaveChanges();
     }
 }

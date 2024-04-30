@@ -186,22 +186,18 @@ public class ManagerServiceTest
     [TestMethod]
     public void DeleteManagerById_ShouldDeleteManager()
     {
-        Guid managerId = Guid.NewGuid();
-
         Manager manager = new Manager
         {
-            Id = managerId,
+            Id = Guid.NewGuid(),
             Firstname = "Manager",
             Email = "",
         };
+        
+        _managerRepository.Setup(repo => repo.DeleteManager(manager));
+        _managerRepository.Setup(repo => repo.GetManagerById(It.IsAny<Guid>())).Returns(manager);
+        _managerService.DeleteManagerById(manager.Id);
 
-        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Returns(manager);
-        _managerRepository.Setup(repo => repo.DeleteManagerById(managerId));
-
-
-        _managerService.DeleteManagerById(managerId);
-
-        _managerRepository.Verify(x => x.DeleteManagerById(managerId), Times.Once);
+        _managerRepository.Verify(x => x.DeleteManager(manager), Times.Once);
     }
 
     [TestMethod]
