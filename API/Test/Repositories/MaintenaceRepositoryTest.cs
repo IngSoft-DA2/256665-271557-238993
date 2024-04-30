@@ -135,6 +135,21 @@ public class MaintenaceRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
+    [TestMethod]
+    public void UpdateMaintenanceRequest_MaintenanceRequestIsUpdated()
+    {
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
+        _dbContext.SaveChanges();
+        
+        _maintenanceRequestInDb.Description = "Room fixed";
+        _maintenanceRequestInDb.RequestStatus = StatusEnum.Accepted;
+        _maintenanceRequestRepository.UpdateMaintenanceRequest(_maintenanceRequestInDb.Id, _maintenanceRequestInDb);
+        
+        MaintenanceRequest maintenanceRequestResponse = _dbContext.Set<MaintenanceRequest>().Find(_maintenanceRequestInDb.Id);
+        
+        Assert.AreEqual(_maintenanceRequestInDb, maintenanceRequestResponse);
+    }
+    
     
 
     

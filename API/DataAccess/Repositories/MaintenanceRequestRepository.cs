@@ -54,7 +54,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample)
     {
-        throw new NotImplementedException();
+        _context.Set<MaintenanceRequest>().Update(maintenanceRequestSample);
     }
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate)
