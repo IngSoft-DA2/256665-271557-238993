@@ -161,6 +161,16 @@ public class InvitationAdapterTest
 
         Assert.AreEqual(expectedAdapterResponse, adapterResponse);
     }
+    [TestMethod]
+    public void GetInvitationById_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _invitationService.Setup(service => service.GetInvitationById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _invitationAdapter.GetInvitationById(It.IsAny<Guid>()));
+
+        _invitationService.VerifyAll();
+    }
 
     [TestMethod]
     public void GetInvitationById_ShouldThrowException()
