@@ -34,6 +34,9 @@ public static class ServiceExtension
         services.AddScoped<IBuildingService, BuildingService>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
         
+        services.AddScoped<IAdministratorAdapter, AdministratorAdapter>();
+        services.AddScoped<IAdministratorService, AdministratorService>();
+        services.AddScoped<IAdministratorRepository, AdministratorRepository>();
         
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
     }
