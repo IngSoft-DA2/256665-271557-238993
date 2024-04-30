@@ -317,6 +317,24 @@ public class MaintenanceRequestServiceTest
 
         _maintenanceRequestRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void AssignMaintenanceRequest_RequestNotFound_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+            maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _maintenanceRequestService.AssignMaintenanceRequest(Guid.NewGuid(), Guid.NewGuid()));
+
+        _maintenanceRequestRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void AssignMaintenanceRequest_ThrowsUnknownErrorException()
+    {
+        
+    }
 
     #endregion
 

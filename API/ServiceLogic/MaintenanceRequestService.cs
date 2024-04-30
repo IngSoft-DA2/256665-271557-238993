@@ -97,9 +97,9 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
     {
+        MaintenanceRequest maintenanceRequest = GetMaintenanceRequestById(idToUpdate);
         try
         {
-            MaintenanceRequest maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate);
             if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
             maintenanceRequest.RequestHandlerId = idOfWorker;
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
@@ -128,17 +128,21 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid id)
     {
-        MaintenanceRequest maintenanceRequest;
+       
         try
         {
-            maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestById(id);
+            MaintenanceRequest maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestById(id);
+            if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
+            return maintenanceRequest;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
         
-        if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
-        return maintenanceRequest;
     }
 }
