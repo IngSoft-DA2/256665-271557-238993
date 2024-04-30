@@ -206,6 +206,18 @@ public class ReportServiceTest
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
     
+    [TestMethod]
+    public void GetMaintenanceReportByCategory_ExceptionThrown()
+    {
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
+            .Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>()));
+        
+        _reportRepository.VerifyAll();
+    }
+    
     #endregion
 
     #region Get all maintenance requests by building
@@ -258,6 +270,8 @@ public class ReportServiceTest
         
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
+    
+    
     
     
     #endregion
