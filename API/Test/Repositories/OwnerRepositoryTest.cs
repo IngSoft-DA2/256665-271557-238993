@@ -104,12 +104,19 @@ public class OwnerRepositoryTest
     [TestMethod]
     public void GetAllOwners_ThrowsUnknownException()
     {
-        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
-        _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
+        try
+        {
+            var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+            _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
 
-        _ownerRepository = new OwnerRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetAllOwners());
-        _mockDbContext.VerifyAll();
+            _ownerRepository = new OwnerRepository(_mockDbContext.Object);
+            Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetAllOwners());
+            _mockDbContext.VerifyAll();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     [TestMethod]
