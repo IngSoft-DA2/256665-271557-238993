@@ -19,5 +19,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<ConstructionCompany> ConstructionCompany { get; set; }
     
     public DbSet<Invitation> Invitations { get; set; }
+    public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
     
 }

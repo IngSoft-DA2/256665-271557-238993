@@ -40,6 +40,11 @@ public static class ServiceExtension
         services.AddScoped<IInvitationService, InvitationService>();
         services.AddScoped<IInvitationRepository, InvitationRepository>();
         
+        services.AddScoped<IMaintenanceRequestAdapter, MaintenanceRequestAdapter>();
+        services.AddScoped<IMaintenanceRequestService, MaintenanceRequestService>();
+        services.AddScoped<IMaintenanceRequestRepository, MaintenanceRequestRepository>();
+        
+        
 
         
         services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
