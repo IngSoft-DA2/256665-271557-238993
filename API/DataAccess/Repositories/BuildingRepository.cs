@@ -55,16 +55,23 @@ public class BuildingRepository : IBuildingRepository
 
     public void UpdateBuilding(Building buildingWithUpdates)
     {
-        var buildingInDb = _dbContext.Set<Building>()
-            .Include(b => b.Flats).Include(b => b.ConstructionCompany)
-            .FirstOrDefault(b => b.Id == buildingWithUpdates.Id);
+        try
+        {
+            var buildingInDb = _dbContext.Set<Building>()
+                .Include(b => b.Flats).Include(b => b.ConstructionCompany)
+                .FirstOrDefault(b => b.Id == buildingWithUpdates.Id);
         
-        _dbContext.Entry(buildingInDb).CurrentValues.SetValues(buildingWithUpdates);
+            _dbContext.Entry(buildingInDb).CurrentValues.SetValues(buildingWithUpdates);
         
-        _dbContext.SaveChanges();
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
-
-
+    
     public void DeleteBuilding(Building buildingId)
     {
         throw new NotImplementedException();

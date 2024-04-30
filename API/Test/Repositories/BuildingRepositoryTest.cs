@@ -276,5 +276,15 @@ public class BuildingRepositoryTest
         Assert.IsTrue(buildingToUpdate.Equals(buildingInDbUpdated));
     }
     
+    [TestMethod]
+    public void UpdateBuilding_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Building>()).Throws(new Exception("Unknown exception"));
+
+        BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.UpdateBuilding(new Building()));
+    }
+    
 
 }
