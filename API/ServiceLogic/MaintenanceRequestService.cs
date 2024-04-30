@@ -96,8 +96,7 @@ public class MaintenanceRequestService : IMaintenanceRequestService
     {
         if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
 
-        if (maintenanceRequestNotUpdated.BuildingId != maintenanceRequestUpdated.BuildingId ||
-            maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId ||
+        if (maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId ||
             maintenanceRequestNotUpdated.OpenedDate != maintenanceRequestUpdated.OpenedDate ||
             maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate)
         {
