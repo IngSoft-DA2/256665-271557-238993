@@ -5,7 +5,7 @@ using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
-public class ReportService
+public class ReportService : IReportService
 {
     #region Constructor and Dependency Injection
     

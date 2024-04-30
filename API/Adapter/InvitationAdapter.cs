@@ -13,9 +13,9 @@ public class InvitationAdapter : IInvitationAdapter
 {
     #region Constructor and attributes
     
-    private readonly IInvitationServiceLogic _invitationServiceLogic;
+    private readonly IInvitationService _invitationServiceLogic;
 
-    public InvitationAdapter(IInvitationServiceLogic invitationServiceLogic)
+    public InvitationAdapter(IInvitationService invitationServiceLogic)
     {
         _invitationServiceLogic = invitationServiceLogic;
     }

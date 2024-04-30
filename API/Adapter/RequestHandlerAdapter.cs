@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.RequestHandlerRequests;
@@ -7,7 +8,7 @@ using WebModel.Responses.RequestHandlerResponses;
 
 namespace Adapter;
 
-public class RequestHandlerAdapter
+public class RequestHandlerAdapter : IRequestHandlerAdapter
 {
     private readonly IRequestHandlerService _requestHandlerService;
     public RequestHandlerAdapter(IRequestHandlerService requestHandlerService)

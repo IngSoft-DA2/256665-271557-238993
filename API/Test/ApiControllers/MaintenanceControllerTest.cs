@@ -15,7 +15,7 @@ public class MaintenanceControllerTest
 {
     #region Test Initialize
 
-    private Mock<IMaintenanceAdapter> _maintenanceAdapter;
+    private Mock<IMaintenanceRequestAdapter> _maintenanceAdapter;
     private MaintenanceController _maintenanceController;
     private GetMaintenanceRequestResponse _expectedMaintenanceRequest;
     private Guid _idFromRoute;
@@ -25,7 +25,7 @@ public class MaintenanceControllerTest
     [TestInitialize]
     public void Initialize()
     {
-        _maintenanceAdapter = new Mock<IMaintenanceAdapter>(MockBehavior.Strict);
+        _maintenanceAdapter = new Mock<IMaintenanceRequestAdapter>(MockBehavior.Strict);
         _maintenanceController = new MaintenanceController(_maintenanceAdapter.Object);
         _expectedMaintenanceRequest = new GetMaintenanceRequestResponse()
         {

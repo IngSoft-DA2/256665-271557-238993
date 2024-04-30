@@ -2,7 +2,7 @@
 
 namespace IServiceLogic;
 
-public interface IInvitationServiceLogic
+public interface IInvitationService
 {
     public IEnumerable<Invitation> GetAllInvitations();
     public Invitation GetInvitationById(Guid idOfInvitationToFind);

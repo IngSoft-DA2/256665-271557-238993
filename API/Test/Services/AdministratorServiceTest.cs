@@ -1,6 +1,5 @@
 ﻿using Domain;
 using IRepository;
-using IServiceLogic;
 using Moq;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;

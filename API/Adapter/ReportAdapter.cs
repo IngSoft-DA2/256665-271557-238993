@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ReportRequests;
@@ -7,7 +8,7 @@ using WebModel.Responses.ReportResponses;
 
 namespace Adapter;
 
-public class ReportAdapter
+public class ReportAdapter : IReportAdapter
 {
     private IReportService _reportService;
     public ReportAdapter(IReportService reportService)

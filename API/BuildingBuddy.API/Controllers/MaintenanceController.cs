@@ -12,9 +12,9 @@ namespace BuildingBuddy.API.Controllers
     {
         #region Constructor and attributes
         
-        private readonly IMaintenanceAdapter _maintenanceAdapter;
+        private readonly IMaintenanceRequestAdapter _maintenanceAdapter;
 
-        public MaintenanceController(IMaintenanceAdapter maintenanceAdapter)
+        public MaintenanceController(IMaintenanceRequestAdapter maintenanceAdapter)
         {
             _maintenanceAdapter = maintenanceAdapter;
         }
