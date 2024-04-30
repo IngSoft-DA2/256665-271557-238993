@@ -112,7 +112,18 @@ public class InvitationRepositoryTest
         
         Invitation invitationResponse = _invitationRepository.GetInvitationById(invitationToAdd.Id);
         
-        Assert.AreEqual(invitationToAdd, invitationResponse);
+        Assert.AreEqual(invitationToAdd, invitationResponse);   
+    }
+    
+    [TestMethod]
+    public void CreateInvitation_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
+        
+        _invitationRepository = new InvitationRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.CreateInvitation(new Invitation()));
+        _mockDbContext.VerifyAll();
     }
 
 

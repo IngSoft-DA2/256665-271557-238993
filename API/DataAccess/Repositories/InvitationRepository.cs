@@ -41,8 +41,15 @@ public class InvitationRepository : IInvitationRepository
 
     public void CreateInvitation(Invitation invitationToAdd)
     {
-        _dbContext.Set<Invitation>().Add(invitationToAdd);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Invitation>().Add(invitationToAdd);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateInvitation(Invitation invitationUpdated)
