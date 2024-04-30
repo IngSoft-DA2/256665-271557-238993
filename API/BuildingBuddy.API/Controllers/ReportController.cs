@@ -75,6 +75,10 @@ namespace BuildingBuddy.API.Controllers
         {
             try
             {
+                if (categoryId == Guid.Empty)
+                {
+                    return Ok(_reportAdapter.GetAllMaintenanceRequestsByCategory());
+                }
                 return Ok(_reportAdapter.GetMaintenanceReportByCategory(categoryId));
             }
             catch (Exception exceptionCaught)

@@ -388,4 +388,50 @@ public class ReportControllerTest
 
     #endregion
 
+    #region Get Maintenance Reports From All Categories
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByCategory_OkIsReturned()
+    {
+        IEnumerable<GetMaintenanceReportByCategoryResponse> expectedResponseValue = new List<GetMaintenanceReportByCategoryResponse>()
+        {
+            new GetMaintenanceReportByCategoryResponse()
+            {
+                CategoryId = Guid.NewGuid(),
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8
+            },
+            new GetMaintenanceReportByCategoryResponse()
+            {
+                CategoryId = Guid.NewGuid(),
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8
+            }
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+
+        _reportAdapter.Setup(adapter => adapter.GetAllMaintenanceRequestsByCategory()).Returns(expectedResponseValue);
+
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByCategory(Guid.Empty);
+
+        _reportAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetMaintenanceReportByCategoryResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetMaintenanceReportByCategoryResponse>;
+
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
+    }
+
+    
+
+    #endregion
 }

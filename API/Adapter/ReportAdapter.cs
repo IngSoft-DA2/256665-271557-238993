@@ -103,4 +103,9 @@ public class ReportAdapter : IReportAdapter
     {
         throw new NotImplementedException();
     }
+
+    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetAllMaintenanceRequestsByCategory()
+    {
+        throw new NotImplementedException();
+    }
 }
