@@ -125,4 +125,15 @@ public class ManagerRepositoryTest
         Manager managerReturn = _managerRepository.GetManagerById(managerInDb.Id);
         Assert.IsTrue(managerInDb.Equals(managerReturn));
     }
+    
+    [TestMethod]
+    public void GetManagerById_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Manager>()).Throws(new Exception());
+
+        _managerRepository = new ManagerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _managerRepository.GetManagerById(Guid.NewGuid()));
+        _mockDbContext.VerifyAll();
+    }
 }

@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -20,7 +21,15 @@ public class ManagerRepository : IManagerRepository
 
     public Manager GetManagerById(Guid managerId)
     {
-        return _dbContext.Set<Manager>().Find(managerId);
+        try
+        {   
+            return _dbContext.Set<Manager>().Find(managerId);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
 
     public void CreateManager(Manager manager)
