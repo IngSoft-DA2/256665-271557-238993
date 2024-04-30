@@ -35,10 +35,9 @@ public class MaintenanceRequestAdapterTest
         genericMaintenanceRequest = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
-            BuildingId = Guid.NewGuid(),
             Description = "Test Description Random",
             FlatId = Guid.NewGuid(),
-            Category = Guid.NewGuid(),
+            CategoryId = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Open,
             OpenedDate = DateTime.Now,
             ClosedDate = DateTime.Now,
@@ -48,10 +47,9 @@ public class MaintenanceRequestAdapterTest
         genericMaintenanceRequestResponse = new GetMaintenanceRequestResponse
         {
             Id = genericMaintenanceRequest.Id,
-            BuildingId = genericMaintenanceRequest.BuildingId,
             Description = genericMaintenanceRequest.Description,
             FlatId = genericMaintenanceRequest.FlatId,
-            Category = genericMaintenanceRequest.Category,
+            Category = genericMaintenanceRequest.CategoryId,
             RequestStatus = (StatusEnumMaintenanceResponse)genericMaintenanceRequest.RequestStatus,
             OpenedDate = genericMaintenanceRequest.OpenedDate,
             ClosedDate = genericMaintenanceRequest.ClosedDate,

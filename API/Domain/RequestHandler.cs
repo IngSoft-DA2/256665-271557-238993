@@ -4,6 +4,8 @@ public class RequestHandler : Person
 {
     public string LastName { get; set; }
     public string Password { get; set; }
+    
+    
 
     public void RequestValidator()
     {

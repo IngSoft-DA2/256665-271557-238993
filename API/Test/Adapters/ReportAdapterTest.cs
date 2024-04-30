@@ -60,10 +60,10 @@ public class ReportAdapterTest
         };
 
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceReportByBuildingResponse> adapterResponse = 
-            _reportAdapter.GetMaintenanceReportByBuilding(_sampleBuildingId);
+            _reportAdapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),_sampleBuildingId);
 
         _reportService.VerifyAll();
 
@@ -74,10 +74,10 @@ public class ReportAdapterTest
     public void GetMaintenanceReportByBuilding_ThrowsUnknownAdapterException()
     {
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>())).Throws<Exception>();
+            service.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Throws<Exception>();
 
         Assert.ThrowsException<UnknownAdapterException>(() => 
-            _reportAdapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>()));
+            _reportAdapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>()));
         
         _reportService.VerifyAll();
     }
@@ -111,10 +111,10 @@ public class ReportAdapterTest
         };
 
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceReportByRequestHandlerResponse> adapterResponse = 
-            _reportAdapter.GetMaintenanceReportByRequestHandler(_sampleRequestHandlerId);
+            _reportAdapter.GetMaintenanceReportByRequestHandler(_sampleRequestHandlerId,It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportService.VerifyAll();
 
@@ -125,10 +125,10 @@ public class ReportAdapterTest
     public void GetMaintenanceReportByRequestHandler_ThrowsUnknownAdapterException()
     {
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Throws(new Exception("Internal Server Error"));
+            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception("Internal Server Error"));
 
         Assert.ThrowsException<UnknownAdapterException>(() => 
-            _reportAdapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()));
+            _reportAdapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         
         _reportService.VerifyAll();
     }

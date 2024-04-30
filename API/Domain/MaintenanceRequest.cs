@@ -5,13 +5,18 @@ namespace Domain;
 public class MaintenanceRequest
 {
     public Guid Id { get; set; }
-    public Guid BuildingId { get; set; }
     public String Description { get; set; }
+    public Flat Flat { get; set; }
     public Guid FlatId { get; set; }
     public DateTime? OpenedDate { get; set; }
     public DateTime? ClosedDate { get; set; }
+    
+    public RequestHandler RequestHandler { get; set; }
     public Guid RequestHandlerId { get; set; }
-    public Guid Category { get; set; }
+    public Manager Manager { get; set; }
+    public Guid ManagerId { get; set; }
+    public Category Category { get; set; }
+    public Guid CategoryId { get; set; }
     public RequestStatusEnum RequestStatus { get; set; }
     
     public override bool Equals(object? obj)
@@ -21,7 +26,7 @@ public class MaintenanceRequest
         return Id == maintenanceRequestToCompare.Id && BuildingId == maintenanceRequestToCompare.BuildingId &&
                Description == maintenanceRequestToCompare.Description && FlatId == maintenanceRequestToCompare.FlatId &&
                OpenedDate == maintenanceRequestToCompare.OpenedDate && ClosedDate == maintenanceRequestToCompare.ClosedDate &&
-               RequestHandlerId == maintenanceRequestToCompare.RequestHandlerId && Category == maintenanceRequestToCompare.Category &&
+               RequestHandlerId == maintenanceRequestToCompare.RequestHandlerId && CategoryId == maintenanceRequestToCompare.CategoryId &&
                RequestStatus == maintenanceRequestToCompare.RequestStatus;
     }
 

@@ -36,9 +36,8 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                 {
                     Id = maintenanceRequest.Id,
                     Description = maintenanceRequest.Description,
-                    BuildingId = maintenanceRequest.BuildingId,
                     RequestHandlerId = maintenanceRequest.RequestHandlerId,
-                    Category = maintenanceRequest.Category,
+                    Category = maintenanceRequest.CategoryId,
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
@@ -67,9 +66,8 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                 {
                     Id = maintenanceRequest.Id,
                     Description = maintenanceRequest.Description,
-                    BuildingId = maintenanceRequest.BuildingId,
                     RequestHandlerId = maintenanceRequest.RequestHandlerId,
-                    Category = maintenanceRequest.Category,
+                    Category = maintenanceRequest.CategoryId,
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
@@ -100,10 +98,13 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
             MaintenanceRequest maintenanceRequest = new MaintenanceRequest
             {
                 Id = Guid.NewGuid(),
-                BuildingId = maintenanceRequestToCreate.BuildingId,
+                Flat = new Flat
+                {
+                    Id = maintenanceRequestToCreate.FlatId
+                },
                 Description = maintenanceRequestToCreate.Description,
                 FlatId = maintenanceRequestToCreate.FlatId,
-                Category = maintenanceRequestToCreate.Category,
+                CategoryId = maintenanceRequestToCreate.Category,
             };
 
             _maintenanceRequestService.CreateMaintenanceRequest(maintenanceRequest);
@@ -186,13 +187,12 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                 {
                     Id = maintenanceRequest.Id,
                     Description = maintenanceRequest.Description,
-                    BuildingId = maintenanceRequest.BuildingId,
+                    FlatId = maintenanceRequest.FlatId,
                     RequestHandlerId = maintenanceRequest.RequestHandlerId,
-                    Category = maintenanceRequest.Category,
+                    Category = maintenanceRequest.CategoryId,
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
-                    FlatId = maintenanceRequest.FlatId
                 });
 
             return maintenanceRequestFromHandler;
@@ -216,9 +216,8 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
             {
                 Id = maintenanceRequestInDb.Id,
                 Description = maintenanceRequestInDb.Description,
-                BuildingId = maintenanceRequestInDb.BuildingId,
                 RequestHandlerId = maintenanceRequestInDb.RequestHandlerId,
-                Category = maintenanceRequestInDb.Category,
+                Category = maintenanceRequestInDb.CategoryId,
                 RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequestInDb.RequestStatus,
                 OpenedDate = maintenanceRequestInDb.OpenedDate,
                 ClosedDate = maintenanceRequestInDb.ClosedDate,
