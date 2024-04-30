@@ -103,5 +103,16 @@ public class AdministratorRepositoryTest
 
         Assert.AreEqual(administratorToAdd, administratorInDb);
     }
-    
+
+    [TestMethod]
+    public void CreateAdministrator_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Administrator>()).Throws(new Exception());
+
+        _administratorRepository = new AdministratorRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _administratorRepository.CreateAdministrator(new Administrator()));
+        _mockDbContext.VerifyAll();
+    }
 }

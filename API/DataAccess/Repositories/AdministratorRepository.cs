@@ -16,8 +16,16 @@ public class AdministratorRepository : IAdministratorRepository
 
     public void CreateAdministrator(Administrator administratorToAdd)
     {
-        _dbContext.Set<Administrator>().Add(administratorToAdd);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Administrator>().Add(administratorToAdd);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
 
     public IEnumerable<Administrator> GetAllAdministrators()
