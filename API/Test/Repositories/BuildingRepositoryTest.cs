@@ -186,5 +186,14 @@ public class BuildingRepositoryTest
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToCreate.Id);
         Assert.AreEqual(buildingToCreate, buildingInDb);
     }
+    [TestMethod]
+    public void CreateBuilding_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Building>()).Throws(new Exception("Unknown exception"));
+
+        BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.CreateBuilding(new Building()));
+    }
     
 }

@@ -38,12 +38,20 @@ public class BuildingRepository : IBuildingRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
+       
     }
 
     public void CreateBuilding(Building building)
     {
-        _dbContext.Set<Building>().Add(building);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Building>().Add(building);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateBuilding(Building building)
