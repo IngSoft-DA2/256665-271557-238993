@@ -19,6 +19,19 @@ public class ApplicationDbContext : DbContext
     public DbSet<Owner> Owners { get; set; }
     public DbSet<ConstructionCompany> ConstructionCompany { get; set; }
     public DbSet<Invitation> Invitations { get; set; }
+    public DbSet<Building> Buildings { get; set; }
     public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Building>()
+            .HasOne(b => b.ConstructionCompany)
+            .WithMany() 
+            .HasForeignKey(b => b.ConstructionCompanyId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+    
     
 }
