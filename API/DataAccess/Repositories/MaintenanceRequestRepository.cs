@@ -29,7 +29,15 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid categoryId)
     {
-        return _context.Set<MaintenanceRequest>().Where(maintenanceRequest => maintenanceRequest.Category == categoryId).ToList();
+        try
+        {
+            return _context.Set<MaintenanceRequest>()
+                .Where(maintenanceRequest => maintenanceRequest.Category == categoryId).ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void CreateMaintenanceRequest(MaintenanceRequest requestToCreate)
