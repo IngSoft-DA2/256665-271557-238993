@@ -66,7 +66,7 @@ public class ManagerServiceTest
             Firstname = "Manager",
             Email = "person@gmail.com",
             Password = "password",
-            Buildings = new List<Guid>()
+            Buildings = new List<Building>()
         };
 
         _managerRepository.Setup(service => service.CreateManager(manager));
@@ -150,7 +150,7 @@ public class ManagerServiceTest
             Firstname = "Manager",
             Email = "persona@gmail.com",
             Password = "12345678",
-            Buildings = new List<Guid>()
+            Buildings = new List<Building>()
         };
 
         _managerRepository.Setup(x => x.GetAllManagers()).Returns(new List<Manager> { manager });
@@ -169,7 +169,7 @@ public class ManagerServiceTest
             Firstname = "Manager",
             Email = "persona@gmail.com",
             Password = "12345678",
-            Buildings = new List<Guid>()
+            Buildings = new List<Building>()
         };
 
         _managerRepository.Setup(x => x.CreateManager(manager)).Throws(new Exception());
