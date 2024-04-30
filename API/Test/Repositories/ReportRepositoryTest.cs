@@ -11,6 +11,8 @@ namespace Test.Repositories;
 [TestClass]
 public class ReportRepositoryTest
 {
+    #region Initializing Aspects
+    
     private DbContext _dbContext;
     private ReportRepository _reportRepository;
 
@@ -27,8 +29,11 @@ public class ReportRepositoryTest
         var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
         return new ApplicationDbContext(options);
     }
+    
+    #endregion
 
-
+    #region Get Maintenance Report By Building
+    
     [TestMethod]
     public void GetMaintenanceReportByBuilding_ReturnsMaintenanceRequestsWhenBuildingFromQueryIsSet()
     {
@@ -157,7 +162,11 @@ public class ReportRepositoryTest
             _reportRepository.GetMaintenanceReportByBuilding(Guid.NewGuid(), Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
 
+    #region Get Maintenance Report By Request Handler
+    
     [TestMethod]
     public void GetMaintenanceReportByRequestHandler_ReturnsMaintenanceRequestsWhenRequestHandlerFromQueryIsSet()
     {
@@ -287,7 +296,11 @@ public class ReportRepositoryTest
             _reportRepository.GetMaintenanceReportByRequestHandler(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
 
+    #region Get Maintenance Report By Category
+    
     [TestMethod]
     public void GetMaintenanceReportByCategory_ReturnsMaintenanceRequestsWhenCategoryFromQueryIsSet()
     {
@@ -417,5 +430,5 @@ public class ReportRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
-    
+    #endregion
 }

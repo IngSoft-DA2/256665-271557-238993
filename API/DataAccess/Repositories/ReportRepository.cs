@@ -7,12 +7,18 @@ namespace DataAccess.Repositories;
 
 public class ReportRepository : IReportRepository
 {
+    #region Constructor and Atributtes
+    
     private readonly DbContext _dbContext;
 
     public ReportRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
     }
+    
+    #endregion
+    
+    #region Get Maintenance Report By Building
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByBuilding(Guid personId, Guid buildingId)
     {
@@ -33,6 +39,10 @@ public class ReportRepository : IReportRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get Maintenance Report By Request Handler
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid requestHandlerId, Guid buildingId,
         Guid personId)
@@ -57,6 +67,10 @@ public class ReportRepository : IReportRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get Maintenance Report By Category
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId)
     {
@@ -77,4 +91,6 @@ public class ReportRepository : IReportRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }
