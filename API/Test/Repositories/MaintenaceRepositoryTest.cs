@@ -16,6 +16,9 @@ public class MaintenaceRepositoryTest
     
     private DbContext _dbContext;
     private MaintenanceRequestRepository _maintenanceRequestRepository;
+    private MaintenanceRequest _maintenanceRequestInDb;
+    private MaintenanceRequest _maintenanceRequestInDb2;
+    
 
     [TestInitialize]
     public void TestInitialize()
@@ -23,18 +26,8 @@ public class MaintenaceRepositoryTest
         _dbContext = CreateDbContext("MaintenanceRepositoryTest");
         _dbContext.Set<MaintenanceRequest>();
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_dbContext);
-    }
-    
-    private DbContext CreateDbContext(string dbName)
-    {
-        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
-        return new ApplicationDbContext(options);
-    }
-    
-    [TestMethod]
-    public void GetAllMaintenanceRequests_MaintenanceRequestsAreReturn()
-    {
-        MaintenanceRequest maintenanceRequestInDb = new MaintenanceRequest
+        
+        _maintenanceRequestInDb = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
             FlatId = Guid.Empty,
@@ -46,7 +39,8 @@ public class MaintenaceRepositoryTest
             Category = Guid.NewGuid(),
             Description = "Bath broken",
         };
-        MaintenanceRequest maintenanceRequestInDb2 = new MaintenanceRequest
+        
+        _maintenanceRequestInDb2 = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
             FlatId = Guid.Empty,
@@ -58,11 +52,22 @@ public class MaintenaceRepositoryTest
             Category = Guid.NewGuid(),
             Description = "Room broken",
         };
+    }
+    
+    private DbContext CreateDbContext(string dbName)
+    {
+        var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
+        return new ApplicationDbContext(options);
+    }
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequests_MaintenanceRequestsAreReturn()
+    {
         
-        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {maintenanceRequestInDb, maintenanceRequestInDb2};
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {_maintenanceRequestInDb, _maintenanceRequestInDb2};
 
-        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb);
-        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb2);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
         
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests();
@@ -85,35 +90,12 @@ public class MaintenaceRepositoryTest
     public void GetMaintenanceRequestByCategory_MaintenanceRequestsAreReturn()
     {
         Guid categoryId = Guid.NewGuid();
-        MaintenanceRequest maintenanceRequestInDb = new MaintenanceRequest
-        {
-            Id = Guid.NewGuid(),
-            FlatId = Guid.Empty,
-            BuildingId = Guid.Empty,
-            ClosedDate = DateTime.Now.AddDays(1),
-            OpenedDate = DateTime.Now,
-            RequestHandlerId = Guid.Empty,
-            RequestStatus = StatusEnum.Rejected,
-            Category = categoryId,
-            Description = "Bath broken",
-        };
-        MaintenanceRequest maintenanceRequestInDb2 = new MaintenanceRequest
-        {
-            Id = Guid.NewGuid(),
-            FlatId = Guid.Empty,
-            BuildingId = Guid.Empty,
-            ClosedDate = DateTime.Now.AddDays(3),
-            OpenedDate = DateTime.Now,
-            RequestHandlerId = Guid.Empty,
-            RequestStatus = StatusEnum.Rejected,
-            Category = Guid.NewGuid(),
-            Description = "Room broken",
-        };
+        _maintenanceRequestInDb.Category = categoryId;
         
-        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {maintenanceRequestInDb};
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {_maintenanceRequestInDb};
 
-        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb);
-        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb2);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
         
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId);
@@ -131,6 +113,9 @@ public class MaintenaceRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestByCategory(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+    
+    
+    
 
     
     
