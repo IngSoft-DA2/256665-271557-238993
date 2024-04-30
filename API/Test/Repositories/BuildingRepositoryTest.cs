@@ -341,5 +341,15 @@ public class BuildingRepositoryTest
         Assert.IsNull(buildingInDb);
     }
     
+    [TestMethod]
+    public void DeleteBuilding_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Building>()).Throws(new Exception("Unknown exception"));
+
+        BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.DeleteBuilding(new Building()));
+    }
+    
 
 }

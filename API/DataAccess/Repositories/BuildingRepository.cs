@@ -73,8 +73,16 @@ public class BuildingRepository : IBuildingRepository
 
     public void DeleteBuilding(Building buildingToDelete)
     {
-        _dbContext.Set<Building>().Remove(buildingToDelete);
-        _dbContext.Entry(buildingToDelete).State = EntityState.Deleted;
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Building>().Remove(buildingToDelete);
+            _dbContext.Entry(buildingToDelete).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+    
     }
 }
