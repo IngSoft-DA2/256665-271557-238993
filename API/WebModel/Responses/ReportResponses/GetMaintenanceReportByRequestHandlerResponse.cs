@@ -14,8 +14,6 @@ public class GetMaintenanceReportByRequestHandlerResponse
     {
         GetMaintenanceReportByRequestHandlerResponse? objectToCompare = obj as GetMaintenanceReportByRequestHandlerResponse;
         
-        if (objectToCompare is null) return false;
-
         return RequestHandlerId == objectToCompare.RequestHandlerId &&
                OpenRequests == objectToCompare.OpenRequests &&
                ClosedRequests == objectToCompare.ClosedRequests &&

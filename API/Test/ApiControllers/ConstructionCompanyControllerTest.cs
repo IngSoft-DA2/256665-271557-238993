@@ -108,7 +108,7 @@ public class ConstructionCompanyControllerTest
         Assert.IsNotNull(controllerResponseValueCasted);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedConstructionCompany.Id, controllerResponseValueCasted.Id);
+        Assert.IsTrue(expectedConstructionCompany.Equals(controllerResponseValueCasted));
     }
     
     [TestMethod]

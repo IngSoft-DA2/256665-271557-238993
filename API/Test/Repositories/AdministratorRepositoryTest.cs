@@ -60,7 +60,6 @@ public class AdministratorRepositoryTest
                 LastName = "Administrator2",
                 Email = "administrato2@gmail.com",
                 Password = "password2",
-                Invitations = new List<Invitation>()
             }
         };
 

@@ -9,9 +9,7 @@ public class CreateInvitationResponse
     public override bool Equals(object objectToCompare)
     {
         CreateInvitationResponse? toCompare = objectToCompare as CreateInvitationResponse;
-
-        if (toCompare is null) return false;
-
+        
         return (Id == toCompare.Id && Status.Equals(toCompare.Status));
     }
     

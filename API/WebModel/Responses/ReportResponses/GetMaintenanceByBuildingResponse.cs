@@ -10,9 +10,7 @@ public class GetMaintenanceReportByBuildingResponse
     public override bool Equals(object? obj)
     {
         GetMaintenanceReportByBuildingResponse? objectToCompare = obj as GetMaintenanceReportByBuildingResponse;
-
-        if (objectToCompare is null) return false;
-
+        
         return OpenRequests == objectToCompare.OpenRequests && ClosedRequests == objectToCompare.ClosedRequests && OnAttendanceRequests == objectToCompare.OnAttendanceRequests && BuildingId == objectToCompare.BuildingId;
 
     }

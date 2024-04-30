@@ -152,8 +152,8 @@ public class BuildingAdapter : IBuildingAdapter
                 Address = createBuildingRequest.Address,
                 Location = new Location
                 {
-                    Latitude = 1,
-                    Longitude = 2
+                    Latitude = createBuildingRequest.Location.Latitude,
+                    Longitude = createBuildingRequest.Location.Longitude
                 },
                 ConstructionCompany =
                     _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
@@ -169,7 +169,8 @@ public class BuildingAdapter : IBuildingAdapter
                     TotalRooms = flat.TotalRooms,
                     TotalBaths = flat.TotalBaths,
                     HasTerrace = flat.HasTerrace
-                }).ToList()
+                }).ToList(),
+                ManagerId = createBuildingRequest.ManagerId
             };
             _buildingService.CreateBuilding(buildingToCreate);
 
