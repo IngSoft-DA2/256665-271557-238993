@@ -14,7 +14,7 @@ public class Manager : Person
     public override bool Equals(object? objectToCompare)
     {
         Manager managerToCompare = objectToCompare as Manager;
-        return base.Equals(managerToCompare) && Password == managerToCompare.Password &&
+        return managerToCompare.Password == managerToCompare.Password &&
                Buildings.SequenceEqual(managerToCompare.Buildings);
     }
 

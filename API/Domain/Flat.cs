@@ -25,7 +25,7 @@ public class Flat
         Flat? flatToCompare = objectToCompare as Flat;
         
         return Id == flatToCompare.Id && BuildingId == flatToCompare.BuildingId && Floor == flatToCompare.Floor &&
-               RoomNumber == flatToCompare.RoomNumber && OwnerAssigned.Id == flatToCompare.OwnerAssigned.Id &&
+               RoomNumber == flatToCompare.RoomNumber && OwnerId == flatToCompare.OwnerId &&
                TotalRooms == flatToCompare.TotalRooms && TotalBaths == flatToCompare.TotalBaths &&
                HasTerrace == flatToCompare.HasTerrace;
     }

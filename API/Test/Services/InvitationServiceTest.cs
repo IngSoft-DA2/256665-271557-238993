@@ -292,7 +292,7 @@ public class InvitationServiceTest
     }
     
     [TestMethod]
-    public void CreateInvitation_UnkownServiceExceptionIsThrown()
+    public void CreateInvitation_UnknownServiceExceptionIsThrown()
     {
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.CreateInvitation(It.IsAny<Invitation>())).Throws(new UnknownRepositoryException("Internal Error"));
