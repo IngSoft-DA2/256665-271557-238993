@@ -2,6 +2,7 @@ using Domain;
 using IRepository;
 using Moq;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace Test.Services;
 
@@ -12,12 +13,20 @@ public class RequestHandlerServiceTest
     
     private Mock<IRequestHandlerRepository> _requestHandlerRepository;
     private RequestHandlerService _requestHandlerService;
+    private RequestHandler _requestHandlerSample;
     
     [TestInitialize]
     public void Initialize()
     {
         _requestHandlerRepository = new Mock<IRequestHandlerRepository>();
         _requestHandlerService = new RequestHandlerService(_requestHandlerRepository.Object);
+        _requestHandlerSample = new RequestHandler
+        {
+            Email = "some@example.com",
+            FirstName = "John",
+            Lastname = "Doe",
+            Password = "SuperSecretPassword"
+        };
     }
     
     #endregion
@@ -27,21 +36,25 @@ public class RequestHandlerServiceTest
     [TestMethod]
     public void CreateRequestHandler_ShouldCreateRequestHandler()
     {
-        RequestHandler requestHandler = new RequestHandler
-        {   
-            Id = Guid.NewGuid(),
-            FirstName = "John",
-            Lastname = "Doe",
-            Email = "john@doe.com",
-            Password = "someSecretPass"
-        };
         
-        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(requestHandler));
+        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample));
         
-        _requestHandlerService.CreateRequestHandler(requestHandler);
+        _requestHandlerService.CreateRequestHandler(_requestHandlerSample);
         
         _requestHandlerRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateRequestHandler_ThrowRepeatedObjectServiceException()
+    {
+        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample)).Throws(new ObjectRepeatedServiceException());
+        
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+        
+        _requestHandlerRepository.VerifyAll();
+    }
+    
+    
     
     #endregion
     
