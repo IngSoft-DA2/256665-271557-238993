@@ -404,4 +404,18 @@ public class ReportRepositoryTest
 
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
+    
+    [TestMethod]
+    public void GetMaintenanceReportByCategory_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
+
+        _reportRepository = new ReportRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _reportRepository.GetMaintenanceReportByCategory(Guid.NewGuid(), Guid.NewGuid()));
+        _mockDbContext.VerifyAll();
+    }
+    
+    
 }

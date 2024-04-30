@@ -60,14 +60,21 @@ public class ReportRepository : IReportRepository
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId)
     {
-        if (!(Guid.Empty == categoryId))
+        try
         {
-            return _dbContext.Set<MaintenanceRequest>()
-                .Where(mr => mr.Flat.BuildingId == buildingId && mr.CategoryId == categoryId);
+            if (!(Guid.Empty == categoryId))
+            {
+                return _dbContext.Set<MaintenanceRequest>()
+                    .Where(mr => mr.Flat.BuildingId == buildingId && mr.CategoryId == categoryId);
+            }
+            else
+            {
+                return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.Flat.BuildingId == buildingId);
+            }
         }
-        else
+        catch (Exception exceptionCaught)
         {
-            return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.Flat.BuildingId == buildingId);
+            throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
 }
