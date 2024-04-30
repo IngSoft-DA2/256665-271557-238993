@@ -39,28 +39,30 @@ public class ReportService : IReportService
                         IdOfResourceToReport = request.BuildingId
                     };
                 }
-
                 Report buildingReport = reportsDictionary[request.BuildingId];
-
-                switch (request.RequestStatus)
-                {
-                    case RequestStatusEnum.Open:
-                        buildingReport.OpenRequests++;
-                        break;
-                    case RequestStatusEnum.InProgress:
-                        buildingReport.OnAttendanceRequests++;
-                        break;
-                    case RequestStatusEnum.Closed:
-                        buildingReport.ClosedRequests++;
-                        break;
-                }
+                AddByCorespondingStatus(request, buildingReport);
             }
-
             return reportsDictionary.Values;
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    private static void AddByCorespondingStatus(MaintenanceRequest request, Report buildingReport)
+    {
+        switch (request.RequestStatus)
+        {
+            case RequestStatusEnum.Open:
+                buildingReport.OpenRequests++;
+                break;
+            case RequestStatusEnum.InProgress:
+                buildingReport.OnAttendanceRequests++;
+                break;
+            case RequestStatusEnum.Closed:
+                buildingReport.ClosedRequests++;
+                break;
         }
     }
 
