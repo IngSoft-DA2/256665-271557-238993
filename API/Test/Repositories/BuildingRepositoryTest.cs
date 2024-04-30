@@ -17,7 +17,7 @@ public class BuildingRepositoryTest
     [TestInitialize]
     public void TestInitialize()
     {
-        _dbContext = CreateDbContext("CategoryRepositoryTest");
+        _dbContext = CreateDbContext("BuildingRepositoryTest");
         _dbContext.Set<Building>();
         _buildingRepository = new BuildingRepository(_dbContext);
     }
