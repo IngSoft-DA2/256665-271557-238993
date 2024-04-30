@@ -38,5 +38,17 @@ public class SessionServiceTest
         Assert.IsTrue(result);
     }
     
+    [TestMethod]
+    public void IsValidSessionString_InvalidSessionString_ReturnsFalse()
+    {
+        Guid token = Guid.NewGuid();
+        _sessionRepository.Setup(x => x.SessionExists(token)).Returns(false);
+        
+        bool result = _sessionService.IsValidToken(token);
+        
+        _sessionRepository.VerifyAll();
+        Assert.IsFalse(result);
+    }
+    
     #endregion
 }
