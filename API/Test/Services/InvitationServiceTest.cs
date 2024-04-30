@@ -92,12 +92,13 @@ public class InvitationServiceTest
             }
         };
 
-        _invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitationsByEmail(It.IsAny<string>()))
+        _invitationRepository.Setup(invitationRepository =>
+                invitationRepository.GetAllInvitationsByEmail(It.IsAny<string>()))
             .Returns(expectedRepositoryResponse);
 
         IEnumerable<Invitation> invitationsObtained =
             _invitationService.GetAllInvitationsByEmail(expectedRepositoryResponse.First().Email);
-        
+
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(invitationsObtained));
     }
 
@@ -110,6 +111,17 @@ public class InvitationServiceTest
             .Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() => _invitationService.GetAllInvitations());
+    }
+
+    [TestMethod]
+    public void GetAllInvitationsByEmail_UnknownServiceExceptionIsThrown()
+    {
+        _invitationRepository.Setup(invitationRepository =>
+                invitationRepository.GetAllInvitationsByEmail(It.IsAny<string>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _invitationService.GetAllInvitationsByEmail(It.IsAny<string>()));
     }
 
     #endregion
@@ -169,7 +181,6 @@ public class InvitationServiceTest
     [TestMethod]
     public void CreateInvitation_InvitationIsValidated()
     {
-
         Invitation invitationToCreate = new Invitation
         {
             Id = Guid.NewGuid(),
@@ -179,11 +190,11 @@ public class InvitationServiceTest
             ExpirationDate = DateTime.MaxValue,
             Status = StatusEnum.Pending
         };
-        
+
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.CreateInvitation(It.IsAny<Invitation>()));
         _invitationRepository.Setup(invitationRepository =>
-            invitationRepository.GetAllInvitations()).Returns(new List<Invitation>{invitationToCreate});
+            invitationRepository.GetAllInvitations()).Returns(new List<Invitation> { invitationToCreate });
 
         _invitationService.CreateInvitation(_invitationExample);
         _invitationRepository.VerifyAll();
@@ -327,12 +338,13 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void CreateInvitation_UnknownServiceExceptionIsThrown()
     {
         _invitationRepository.Setup(invitationRepository =>
-            invitationRepository.CreateInvitation(It.IsAny<Invitation>())).Throws(new UnknownRepositoryException("Internal Error"));
+                invitationRepository.CreateInvitation(It.IsAny<Invitation>()))
+            .Throws(new UnknownRepositoryException("Internal Error"));
 
         Assert.ThrowsException<UnknownServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
@@ -508,9 +520,8 @@ public class InvitationServiceTest
     [TestMethod]
     public void UpdateInvitationButWithoutChanges_ThrowsObjectRepeatedException()
     {
-
         _invitationExample.ExpirationDate = DateTime.MinValue;
-        
+
         _invitationRepository.Setup(invitationRepository =>
             invitationRepository.GetInvitationById(It.IsAny<Guid>())).Returns(_invitationExample);
 

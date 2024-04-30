@@ -193,9 +193,16 @@ public class InvitationService : IInvitationService
 
     public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
     {
-        
-        IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitationsByEmail(email);
-        return invitations;
+        try
+        {
+            IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitationsByEmail(email);
+            return invitations;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+       
     }
 
     private static void DeleteRepoValidations(Invitation invitationToDelete)
