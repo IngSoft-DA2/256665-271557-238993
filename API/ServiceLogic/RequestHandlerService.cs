@@ -32,6 +32,10 @@ public class RequestHandlerService : IRequestHandlerService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
+        catch (InvalidRequestHandlerException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
         catch (ObjectRepeatedServiceException)
         {
             throw new ObjectRepeatedServiceException();

@@ -24,9 +24,9 @@ public class RequestHandlerServiceTest
         {
             Id = Guid.NewGuid(),
             Email = "some@example.com",
-            Password = "SuperSecretPassword",
+            Password = "admin12345",
             Firstname = "John",
-            LastName = "Doe"
+            LastName = "Gates "
         };
     }
     

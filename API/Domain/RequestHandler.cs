@@ -8,7 +8,6 @@ public class RequestHandler : Person
 
     public void RequestValidator()
     {
-        PersonValidator();
         PasswordValidator();
     }
     
