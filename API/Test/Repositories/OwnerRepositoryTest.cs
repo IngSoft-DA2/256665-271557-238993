@@ -101,6 +101,16 @@ public class OwnerRepositoryTest
         Assert.IsTrue(expectedOwners.SequenceEqual(ownersResponse));
     }
     
+    [TestMethod]
+    public void GetAllOwners_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
+        
+        _ownerRepository = new OwnerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetAllOwners());
+        _mockDbContext.VerifyAll();
+    }
     
     
 }

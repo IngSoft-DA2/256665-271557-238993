@@ -1,6 +1,7 @@
 using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -16,7 +17,15 @@ public class OwnerRepository : IOwnerRepository
 
     public IEnumerable<Owner> GetAllOwners()
     {
-        return _dbContext.Set<Owner>().Include(owner => owner.Flats).ToList();
+        try
+        {
+            return _dbContext.Set<Owner>().Include(owner => owner.Flats).ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
 
     public Owner GetOwnerById(Guid ownerIdToObtain)
