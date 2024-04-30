@@ -1,3 +1,4 @@
+using Domain;
 using IRepository;
 using Moq;
 using ServiceLogic;
@@ -11,12 +12,14 @@ public class SessionServiceTest
     
     private Mock<ISessionRepository> _sessionRepository;
     private SessionService _sessionService;
+    private Guid _sampleUserGuid;
     
     [TestInitialize]
     public void Initialize()
     {
         _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
         _sessionService = new SessionService(_sessionRepository.Object);
+        _sampleUserGuid = Guid.NewGuid();
     }
     
 
@@ -48,6 +51,23 @@ public class SessionServiceTest
         
         _sessionRepository.VerifyAll();
         Assert.IsFalse(result);
+    }
+    
+    #endregion
+    
+    #region GetUserBySessionString
+    
+    [TestMethod]
+    public void GetUserBySessionString_ValidSessionString_ReturnsUser()
+    {
+        Guid sessionRepoExpectedResponse = _sampleUserGuid;
+        _sessionRepository.Setup(x => x.GetUserBySessionString(_sampleUserGuid)).Returns(sessionRepoExpectedResponse);
+        
+        object? result = _sessionService.GetUserBySessionString(_sampleUserGuid);
+        
+        _sessionRepository.VerifyAll();
+        Assert.IsNotNull(result);
+        Assert.AreEqual(sessionRepoExpectedResponse, result);
     }
     
     #endregion

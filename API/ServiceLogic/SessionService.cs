@@ -23,6 +23,6 @@ public class SessionService : ISessionService
 
     public object? GetUserBySessionString(Guid headerValidationString)
     {
-        throw new NotImplementedException();
+        return _sessionRepository.GetUserBySessionString(headerValidationString);
     }
 }
