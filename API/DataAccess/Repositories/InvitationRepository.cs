@@ -67,6 +67,7 @@ public class InvitationRepository : IInvitationRepository
 
     public void DeleteInvitation(Invitation invitationToDelete)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Invitation>().Remove(invitationToDelete);
+        _dbContext.SaveChanges();
     }
 }
