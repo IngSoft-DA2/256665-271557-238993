@@ -16,7 +16,14 @@ public class ManagerRepository : IManagerRepository
 
     public IEnumerable<Manager> GetAllManagers()
     {
-        return _dbContext.Set<Manager>().Include(manager => manager.Buildings).ToList();
+        try
+        {
+            return _dbContext.Set<Manager>().Include(manager => manager.Buildings).ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public Manager GetManagerById(Guid managerId)

@@ -61,6 +61,7 @@ public class ManagerRepositoryTest
     [TestMethod]
     public void GetAllManagers_ThrowsUnknownException()
     {
+        
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(m => m.Set<Manager>()).Throws(new Exception());
 
@@ -136,4 +137,25 @@ public class ManagerRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _managerRepository.GetManagerById(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+
+    [TestMethod]
+    public void CreateManager_ReturnsManager()
+    {
+        Manager managerToCreate = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager1",
+            Email = "manager@gmail.com",
+            Password = "managerPassword",
+        };
+        
+        _managerRepository.CreateManager(managerToCreate);
+        Manager managerInDb = _dbContext.Set<Manager>().Find(managerToCreate.Id);
+        Assert.IsTrue(managerToCreate.Equals(managerInDb));
+    }
+    
+    
+    
+    
+    
 }
