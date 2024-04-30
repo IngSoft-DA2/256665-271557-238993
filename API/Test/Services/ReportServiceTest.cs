@@ -10,12 +10,11 @@ namespace Test.Services;
 [TestClass]
 public class ReportServiceTest
 {
-
     #region Test initialize
-    
+
     private Mock<IReportRepository> _reportRepository;
     private ReportService _reportService;
-    
+
     [TestInitialize]
     public void Initialize()
     {
@@ -24,14 +23,16 @@ public class ReportServiceTest
     }
 
     #endregion
-    
-    
+
+
     // #region Get maintenance report by building
-    
+
     [TestMethod]
     public void GetMaintenanceReportByBuilding_ReportsAreReturned()
     {
         Guid buildingId = Guid.NewGuid();
+        Guid buildingId2 = Guid.NewGuid();
+
         IEnumerable<MaintenanceRequest> expectedRepositoryResponse = new List<MaintenanceRequest>
         {
             new MaintenanceRequest()
@@ -53,27 +54,89 @@ public class ReportServiceTest
                 RequestStatus = RequestStatusEnum.Closed,
                 Category = Guid.NewGuid(),
                 Description = "Room broken",
-            }
-        };
-        
-        Report  report1 = new Report()
-        {
-            IdOfResourceToReport = expectedRepositoryResponse.First().BuildingId,
-            ClosedRequests = 2,
-            OpenRequests = 0,
-            OnAttendanceRequests = 0
+            },
+
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = buildingId,
+                ClosedDate = DateTime.Now.AddDays(3),
+                OpenedDate = DateTime.Now,
+                RequestStatus = RequestStatusEnum.Open,
+                Category = Guid.NewGuid(),
+                Description = "Room broken",
+            },
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = buildingId,
+                ClosedDate = DateTime.Now.AddDays(3),
+                OpenedDate = DateTime.Now,
+                RequestStatus = RequestStatusEnum.Open,
+                Category = Guid.NewGuid(),
+                Description = "Room broken",
+            },
+
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = buildingId,
+                ClosedDate = DateTime.Now.AddDays(3),
+                OpenedDate = DateTime.Now,
+                RequestStatus = RequestStatusEnum.Open,
+                Category = Guid.NewGuid(),
+                Description = "Room broken",
+            },
+
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = buildingId,
+                ClosedDate = DateTime.Now.AddDays(3),
+                OpenedDate = DateTime.Now,
+                RequestStatus = RequestStatusEnum.InProgress,
+                Category = Guid.NewGuid(),
+                Description = "Room broken",
+            },
+            new MaintenanceRequest()
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = buildingId2,
+                ClosedDate = DateTime.Now.AddDays(3),
+                OpenedDate = DateTime.Now,
+                RequestStatus = RequestStatusEnum.InProgress,
+                Category = Guid.NewGuid(),
+                Description = "Room broken",
+            },
         };
 
-        IEnumerable<Report> expectedReports = new List<Report>
-        { report1 };
+        Report reportNode1 = new Report()
+        {
+            IdOfResourceToReport = buildingId,
+            ClosedRequests = 2,
+            OpenRequests = 3,
+            OnAttendanceRequests = 1
+        };
         
+        Report reportNode2 = new Report()
+        {
+            IdOfResourceToReport =buildingId2,
+            ClosedRequests = 0,
+            OpenRequests = 0,
+            OnAttendanceRequests = 1
+        };
+
+
+        IEnumerable<Report> expectedReports = new List<Report>
+            {reportNode1, reportNode2};
+
         _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>()))
             .Returns(expectedRepositoryResponse);
-        
+
         IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByBuilding(Guid.Empty);
-        
+
         _reportRepository.VerifyAll();
-        
+
         Assert.IsTrue(actualResponse.SequenceEqual(expectedReports));
     }
 
