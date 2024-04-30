@@ -29,9 +29,15 @@ public class CategoryRepository :  ICategoryRepository
 
     public Category GetCategoryById(Guid categoryId)
     {
-        Category categoryFound = _dbContext.Set<Category>().Find(categoryId);
-        return categoryFound;
-
+        try
+        {
+            Category categoryFound = _dbContext.Set<Category>().Find(categoryId);
+            return categoryFound;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void CreateCategory(Category categoryToAdd)
