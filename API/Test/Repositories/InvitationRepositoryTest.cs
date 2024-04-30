@@ -3,6 +3,8 @@ using DataAccess.Repositories;
 using Domain;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
@@ -59,9 +61,17 @@ public class InvitationRepositoryTest
         IEnumerable<Invitation> invitationsRepositoryResponse= _invitationRepository.GetAllInvitations();
         
         Assert.IsTrue(expectedInvitations.SequenceEqual(invitationsRepositoryResponse));
+    }
+    
+    [TestMethod]
+    public void GetAllInvitations_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
         
-        
-
+        _invitationRepository = new InvitationRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.GetAllInvitations());
+        _mockDbContext.VerifyAll();
     }
 
 

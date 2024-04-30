@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -15,7 +16,13 @@ public class InvitationRepository : IInvitationRepository
 
     public IEnumerable<Invitation> GetAllInvitations()
     {
-        return _dbContext.Set<Invitation>().ToList();
+        try{
+            return _dbContext.Set<Invitation>().ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public Invitation GetInvitationById(Guid invitationId)
