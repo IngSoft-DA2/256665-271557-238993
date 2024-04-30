@@ -9,9 +9,9 @@ namespace ServiceLogic;
 public class MaintenanceRequestService : IMaintenanceRequestService
 {
     #region Constructor and Dependency Injection
-    
+
     private readonly IMaintenanceRequestRepository _maintenanceRequestRepository;
-    
+
     public MaintenanceRequestService(IMaintenanceRequestRepository maintenanceRequestRepository)
     {
         _maintenanceRequestRepository = maintenanceRequestRepository;
@@ -23,7 +23,8 @@ public class MaintenanceRequestService : IMaintenanceRequestService
     {
         try
         {
-            IEnumerable<MaintenanceRequest> maintenanceRequests = _maintenanceRequestRepository.GetAllMaintenanceRequests();
+            IEnumerable<MaintenanceRequest> maintenanceRequests =
+                _maintenanceRequestRepository.GetAllMaintenanceRequests();
             return maintenanceRequests;
         }
         catch (Exception exceptionCaught)
@@ -35,19 +36,19 @@ public class MaintenanceRequestService : IMaintenanceRequestService
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid id)
     {
         IEnumerable<MaintenanceRequest> maintenanceRequest;
-             try
-             {
-                    maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(id);
-             }
-             catch (Exception exceptionCaught)
-             {
-                 throw new UnknownServiceException(exceptionCaught.Message);
-             }
-             
-             if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
-             
-             return maintenanceRequest;
-         }
+        try
+        {
+            maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestByCategory(id);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+
+        if (maintenanceRequest is null) throw new ObjectNotFoundServiceException();
+
+        return maintenanceRequest;
+    }
 
     public void CreateMaintenanceRequest(MaintenanceRequest maintenanceRequest)
     {
@@ -55,6 +56,10 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         {
             maintenanceRequest.MaintenanceRequestValidator();
             _maintenanceRequestRepository.CreateMaintenanceRequest(maintenanceRequest);
+        }
+        catch (InvalidMaintenanceRequestException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
         catch (Exception exceptionCaught)
         {
@@ -64,7 +69,8 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     public void UpdateMaintenanceRequest(Guid idToUpdate, MaintenanceRequest maintenanceRequestUpdated)
     {
-        MaintenanceRequest maintenanceRequestNotUpdated = _maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate);
+        MaintenanceRequest maintenanceRequestNotUpdated =
+            _maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate);
         try
         {
             ValidateRequestsBeforeUpdate(maintenanceRequestNotUpdated, maintenanceRequestUpdated);
@@ -83,16 +89,20 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
     }
-    private void ValidateRequestsBeforeUpdate(MaintenanceRequest maintenanceRequestNotUpdated, MaintenanceRequest maintenanceRequestUpdated)
+
+    private void ValidateRequestsBeforeUpdate(MaintenanceRequest maintenanceRequestNotUpdated,
+        MaintenanceRequest maintenanceRequestUpdated)
     {
         if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
-        if (maintenanceRequestNotUpdated.BuildingId != maintenanceRequestUpdated.BuildingId) throw new InvalidMaintenanceRequestException("BuildingId cannot be changed");
-        if (maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId) throw new InvalidMaintenanceRequestException("FlatId cannot be changed");
-        if (maintenanceRequestNotUpdated.OpenedDate != maintenanceRequestUpdated.OpenedDate) throw new InvalidMaintenanceRequestException("OpenedDate cannot be changed");
-        if (maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate) throw new InvalidMaintenanceRequestException("ClosedDate cannot be changed");
-        
+
+        if (maintenanceRequestNotUpdated.BuildingId != maintenanceRequestUpdated.BuildingId ||
+            maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId ||
+            maintenanceRequestNotUpdated.OpenedDate != maintenanceRequestUpdated.OpenedDate ||
+            maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate)
+        {
+            throw new InvalidMaintenanceRequestException("You can only update the status request");
+        }
     }
 
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
@@ -114,20 +124,20 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         IEnumerable<MaintenanceRequest> maintenanceRequests;
         try
         {
-            maintenanceRequests = _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
+            maintenanceRequests =
+                _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
+
         if (maintenanceRequests is null) throw new ObjectNotFoundServiceException();
         return maintenanceRequests;
     }
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid id)
     {
-       
         try
         {
             MaintenanceRequest maintenanceRequest = _maintenanceRequestRepository.GetMaintenanceRequestById(id);
@@ -142,6 +152,5 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-        
     }
 }
