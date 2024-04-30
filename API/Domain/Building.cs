@@ -5,7 +5,6 @@ public class Building
     #region Properties
     public Guid Id { get; set; }
     public Guid ManagerId { get; set; }
-    
     public Manager Manager { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
