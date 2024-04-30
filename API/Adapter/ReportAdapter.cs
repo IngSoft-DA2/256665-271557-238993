@@ -2,6 +2,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IAdapter;
 using IServiceLogic;
+using Microsoft.AspNetCore.Http.Features;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
@@ -68,13 +69,12 @@ public class ReportAdapter : IReportAdapter
         }
     }
 
-    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceReportByCategory(
-        Guid categoryId)
+    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId)
     {
         try
         {
             IEnumerable<Report> reports =
-                _reportService.GetMaintenanceReportByCategory(categoryId);
+                _reportService.GetMaintenanceReportByCategory(buildingId, categoryId);
 
             IEnumerable<GetMaintenanceReportByCategoryResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByCategoryResponse()

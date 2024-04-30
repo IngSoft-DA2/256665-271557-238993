@@ -254,10 +254,10 @@ public class ReportServiceTest
         _expectedReports = new List<Report>
             { reportNode1, reportNode2 };
 
-        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>(),It.IsAny<Guid>()))
             .Returns(_expectedRepositoryResponse);
 
-        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>());
+        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>(),It.IsAny<Guid>());
 
         _reportRepository.VerifyAll();
 
@@ -267,11 +267,11 @@ public class ReportServiceTest
     [TestMethod]
     public void GetMaintenanceReportByCategory_ExceptionThrown()
     {
-        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>()))
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
-            _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>()));
+            _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>(),It.IsAny<Guid>()));
 
         _reportRepository.VerifyAll();
     }

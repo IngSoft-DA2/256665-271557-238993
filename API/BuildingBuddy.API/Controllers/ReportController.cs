@@ -63,11 +63,11 @@ namespace BuildingBuddy.API.Controllers
         
         [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid categoryId)
+        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildignId, [FromQuery] Guid categoryId)
         {
             try
             {
-                return Ok(_reportAdapter.GetMaintenanceReportByCategory(categoryId));
+                return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildignId, categoryId));
             }
             catch (Exception exceptionCaught)
             {

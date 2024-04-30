@@ -6,5 +6,5 @@ public interface IReportRepository
 {
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByBuilding(Guid buildingId);
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid requestHandlerId);
-    public IEnumerable<MaintenanceRequest> GetMaintenanceReportByCategory(Guid categoryId);
+    public IEnumerable<MaintenanceRequest> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId);
 }

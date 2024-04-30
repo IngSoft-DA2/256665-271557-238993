@@ -9,6 +9,5 @@ public interface IReportService
     IEnumerable<Report> GetMaintenanceReportByBuilding(Guid request);
     IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(
         Guid request);
-
-    IEnumerable<Report> GetMaintenanceReportByCategory(Guid request);
+    IEnumerable<Report> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId);
 }

@@ -132,12 +132,12 @@ public class ReportService : IReportService
 
     #region Get maintenance report by category
 
-    public IEnumerable<Report> GetMaintenanceReportByCategory(Guid isAny)
+    public IEnumerable<Report> GetMaintenanceReportByCategory(Guid buidlingId, Guid categoryId)
     {
         try
         {
             List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedCategory =
-                _reportRepository.GetMaintenanceReportByCategory(isAny).ToList();
+                _reportRepository.GetMaintenanceReportByCategory(buidlingId, categoryId).ToList();
 
             Dictionary<Guid, Report> reportsDictionary = new Dictionary<Guid, Report>();
 
