@@ -167,5 +167,23 @@ public class OwnerRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetOwnerById(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
-    
+
+    [TestMethod]
+    public void CreateOwner_OwnerIsCreated()
+    {
+        Owner ownerToCreate = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Owner1",
+            Lastname = "Owner1",
+            Email = "owner@gmail.com"
+        };
+
+        _dbContext.Set<Owner>().Add(ownerToCreate);
+        _dbContext.SaveChanges();
+        
+        Owner ownerReturn = _ownerRepository.GetOwnerById(ownerToCreate.Id);
+        Assert.AreEqual(ownerToCreate, ownerReturn);
+    }
+
 }
