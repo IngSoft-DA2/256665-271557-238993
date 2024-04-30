@@ -54,14 +54,21 @@ public class OwnerRepository : IOwnerRepository
 
     public void UpdateOwnerById(Owner ownerWithUpdates)
     {
-        Owner ownerInDb = _dbContext.Set<Owner>().Include(x => x.Flats)
-            .FirstOrDefault(x => x.Id == ownerWithUpdates.Id);
-
-        if (ownerInDb != null)
+        try
         {
-            _dbContext.Set<Owner>().Entry(ownerInDb).CurrentValues.SetValues(ownerWithUpdates);
-            ownerInDb.Flats = ownerWithUpdates.Flats;
+            Owner ownerInDb = _dbContext.Set<Owner>().Include(x => x.Flats)
+                .FirstOrDefault(x => x.Id == ownerWithUpdates.Id);
+            if (ownerInDb != null)
+            {
+                _dbContext.Set<Owner>().Entry(ownerInDb).CurrentValues.SetValues(ownerWithUpdates);
+                ownerInDb.Flats = ownerWithUpdates.Flats;
+                _dbContext.SaveChanges();
+            }
         }
-        _dbContext.SaveChanges();
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+     
     }
 }

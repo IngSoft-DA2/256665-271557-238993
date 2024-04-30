@@ -224,6 +224,16 @@ public class OwnerRepositoryTest
         _ownerRepository.UpdateOwnerById(ownerWithUpds);
         Owner ownerReturn = _ownerRepository.GetOwnerById(ownerInDbWithoutUpd.Id);
         Assert.AreEqual(ownerWithUpds, ownerReturn);
-        
+    }
+    
+    [TestMethod]
+    public void GetOwnerById_ThrowsUnknownExceptionUpdate()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
+
+        _ownerRepository = new OwnerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.UpdateOwnerById(new Owner()));
+        _mockDbContext.VerifyAll();
     }
 }
