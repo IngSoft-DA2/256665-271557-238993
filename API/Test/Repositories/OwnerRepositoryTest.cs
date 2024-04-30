@@ -17,7 +17,7 @@ public class OwnerRepositoryTest
     [TestInitialize]
     public void TestInitialize()
     {
-        _dbContext = CreateDbContext("CategoryRepositoryTest");
+        _dbContext = CreateDbContext("OwnerRepositoryTest");
         _dbContext.Set<Category>();
         _ownerRepository = new OwnerRepository(_dbContext);
     }
