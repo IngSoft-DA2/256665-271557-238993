@@ -23,7 +23,6 @@ namespace WebModel.Responses.FlatResponses
         public override bool Equals(object objectToCompare)
         {
             GetFlatResponse? toCompare = objectToCompare as GetFlatResponse;
-            if (toCompare is null) return false;
             
             bool ownerEquals = OwnerAssigned == null && toCompare.OwnerAssigned == null ||
                                OwnerAssigned != null && toCompare.OwnerAssigned != null && OwnerAssigned.Equals(toCompare.OwnerAssigned);

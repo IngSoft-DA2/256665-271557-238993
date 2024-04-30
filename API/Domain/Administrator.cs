@@ -5,10 +5,20 @@ public class Administrator : Person
     #region Properties
     public string LastName { get; set; }
     public string Password { get; set; }
-    public IEnumerable<Invitation> Invitations { get; set; }
+    public IEnumerable<Invitation> Invitations { get; set; } = new List<Invitation>();
     
     #endregion
-    
+
+
+    public override bool Equals(object? objectToCompare)
+    {
+        Administrator? administratorToCompare = objectToCompare as Administrator;
+        
+        return Id == administratorToCompare.Id && Firstname == administratorToCompare.Firstname &&
+               LastName == administratorToCompare.LastName && Email == administratorToCompare.Email
+               && Invitations.SequenceEqual(administratorToCompare.Invitations);
+    }
+
     #region Validators
     
     public void AdministratorValidator()

@@ -8,9 +8,7 @@ public class LocationResponse
     public override bool Equals(object? obj)
     {
         LocationResponse? objectToCompare = obj as LocationResponse;
-
-        if (objectToCompare is null) return false;
-
+        
         return Latitude == objectToCompare.Latitude && Longitude == objectToCompare.Longitude;
     }
 }

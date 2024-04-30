@@ -12,16 +12,16 @@ namespace BuildingBuddy.API.Controllers
     public class InvitationController : ControllerBase
     {
         #region Constructor and attributes
-        
+
         private readonly IInvitationAdapter _invitationAdapter;
 
         public InvitationController(IInvitationAdapter invitationAdapter)
         {
             _invitationAdapter = invitationAdapter;
         }
-        
+
         #endregion
-        
+
         #region Get All Invitations
 
         [HttpGet]
@@ -33,10 +33,8 @@ namespace BuildingBuddy.API.Controllers
                 {
                     return Ok(_invitationAdapter.GetAllInvitations(email));
                 }
-                else
-                {
-                    return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
-                }
+
+                return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
             }
             catch (ObjectNotFoundAdapterException)
             {
@@ -48,9 +46,9 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         #endregion
-        
+
         #region Get Invitation By Id
 
         [HttpGet]
@@ -71,11 +69,11 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
-        #endregion     
-        
+
+        #endregion
+
         #region Create Invitation
-        
+
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
@@ -94,9 +92,9 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         #endregion
-        
+
         #region Update Invitation
 
         [HttpPut]
@@ -121,11 +119,10 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-        
         }
-        
+
         #endregion
-        
+
         #region Delete Invitation
 
         [HttpDelete]
@@ -151,7 +148,7 @@ namespace BuildingBuddy.API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        
+
         #endregion
     }
 }

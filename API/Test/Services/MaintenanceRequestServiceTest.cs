@@ -11,7 +11,7 @@ namespace Test.Services;
 public class MaintenanceRequestServiceTest
 {
     #region Initialize
-    
+
     private Mock<IMaintenanceRequestRepository> _maintenanceRequestRepository;
     private MaintenanceRequestService _maintenanceRequestService;
     private MaintenanceRequest _maintenanceRequestSample;
@@ -34,9 +34,9 @@ public class MaintenanceRequestServiceTest
             
         };
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request
 
     [TestMethod]
@@ -55,7 +55,7 @@ public class MaintenanceRequestServiceTest
                 Category = Guid.NewGuid(),
                 RequestStatus = RequestStatusEnum.Closed
             },
-            
+
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
@@ -68,28 +68,27 @@ public class MaintenanceRequestServiceTest
                 RequestStatus = RequestStatusEnum.Closed
             }
         };
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetAllMaintenanceRequests()).Returns(expectedRepositoryResponse);
-        
+
         IEnumerable<MaintenanceRequest> actualResponse = _maintenanceRequestService.GetAllMaintenanceRequests();
-        
+
         Assert.AreEqual(expectedRepositoryResponse, actualResponse);
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
-        
     }
-    
+
     [TestMethod]
     public void GetAllMaintenanceRequests_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetAllMaintenanceRequests()).Throws(new Exception());
-        
+
         Assert.ThrowsException<UnknownServiceException>(() => _maintenanceRequestService.GetAllMaintenanceRequests());
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request By Category
 
     [TestMethod]
@@ -101,87 +100,97 @@ public class MaintenanceRequestServiceTest
         {
             _maintenanceRequestSample
         };
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestByCategory(categoryId)).Returns(maintenanceRequestSample);
-        
-        IEnumerable<MaintenanceRequest> actualResponse = _maintenanceRequestService.GetMaintenanceRequestByCategory(categoryId);
-        
+
+        IEnumerable<MaintenanceRequest> actualResponse =
+            _maintenanceRequestService.GetMaintenanceRequestByCategory(categoryId);
+
         Assert.IsTrue(maintenanceRequestSample.SequenceEqual(actualResponse));
     }
 
     [TestMethod]
     public void GetMaintenanceRequestByCategory_CategoryNotFound()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestByCategory(It.IsAny<Guid>())).Returns(() => null);
-        
-        Assert.ThrowsException<ObjectNotFoundServiceException>(() => 
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
             _maintenanceRequestService.GetMaintenanceRequestByCategory(Guid.NewGuid()));
-        
+
         _maintenanceRequestRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestByCategory_UnknownServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestByCategory(It.IsAny<Guid>())).Throws(new Exception());
-        
-        Assert.ThrowsException<UnknownServiceException>(() => 
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
             _maintenanceRequestService.GetMaintenanceRequestByCategory(Guid.NewGuid()));
     }
-    
+
     #endregion
-    
+
     #region Create Maintenance Request
 
-   
+    [TestMethod]
+    public void CreateMaintenanceRequestWithCorrectData_MaintenanceRequestIsCreated()
+    {
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+            maintenanceRequestRepository.CreateMaintenanceRequest(_maintenanceRequestSample));
 
+        _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample);
+
+        _maintenanceRequestRepository.VerifyAll();
+    }
+    
     #region Create Maintenance Requests - Domain Validations
 
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyDescription_ThrowsObjectErrorServiceException()
     {
         _maintenanceRequestSample.Description = string.Empty;
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
-    
+
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyBuildingId_ThrowsObjectErrorServiceException()
     {
         _maintenanceRequestSample.BuildingId = Guid.Empty;
-    
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
-    
+
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyFlatId_ThrowsObjectErrorServiceException()
     {
         _maintenanceRequestSample.FlatId = Guid.Empty;
-    
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
-    
+
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyCategory_ThrowsObjectErrorServiceException()
     {
         _maintenanceRequestSample.Category = Guid.Empty;
-    
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
-    
+
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyRequestHandlerId_ThrowsObjectErrorServiceException()
     {
         _maintenanceRequestSample.RequestHandlerId = Guid.Empty;
-    
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
 
@@ -189,8 +198,8 @@ public class MaintenanceRequestServiceTest
     public void CreateMaintenanceWithEmptyOpenDate_ThrowsObjectErrorServiceException()
     {
         _maintenanceRequestSample.OpenedDate = null;
-    
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
 
@@ -200,19 +209,18 @@ public class MaintenanceRequestServiceTest
         MaintenanceRequest maintenanceRequestCloseDateValidation = new MaintenanceRequest();
         Assert.AreEqual(maintenanceRequestCloseDateValidation.ClosedDate, null);
     }
-    
-    
+
     #endregion
-    
+
     #endregion
-    
+
     #region Update Maintenance Request
 
     [TestMethod]
     public void UpdateMaintenanceRequest_MaintenanceRequestIsUpdated()
     {
         Guid idToUpdate = Guid.NewGuid();
-        
+
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest
         {
             Id = idToUpdate,
@@ -224,35 +232,34 @@ public class MaintenanceRequestServiceTest
             Category = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed
         };
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate)).Returns(maintenanceRequest);
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest));
-        
+
         _maintenanceRequestService.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
-        
+
         _maintenanceRequestRepository.VerifyAll();
     }
-    
-    
+
+
     [TestMethod]
     public void UpdateMaintenanceRequest_MaintenanceRequestNotFound_ObjectNotFoundServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(() => null);
-        
-        Assert.ThrowsException<ObjectNotFoundServiceException>(() => 
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
             _maintenanceRequestService.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestSample));
-        
+
         _maintenanceRequestRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void UpdateMaintenanceRequest_InvalidCloseDate_ThrowsObjectErrorServiceException()
     {
-        
         MaintenanceRequest maintenanceRequestCloseDateValidation = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
@@ -265,23 +272,41 @@ public class MaintenanceRequestServiceTest
             RequestStatus = RequestStatusEnum.Closed,
             ClosedDate = DateTime.Now.AddDays(-1)
         };
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
-            maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(maintenanceRequestCloseDateValidation);
-        
-        
-        
-        Assert.ThrowsException<ObjectErrorServiceException>(() => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(maintenanceRequestCloseDateValidation);
+
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestSample));
+        _maintenanceRequestRepository.VerifyAll();
     }
-    
-    
+
+    [TestMethod]
+    public void UpdateMaintenanceRequest_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
+    {
+        
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(_maintenanceRequestSample);
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _maintenanceRequestService.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestSample));
+        _maintenanceRequestRepository.VerifyAll();
+    }
+
+
     [TestMethod]
     public void AssignMaintenanceRequest_MaintenanceRequestIsAssigned()
     {
         Guid idToUpdate = Guid.NewGuid();
         Guid idOfWorker = Guid.NewGuid();
-        
+
         MaintenanceRequest maintenanceRequest = new MaintenanceRequest
         {
             Id = idToUpdate,
@@ -293,63 +318,94 @@ public class MaintenanceRequestServiceTest
             Category = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed
         };
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate)).Returns(maintenanceRequest);
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest));
-        
+
         _maintenanceRequestService.AssignMaintenanceRequest(idToUpdate, idOfWorker);
-        
+
+        _maintenanceRequestRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void AssignMaintenanceRequest_RequestNotFound_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+            maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _maintenanceRequestService.AssignMaintenanceRequest(Guid.NewGuid(), Guid.NewGuid()));
+
+        _maintenanceRequestRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void AssignMaintenanceRequest_ThrowsUnknownErrorException()
+    {
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>()))
+            .Returns(_maintenanceRequestSample);
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _maintenanceRequestService.AssignMaintenanceRequest(Guid.NewGuid(), Guid.NewGuid()));
+
         _maintenanceRequestRepository.VerifyAll();
     }
 
     #endregion
-    
-   
+
+
     #region Get Maintenance Request By Id
-    
+
     [TestMethod]
     public void GetMaintenanceRequestById_MaintenanceRequestIsReturned()
     {
         Guid id = Guid.NewGuid();
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(id)).Returns(_maintenanceRequestSample);
-        
+
         MaintenanceRequest actualResponse = _maintenanceRequestService.GetMaintenanceRequestById(id);
-        
+
         Assert.AreEqual(_maintenanceRequestSample, actualResponse);
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestById_MaintenanceRequestNotFound_ObjectNotFoundServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(() => null);
-        
-        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _maintenanceRequestService.GetMaintenanceRequestById(Guid.NewGuid()));
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _maintenanceRequestService.GetMaintenanceRequestById(Guid.NewGuid()));
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestById_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Throws(new Exception());
-        
-        Assert.ThrowsException<UnknownServiceException>(() => _maintenanceRequestService.GetMaintenanceRequestById(Guid.NewGuid()));
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _maintenanceRequestService.GetMaintenanceRequestById(Guid.NewGuid()));
     }
 
     #endregion
-    
+
     #region Get Maintenance Requests By Request Handler
-    
+
     [TestMethod]
     public void GetMaintenanceRequestsByRequestHandler_MaintenanceRequestsAreReturned()
     {
         Guid requestHandlerId = Guid.NewGuid();
-        
+
         IEnumerable<MaintenanceRequest> expectedRepositoryResponse = new List<MaintenanceRequest>
         {
             new MaintenanceRequest()
@@ -363,7 +419,7 @@ public class MaintenanceRequestServiceTest
                 Category = Guid.NewGuid(),
                 RequestStatus = RequestStatusEnum.Closed
             },
-            
+
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
@@ -376,36 +432,38 @@ public class MaintenanceRequestServiceTest
                 RequestStatus = RequestStatusEnum.Closed
             }
         };
-        
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
-            maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId)).Returns(expectedRepositoryResponse);
-        
-        IEnumerable<MaintenanceRequest> actualResponse = _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
-        
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(requestHandlerId))
+            .Returns(expectedRepositoryResponse);
+
+        IEnumerable<MaintenanceRequest> actualResponse =
+            _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(requestHandlerId);
+
         Assert.AreEqual(expectedRepositoryResponse, actualResponse);
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestsByRequestHandler_RequestHandlerNotFound_ObjectNotFoundServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>())).Returns(() => null);
-        
-        Assert.ThrowsException<ObjectNotFoundServiceException>(() => 
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
             _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestsByRequestHandler_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
     {
-        _maintenanceRequestRepository.Setup( maintenanceRequestRepository => 
-            maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>())).Throws(new Exception());
-        
-        Assert.ThrowsException<UnknownServiceException>(() => 
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+                maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
             _maintenanceRequestService.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
     }
-    
+
     #endregion
-    
 }

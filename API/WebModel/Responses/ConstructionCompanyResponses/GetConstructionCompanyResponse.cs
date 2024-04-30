@@ -8,9 +8,6 @@ public class GetConstructionCompanyResponse
     public override bool Equals(object? obj)
     {
         GetConstructionCompanyResponse? objectToCompare = obj as GetConstructionCompanyResponse;
-
-        if (objectToCompare is null) return false;
-
         return Id == objectToCompare.Id && Name == objectToCompare.Name;
 
     }

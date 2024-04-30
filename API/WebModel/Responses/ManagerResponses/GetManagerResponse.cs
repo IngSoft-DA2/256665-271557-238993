@@ -9,9 +9,7 @@ public class GetManagerResponse
     public override bool Equals(object? obj)
     {
         GetManagerResponse? objectToCompare = obj as GetManagerResponse;
-
-        if (objectToCompare is null) return false;
-
+        
         return Id == objectToCompare.Id && Name == objectToCompare.Name && Email == objectToCompare.Email;
     }
 }

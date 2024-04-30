@@ -16,9 +16,7 @@ public class GetBuildingResponse
     public override bool Equals(object? toCompare)
     {
         GetBuildingResponse? buildingToCompare = toCompare as GetBuildingResponse;
-
-        if (buildingToCompare is null) return false;
-
+        
         return Id == buildingToCompare.Id
                && Name == buildingToCompare.Name
                && Address == buildingToCompare.Address

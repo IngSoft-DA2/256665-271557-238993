@@ -14,7 +14,6 @@ public class Owner : Person
     public override bool Equals(object? objectToCompare)
     {
         Owner? ownerToCompare = objectToCompare as Owner;
-        if (ownerToCompare is null) return false;
 
         return Id == ownerToCompare.Id && Firstname == ownerToCompare.Firstname &&
                Lastname == ownerToCompare.Lastname && Email == ownerToCompare.Email

@@ -213,27 +213,56 @@ public class BuildingServiceTest
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ObjectRepeatedServiceException))]
     public void GivenBuildingWithRepeatedNameOnCreate_ThrowsObjectRepeatedServiceException()
     {
         _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building> { _genericBuilding });
-
-        _buildingService.CreateBuilding(_genericBuilding);
-
-        _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
+        
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _buildingService.CreateBuilding(_genericBuilding));
+        _buildingRepository.VerifyAll();
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ObjectRepeatedServiceException))]
     public void GivenBuildingWithRepeatedLocationOnCreate_ThrowsObjectRepeatedServiceException()
     {
-        _genericBuilding.Name = "Building 2";
-
         _buildingRepository.Setup(repo => repo.GetAllBuildings(It.IsAny<Guid>())).Returns(new List<Building> { _genericBuilding });
-
-        _buildingService.CreateBuilding(_genericBuilding);
-
-        _buildingRepository.Verify(repo => repo.GetAllBuildings(It.IsAny<Guid>()), Times.Once);
+        
+        Building buildingWithRepeatedLocation = new Building
+        {
+            Id = Guid.NewGuid(),
+            Name = "Building 4",
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction Company 1"
+            },
+            ManagerId = Guid.NewGuid(),
+            Address = "Address 1",
+            CommonExpenses = 100,
+            Location = _genericBuilding.Location,
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    RoomNumber = 1,
+                    OwnerAssigned = new Owner()
+                    {
+                        Id = Guid.NewGuid(),
+                        Firstname = "OwnerName",
+                        Lastname = "LastName",
+                        Email = "owner@gmail.com"
+                    },
+                    BuildingId = Guid.NewGuid(),
+                    TotalRooms = 3,
+                    TotalBaths = 2,
+                    Floor = 2,
+                    HasTerrace = false
+                }
+            }
+        };
+        
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _buildingService.CreateBuilding(buildingWithRepeatedLocation));
+        _buildingRepository.VerifyAll();
     }
     
     [TestMethod]
