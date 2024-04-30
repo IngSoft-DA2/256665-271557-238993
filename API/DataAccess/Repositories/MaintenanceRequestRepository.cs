@@ -66,7 +66,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate)
     {
-        throw new NotImplementedException();
+        return _context.Set<MaintenanceRequest>().Find(idToUpdate);
     }
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)

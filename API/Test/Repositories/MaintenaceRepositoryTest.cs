@@ -161,6 +161,17 @@ public class MaintenaceRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
+    [TestMethod]
+    public void GetMaintenanceRequestById_MaintenanceRequestIsReturn()
+    {
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
+        _dbContext.SaveChanges();
+        
+        MaintenanceRequest maintenanceRequestResponse = _maintenanceRequestRepository.GetMaintenanceRequestById(_maintenanceRequestInDb.Id);
+        
+        Assert.AreEqual(_maintenanceRequestInDb, maintenanceRequestResponse);
+    }
+    
     
 
     
