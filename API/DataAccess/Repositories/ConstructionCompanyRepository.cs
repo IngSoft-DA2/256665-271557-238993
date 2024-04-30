@@ -41,7 +41,15 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
 
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd)
     {
-        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToAdd);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToAdd);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+      
     }
 }

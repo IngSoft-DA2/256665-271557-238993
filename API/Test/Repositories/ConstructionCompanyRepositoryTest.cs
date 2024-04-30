@@ -107,4 +107,15 @@ public class ConstructionCompanyRepositoryTest
         Assert.AreEqual(constructionCompanyToAdd, constructionCompanyResponse);
     }
     
+    [TestMethod]
+    public void CreateConstructionCompany_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
+        
+        ConstructionCompanyRepository constructionCompanyRepository = new ConstructionCompanyRepository(_mockDbContext.Object);
+        
+        Assert.ThrowsException<UnknownRepositoryException>(() => constructionCompanyRepository.CreateConstructionCompany(new ConstructionCompany()));
+    }
+    
 }
