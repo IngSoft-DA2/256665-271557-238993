@@ -1,3 +1,4 @@
+using System.Collections;
 using Domain;
 using Domain.Enums;
 using IRepository;
@@ -73,6 +74,31 @@ public class InvitationServiceTest
 
         Assert.AreEqual(expectedRepositoryResponse.Count(), actualResponse.Count());
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+
+    [TestMethod]
+    public void GetAllInvitationsByEmail_InvitationsAreReturned()
+    {
+        IEnumerable<Invitation> expectedRepositoryResponse = new List<Invitation>
+        {
+            new Invitation()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "firstnameExample",
+                Lastname = "lastnameExample",
+                Email = "invitation@gmail.com",
+                ExpirationDate = DateTime.MaxValue,
+                Status = StatusEnum.Pending
+            }
+        };
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitationsByEmail(It.IsAny<string>()))
+            .Returns(expectedRepositoryResponse);
+
+        IEnumerable<Invitation> invitationsObtained =
+            _invitationService.GetAllInvitationsByEmail(expectedRepositoryResponse.First().Email);
+        
+        Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(invitationsObtained));
     }
 
     #region Get all invitations, repository validation

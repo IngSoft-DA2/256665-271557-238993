@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Reflection;
 using Domain;
 using Domain.Enums;
@@ -192,7 +193,9 @@ public class InvitationService : IInvitationService
 
     public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
     {
-        throw new NotImplementedException();
+        
+        IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitationsByEmail(email);
+        return invitations;
     }
 
     private static void DeleteRepoValidations(Invitation invitationToDelete)

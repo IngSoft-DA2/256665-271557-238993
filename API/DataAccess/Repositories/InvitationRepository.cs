@@ -98,6 +98,11 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
+    public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }
