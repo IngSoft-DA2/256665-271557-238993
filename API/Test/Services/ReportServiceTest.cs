@@ -2,6 +2,7 @@ using Domain;
 using IRepository;
 using Moq;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace Test.Services;
 
@@ -73,6 +74,18 @@ public class ReportServiceTest
         _reportRepository.VerifyAll();
         
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
+    }
+    
+    [TestMethod]
+    public void GetMaintenanceReportByBuilding_ExceptionThrown()
+    {
+        
+        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>()))
+            .Throws(new Exception());
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _reportService.GetMaintenanceReportByBuilding(It.IsAny<Guid>()));
+        
+        _reportRepository.VerifyAll();
     }
     
     #endregion
@@ -234,7 +247,8 @@ public class ReportServiceTest
         
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
     }
-
+    
+    
     #endregion
     
 }
