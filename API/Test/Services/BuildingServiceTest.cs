@@ -3,7 +3,6 @@ using IRepository;
 using Moq;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;
-using WebModel.Requests.BuildingRequests;
 
 namespace Test.Services;
 

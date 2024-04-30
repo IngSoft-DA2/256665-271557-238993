@@ -9,7 +9,7 @@ using WebModel.Responses.MaintenanceResponses;
 
 namespace Adapter;
 
-public class MaintenanceRequestAdapter : IMaintenanceAdapter
+public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
 {
     #region Constructor and attributes
 

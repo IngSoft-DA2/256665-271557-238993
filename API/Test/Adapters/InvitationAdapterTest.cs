@@ -15,7 +15,7 @@ public class InvitationAdapterTest
 {
     #region Initializing Aspects
     
-    private Mock<IInvitationServiceLogic> _invitationServiceLogic;
+    private Mock<IInvitationService> _invitationService;
     private InvitationAdapter _invitationAdapter;
     private GetInvitationResponse _genericInvitationResponse;
     private Invitation _genericInvitation1;
@@ -27,8 +27,8 @@ public class InvitationAdapterTest
     [TestInitialize]
     public void Initialize()
     {
-        _invitationServiceLogic = new Mock<IInvitationServiceLogic>(MockBehavior.Strict);
-        _invitationAdapter = new InvitationAdapter(_invitationServiceLogic.Object);
+        _invitationService = new Mock<IInvitationService>(MockBehavior.Strict);
+        _invitationAdapter = new InvitationAdapter(_invitationService.Object);
 
         _genericInvitation1 = new Invitation
         {
@@ -79,11 +79,11 @@ public class InvitationAdapterTest
         IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>
             { _genericInvitationResponse };
 
-        _invitationServiceLogic.Setup(service => service.GetAllInvitations()).Returns(invitations);
+        _invitationService.Setup(service => service.GetAllInvitations()).Returns(invitations);
 
         IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations(_email);
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
 
         Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponse));
     }
@@ -91,12 +91,12 @@ public class InvitationAdapterTest
     [TestMethod]
     public void GetAllInvitations_ShouldThrowException()
     {
-        _invitationServiceLogic.Setup(service => service.GetAllInvitations())
+        _invitationService.Setup(service => service.GetAllInvitations())
             .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations(_email));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     #endregion
@@ -111,11 +111,11 @@ public class InvitationAdapterTest
         IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>
             { _genericInvitationResponse };
 
-        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>())).Returns(invitations);
+        _invitationService.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>())).Returns(invitations);
 
         IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitationsByEmail(_email);
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
 
         Assert.IsTrue(expectedInvitations.SequenceEqual(adapterResponse));
     }
@@ -123,23 +123,23 @@ public class InvitationAdapterTest
     [TestMethod]
     public void GetAllInvitationByEmail_ShouldThrowObjectNotFoundAdapterException()
     {
-        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
+        _invitationService.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     [TestMethod]
     public void GetAllInvitationByEmail_ShouldThrowException()
     {
-        _invitationServiceLogic.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
+        _invitationService.Setup(service => service.GetAllInvitationsByEmail(It.IsAny<string>()))
             .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<UnknownAdapterException>(() => _invitationAdapter.GetAllInvitationsByEmail(_email));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     #endregion
@@ -153,11 +153,11 @@ public class InvitationAdapterTest
 
         GetInvitationResponse expectedAdapterResponse = _genericInvitationResponse;
 
-        _invitationServiceLogic.Setup(service => service.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
+        _invitationService.Setup(service => service.GetInvitationById(It.IsAny<Guid>())).Returns(invitation);
 
         GetInvitationResponse adapterResponse = _invitationAdapter.GetInvitationById(invitation.Id);
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
 
         Assert.AreEqual(expectedAdapterResponse, adapterResponse);
     }
@@ -165,12 +165,12 @@ public class InvitationAdapterTest
     [TestMethod]
     public void GetInvitationById_ShouldThrowException()
     {
-        _invitationServiceLogic.Setup(service => service.GetInvitationById(It.IsAny<Guid>()))
+        _invitationService.Setup(service => service.GetInvitationById(It.IsAny<Guid>()))
             .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<Exception>(() => _invitationAdapter.GetInvitationById(It.IsAny<Guid>()));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     #endregion
@@ -180,11 +180,11 @@ public class InvitationAdapterTest
     [TestMethod]
     public void CreateInvitation_ShouldCreateInvitation()
     {
-        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()));
+        _invitationService.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()));
 
         CreateInvitationResponse adapterResponse = _invitationAdapter.CreateInvitation(_genericInvitationToCreate);
 
-        _invitationServiceLogic.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
+        _invitationService.Verify(service => service.CreateInvitation(It.IsAny<Invitation>()), Times.Once);
         
         Assert.IsNotNull(adapterResponse);
     }
@@ -192,36 +192,36 @@ public class InvitationAdapterTest
     [TestMethod]
     public void CreateInvitation_ShouldThrowObjectReapeatedException()
     {
-        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
             _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     [TestMethod]
     public void CreateInvitation_ShouldThrowObjectErrorAdapterException()
     {
-        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     [TestMethod]
     public void CreateInvitation_ShouldThrowException()
     {
-        _invitationServiceLogic.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.CreateInvitation(It.IsAny<Invitation>()))
             .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<Exception>(() => _invitationAdapter.CreateInvitation(_genericInvitationToCreate));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     #endregion
@@ -231,59 +231,59 @@ public class InvitationAdapterTest
     [TestMethod]
     public void UpdateInvitation_ShouldUpdateInvitation()
     {
-        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()));
+        _invitationService.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()));
         
         _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest);
 
-        _invitationServiceLogic.Verify(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()), Times.Once);
+        _invitationService.Verify(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()), Times.Once);
     }
     
     [TestMethod]
     public void UpdateInvitation_ShouldThrowObjectNotFoundException()
     {
-        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     [TestMethod]
     public void UpdateInvitation_ShouldThrowObjectErrorAdapterException()
     {
-        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     [TestMethod]
     public void UpdateInvitation_ShouldThrowObjectRepeatedException()
     {
-        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
             _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     [TestMethod]
     public void UpdateInvitation_ShouldThrowException()
     {
-        _invitationServiceLogic.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
+        _invitationService.Setup(service => service.UpdateInvitation(It.IsAny<Guid>(),It.IsAny<Invitation>()))
             .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<Exception>(() =>
             _invitationAdapter.UpdateInvitation(_genericInvitation1.Id, _invitationWithUpdatesRequest));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
     
     #endregion
@@ -293,34 +293,34 @@ public class InvitationAdapterTest
     [TestMethod]
     public void DeleteInvitation_ShouldDeleteInvitation()
     {
-        _invitationServiceLogic.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()));
+        _invitationService.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()));
         
         _invitationAdapter.DeleteInvitation(_genericInvitation1.Id);
 
-        _invitationServiceLogic.Verify(service => service.DeleteInvitation(It.IsAny<Guid>()), Times.Once);
+        _invitationService.Verify(service => service.DeleteInvitation(It.IsAny<Guid>()), Times.Once);
     }
     
     [TestMethod]
     public void DeleteInvitation_ShouldThrowObjectNotFoundException()
     {
-        _invitationServiceLogic.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
+        _invitationService.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _invitationAdapter.DeleteInvitation(_genericInvitation1.Id));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     [TestMethod]
     public void DeleteInvitation_ShouldThrowException()
     {
-        _invitationServiceLogic.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
+        _invitationService.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
             .Throws(new Exception("Something went wrong"));
 
         Assert.ThrowsException<Exception>(() => _invitationAdapter.DeleteInvitation(_genericInvitation1.Id));
 
-        _invitationServiceLogic.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     #endregion

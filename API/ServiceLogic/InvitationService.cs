@@ -2,11 +2,12 @@ using System.Reflection;
 using Domain;
 using Domain.Enums;
 using IRepository;
+using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
-public class InvitationService
+public class InvitationService : IInvitationService
 {
     #region Constructor and Dependency Injection
 
@@ -187,6 +188,11 @@ public class InvitationService
 
 
         _invitationRepository.DeleteInvitation(invitationToDelete);
+    }
+
+    public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
+    {
+        throw new NotImplementedException();
     }
 
     private static void DeleteRepoValidations(Invitation invitationToDelete)

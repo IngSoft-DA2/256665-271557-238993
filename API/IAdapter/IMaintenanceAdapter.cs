@@ -3,7 +3,7 @@ using WebModel.Responses.MaintenanceResponses;
 
 namespace IAdapter;
 
-public interface IMaintenanceAdapter
+public interface IMaintenanceRequestAdapter
 {
     public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests();
     public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestByCategory(Guid categoryId);

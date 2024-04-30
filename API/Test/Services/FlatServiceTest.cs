@@ -1,5 +1,4 @@
 ﻿using Domain;
-using IRepository;
 using IServiceLogic;
 using Moq;
 using Repositories.CustomExceptions;
