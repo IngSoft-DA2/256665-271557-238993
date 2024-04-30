@@ -225,11 +225,11 @@ public class ReportServiceTest
         };
 
         _reportRepository.Setup(reportRepository =>
-                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
+                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Returns(_expectedRepositoryResponse);
 
         IEnumerable<RequestHandlerReport> actualResponse =
-            _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>());
+            _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportRepository.VerifyAll();
 
@@ -240,11 +240,11 @@ public class ReportServiceTest
     public void GetMaintenanceReportByRequestHandler_ExceptionThrown()
     {
         _reportRepository.Setup(reportRepository =>
-                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()))
+                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
-            _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()));
+            _reportService.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
 
         _reportRepository.VerifyAll();
     }

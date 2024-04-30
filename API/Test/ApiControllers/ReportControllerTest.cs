@@ -134,9 +134,9 @@ public class ReportControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Returns(expectedResponseValue);
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(),It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedResponseValue);
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId);
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId,It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportAdapter.VerifyAll();
 
@@ -159,9 +159,9 @@ public class ReportControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Returns(expectedResponseValue);
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(),It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedResponseValue);
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId);
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId, It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportAdapter.VerifyAll();
 
@@ -183,9 +183,9 @@ public class ReportControllerTest
         ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
         expectedControllerResponse.StatusCode = 500;
 
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
+        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(),It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
 
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId);
+        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId,It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportAdapter.VerifyAll();
 

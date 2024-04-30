@@ -34,9 +34,17 @@ public class ReportRepository : IReportRepository
         }
     }
 
-    public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid requestHandlerId)
+    public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid requestHandlerId, Guid buildingId, Guid personId)
     {
-        throw new NotImplementedException();
+        if (!(Guid.Empty == requestHandlerId))
+        {
+            return _dbContext.Set<MaintenanceRequest>()
+                .Where(mr => mr.Flat.BuildingId == buildingId && mr.RequestHandlerId == requestHandlerId && mr.ManagerId == personId);
+        }
+        else
+        {
+            return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.ManagerId == personId && mr.Flat.BuildingId == buildingId);
+        }
     }
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId)

@@ -111,10 +111,10 @@ public class ReportAdapterTest
         };
 
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Returns(expectedServiceResponse);
+            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceReportByRequestHandlerResponse> adapterResponse = 
-            _reportAdapter.GetMaintenanceReportByRequestHandler(_sampleRequestHandlerId);
+            _reportAdapter.GetMaintenanceReportByRequestHandler(_sampleRequestHandlerId,It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportService.VerifyAll();
 
@@ -125,10 +125,10 @@ public class ReportAdapterTest
     public void GetMaintenanceReportByRequestHandler_ThrowsUnknownAdapterException()
     {
         _reportService.Setup(service => 
-            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>())).Throws(new Exception("Internal Server Error"));
+            service.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception("Internal Server Error"));
 
         Assert.ThrowsException<UnknownAdapterException>(() => 
-            _reportAdapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>()));
+            _reportAdapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
         
         _reportService.VerifyAll();
     }

@@ -45,10 +45,10 @@ namespace BuildingBuddy.API.Controllers
         [Route("/request-handler/maintenance-requests/reports")]
         
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId)
+        public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId, [FromQuery] Guid buildingId, [FromQuery] Guid personId)
         {
             try{
-                return Ok(_reportAdapter.GetMaintenanceReportByRequestHandler(requestHandlerId));
+                return Ok(_reportAdapter.GetMaintenanceReportByRequestHandler(requestHandlerId, buildingId, personId));
             }
             catch (Exception exceptionCaught)
             {

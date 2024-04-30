@@ -157,6 +157,65 @@ public class ReportRepositoryTest
         _mockDbContext.VerifyAll();
     }
     
+    [TestMethod]
+    public void GetMaintenanceReportByRequestHandler_ReturnsMaintenanceRequestsWhenRequestHandlerFromQueryIsSetted()
+    {
+        MaintenanceRequest maintenanceRequestInDb2 = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            Manager = new Manager()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password",
+                Buildings = new List<Building>()
+            },
+            RequestHandler = new RequestHandler()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password",
+                LastName = "LastName"
+            },
+            Category = new Category
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category"
+            },
+            Description = "Description",
+            OpenedDate = DateTime.Now,
+            ClosedDate = DateTime.Now,
+            RequestStatus = RequestStatusEnum.Open,
+            Flat = new Flat
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid(),
+                OwnerAssigned = new Owner()
+                {
+                    Id = Guid.NewGuid(),
+                    Firstname = "FirstName",
+                    Email = "Email",
+                    Flats = new List<Flat>(),
+                    Lastname = "Lastname"
+                }
+            }
+        };
+
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests =
+            new List<MaintenanceRequest> { maintenanceRequestInDb2 };
+
+        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb2);
+        _dbContext.SaveChanges();
+
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse =
+            _reportRepository.GetMaintenanceReportByRequestHandler(maintenanceRequestInDb2.RequestHandlerId,
+                maintenanceRequestInDb2.Flat.BuildingId, maintenanceRequestInDb2.ManagerId);
+
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+    
 
     
 }

@@ -43,13 +43,12 @@ public class ReportAdapter : IReportAdapter
 
     }
 
-    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceReportByRequestHandler(
-        Guid requestHandlerId)
+    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceReportByRequestHandler(Guid requestHandlerId, Guid buildingId, Guid personId)
     {
         try
         {
             IEnumerable<RequestHandlerReport> reports =
-                _reportService.GetMaintenanceReportByRequestHandler(requestHandlerId);
+                _reportService.GetMaintenanceReportByRequestHandler(requestHandlerId, buildingId, personId);
 
             IEnumerable<GetMaintenanceReportByRequestHandlerResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByRequestHandlerResponse()

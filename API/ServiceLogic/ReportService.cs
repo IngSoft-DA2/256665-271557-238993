@@ -70,12 +70,12 @@ public class ReportService : IReportService
 
     #region Get maintenance report by request handler
 
-    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid isAny)
+    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid reportHandlerId, Guid buildingId, Guid personId)
     {
         try
         {
             List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
-                _reportRepository.GetMaintenanceReportByRequestHandler(isAny).ToList();
+                _reportRepository.GetMaintenanceReportByRequestHandler(reportHandlerId, buildingId, personId).ToList();
 
             Dictionary<Guid, RequestHandlerReport> reportsDictionary = new Dictionary<Guid, RequestHandlerReport>();
 
