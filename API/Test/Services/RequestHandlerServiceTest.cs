@@ -10,11 +10,11 @@ namespace Test.Services;
 public class RequestHandlerServiceTest
 {
     #region Test Initialize
-    
+
     private Mock<IRequestHandlerRepository> _requestHandlerRepository;
     private RequestHandlerService _requestHandlerService;
     private RequestHandler _requestHandlerSample;
-    
+
     [TestInitialize]
     public void Initialize()
     {
@@ -22,58 +22,76 @@ public class RequestHandlerServiceTest
         _requestHandlerService = new RequestHandlerService(_requestHandlerRepository.Object);
         _requestHandlerSample = new RequestHandler
         {
-            Email = "some@example.com",
+            Email = "some@gmail.com",
             Password = "admin12345",
             Firstname = "John",
-            LastName = "Gates "
+            LastName = "Gates"
         };
     }
-    
+
     #endregion
-    
+
     #region Create Request Handler
-    
+
     [TestMethod]
     public void CreateRequestHandler_ShouldCreateRequestHandler()
     {
-        
-        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample));
+        _requestHandlerRepository.Setup(requestHandlerRepository =>
+            requestHandlerRepository.CreateRequestHandler(_requestHandlerSample));
         
         _requestHandlerService.CreateRequestHandler(_requestHandlerSample);
-        
         _requestHandlerRepository.VerifyAll();
     }
     
     [TestMethod]
-    public void CreateRequestHandler_ThrowRepeatedObjectServiceException()
+    public void CreateRequestHandlerWithIncorrectPassword_ThrowsObjectErrorServiceException()
     {
-        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample)).Throws(new ObjectRepeatedServiceException());
+        _requestHandlerSample.Password = "123";
         
-        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
-        
-        _requestHandlerRepository.VerifyAll();
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
     }
     
     [TestMethod]
-    public void CreateRequestHandler_ObjectErrorServiceException()
+    public void CreateRequestHandlerWithIncorrectValues_ThrowsObjectErrorServiceException()
     {
         _requestHandlerSample.Password = "";
         
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
-        
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
     }
-    
+
+    [TestMethod]
+    public void CreateRequestHandler_ThrowRepeatedObjectServiceException()
+    {
+        _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample))
+            .Throws(new ObjectRepeatedServiceException());
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+
+        _requestHandlerRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateRequestHandler_ObjectErrorServiceException()
+    {
+        _requestHandlerSample.Email = "";
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+    }
+
     [TestMethod]
     public void CreateRequestHandler_UnknownServiceException()
     {
         _requestHandlerRepository.Setup(x => x.CreateRequestHandler(_requestHandlerSample)).Throws(new Exception());
-        
-        Assert.ThrowsException<UnknownServiceException>(() => _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
-        
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _requestHandlerService.CreateRequestHandler(_requestHandlerSample));
+
         _requestHandlerRepository.VerifyAll();
     }
-    
-    
+
     #endregion
-    
 }

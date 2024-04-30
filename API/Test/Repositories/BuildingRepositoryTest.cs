@@ -210,7 +210,6 @@ public class BuildingRepositoryTest
         
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToUpd);
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
-
         
         Building buildingInDb = new Building
         {

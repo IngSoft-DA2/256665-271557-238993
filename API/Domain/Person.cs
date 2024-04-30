@@ -6,14 +6,7 @@ public abstract class Person
     public Guid Id { get; set; }
     public string Firstname { get; set; }
     public string Email { get; set; }
-
-    public override bool Equals(object? objectToCompare)
-    {
-        Person? ownerToCompare = objectToCompare as Person;
-        return Id == ownerToCompare.Id && Firstname == ownerToCompare.Firstname &&
-               Email == ownerToCompare.Email;
-    }
-
+    
     public virtual void PersonValidator()
     {
         ValidatingNameAspects();
