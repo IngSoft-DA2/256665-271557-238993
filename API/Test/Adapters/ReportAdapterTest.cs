@@ -253,4 +253,58 @@ public class ReportAdapterTest
     
 
     #endregion
+    
+    #region Get All Maintenance Requests By Request Handler
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByRequestHandler_ReturnsGetMaintenanceReportResponse()
+    {
+        IEnumerable<GetMaintenanceReportByRequestHandlerResponse> expectedAdapterResponse =
+            new List<GetMaintenanceReportByRequestHandlerResponse>()
+            {
+                new GetMaintenanceReportByRequestHandlerResponse()
+                {
+                    OpenRequests = 10,
+                    ClosedRequests = 5,
+                    OnAttendanceRequests = 8,
+                    AverageTimeToCloseRequest = 4
+                },
+                new GetMaintenanceReportByRequestHandlerResponse()
+                {
+                    OpenRequests = 20,
+                    ClosedRequests = 15,
+                    OnAttendanceRequests = 18,
+                    AverageTimeToCloseRequest = 6
+                }
+            };
+        IEnumerable<RequestHandlerReport> expectedServiceResponse = new List<RequestHandlerReport>()
+        {
+            new RequestHandlerReport
+            {
+                OpenRequests = expectedAdapterResponse.First().OpenRequests,
+                ClosedRequests = expectedAdapterResponse.First().ClosedRequests,
+                OnAttendanceRequests = expectedAdapterResponse.First().OnAttendanceRequests,
+                AvgTimeToCloseRequest = expectedAdapterResponse.First().AverageTimeToCloseRequest
+            },
+            new RequestHandlerReport
+            {
+                OpenRequests = expectedAdapterResponse.Last().OpenRequests,
+                ClosedRequests = expectedAdapterResponse.Last().ClosedRequests,
+                OnAttendanceRequests = expectedAdapterResponse.Last().OnAttendanceRequests,
+                AvgTimeToCloseRequest = expectedAdapterResponse.Last().AverageTimeToCloseRequest
+            }
+        };
+        
+        _reportService.Setup(service => 
+            service.GetAllMaintenanceRequestsByRequestHandler()).Returns(expectedServiceResponse);
+
+        IEnumerable<GetMaintenanceReportByRequestHandlerResponse> adapterResponse =
+            _reportAdapter.GetAllMaintenanceRequestsByRequestHandler();
+        
+        _reportService.VerifyAll();
+        
+        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+    }
+    
+    #endregion
 }
