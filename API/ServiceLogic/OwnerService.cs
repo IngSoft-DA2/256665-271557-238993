@@ -114,7 +114,7 @@ public class OwnerService : IOwnerService
     private void ValidationsForBeingPossibleToUpdate(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
         CheckIfEmailIsUsed(ownerWithUpdates);
-        MapProperties(ownerWithUpdates, ownerWithoutUpdates);
+        ValidateThatAreNotEqual(ownerWithUpdates, ownerWithoutUpdates);
     }
 
     private void CheckIfEmailIsUsed(Owner ownerWithUpdates)
@@ -125,23 +125,7 @@ public class OwnerService : IOwnerService
             throw new ObjectRepeatedServiceException();
         }
     }
-
-    private static void MapProperties(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
-    {
-        ValidateThatAreNotEqual(ownerWithUpdates, ownerWithoutUpdates);
-
-        foreach (PropertyInfo property in typeof(Owner).GetProperties())
-        {
-            object? originalValue = property.GetValue(ownerWithoutUpdates);
-            object? updatedValue = property.GetValue(ownerWithUpdates);
-
-            if (updatedValue == null && originalValue != null)
-            {
-                property.SetValue(ownerWithUpdates, originalValue);
-            }
-        }
-    }
-
+    
     private static void ValidateThatAreNotEqual(Owner ownerWithUpdates, Owner ownerWithoutUpdates)
     {
         if (ownerWithUpdates.Equals(ownerWithoutUpdates)) throw new ObjectRepeatedServiceException();

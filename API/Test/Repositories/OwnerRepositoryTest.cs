@@ -72,7 +72,7 @@ public class OwnerRepositoryTest
                 }
             }
         };
-        
+
         _dbContext.Set<Owner>().Add(ownerInDb);
         _dbContext.Set<Owner>().Add(ownerInDb2);
         _dbContext.SaveChanges();
@@ -86,19 +86,12 @@ public class OwnerRepositoryTest
     [TestMethod]
     public void GetAllOwners_ThrowsUnknownException()
     {
-        try
-        {
-            var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
-            _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<Owner>()).Throws(new Exception());
 
-            _ownerRepository = new OwnerRepository(_mockDbContext.Object);
-            Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetAllOwners());
-            _mockDbContext.VerifyAll();
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownRepositoryException(exceptionCaught.Message);
-        }
+        _ownerRepository = new OwnerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.GetAllOwners());
+        _mockDbContext.VerifyAll();
     }
 
     [TestMethod]
