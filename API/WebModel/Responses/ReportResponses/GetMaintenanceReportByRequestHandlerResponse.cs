@@ -8,7 +8,7 @@ public class GetMaintenanceReportByRequestHandlerResponse
     public int OpenRequests { get; set; }
     public int ClosedRequests { get; set; }
     public int OnAttendanceRequests { get; set; }
-    public int AverageTimeToCloseRequest { get; set; }
+    public TimeSpan AverageTimeToCloseRequest { get; set; }
 
     public override bool Equals(object obj)
     {

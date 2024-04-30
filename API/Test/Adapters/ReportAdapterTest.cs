@@ -96,7 +96,7 @@ public class ReportAdapterTest
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 0,
-                AverageTimeToCloseRequest = 4
+                AverageTimeToCloseRequest = TimeSpan.FromDays(3)
             }
         };
         IEnumerable<RequestHandlerReport> expectedServiceResponse = new List<RequestHandlerReport>()
@@ -267,14 +267,14 @@ public class ReportAdapterTest
                     OpenRequests = 10,
                     ClosedRequests = 5,
                     OnAttendanceRequests = 8,
-                    AverageTimeToCloseRequest = 4
+                    AverageTimeToCloseRequest = TimeSpan.FromDays(3)
                 },
                 new GetMaintenanceReportByRequestHandlerResponse()
                 {
                     OpenRequests = 20,
                     ClosedRequests = 15,
                     OnAttendanceRequests = 18,
-                    AverageTimeToCloseRequest = 6
+                    AverageTimeToCloseRequest = TimeSpan.FromDays(3)
                 }
             };
         IEnumerable<RequestHandlerReport> expectedServiceResponse = new List<RequestHandlerReport>()

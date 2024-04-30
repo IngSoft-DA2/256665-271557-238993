@@ -128,7 +128,7 @@ public class ReportControllerTest
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8,
-                AverageTimeToCloseRequest = 5
+                AverageTimeToCloseRequest = TimeSpan.FromDays(3)
             }
         };
 
@@ -334,7 +334,7 @@ public class ReportControllerTest
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8,
-                AverageTimeToCloseRequest = 5
+                AverageTimeToCloseRequest = TimeSpan.FromDays(3)
             },
             new GetMaintenanceReportByRequestHandlerResponse()
             {
@@ -342,7 +342,7 @@ public class ReportControllerTest
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8,
-                AverageTimeToCloseRequest = 5
+                AverageTimeToCloseRequest = TimeSpan.FromDays(3)
             }
         };
 
