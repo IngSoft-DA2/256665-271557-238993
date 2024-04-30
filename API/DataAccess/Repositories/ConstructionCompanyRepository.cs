@@ -14,7 +14,8 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
     }
     public IEnumerable<ConstructionCompany> GetAllConstructionCompanies()
     {
-        throw new NotImplementedException();
+        IEnumerable<ConstructionCompany> constructionCompanies = _dbContext.Set<ConstructionCompany>().ToList();
+        return constructionCompanies;
     }
 
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany)

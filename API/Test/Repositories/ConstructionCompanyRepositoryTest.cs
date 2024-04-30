@@ -2,9 +2,12 @@ using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
+[TestClass]
 public class ConstructionCompanyRepositoryTest
 {
     private DbContext _dbContext;
@@ -48,7 +51,4 @@ public class ConstructionCompanyRepositoryTest
         
         Assert.IsTrue(expectedConstructionCompanies.SequenceEqual(constructionCompaniesResponse));
     }
-    
-    
-    
 }
