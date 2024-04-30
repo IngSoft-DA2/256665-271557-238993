@@ -43,7 +43,14 @@ public class CategoryRepository : ICategoryRepository
 
     public void CreateCategory(Category categoryToAdd)
     {
-        _dbContext.Set<Category>().Add(categoryToAdd);
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<Category>().Add(categoryToAdd);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 }
