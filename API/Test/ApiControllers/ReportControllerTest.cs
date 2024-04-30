@@ -207,7 +207,7 @@ public class ReportControllerTest
         {
             new GetMaintenanceReportByCategoryResponse()
             {
-                CategoryId = Guid.NewGuid(),
+                CategoryId = _sampleCategoryId,
                 OpenRequests = 10,
                 ClosedRequests = 5,
                 OnAttendanceRequests = 8
@@ -221,7 +221,7 @@ public class ReportControllerTest
             .Returns(expectedResponseValue);
 
         IActionResult controllerResponse =
-            _reportController.GetMaintenanceRequestsByCategory(It.IsAny<Guid>());
+            _reportController.GetMaintenanceRequestsByCategory(_sampleCategoryId);
 
         _reportAdapter.VerifyAll();
 
