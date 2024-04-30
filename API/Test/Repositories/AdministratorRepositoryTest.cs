@@ -21,12 +21,13 @@ public class AdministratorRepositoryTest
         _dbContext.Set<Administrator>();
         _administratorRepository = new AdministratorRepository(_dbContext);
     }
-    
+
     private DbContext CreateDbContext(string dbName)
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
         return new ApplicationDbContext(options);
     }
+
     [TestMethod]
     public void GetAllAdministrator_ReturnsAllAdministrators()
     {
@@ -83,6 +84,24 @@ public class AdministratorRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
-    
+    [TestMethod]
+    public void CreateAdministrator_AdministratorIsCreated()
+    {
+        Administrator administratorToAdd = new Administrator
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Administrator1",
+            LastName = "Administrator1",
+            Email = "admin@gmail.com",
+            Password = "password",
+            Invitations = new List<Invitation>()
+        };
+
+        _administratorRepository.CreateAdministrator(administratorToAdd);
+
+        Administrator administratorInDb = _dbContext.Set<Administrator>().Find(administratorToAdd.Id);
+
+        Assert.AreEqual(administratorToAdd, administratorInDb);
+    }
     
 }

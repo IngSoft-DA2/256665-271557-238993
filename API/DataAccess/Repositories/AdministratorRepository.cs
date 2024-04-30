@@ -13,9 +13,11 @@ public class AdministratorRepository : IAdministratorRepository
     {
         _dbContext = dbContext;
     }
+
     public void CreateAdministrator(Administrator administratorToAdd)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<Administrator>().Add(administratorToAdd);
+        _dbContext.SaveChanges();
     }
 
     public IEnumerable<Administrator> GetAllAdministrators()
@@ -29,6 +31,5 @@ public class AdministratorRepository : IAdministratorRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-        
     }
 }
