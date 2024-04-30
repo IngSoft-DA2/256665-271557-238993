@@ -319,4 +319,58 @@ public class ReportAdapterTest
     }
     
     #endregion
+    
+    #region Get All Maintenance Requests By Category
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequestsByCategory_ReturnsGetMaintenanceReportResponse()
+    {
+        IEnumerable<GetMaintenanceReportByCategoryResponse> expectedAdapterResponse =
+            new List<GetMaintenanceReportByCategoryResponse>()
+            {
+                new GetMaintenanceReportByCategoryResponse()
+                {
+                    CategoryId = _sampleCategoryId,
+                    OpenRequests = 10,
+                    ClosedRequests = 5,
+                    OnAttendanceRequests = 8
+                },
+                new GetMaintenanceReportByCategoryResponse()
+                {
+                    CategoryId = Guid.NewGuid(),
+                    OpenRequests = 20,
+                    ClosedRequests = 15,
+                    OnAttendanceRequests = 18
+                }
+            };
+        IEnumerable<Report> expectedServiceResponse = new List<Report>()
+        {
+            new Report
+            {
+                IdOfResourceToReport = expectedAdapterResponse.First().CategoryId,
+                OpenRequests = expectedAdapterResponse.First().OpenRequests,
+                ClosedRequests = expectedAdapterResponse.First().ClosedRequests,
+                OnAttendanceRequests = expectedAdapterResponse.First().OnAttendanceRequests
+            },
+            new Report
+            {
+                IdOfResourceToReport = expectedAdapterResponse.Last().CategoryId,
+                OpenRequests = expectedAdapterResponse.Last().OpenRequests,
+                ClosedRequests = expectedAdapterResponse.Last().ClosedRequests,
+                OnAttendanceRequests = expectedAdapterResponse.Last().OnAttendanceRequests
+            }
+        };
+        
+        _reportService.Setup(service => 
+            service.GetAllMaintenanceRequestsByCategory()).Returns(expectedServiceResponse);
+
+        IEnumerable<GetMaintenanceReportByCategoryResponse> adapterResponse =
+            _reportAdapter.GetAllMaintenanceRequestsByCategory();
+        
+        _reportService.VerifyAll();
+        
+        Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
+    }
+    
+    #endregion
 }

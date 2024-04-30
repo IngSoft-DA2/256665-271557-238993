@@ -76,5 +76,10 @@ public class ReportService : IReportService
         throw new NotImplementedException();
     }
 
+    public IEnumerable<Report> GetAllMaintenanceRequestsByCategory()
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

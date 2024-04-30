@@ -13,4 +13,5 @@ public interface IReportService
     IEnumerable<Report> GetMaintenanceReportByCategory(Guid request);
     IEnumerable<Report> GetAllMaintenanceRequestsByBuilding();
     IEnumerable<RequestHandlerReport> GetAllMaintenanceRequestsByRequestHandler();
+    IEnumerable<Report> GetAllMaintenanceRequestsByCategory();
 }
