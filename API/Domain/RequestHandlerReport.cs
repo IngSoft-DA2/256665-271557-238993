@@ -9,8 +9,6 @@ public class RequestHandlerReport : Report
     {
         RequestHandlerReport? objectToCompare = obj as RequestHandlerReport;
         
-        if (objectToCompare is null) return false;
-
         return AvgTimeToCloseRequest == objectToCompare.AvgTimeToCloseRequest &&
                TotalTime == objectToCompare.TotalTime && base.Equals(obj);
     }
