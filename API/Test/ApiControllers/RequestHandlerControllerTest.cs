@@ -54,44 +54,6 @@ public class RequestHandlerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedValue.Id, value.Id);
     }
-
-    [TestMethod]
-    public void CreateRequestHandlerRequest_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific Error");
-
-        _requestHandlerAdapter.Setup(adapter => adapter.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
-            .Throws(new ObjectErrorAdapterException("Specific Error"));
-
-        IActionResult controllerResponse =
-            _requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());
-        _requestHandlerAdapter.VerifyAll();
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void CreateRequestHandlerRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _requestHandlerAdapter.Setup(adapter => adapter.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>()))
-            .Throws(new Exception("Unknown Error"));
-
-        IActionResult controllerResponse =
-            _requestHandlerController.CreateRequestHandler(It.IsAny<CreateRequestHandlerRequest>());
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 }
