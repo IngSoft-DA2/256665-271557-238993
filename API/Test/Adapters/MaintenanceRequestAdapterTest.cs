@@ -14,7 +14,7 @@ namespace Test.Adapters;
 public class MaintenanceRequestAdapterTest
 {
     #region Initialize
-    
+
     private Mock<IMaintenanceRequestService> _maintenanceRequestService;
     private MaintenanceRequestAdapter _maintenanceRequestAdapter;
 
@@ -31,7 +31,7 @@ public class MaintenanceRequestAdapterTest
 
         _dummyCreateRequestMaintenanceResponse = new CreateRequestMaintenanceRequest();
         dummyUpdateRequest = new UpdateMaintenanceRequestStatusRequest();
-        
+
         genericMaintenanceRequest = new MaintenanceRequest
         {
             Id = Guid.NewGuid(),
@@ -43,7 +43,7 @@ public class MaintenanceRequestAdapterTest
             ClosedDate = DateTime.Now,
             RequestHandlerId = Guid.NewGuid()
         };
-        
+
         genericMaintenanceRequestResponse = new GetMaintenanceRequestResponse
         {
             Id = genericMaintenanceRequest.Id,
@@ -56,9 +56,9 @@ public class MaintenanceRequestAdapterTest
             RequestHandlerId = genericMaintenanceRequest.RequestHandlerId
         };
     }
-    
+
     #endregion
-    
+
     #region Get All Maintenance Requests
 
     [TestMethod]
@@ -68,7 +68,7 @@ public class MaintenanceRequestAdapterTest
             { genericMaintenanceRequest };
 
         IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse =
-            new List<GetMaintenanceRequestResponse> {genericMaintenanceRequestResponse};
+            new List<GetMaintenanceRequestResponse> { genericMaintenanceRequestResponse };
 
         _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests())
             .Returns(expectedServiceResponse);
@@ -78,7 +78,6 @@ public class MaintenanceRequestAdapterTest
         _maintenanceRequestService.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
-        
     }
 
     [TestMethod]
@@ -91,12 +90,12 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.GetAllMaintenanceRequests());
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
+
         _maintenanceRequestService.Verify(service => service.GetAllMaintenanceRequests(), Times.Once);
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request By Category Id
 
     [TestMethod]
@@ -109,7 +108,7 @@ public class MaintenanceRequestAdapterTest
         {
             genericMaintenanceRequestResponse
         };
-        
+
         _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestByCategory(It.IsAny<Guid>()))
             .Returns(expectedServiceResponse);
 
@@ -119,7 +118,7 @@ public class MaintenanceRequestAdapterTest
 
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestByCategory_ShouldThrowObjectNotFoundAdapterException()
     {
@@ -128,10 +127,11 @@ public class MaintenanceRequestAdapterTest
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _maintenanceRequestAdapter.GetMaintenanceRequestByCategory(genericMaintenanceRequest.Id));
-        
-        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestByCategory(It.IsAny<Guid>()), Times.Once);
+
+        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestByCategory(It.IsAny<Guid>()),
+            Times.Once);
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestByCategory_ThrowsException()
     {
@@ -142,106 +142,128 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.GetMaintenanceRequestByCategory(genericMaintenanceRequest.Id));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
-        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestByCategory((It.IsAny<Guid>())), Times.Once);
+
+        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestByCategory((It.IsAny<Guid>())),
+            Times.Once);
     }
-    
+
     #endregion
-    
+
     #region Create Maintenance Request
-    
+
     [TestMethod]
     public void CreateMaintenanceRequest_ShouldReturnCreateMaintenanceRequestResponse()
     {
+        CreateRequestMaintenanceRequest dummyMaintenanceRequest = new CreateRequestMaintenanceRequest()
+        {
+            Category = Guid.NewGuid(),
+            Description = "Description",
+            FlatId = Guid.NewGuid()
+        };
         _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()));
-        
-        CreateRequestMaintenanceResponse adapterResponse = _maintenanceRequestAdapter.CreateMaintenanceRequest(_dummyCreateRequestMaintenanceResponse);
-        
+
+        CreateRequestMaintenanceResponse adapterResponse =
+            _maintenanceRequestAdapter.CreateMaintenanceRequest(dummyMaintenanceRequest);
+
         Assert.IsNotNull(adapterResponse);
-        
-        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
+
+        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()),
+            Times.Once);
     }
-    
+
     [TestMethod]
     public void CreateMaintenanceRequest_ShouldThrowException()
     {
         _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()))
             .Throws(new Exception("Something went wrong"));
-        
+
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
             _maintenanceRequestAdapter.CreateMaintenanceRequest(_dummyCreateRequestMaintenanceResponse));
-        
+
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
-        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
+
+        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()),
+            Times.Once);
     }
-    
+
     [TestMethod]
     public void CreateMaintenanceRequest_ShouldThrowObjectErrorAdapterException()
     {
         _maintenanceRequestService.Setup(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()))
             .Throws(new ObjectErrorServiceException("Description can't be empty"));
-        
+
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _maintenanceRequestAdapter.CreateMaintenanceRequest(_dummyCreateRequestMaintenanceResponse));
-        
-        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()), Times.Once);
+
+        _maintenanceRequestService.Verify(service => service.CreateMaintenanceRequest(It.IsAny<MaintenanceRequest>()),
+            Times.Once);
     }
-    
+
     #endregion
-    
+
     #region Update Maintenance Request
-    
+
     [TestMethod]
     public void UpdateMaintenanceRequest_ShouldUpdateMaintenanceRequest()
     {
-        _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()));
-        
+        _maintenanceRequestService.Setup(service =>
+            service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()));
+
         _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest);
-        
-        _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
+
+        _maintenanceRequestService.Verify(
+            service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void UpdateMaintenanceRequest_ShouldThrowObjectErrorAdapterException()
     {
-        _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+        _maintenanceRequestService.Setup(service =>
+                service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
             .Throws(new ObjectErrorServiceException("Request status can't be empty"));
-        
+
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest));
-        
-        _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
+            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id,
+                dummyUpdateRequest));
+
+        _maintenanceRequestService.Verify(
+            service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void UpdateMaintenanceRequest_ShouldThrowObjectNotFoundAdapterException()
     {
-        _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+        _maintenanceRequestService.Setup(service =>
+                service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
             .Throws(new ObjectNotFoundServiceException());
-        
+
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest));
-        
-        _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
+            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id,
+                dummyUpdateRequest));
+
+        _maintenanceRequestService.Verify(
+            service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void UpdateMaintenanceRequest_ShouldThrowException()
     {
-        _maintenanceRequestService.Setup(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
+        _maintenanceRequestService.Setup(service =>
+                service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()))
             .Throws(new Exception("Something went wrong"));
-        
+
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id, dummyUpdateRequest));
-        
+            _maintenanceRequestAdapter.UpdateMaintenanceRequestStatus(genericMaintenanceRequest.Id,
+                dummyUpdateRequest));
+
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
-        _maintenanceRequestService.Verify(service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
+
+        _maintenanceRequestService.Verify(
+            service => service.UpdateMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<MaintenanceRequest>()), Times.Once);
     }
-    
+
     #endregion
-    
+
     #region Assign Maintenance Request
 
     [TestMethod]
@@ -249,44 +271,47 @@ public class MaintenanceRequestAdapterTest
     {
         _maintenanceRequestService
             .Setup(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()));
-        
+
         _maintenanceRequestAdapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>());
-        
-        _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+
+        _maintenanceRequestService.Verify(
+            service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void AssignMaintenanceRequest_ShouldThrowObjectNotFoundAdapterException()
     {
         _maintenanceRequestService
             .Setup(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
-        
+
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _maintenanceRequestAdapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()));
-        
-        _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+
+        _maintenanceRequestService.Verify(
+            service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void AssignMaintenanceRequest_ShouldThrowException()
     {
         _maintenanceRequestService
             .Setup(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new Exception("Something went wrong"));
-        
+
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
             _maintenanceRequestAdapter.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()));
-        
+
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
-        _maintenanceRequestService.Verify(service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+
+        _maintenanceRequestService.Verify(
+            service => service.AssignMaintenanceRequest(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Requests By Handler
-    
+
     [TestMethod]
     public void GetMaintenanceRequestsByHandler_ShouldReturnMaintenanceRequestResponses()
     {
@@ -294,14 +319,15 @@ public class MaintenanceRequestAdapterTest
             { genericMaintenanceRequest };
 
         IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse =
-            new List<GetMaintenanceRequestResponse> {genericMaintenanceRequestResponse};
+            new List<GetMaintenanceRequestResponse> { genericMaintenanceRequestResponse };
 
         _maintenanceRequestService.Setup(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()))
             .Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceRequestResponse> adapterResponse =
-            _maintenanceRequestAdapter.GetMaintenanceRequestsByRequestHandler(genericMaintenanceRequest.RequestHandlerId);
-        
+            _maintenanceRequestAdapter.GetMaintenanceRequestsByRequestHandler(
+                genericMaintenanceRequest.RequestHandlerId);
+
         _maintenanceRequestService.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
@@ -314,18 +340,19 @@ public class MaintenanceRequestAdapterTest
             .Throws(new Exception("Something went wrong"));
 
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.GetMaintenanceRequestsByRequestHandler(genericMaintenanceRequest.RequestHandlerId));
+            _maintenanceRequestAdapter.GetMaintenanceRequestsByRequestHandler(
+                genericMaintenanceRequest.RequestHandlerId));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
-        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()), Times.Once);
-        
+
+        _maintenanceRequestService.Verify(service => service.GetMaintenanceRequestsByRequestHandler(It.IsAny<Guid>()),
+            Times.Once);
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request By Id
-    
+
     [TestMethod]
     public void GetMaintenanceRequestById_ShouldReturnMaintenanceRequestResponse()
     {
@@ -338,7 +365,7 @@ public class MaintenanceRequestAdapterTest
 
         Assert.AreEqual(genericMaintenanceRequestResponse, adapterResponse);
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestById_ShouldThrowObjectNotFoundAdapterException()
     {
@@ -347,10 +374,10 @@ public class MaintenanceRequestAdapterTest
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
-        
+
         _maintenanceRequestService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void GetMaintenanceRequestById_ShouldThrowException()
     {
@@ -361,9 +388,9 @@ public class MaintenanceRequestAdapterTest
             _maintenanceRequestAdapter.GetMaintenanceRequestById(genericMaintenanceRequest.Id));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
-        
+
         _maintenanceRequestService.VerifyAll();
     }
-    
+
     #endregion
 }

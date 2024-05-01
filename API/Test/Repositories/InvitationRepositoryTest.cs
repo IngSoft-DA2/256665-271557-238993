@@ -1,4 +1,5 @@
-﻿using DataAccess.DbContexts;
+﻿using System.Collections;
+using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Domain;
 using Domain.Enums;
@@ -57,7 +58,7 @@ public class InvitationRepositoryTest
     }
 
     #endregion
-    
+
     #region Get All Invitations
 
     [TestMethod]
@@ -83,6 +84,35 @@ public class InvitationRepositoryTest
 
     #endregion
 
+    #region Get All Invitations By Email
+
+    [TestMethod]
+    public void GetAllInvitationsByEmail_InvitationsAreReturn()
+    {
+        IEnumerable<Invitation> invitationsWithThatEmail = new List<Invitation>
+        {
+            new Invitation
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Invitation",
+                Lastname = "Invitation",
+                Email = "invitation@gmail.com",
+                ExpirationDate = DateTime.MaxValue,
+                Status = StatusEnum.Pending
+            },
+        };
+
+        _dbContext.Set<Invitation>().Add(invitationsWithThatEmail.ElementAt(0));
+        _dbContext.SaveChanges();
+
+        IEnumerable<Invitation> invitationsObtained =
+            _invitationRepository.GetAllInvitationsByEmail(invitationsWithThatEmail.ElementAt(0).Email);
+        
+        Assert.IsTrue(invitationsWithThatEmail.SequenceEqual(invitationsObtained));
+    }
+
+    #endregion
+
     #region Get Invitation By Id
 
     [TestMethod]
@@ -100,8 +130,7 @@ public class InvitationRepositoryTest
         _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
 
         _invitationRepository = new InvitationRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() =>
-            _invitationRepository.GetInvitationById(_invitationInDb.Id));
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.GetInvitationById(_invitationInDb.Id));
         _mockDbContext.VerifyAll();
     }
 
@@ -136,13 +165,11 @@ public class InvitationRepositoryTest
         _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
 
         _invitationRepository = new InvitationRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() =>
-            _invitationRepository.CreateInvitation(new Invitation()));
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.CreateInvitation(new Invitation()));
         _mockDbContext.VerifyAll();
     }
-    
     #endregion
-    
+
     #region Update Invitation
 
     [TestMethod]
@@ -164,13 +191,12 @@ public class InvitationRepositoryTest
         _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
 
         _invitationRepository = new InvitationRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() =>
-            _invitationRepository.UpdateInvitation(new Invitation()));
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.UpdateInvitation(new Invitation()));
         _mockDbContext.VerifyAll();
     }
-    
+
     #endregion
-    
+
     #region Delete Invitation
 
     [TestMethod]
@@ -192,6 +218,6 @@ public class InvitationRepositoryTest
             _invitationRepository.DeleteInvitation(new Invitation()));
         _mockDbContext.VerifyAll();
     }
-    
+
     #endregion
 }

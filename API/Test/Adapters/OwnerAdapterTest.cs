@@ -128,7 +128,12 @@ public class OwnerAdapterTest
     [TestMethod]
     public void CreateOwner_ReturnsCreateOwnerResponse()
     {
-        CreateOwnerRequest dummyRequest = new CreateOwnerRequest();
+        CreateOwnerRequest dummyRequest = new CreateOwnerRequest
+        {
+            Firstname = "Firstname",
+            Lastname = "Lastname",
+            Email = "owner@gmail.com"
+        };
         _ownerService.Setup(service => service.CreateOwner(It.IsAny<Owner>()));
 
         CreateOwnerResponse adapterResponse = _ownerAdapter.CreateOwner(dummyRequest);
@@ -166,7 +171,12 @@ public class OwnerAdapterTest
     [TestMethod]
     public void UpdateOwner_ReturnsOwnerUpdateResponse()
     {
-        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest();
+        UpdateOwnerRequest dummyUpdate = new UpdateOwnerRequest
+        {
+            Firstname = "Firstname",
+            Lastname = "Lastname",
+            Email = "owner@gmail.com"
+        };
         _ownerService.Setup(service => service.UpdateOwnerById(It.IsAny<Owner>()));
 
         _ownerAdapter.UpdateOwnerById(It.IsAny<Guid>(), dummyUpdate);

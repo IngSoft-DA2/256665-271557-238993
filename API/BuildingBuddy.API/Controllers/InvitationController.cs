@@ -31,10 +31,10 @@ namespace BuildingBuddy.API.Controllers
             {
                 if (!string.IsNullOrEmpty(email))
                 {
-                    return Ok(_invitationAdapter.GetAllInvitations(email));
+                    return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
                 }
-
-                return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
+                return Ok(_invitationAdapter.GetAllInvitations());
+                
             }
             catch (ObjectNotFoundAdapterException)
             {

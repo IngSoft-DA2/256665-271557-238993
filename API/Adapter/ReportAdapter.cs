@@ -4,7 +4,6 @@ using IAdapter;
 using IServiceLogic;
 using Microsoft.AspNetCore.Http.Features;
 using ServiceLogic.CustomExceptions;
-using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
 
 namespace Adapter;

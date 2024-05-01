@@ -31,7 +31,13 @@ public class RequestHandlerAdapterTest
     [TestMethod]
     public void CreateRequestHandler_ReturnsCreateRequestHandlerResponse()
     {
-        CreateRequestHandlerRequest dummyRequest = new CreateRequestHandlerRequest();
+        CreateRequestHandlerRequest dummyRequest = new CreateRequestHandlerRequest
+        {
+            Firstname = "Firstname",
+            Lastname = "Lastname",
+            Email = "requestHandler@gmail.com",
+            Password = "Password"
+        };
         _requestHandlerService.Setup(service => service.CreateRequestHandler(It.IsAny<RequestHandler>()));
         
         CreateRequestHandlerResponse adapterResponse = _requestHandlerAdapter.CreateRequestHandler(dummyRequest);

@@ -45,14 +45,15 @@ public class InvitationControllerTest
 
     #endregion
 
-    #region Get All Invitations
+    #region Get All Invitations By Email
 
     [TestMethod]
-    public void GetAllInvitations_200CodeIsReturned()
+    public void GetAllInvitations_200CodeIsReturned_WhenEmailIsNotEmpty()
     {
-        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>() {_expectedInvitation};
+        IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>()
+            { _expectedInvitation };
 
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations(_email)).Returns(expectedInvitations);
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email)).Returns(expectedInvitations);
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitations);
 
@@ -71,11 +72,12 @@ public class InvitationControllerTest
     }
 
     [TestMethod]
-    public void GetAllInvitations_NotFoundIsReturned()
+    public void GetAllInvitations_NotFoundIsReturned_WhenEmailIsNotEmpty()
     {
-        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("No invitations were found in Database");
+        NotFoundObjectResult expectedControllerResponse =
+            new NotFoundObjectResult("No invitations were found in Database");
 
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations(_email))
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email))
             .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
@@ -89,9 +91,10 @@ public class InvitationControllerTest
     }
 
     [TestMethod]
-    public void GetAllInvitations_500StatusCodeIsReturned()
+    public void GetAllInvitations_500StatusCodeIsReturned_WhenEmailIsNotEmpty()
     {
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations(_email)).Throws(new Exception("Database Broken"));
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email))
+            .Throws(new Exception("Database Broken"));
 
         IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
         _invitationAdapter.VerifyAll();
@@ -101,6 +104,51 @@ public class InvitationControllerTest
         Assert.IsNotNull(controllerResponseCasted);
         Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    #endregion
+
+    #region Get All Invitations
+
+    [TestMethod]
+    public void GetAllInvitationsButWithoutEmail_OkIsReturn()
+    {
+        IEnumerable<GetInvitationResponse> expectedInvitationResponse =
+            new List<GetInvitationResponse>() { _expectedInvitation };
+
+        _invitationAdapter.Setup(invitationAdapter =>
+            invitationAdapter.GetAllInvitations()).Returns(expectedInvitationResponse);
+
+        IActionResult controllerResponse = _invitationController.GetAllInvitations(string.Empty);
+        _invitationAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetInvitationResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetInvitationResponse>;
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.IsTrue(expectedInvitationResponse.SequenceEqual(controllerResponseValueCasted));
+    }
+
+    [TestMethod]
+    public void GetAllInvitationsButWithoutEmail_500StatusCodeIsReturn()
+    {
+        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
+        expectedControllerResponse.StatusCode = 500;
+        
+        _invitationAdapter.Setup(invitationAdapter => invitationAdapter.GetAllInvitations())
+            .Throws(new Exception("Unknown Error"));
+        
+        IActionResult controllerResponse = _invitationController.GetAllInvitations(string.Empty);
+        _invitationAdapter.VerifyAll();
+        
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
 
     #endregion

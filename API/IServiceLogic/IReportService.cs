@@ -1,5 +1,4 @@
 using Domain;
-using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
 
 namespace IServiceLogic;

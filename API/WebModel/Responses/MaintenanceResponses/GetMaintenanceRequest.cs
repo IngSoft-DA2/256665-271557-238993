@@ -12,13 +12,11 @@ public class GetMaintenanceRequestResponse
     public DateTime? ClosedDate { get; set; }
     public Guid? RequestHandlerId { get; set; }
     public StatusEnumMaintenanceResponse RequestStatus { get; set; }
-    
+
     public override bool Equals(object objectToCompare)
     {
         GetMaintenanceRequestResponse? toCompare = objectToCompare as GetMaintenanceRequestResponse;
 
-        if (toCompare is null) return false;
-        
         return Id == toCompare.Id &&
                Description == toCompare.Description &&
                FlatId == toCompare.FlatId &&
@@ -27,6 +25,5 @@ public class GetMaintenanceRequestResponse
                OpenedDate == toCompare.OpenedDate &&
                ClosedDate == toCompare.ClosedDate &&
                RequestHandlerId == toCompare.RequestHandlerId;
-               
     }
 }

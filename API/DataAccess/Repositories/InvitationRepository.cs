@@ -98,6 +98,11 @@ public class InvitationRepository : IInvitationRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
+    public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
+    {
+        return _dbContext.Set<Invitation>().Where(invitation => invitation.Email == email).ToList();
+    }
+
     #endregion
 }

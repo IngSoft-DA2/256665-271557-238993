@@ -166,8 +166,8 @@ public class MaintenanceRequestServiceTest
     [TestMethod]
     public void CreateMaintenanceRequestWithEmptyCategory_ThrowsObjectErrorServiceException()
     {
-        _maintenanceRequestSample.CategoryId = Guid.Empty;
-
+        _maintenanceRequestSample.Category = null;
+      
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _maintenanceRequestService.CreateMaintenanceRequest(_maintenanceRequestSample));
     }
