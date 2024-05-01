@@ -6,6 +6,7 @@ using WebModel.Responses.MaintenanceResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [CustomExceptionFilter]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class MaintenanceController : ControllerBase
@@ -23,42 +24,26 @@ namespace BuildingBuddy.API.Controllers
         
         #region Get All Maintenance Requests
 
+        [AuthorizationFilter(RoleNeeded = "Manager")]
         [HttpGet]
         [Route("requests")]
         public IActionResult GetAllMaintenanceRequests()
         {
-            try
-            {
-                return Ok(_maintenanceAdapter.GetAllMaintenanceRequests());
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            return Ok(_maintenanceAdapter.GetAllMaintenanceRequests());
+            
         }
         
         #endregion
         
         #region Create Maintenance Request
 
+        [AuthorizationFilter(RoleNeeded = "Manager")]
         [HttpPost]
         public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
         {
-            try
-            {
-                CreateRequestMaintenanceResponse response = _maintenanceAdapter.CreateMaintenanceRequest(request);
+            CreateRequestMaintenanceResponse response = _maintenanceAdapter.CreateMaintenanceRequest(request);
                 return CreatedAtAction(nameof(CreateMaintenanceRequest), new { id = response.Id }, response);
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            
         }
         
         #endregion
@@ -66,125 +51,71 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Category Id
 
         [HttpGet]
+        [AuthorizationFilter(RoleNeeded = "Manager")]
         [Route("/category/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
-            try
-            {
-                return Ok(_maintenanceAdapter.GetMaintenanceRequestByCategory(categoryId));
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Maintenance request was not found, reload the page");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            return Ok(_maintenanceAdapter.GetMaintenanceRequestByCategory(categoryId));
+            
         }
         
         #endregion
         
         #region Assign Maintenance Request
 
+        [AuthorizationFilter(RoleNeeded = "Manager")]
         [HttpPut]
         [Route("/request-handler/requests")]
         public IActionResult AssignMaintenanceRequest(Guid idOfRequestToUpdate, Guid idOfWorker)
         {
-            try
-            {
-                _maintenanceAdapter.AssignMaintenanceRequest(idOfRequestToUpdate, idOfWorker);
-                return NoContent();
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Maintenance request was not found, reload the page");
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            
+            _maintenanceAdapter.AssignMaintenanceRequest(idOfRequestToUpdate, idOfWorker);
+            return NoContent();
+            
         }
         
         #endregion
         
         #region Get Maintenance Requests By Request Handler
 
+        [AuthorizationFilter(RoleNeeded = "Manager")]
         [HttpGet]
         [Route("/request-handler/{handlerId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
         {
-            try
-            {
-                return Ok(_maintenanceAdapter.GetMaintenanceRequestsByRequestHandler(handlerId));
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Maintenance request was not found, reload the page");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            
+            return Ok(_maintenanceAdapter.GetMaintenanceRequestsByRequestHandler(handlerId));
+            
         }
         
         #endregion
         
         #region Update Maintenance Request
-
+        
+        [AuthorizationFilter(RoleNeeded = "RequestHandler")]
         [HttpPut]
         [Route("/requests/{id:Guid}")]
         public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id,
             [FromBody] UpdateMaintenanceRequestStatusRequest request)
         {
-            try
-            {
-                _maintenanceAdapter.UpdateMaintenanceRequestStatus(id, request);
-                return NoContent();
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Maintenance request was not found, reload the page");
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            
+            _maintenanceAdapter.UpdateMaintenanceRequestStatus(id, request);
+            return NoContent();
+            
         }
         
         #endregion
         
         #region Get Maintenance Request By Id
 
+        [AuthorizationFilter(RoleNeeded = "Manager")]
         [HttpGet]
         [Route("/requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)
         {
-            try
-            {
-                return Ok(_maintenanceAdapter.GetMaintenanceRequestById(id));
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Maintenance request was not found, reload the page");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+           
+            return Ok(_maintenanceAdapter.GetMaintenanceRequestById(id));
+            
         }
         
         #endregion
