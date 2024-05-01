@@ -1,5 +1,3 @@
-using System.Net.Sockets;
-using DataAccess.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +10,6 @@ public class ApplicationDbContext : DbContext
     {
     }
     
-   
     public DbSet<Category> Categories { get; set; }
     public DbSet<Owner> Owners { get; set; }
     public DbSet<ConstructionCompany> ConstructionCompany { get; set; }

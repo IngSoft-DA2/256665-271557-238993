@@ -13,7 +13,7 @@ namespace ServerFactory;
 
 public static class ServiceExtension
 {
-    public static void AddServices(this IServiceCollection services, string connectionString)
+    public static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<ICategoryAdapter,CategoryAdapter>();
         services.AddScoped<ICategoryService , CategoryService>();
@@ -36,18 +36,12 @@ public static class ServiceExtension
         services.AddScoped<IAdministratorAdapter, AdministratorAdapter>();
         services.AddScoped<IAdministratorService, AdministratorService>();
         services.AddScoped<IAdministratorRepository, AdministratorRepository>();
-        
         services.AddScoped<IManagerAdapter, ManagerAdapter>();
         services.AddScoped<IManagerService, ManagerService>();
         services.AddScoped<IManagerRepository, ManagerRepository>();
-        
-        
-        
         services.AddScoped<IReportAdapter, ReportAdapter>();
         services.AddScoped<IReportService, ReportService>();
-        // services.AddScoped<IReportRepository, ReportRepository>();
-        
-        services.AddDbContext<DbContext, ApplicationDbContext>(o => o.UseSqlServer(connectionString));
+        services.AddScoped<IReportRepository, ReportRepository>();
     }
 
     public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)
