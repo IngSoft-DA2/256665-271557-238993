@@ -80,6 +80,7 @@ public class ManagerAdapter : IManagerAdapter
                 Firstname = createRequest.FirstName,
                 Email = createRequest.Email,
                 Password = createRequest.Password,
+                Role = "Manager"
             };
 
             _managerServiceLogic.CreateManager(manager);
