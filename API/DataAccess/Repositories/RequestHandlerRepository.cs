@@ -28,6 +28,13 @@ public class RequestHandlerRepository : IRequestHandlerRepository
 
     public IEnumerable<RequestHandler> GetAllRequestHandlers()
     {
-        return _dbContext.Set<RequestHandler>().ToList();
+        try
+        {
+            return _dbContext.Set<RequestHandler>().ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 }

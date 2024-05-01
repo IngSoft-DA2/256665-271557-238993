@@ -85,4 +85,15 @@ public class RequestHandlerRepositoryTest
         Assert.IsTrue(expectedRequestHandlers.SequenceEqual(requestHandlersResponse));
     }
     
+    [TestMethod]
+    public void GetAllRequestHandlers_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<RequestHandler>()).Throws(new Exception());
+        
+        _requestHandlerRepository = new RequestHandlerRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => _requestHandlerRepository.GetAllRequestHandlers());
+        _mockDbContext.VerifyAll();
+    }
+    
 }
