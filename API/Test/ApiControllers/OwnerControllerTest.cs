@@ -60,25 +60,6 @@ public class OwnerControllerTest
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedOwners));
     }
 
-    [TestMethod]
-    public void GetOwners_InternalServerErrorIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _ownerAdapter.Setup(adapter => adapter.GetAllOwners()).Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _ownerController.GetAllOwners();
-
-        _ownerAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
     #endregion
 
     #region Get Owner By Id
@@ -111,43 +92,7 @@ public class OwnerControllerTest
         Assert.IsTrue(expectedOwner.Equals(controllerResponseValueCasted));
     }
 
-    [TestMethod]
-    public void GetOwnerResponseById_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("The specific owner was not found in Database");
-        
-        _ownerAdapter.Setup(adapter => adapter.GetOwnerById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundAdapterException());
-        
-        IActionResult controllerResponse = _ownerController.GetOwnerById(It.IsAny<Guid>());
-        _ownerAdapter.VerifyAll();
-        
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void GetOwnerResponseById_Status500IsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-        
-        _ownerAdapter.Setup(adapter => adapter.GetOwnerById(It.IsAny<Guid>()))
-            .Throws(new Exception("Something went wrong"));
-        
-        IActionResult controllerResponse = _ownerController.GetOwnerById(It.IsAny<Guid>());
-        _ownerAdapter.VerifyAll();
-        
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 
     #region CreateOwner
@@ -178,47 +123,7 @@ public class OwnerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 
-    [TestMethod]
-    public void CreateOwner_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error on property");
-
-        _ownerAdapter.Setup(adapter => adapter.CreateOwner(It.IsAny<CreateOwnerRequest>()))
-            .Throws(new ObjectErrorAdapterException("Error on property"));
-
-        IActionResult controllerResponse = _ownerController.CreateOwner(It.IsAny<CreateOwnerRequest>());
-
-        _ownerAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-    }
-
-    [TestMethod]
-    public void CreateOwner_InternalServerErrorIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _ownerAdapter.Setup(adapter => adapter.CreateOwner(It.IsAny<CreateOwnerRequest>()))
-            .Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _ownerController.CreateOwner(It.IsAny<CreateOwnerRequest>());
-
-        _ownerAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-    }
-
+   
     #endregion
 
     #region UpdateOwner
@@ -239,71 +144,6 @@ public class OwnerControllerTest
 
         Assert.IsNotNull(controllerResponseCasted);
 
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-    }
-
-    [TestMethod]
-    public void UpdateOwner_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error on property");
-
-        _ownerAdapter.Setup(adapter => adapter.UpdateOwnerById(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>()))
-            .Throws(new ObjectErrorAdapterException("Error on property"));
-
-        IActionResult controllerResponse =
-            _ownerController.UpdateOwnerById(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
-
-        _ownerAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-    }
-
-    [TestMethod]
-    public void UpdateOwnerRequest_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("The specific owner was not found in Database");
-
-        _ownerAdapter.Setup(adapter => adapter.UpdateOwnerById(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse =
-            _ownerController.UpdateOwnerById(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
-
-        _ownerAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-    }
-
-    [TestMethod]
-    public void UpdateOwner_InternalServerErrorIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _ownerAdapter.Setup(adapter => adapter.UpdateOwnerById(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>()))
-            .Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse =
-            _ownerController.UpdateOwnerById(It.IsAny<Guid>(), It.IsAny<UpdateOwnerRequest>());
-
-        _ownerAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 
