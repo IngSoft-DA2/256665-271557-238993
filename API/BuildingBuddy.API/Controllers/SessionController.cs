@@ -5,7 +5,7 @@ using WebModel.Requests.SessionRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/sessions")]
     [ApiController]
     [CustomExceptionFilter]
     public class SessionController : ControllerBase
