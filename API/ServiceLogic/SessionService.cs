@@ -67,7 +67,7 @@ public class SessionService : ISessionService
 
     public void Logout(Guid sessionId)
     {
-        Session session = _sessionRepository.GetSessionByToken(sessionId);
+        Session session = _sessionRepository.GetSessionById(sessionId);
         _sessionRepository.DeleteSession(session);
         _sessionRepository.Save();
     }
@@ -80,7 +80,7 @@ public class SessionService : ISessionService
         if (sessionString == null)
             throw new ArgumentException("Cant retrieve user without session string");
 
-        var session = _sessionRepository.GetSessionByToken(sessionString.Value);
+        var session = _sessionRepository.GetSessionById(sessionString.Value);
 
         if (session != null)
             _currentUser = session.User;
