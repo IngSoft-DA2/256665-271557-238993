@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
+using Repositories.CustomExceptions;
 
 namespace DataAccess.Repositories;
 
@@ -12,10 +13,17 @@ public class RequestHandlerRepository : IRequestHandlerRepository
     {
         _dbContext = dbContext;
     }
-    
+
     public void CreateRequestHandler(RequestHandler requestHandlerToAdd)
     {
-        _dbContext.Set<RequestHandler>().Add(requestHandlerToAdd); 
+        try
+        {
+            _dbContext.Set<RequestHandler>().Add(requestHandlerToAdd);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public IEnumerable<RequestHandler> GetAllRequestHandlers()
