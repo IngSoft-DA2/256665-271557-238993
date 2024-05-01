@@ -38,6 +38,7 @@ public class ManagerRepositoryTest
                 Firstname = "Manager1",
                 Email = "manager1@gmail.com",
                 Password = "password1",
+                Role = "Manager",
                 Buildings = new List<Building>()
             },
             new Manager
@@ -46,6 +47,7 @@ public class ManagerRepositoryTest
                 Firstname = "Manager2",
                 Email = "manager2@gmail.com",
                 Password = "password2",
+                Role = "Manager",
                 Buildings = new List<Building>()
             }
         };
@@ -79,6 +81,7 @@ public class ManagerRepositoryTest
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
+            Role = "Manager",
             Buildings = new List<Building>
             {
                 new Building
@@ -147,6 +150,7 @@ public class ManagerRepositoryTest
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
+            Role = "Manager",
         };
         
         _managerRepository.CreateManager(managerToCreate);
@@ -174,6 +178,7 @@ public class ManagerRepositoryTest
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
+            Role = "Manager",
             Buildings = new List<Building>
             {
                 new Building
