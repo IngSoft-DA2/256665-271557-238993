@@ -1,7 +1,6 @@
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
 
 namespace BuildingBuddy.API.Controllers

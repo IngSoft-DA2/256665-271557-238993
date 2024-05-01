@@ -28,7 +28,10 @@ public class ConstructionCompanyAdapterTest
 
         _constructionCompanyAdapter = new ConstructionCompanyAdapter(_constructionCompanyService.Object);
 
-        _dummyRequest = new CreateConstructionCompanyRequest();
+        _dummyRequest = new CreateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
     }
 
     #endregion

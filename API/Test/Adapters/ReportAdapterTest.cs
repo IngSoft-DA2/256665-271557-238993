@@ -5,7 +5,6 @@ using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
-using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
 
 namespace Test.Adapters;

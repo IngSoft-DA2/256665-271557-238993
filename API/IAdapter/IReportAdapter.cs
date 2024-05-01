@@ -1,5 +1,4 @@
-﻿using WebModel.Requests.ReportRequests;
-using WebModel.Responses.ReportResponses;
+﻿using WebModel.Responses.ReportResponses;
 
 namespace IAdapter;
 

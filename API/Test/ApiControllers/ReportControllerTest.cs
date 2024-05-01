@@ -2,7 +2,6 @@
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModel.Requests.ReportRequests;
 using WebModel.Responses.ReportResponses;
 
 namespace Test.ApiControllers;
