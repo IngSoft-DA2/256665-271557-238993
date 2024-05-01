@@ -1,4 +1,3 @@
-
 namespace WebModel.Responses.InvitationResponses;
 
 public class GetInvitationResponse
@@ -9,13 +8,11 @@ public class GetInvitationResponse
     public string Email { get; set; }
     public StatusEnumResponse Status { get; set; }
     public DateTime ExpirationDate { get; set; }
-    
+
     public override bool Equals(object objectToCompare)
     {
         GetInvitationResponse? toCompare = objectToCompare as GetInvitationResponse;
 
-        if (toCompare is null) return false;
-        
         return Id == toCompare.Id &&
                Firstname == toCompare.Firstname &&
                Lastname == toCompare.Lastname &&
@@ -23,5 +20,4 @@ public class GetInvitationResponse
                Status == toCompare.Status &&
                ExpirationDate == toCompare.ExpirationDate;
     }
-    
 }

@@ -130,8 +130,7 @@ public class InvitationRepositoryTest
         _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
 
         _invitationRepository = new InvitationRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() =>
-            _invitationRepository.GetInvitationById(_invitationInDb.Id));
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.GetInvitationById(_invitationInDb.Id));
         _mockDbContext.VerifyAll();
     }
 
@@ -166,11 +165,9 @@ public class InvitationRepositoryTest
         _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
 
         _invitationRepository = new InvitationRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() =>
-            _invitationRepository.CreateInvitation(new Invitation()));
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.CreateInvitation(new Invitation()));
         _mockDbContext.VerifyAll();
     }
-
     #endregion
 
     #region Update Invitation
@@ -194,8 +191,7 @@ public class InvitationRepositoryTest
         _mockDbContext.Setup(dbContext => dbContext.Set<Invitation>()).Throws(new Exception());
 
         _invitationRepository = new InvitationRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() =>
-            _invitationRepository.UpdateInvitation(new Invitation()));
+        Assert.ThrowsException<UnknownRepositoryException>(() => _invitationRepository.UpdateInvitation(new Invitation()));
         _mockDbContext.VerifyAll();
     }
 
