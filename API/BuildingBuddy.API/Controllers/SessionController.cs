@@ -24,6 +24,13 @@ namespace BuildingBuddy.API.Controllers
             Guid sessionString = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
             return Ok(new { sessionId = sessionString });
         }
+
+        [HttpDelete]
+        public IActionResult Logout([FromHeader] string sessionId)
+        {
+            _sessionService.Logout(sessionId);
+            return Ok();
+        }
     }
 
 }
