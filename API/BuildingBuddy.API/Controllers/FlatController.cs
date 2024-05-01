@@ -6,8 +6,10 @@ using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [AuthorizationFilter(RoleNeeded = "Manager")]
     [Route("api/v1/flats")]
     [ApiController]
+    [CustomExceptionFilter]
     public class FlatController : ControllerBase
     {
         #region Constructor and atributes
@@ -27,19 +29,9 @@ namespace BuildingBuddy.API.Controllers
         [Route("/flats")]
         public IActionResult GetAllFlats([FromRoute] Guid buildingId)
         {
-            try
-            {
-                return Ok(_flatAdapter.GetAllFlats(buildingId));
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Building id was not found");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+           
+            return Ok(_flatAdapter.GetAllFlats(buildingId));
+            
         }
 
         #endregion
@@ -49,19 +41,9 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet("{id:Guid}")]
         public IActionResult GetFlatById([FromQuery] Guid buildingId, [FromRoute] Guid idOfFlatToFind)
         {
-            try
-            {
-                return Ok(_flatAdapter.GetFlatById(buildingId,idOfFlatToFind));
-            }
-            catch (ObjectNotFoundAdapterException exceptionCaught)
-            {
-                return NotFound("Flat was not found, reload the page");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+           
+            return Ok(_flatAdapter.GetFlatById(buildingId,idOfFlatToFind));
+            
         }
 
         #endregion
@@ -71,24 +53,10 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateFlat([FromBody] CreateFlatRequest flatToCreate)
         {
-            try
-            {
-                _flatAdapter.CreateFlat(flatToCreate);
-                return Accepted(new {message = "Flat accepted, and it will be processed on the building creation stage"});
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Owner was not found in database");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            
+            _flatAdapter.CreateFlat(flatToCreate);
+            return Accepted(new {message = "Flat accepted, and it will be processed on the building creation stage"});
+            
         }
 
         #endregion
