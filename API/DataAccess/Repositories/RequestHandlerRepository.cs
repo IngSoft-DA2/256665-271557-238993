@@ -28,6 +28,6 @@ public class RequestHandlerRepository : IRequestHandlerRepository
 
     public IEnumerable<RequestHandler> GetAllRequestHandlers()
     {
-        throw new NotImplementedException();
+        return _dbContext.Set<RequestHandler>().ToList();
     }
 }

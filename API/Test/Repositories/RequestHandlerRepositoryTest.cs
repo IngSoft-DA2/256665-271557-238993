@@ -53,4 +53,36 @@ public class RequestHandlerRepositoryTest
             _requestHandlerRepository.CreateRequestHandler(new RequestHandler()));
         _mockDbContext.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetAllRequestHandlers_RequestHandlersAreReturn()
+    {
+        RequestHandler requestHandlerInDb = new RequestHandler
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "RequestHandler1",
+            Password = "3423423ewrwr4",
+            Email = "person@gmail.com",
+            LastName = "LastName"
+        };
+        RequestHandler requestHandlerInDb2 = new RequestHandler
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "RequestHandler2",
+            Password = "34234wer23234",
+            Email = "person@gmail.com",
+            LastName = "LastName2"
+        };
+        
+        IEnumerable<RequestHandler> expectedRequestHandlers = new List<RequestHandler> {requestHandlerInDb, requestHandlerInDb2};
+
+        _dbContext.Set<RequestHandler>().Add(requestHandlerInDb);
+        _dbContext.Set<RequestHandler>().Add(requestHandlerInDb2);
+        _dbContext.SaveChanges();
+        
+        IEnumerable<RequestHandler> requestHandlersResponse = _requestHandlerRepository.GetAllRequestHandlers();
+        
+        Assert.IsTrue(expectedRequestHandlers.SequenceEqual(requestHandlersResponse));
+    }
+    
 }
