@@ -186,9 +186,6 @@ public class InvitationService : IInvitationService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-
-
-        _invitationRepository.DeleteInvitation(invitationToDelete);
     }
 
     public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
