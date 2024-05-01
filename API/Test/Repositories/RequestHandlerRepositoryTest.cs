@@ -73,7 +73,8 @@ public class RequestHandlerRepositoryTest
             Firstname = "RequestHandler1",
             Password = "3423423ewrwr4",
             Email = "person@gmail.com",
-            LastName = "LastName"
+            LastName = "LastName",
+            Role = "RequestHandler",
         };
         RequestHandler requestHandlerInDb2 = new RequestHandler
         {
@@ -81,7 +82,8 @@ public class RequestHandlerRepositoryTest
             Firstname = "RequestHandler2",
             Password = "34234wer23234",
             Email = "person@gmail.com",
-            LastName = "LastName2"
+            LastName = "LastName2",
+            Role = "RequestHandler"
         };
         
         IEnumerable<RequestHandler> expectedRequestHandlers = new List<RequestHandler> {requestHandlerInDb, requestHandlerInDb2};
