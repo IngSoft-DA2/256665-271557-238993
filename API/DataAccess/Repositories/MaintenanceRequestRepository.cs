@@ -20,11 +20,18 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
     
     #region Get All Maintenance Requests
 
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests()
+    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId)
     {
         try
         {
-            return _context.Set<MaintenanceRequest>().ToList();
+            if (managerId != null)
+            {
+                return _context.Set<MaintenanceRequest>().Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId).ToList();
+            }
+            else
+            {
+                return _context.Set<MaintenanceRequest>().ToList();
+            }
         }
         catch (Exception exceptionCaught)
         {

@@ -60,12 +60,12 @@ public class MaintenanceControllerTest
                     RequestStatus = StatusEnumMaintenanceResponse.Closed
                 }
             };
-        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests())
+        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests(It.IsAny<Guid>()))
             .Returns(expectedMaintenanceRequests.ToList());
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedMaintenanceRequests);
 
-        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests();
+        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests(It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 
@@ -83,9 +83,9 @@ public class MaintenanceControllerTest
     [TestMethod]
     public void GetAllMaintenanceRequests_500CodeIsReturned()
     {
-        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests()).Throws(new Exception());
+        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests(It.IsAny<Guid>())).Throws(new Exception());
 
-        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests();
+        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests(It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 

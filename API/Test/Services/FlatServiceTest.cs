@@ -81,16 +81,15 @@ public class FlatServiceTest
 
     #region Create Flat, Repository Validations
 
-    [TestMethod]    
-    public void CreateFlat_ThrowsUnknownErrorServiceException()
+    [TestMethod]
+    public void GivenUnAssignedOwnerOnCreate_ShouldThrowUnknownServiceException()
     {
-
         Flat flatToAdd = new Flat
         {
             Id = Guid.NewGuid(),
             Floor = 1,
             RoomNumber = 101,
-            OwnerAssigned = new Owner(),
+            OwnerAssigned = null,
             TotalRooms = 1,
             TotalBaths = 1,
             HasTerrace = true
@@ -98,7 +97,7 @@ public class FlatServiceTest
 
         Assert.ThrowsException<UnknownServiceException>(() => _flatService.CreateFlat(flatToAdd));
     }
-    
+
     #endregion
 
     #endregion

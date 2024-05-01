@@ -25,11 +25,11 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpGet]
         [Route("requests")]
-        public IActionResult GetAllMaintenanceRequests()
+        public IActionResult GetAllMaintenanceRequests([FromQuery] Guid? managerId)
         {
             try
             {
-                return Ok(_maintenanceAdapter.GetAllMaintenanceRequests());
+                return Ok(_maintenanceAdapter.GetAllMaintenanceRequests(managerId));
             }
             catch (Exception exceptionCaught)
             {

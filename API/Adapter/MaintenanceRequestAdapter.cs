@@ -24,12 +24,12 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
 
     #region Get All Maintenance Requests
 
-    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests()
+    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid? managerId)
     {
         try
         {
             IEnumerable<MaintenanceRequest> maintenanceRequestsInDb =
-                _maintenanceRequestService.GetAllMaintenanceRequests();
+                _maintenanceRequestService.GetAllMaintenanceRequests(managerId);
 
             IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestsToReturn =
                 maintenanceRequestsInDb.Select(maintenanceRequest => new GetMaintenanceRequestResponse

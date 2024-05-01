@@ -19,12 +19,12 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     #endregion
 
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests()
+    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId)
     {
         try
         {
             IEnumerable<MaintenanceRequest> maintenanceRequests =
-                _maintenanceRequestRepository.GetAllMaintenanceRequests();
+                _maintenanceRequestRepository.GetAllMaintenanceRequests(managerId);
             return maintenanceRequests;
         }
         catch (Exception exceptionCaught)

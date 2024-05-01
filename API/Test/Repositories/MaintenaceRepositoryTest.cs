@@ -119,7 +119,7 @@ public class MaintenaceRepositoryTest
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
         
-        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests();
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(null);
         
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
@@ -131,7 +131,7 @@ public class MaintenaceRepositoryTest
         _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
         
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetAllMaintenanceRequests());
+        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetAllMaintenanceRequests(null));
         _mockDbContext.VerifyAll();
     }
     
