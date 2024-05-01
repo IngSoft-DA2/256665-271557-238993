@@ -96,7 +96,8 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             },
             Flats = new List<Flat>
             {
@@ -229,7 +230,8 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             },
                 
             Flats = new List<Flat>
