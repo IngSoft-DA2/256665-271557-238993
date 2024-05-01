@@ -27,7 +27,8 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
                 Firstname = createRequest.Firstname,
                 LastName = createRequest.Lastname,
                 Email = createRequest.Email,
-                Password = createRequest.Password
+                Password = createRequest.Password,
+                Role = "RequestHandler"
             };
             _requestHandlerService.CreateRequestHandler(requestHandlerToCreate);
             
