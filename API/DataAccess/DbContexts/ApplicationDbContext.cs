@@ -23,13 +23,6 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<Building>()
-            .HasOne(b => b.ConstructionCompany)
-            .WithMany()
-            .HasForeignKey(b => b.ConstructionCompanyId)
-            .OnDelete(DeleteBehavior.Restrict);
-        
         modelBuilder.Entity<MaintenanceRequest>()
             .HasOne(mr => mr.Manager) 
             .WithMany(m => m.Requests)

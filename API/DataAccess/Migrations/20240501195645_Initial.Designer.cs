@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240501152442_RefactoredBuildingStructure")]
-    partial class RefactoredBuildingStructure
+    [Migration("20240501195645_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,9 +68,6 @@ namespace DataAccess.Migrations
                     b.Property<Guid>("ConstructionCompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("ManagerId")
                         .HasColumnType("uniqueidentifier");
 
@@ -81,9 +78,6 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ConstructionCompanyId");
-
-                    b.HasIndex("LocationId")
-                        .IsUnique();
 
                     b.HasIndex("ManagerId");
 
@@ -191,6 +185,9 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("BuildingId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
 
@@ -198,6 +195,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuildingId")
+                        .IsUnique();
 
                     b.ToTable("Location");
                 });
@@ -322,26 +322,18 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Building", b =>
                 {
                     b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
-                        .WithMany()
+                        .WithMany("Buildings")
                         .HasForeignKey("ConstructionCompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Location", "Location")
-                        .WithOne()
-                        .HasForeignKey("Domain.Building", "LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Manager", "Manager")
-                        .WithMany()
+                        .WithMany("Buildings")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ConstructionCompany");
-
-                    b.Navigation("Location");
 
                     b.Navigation("Manager");
                 });
@@ -361,6 +353,17 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("OwnerAssigned");
+                });
+
+            modelBuilder.Entity("Domain.Location", b =>
+                {
+                    b.HasOne("Domain.Building", "Building")
+                        .WithOne("Location")
+                        .HasForeignKey("Domain.Location", "BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Building");
                 });
 
             modelBuilder.Entity("Domain.MaintenanceRequest", b =>
@@ -401,10 +404,20 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Building", b =>
                 {
                     b.Navigation("Flats");
+
+                    b.Navigation("Location")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+                {
+                    b.Navigation("Buildings");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>
                 {
+                    b.Navigation("Buildings");
+
                     b.Navigation("Requests");
                 });
 

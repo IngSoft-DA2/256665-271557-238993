@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,16 +51,19 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                name: "Invitations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false)
+                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.PrimaryKey("PK_Invitations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,28 +110,6 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invitations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    AdministratorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Invitations_Administrators_AdministratorId",
-                        column: x => x.AdministratorId,
-                        principalTable: "Administrators",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Buildings",
                 columns: table => new
                 {
@@ -136,7 +117,6 @@ namespace DataAccess.Migrations
                     ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ConstructionCompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CommonExpenses = table.Column<double>(type: "float", nullable: false)
                 },
@@ -147,12 +127,6 @@ namespace DataAccess.Migrations
                         name: "FK_Buildings_ConstructionCompany_ConstructionCompanyId",
                         column: x => x.ConstructionCompanyId,
                         principalTable: "ConstructionCompany",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Buildings_Location_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Location",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -189,6 +163,26 @@ namespace DataAccess.Migrations
                         name: "FK_Flat_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Latitude = table.Column<double>(type: "float", nullable: false),
+                    Longitude = table.Column<double>(type: "float", nullable: false),
+                    BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Location_Buildings_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Buildings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -242,11 +236,6 @@ namespace DataAccess.Migrations
                 column: "ConstructionCompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Buildings_LocationId",
-                table: "Buildings",
-                column: "LocationId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Buildings_ManagerId",
                 table: "Buildings",
                 column: "ManagerId");
@@ -262,9 +251,10 @@ namespace DataAccess.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invitations_AdministratorId",
-                table: "Invitations",
-                column: "AdministratorId");
+                name: "IX_Location_BuildingId",
+                table: "Location",
+                column: "BuildingId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MaintenanceRequests_CategoryId",
@@ -291,13 +281,16 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Administrators");
+
+            migrationBuilder.DropTable(
                 name: "Invitations");
 
             migrationBuilder.DropTable(
-                name: "MaintenanceRequests");
+                name: "Location");
 
             migrationBuilder.DropTable(
-                name: "Administrators");
+                name: "MaintenanceRequests");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -316,9 +309,6 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "ConstructionCompany");
-
-            migrationBuilder.DropTable(
-                name: "Location");
 
             migrationBuilder.DropTable(
                 name: "Managers");

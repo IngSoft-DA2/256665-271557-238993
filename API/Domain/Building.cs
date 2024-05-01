@@ -10,8 +10,6 @@ public class Building
     public string Name { get; set; }
     public string Address { get; set; }
     public Location Location { get; set; }
-    
-    public Guid LocationId { get; set; }
     public Guid ConstructionCompanyId { get; set; }
     public ConstructionCompany ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
@@ -102,10 +100,12 @@ public class Building
     public override bool Equals(object? obj)
     {
         Building objectToCompare = obj as Building;
-        return objectToCompare.Id == Id && objectToCompare.ManagerId == ManagerId &&
-               objectToCompare.Name == Name && objectToCompare.Address == Address &&
-               objectToCompare.Location.Equals(Location) &&
-               objectToCompare.ConstructionCompany.Equals(ConstructionCompany) &&
+        return objectToCompare.Id == Id && 
+               objectToCompare.ManagerId == ManagerId && 
+               objectToCompare.Name == Name && 
+               objectToCompare.Address == Address &&
+               objectToCompare.Location.Equals(Location) && 
+               objectToCompare.ConstructionCompany.Equals(ConstructionCompany) && objectToCompare.ConstructionCompanyId == ConstructionCompanyId &&
                objectToCompare.CommonExpenses.Equals(CommonExpenses) &&
                objectToCompare.Flats.SequenceEqual(Flats);
     }

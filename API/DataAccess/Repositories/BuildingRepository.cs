@@ -36,7 +36,7 @@ public class BuildingRepository : IBuildingRepository
         try
         {
             return _dbContext.Set<Building>()
-                .Include(building => building.Flats).ThenInclude(flat => flat.OwnerAssigned)
+                .Include(building => building.Flats)
                 .Include(building => building.ConstructionCompany)
                 .Include(building => building.Manager)
                 .Include(building => building.Location)
