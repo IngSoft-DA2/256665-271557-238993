@@ -9,6 +9,7 @@ public class SessionService : ISessionService
 {
     #region Constructor and Dependency Injection
     
+    private SystemUser _currentUser;
     private readonly ISessionRepository _sessionRepository;
     private readonly IAdministratorRepository _administratorRepository;
     private readonly IManagerRepository _managerRepository;
@@ -69,5 +70,22 @@ public class SessionService : ISessionService
         Session session = _sessionRepository.GetSessionByToken(sessionId);
         _sessionRepository.DeleteSession(session);
         _sessionRepository.Save();
+    }
+
+    public SystemUser? GetCurrentUser(Guid? sessionString = null)
+    {
+        if (_currentUser != null)
+            return _currentUser;
+
+        if (sessionString == null)
+            throw new ArgumentException("Cant retrieve user without session string");
+
+        var session = _sessionRepository.GetSessionByToken(sessionString.Value);
+
+        if (session != null)
+            _currentUser = session.User;
+
+        return _currentUser;
+        
     }
 }
