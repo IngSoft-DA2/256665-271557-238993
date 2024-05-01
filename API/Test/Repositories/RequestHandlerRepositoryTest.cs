@@ -10,6 +10,8 @@ namespace Test.Repositories;
 [TestClass]
 public class RequestHandlerRepositoryTest
 {
+    #region Initializing Aspects
+    
     private DbContext _dbContext;
     private RequestHandlerRepository _requestHandlerRepository;
 
@@ -26,6 +28,10 @@ public class RequestHandlerRepositoryTest
         var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
         return new ApplicationDbContext(options);
     }
+    
+    #endregion
+    
+    #region Create Category
 
     [TestMethod]
     public void Create_CategoryIsAdded()
@@ -53,6 +59,10 @@ public class RequestHandlerRepositoryTest
             _requestHandlerRepository.CreateRequestHandler(new RequestHandler()));
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
+    
+    #region Get All Categories
     
     [TestMethod]
     public void GetAllRequestHandlers_RequestHandlersAreReturn()
@@ -95,5 +105,7 @@ public class RequestHandlerRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _requestHandlerRepository.GetAllRequestHandlers());
         _mockDbContext.VerifyAll();
     }
+    
+    #endregion
     
 }

@@ -7,12 +7,18 @@ namespace DataAccess.Repositories;
 
 public class RequestHandlerRepository : IRequestHandlerRepository
 {
+    #region Constructor and attributes
+    
     private readonly DbContext _dbContext;
 
     public RequestHandlerRepository(DbContext dbContext)
     {
         _dbContext = dbContext;
     }
+    
+    #endregion
+    
+    #region Create RequestHandler
 
     public void CreateRequestHandler(RequestHandler requestHandlerToAdd)
     {
@@ -25,6 +31,10 @@ public class RequestHandlerRepository : IRequestHandlerRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
+    
+    #region Get All RequestHandlers
 
     public IEnumerable<RequestHandler> GetAllRequestHandlers()
     {
@@ -37,4 +47,6 @@ public class RequestHandlerRepository : IRequestHandlerRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+    
+    #endregion
 }
