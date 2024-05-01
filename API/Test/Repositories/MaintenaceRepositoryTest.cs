@@ -44,7 +44,8 @@ public class MaintenaceRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 LastName = "Lastname",
-                Password = "Password"
+                Password = "Password",
+                Role = "RequestHandler"
                 
             },
             RequestStatus = RequestStatusEnum.Closed,
@@ -59,7 +60,8 @@ public class MaintenaceRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             }
         };
         
@@ -79,7 +81,8 @@ public class MaintenaceRepositoryTest
                 Firstname = "FirstName",
                 LastName = "Lastname",
                 Email = "Email",
-                Password = "Password"
+                Password = "Password",
+                Role = "RequestHandler"
                 
             },
             RequestStatus = RequestStatusEnum.Open,
@@ -94,7 +97,8 @@ public class MaintenaceRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             }
         };
     }
