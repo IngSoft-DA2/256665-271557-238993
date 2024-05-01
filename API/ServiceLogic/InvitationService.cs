@@ -133,14 +133,14 @@ public class InvitationService : IInvitationService
         }
 
         if (invitationUpdated.Status == StatusEnum.Pending
-            && invitationNotUpdated.ExpirationDate.Date > DateTime.UtcNow.AddDays(1))
+            && invitationNotUpdated.ExpirationDate.Date > DateTime.UtcNow.AddDays(1).Date)
         {
             throw new InvalidInvitationException(
                 "Expiration date cannot be updated to a later date. It must be expired or one day from now.");
         }
 
         if (invitationUpdated.Status != StatusEnum.Pending &&
-            invitationUpdated.ExpirationDate != invitationNotUpdated.ExpirationDate)
+            invitationUpdated.ExpirationDate.Date != invitationNotUpdated.ExpirationDate.Date)
         {
             throw new InvalidInvitationException("Expiration date cannot be updated if the status is not pending.");
         }
@@ -148,6 +148,8 @@ public class InvitationService : IInvitationService
 
     private static void MapProperties(Invitation invitationWithUpdates, Invitation invitationWithoutUpdates)
     {
+        
+        
 
         if (invitationWithUpdates.Equals(invitationWithoutUpdates))
         {

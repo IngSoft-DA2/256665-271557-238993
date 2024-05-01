@@ -369,6 +369,7 @@ public class InvitationServiceTest
 
         Invitation invitationWithUpdates = new Invitation
         {
+            Id = _invitationExample.Id,
             Status = StatusEnum.Rejected,
             ExpirationDate = DateTime.MaxValue
         };
