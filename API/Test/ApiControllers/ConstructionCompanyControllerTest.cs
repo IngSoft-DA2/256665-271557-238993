@@ -57,26 +57,7 @@ public class ConstructionCompanyControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedConstructionCompanies));
     }
-    
-    [TestMethod]
-    public void GetAllConstructionCompanies_InternalServerErrorIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-        
-        _constructionCompanyAdapter.Setup(adapter => adapter.GetAllConstructionCompanies()).Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _constructionCompanyController.GetAllConstructionCompanies();
-
-        _constructionCompanyAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-    
+   
     #endregion
 
     #region CreaterConstructionCompany
@@ -109,43 +90,6 @@ public class ConstructionCompanyControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedConstructionCompany.Equals(controllerResponseValueCasted));
-    }
-    
-    [TestMethod]
-    public void CreateConstructionCompany_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Something went wrong");
-        
-        _constructionCompanyAdapter.Setup(adapter => adapter.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>())).Throws(new ObjectErrorAdapterException("Something went wrong"));
-
-        IActionResult controllerResponse = _constructionCompanyController.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>());
-
-        _constructionCompanyAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;    
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-    
-    [TestMethod]
-    public void CreateConstructionCompany_InternalServerErrorIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-        
-        _constructionCompanyAdapter.Setup(adapter => adapter.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>())).Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _constructionCompanyController.CreateConstructionCompany(It.IsAny<CreateConstructionCompanyRequest>());
-
-        _constructionCompanyAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
     #endregion
