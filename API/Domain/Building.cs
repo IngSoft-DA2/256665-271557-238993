@@ -3,19 +3,22 @@ namespace Domain;
 public class Building
 {
     #region Properties
+
     public Guid Id { get; set; }
     public Guid ManagerId { get; set; }
     public Manager Manager { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public Location Location { get; set; }
+    
+    public Guid LocationId { get; set; }
     public Guid ConstructionCompanyId { get; set; }
     public ConstructionCompany ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
-    
+
     #endregion
-    
+
     #region Validations
 
     public void BuildingValidator()
@@ -93,7 +96,7 @@ public class Building
             throw new InvalidBuildingException("Flats list can't be null, you must provide a list of flats");
         }
     }
-    
+
     #endregion
 
     public override bool Equals(object? obj)

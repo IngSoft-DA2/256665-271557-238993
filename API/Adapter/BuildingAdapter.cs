@@ -215,7 +215,8 @@ public class BuildingAdapter : IBuildingAdapter
             {
                 Id = buildingIdToUpd,
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
-                ConstructionCompany = newConstructionCompany
+                ConstructionCompany = newConstructionCompany,
+                ConstructionCompanyId = newConstructionCompany.Id,
             };
 
             _buildingService.UpdateBuilding(buildingToUpd);
