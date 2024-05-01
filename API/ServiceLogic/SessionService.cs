@@ -66,6 +66,8 @@ public class SessionService : ISessionService
 
     public void Logout(Guid sessionId)
     {
-        throw new NotImplementedException();
+        Session session = _sessionRepository.GetSessionByToken(sessionId);
+        _sessionRepository.DeleteSession(session);
+        _sessionRepository.Save();
     }
 }

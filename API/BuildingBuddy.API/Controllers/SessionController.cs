@@ -26,7 +26,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Logout([FromHeader] string sessionId)
+        public IActionResult Logout([FromHeader] Guid sessionId)
         {
             _sessionService.Logout(sessionId);
             return Ok();

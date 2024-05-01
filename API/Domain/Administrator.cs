@@ -1,10 +1,9 @@
 ﻿namespace Domain;
 
-public class Administrator : Person
+public class Administrator : SystemUser
 {
     #region Properties
     public string LastName { get; set; }
-    public string Password { get; set; }
     public IEnumerable<Invitation> Invitations { get; set; } = new List<Invitation>();
     
     #endregion
