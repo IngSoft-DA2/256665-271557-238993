@@ -24,7 +24,7 @@ public class InvitationAdapter : IInvitationAdapter
     
     #region Get All Invitations
 
-    public IEnumerable<GetInvitationResponse> GetAllInvitations(string email)
+    public IEnumerable<GetInvitationResponse> GetAllInvitations()
     {
         try
         {
@@ -52,7 +52,7 @@ public class InvitationAdapter : IInvitationAdapter
     #endregion
     
     #region Get Invitation By Id
-
+    
     public GetInvitationResponse GetInvitationById(Guid idOfInvitationToFind)
     {
         try

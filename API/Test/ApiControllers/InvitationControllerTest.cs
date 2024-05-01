@@ -45,14 +45,14 @@ public class InvitationControllerTest
 
     #endregion
 
-    #region Get All Invitations
+    #region Get All Invitations By Email
 
     [TestMethod]
-    public void GetAllInvitations_200CodeIsReturned()
+    public void GetAllInvitations_200CodeIsReturned_WhenEmailIsNotEmpty()
     {
         IEnumerable<GetInvitationResponse> expectedInvitations = new List<GetInvitationResponse>() {_expectedInvitation};
 
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations(_email)).Returns(expectedInvitations);
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email)).Returns(expectedInvitations);
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitations);
 
@@ -71,11 +71,11 @@ public class InvitationControllerTest
     }
 
     [TestMethod]
-    public void GetAllInvitations_NotFoundIsReturned()
+    public void GetAllInvitations_NotFoundIsReturned_WhenEmailIsNotEmpty()
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("No invitations were found in Database");
 
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations(_email))
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email))
             .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
@@ -89,9 +89,9 @@ public class InvitationControllerTest
     }
 
     [TestMethod]
-    public void GetAllInvitations_500StatusCodeIsReturned()
+    public void GetAllInvitations_500StatusCodeIsReturned_WhenEmailIsNotEmpty()
     {
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitations(_email)).Throws(new Exception("Database Broken"));
+        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email)).Throws(new Exception("Database Broken"));
 
         IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
         _invitationAdapter.VerifyAll();
@@ -105,18 +105,17 @@ public class InvitationControllerTest
 
     #endregion
 
-    #region Get All Invitations By Email
+    #region Get All Invitations
 
     [TestMethod]
-    public void GetAllInvitationsButWithEmail_OkIsReturn()
+    public void GetAllInvitationsButWithoutEmail_OkIsReturn()
     {
-        
         IEnumerable<GetInvitationResponse> expectedInvitationResponse = new List<GetInvitationResponse>() {_expectedInvitation};
         
         _invitationAdapter.Setup(invitationAdapter =>
-            invitationAdapter.GetAllInvitations(It.IsAny<string>())).Returns(expectedInvitationResponse);
+            invitationAdapter.GetAllInvitations()).Returns(expectedInvitationResponse);
         
-        IActionResult controllerResponse = _invitationController.GetAllInvitations(_expectedInvitation.Email);
+        IActionResult controllerResponse = _invitationController.GetAllInvitations(string.Empty);
         
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
         Assert.IsNotNull(controllerResponseCasted);

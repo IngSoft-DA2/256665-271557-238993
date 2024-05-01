@@ -81,7 +81,7 @@ public class InvitationAdapterTest
 
         _invitationService.Setup(service => service.GetAllInvitations()).Returns(invitations);
 
-        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations(_email);
+        IEnumerable<GetInvitationResponse> adapterResponse = _invitationAdapter.GetAllInvitations();
 
         _invitationService.VerifyAll();
 
@@ -94,7 +94,7 @@ public class InvitationAdapterTest
         _invitationService.Setup(service => service.GetAllInvitations())
             .Throws(new Exception("Something went wrong"));
 
-        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations(_email));
+        Assert.ThrowsException<Exception>(() => _invitationAdapter.GetAllInvitations());
 
         _invitationService.VerifyAll();
     }
