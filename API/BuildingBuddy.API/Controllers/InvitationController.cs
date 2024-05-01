@@ -25,10 +25,11 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Invitations
 
         [HttpGet]
-        public IActionResult GetAllInvitations([FromQuery] string email)
+        public IActionResult GetAllInvitations([FromQuery] string? email)
         {
             try
             {
+                Console.WriteLine(email);
                 if (!string.IsNullOrEmpty(email))
                 {
                     return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
