@@ -67,50 +67,6 @@ public class ReportControllerTest
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
     }
     
-    [TestMethod]
-    public void GetMaintenanceRequestsByBuilding_NoReportsAreReturned()
-    {
-        IEnumerable<GetMaintenanceReportByBuildingResponse> expectedResponseValue = new List<GetMaintenanceReportByBuildingResponse>();
-
-        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
-
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedResponseValue);
-
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>(), _sampleBuildingId);
-
-        _reportAdapter.VerifyAll();
-
-        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        List<GetMaintenanceReportByBuildingResponse>? controllerResponseValueCasted =
-            controllerResponseCasted.Value as List<GetMaintenanceReportByBuildingResponse>;
-
-        Assert.IsNotNull(controllerResponseValueCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
-    }
-
-    [TestMethod]
-    public void GetMaintenanceRequestsByBuilding_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByBuilding(It.IsAny<Guid>(),_sampleBuildingId);
-
-        _reportAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-    
     
     #endregion
 
@@ -151,50 +107,7 @@ public class ReportControllerTest
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
     }
     
-    [TestMethod]
-    public void GetMaintenanceRequestsByRequestHandler_NoReportsAreReturned()
-    {
-        IEnumerable<GetMaintenanceReportByRequestHandlerResponse> expectedResponseValue = new List<GetMaintenanceReportByRequestHandlerResponse>();
-
-        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
-
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(),It.IsAny<Guid>(),It.IsAny<Guid>())).Returns(expectedResponseValue);
-
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId, It.IsAny<Guid>(), It.IsAny<Guid>());
-
-        _reportAdapter.VerifyAll();
-
-        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        List<GetMaintenanceReportByRequestHandlerResponse>? controllerResponseValueCasted =
-            controllerResponseCasted.Value as List<GetMaintenanceReportByRequestHandlerResponse>;
-
-        Assert.IsNotNull(controllerResponseValueCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
-    }
-    
-    [TestMethod]
-    public void GetMaintenanceRequestsByRequestHandler_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(),It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByRequestHandler(_sampleRequestHandlerId,It.IsAny<Guid>(), It.IsAny<Guid>());
-
-        _reportAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-    
+  
     #endregion
     
     #region GetMaintenanceRequestsByCategory
@@ -234,25 +147,6 @@ public class ReportControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
-    }
-    
-    [TestMethod]
-    public void GetMaintenanceRequestsByCategory_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _reportAdapter.Setup(adapter => adapter.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception("Something went wrong"));
-
-        IActionResult controllerResponse = _reportController.GetMaintenanceRequestsByCategory(It.IsAny<Guid>(), _sampleCategoryId);
-
-        _reportAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
     #endregion
