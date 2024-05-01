@@ -110,16 +110,31 @@ public class MaintenaceRepositoryTest
     #region Get All Maintenance Requests
     
     [TestMethod]
-    public void GetAllMaintenanceRequests_MaintenanceRequestsAreReturn()
+    public void GetAllMaintenanceRequests_MaintenanceRequestsAreNotReturnedWhenNoQueryIsSet()
     {
         
-        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {_maintenanceRequestInDb, _maintenanceRequestInDb2};
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest>();
 
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
         
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(null);
+        
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+    
+    [TestMethod]
+    public void GetAllMaintenanceRequests_MaintenanceRequestsAreReturnWhenQueryIsSet()
+    {
+        
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> {_maintenanceRequestInDb};
+
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
+        _dbContext.SaveChanges();
+        
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(_maintenanceRequestInDb.ManagerId);
         
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
