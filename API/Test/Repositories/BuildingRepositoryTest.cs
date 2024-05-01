@@ -48,7 +48,13 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Name = "Construction Company 1",
             },
-            ManagerId = Guid.NewGuid(),
+            Manager = new Manager
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Manager",
+                Email = "manager@gmail.com",
+                Password = "Password"
+            },
             Flats = new List<Flat>()
         };
 
@@ -156,7 +162,13 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Name = "Construction Company 1",
             },
-            ManagerId = Guid.NewGuid(),
+            Manager = new Manager
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Manager 1",
+                Email = "a@gmail.com",
+                Password = "Password"
+            },
             Flats = new List<Flat>
             {
                 new Flat
@@ -306,7 +318,13 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Name = "Construction Company 1",
             },
-            ManagerId = Guid.NewGuid(),
+            Manager = new Manager
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Manager 1",
+                Email = "manager@gmail.com",
+                Password = "Password"
+            },
             Flats = new List<Flat>
             {
                 new Flat

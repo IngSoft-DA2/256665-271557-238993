@@ -32,7 +32,7 @@ public class AdministratorRepository : IAdministratorRepository
     {
         try
         {
-            IEnumerable<Administrator> administratorsInDb = _dbContext.Set<Administrator>().Include(admin => admin.Invitations).ToList();
+            IEnumerable<Administrator> administratorsInDb = _dbContext.Set<Administrator>().ToList();
             return administratorsInDb;
         }
         catch (Exception exceptionCaught)
