@@ -5,8 +5,6 @@ public class RequestHandler : Person
     public string LastName { get; set; }
     public string Password { get; set; }
     
-    
-
     public void RequestValidator()
     {
         PersonValidator();
@@ -21,5 +19,15 @@ public class RequestHandler : Person
             throw new InvalidRequestHandlerException("Password must have at least 8 characters");
         }
     }
+    
+    public override bool Equals(object objectToCompare)
+    {
+        RequestHandler? toCompare = objectToCompare as RequestHandler;
+
+        return base.Equals(toCompare) &&
+               LastName == toCompare.LastName &&
+               Password == toCompare.Password;
+    }
+    
    
 }
