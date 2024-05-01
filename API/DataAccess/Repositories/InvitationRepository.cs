@@ -101,7 +101,7 @@ public class InvitationRepository : IInvitationRepository
 
     public IEnumerable<Invitation> GetAllInvitationsByEmail(string email)
     {
-        throw new NotImplementedException();
+        return _dbContext.Set<Invitation>().Where(invitation => invitation.Email == email).ToList();
     }
 
     #endregion
