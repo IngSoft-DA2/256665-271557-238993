@@ -19,7 +19,7 @@ namespace Test.ApiControllers;
 public class BuildingControllerTest
 {
     #region Initialization
-    
+
     private Mock<IBuildingAdapter> _buildingAdapter;
     private BuildingController _buildingController;
 
@@ -99,7 +99,8 @@ public class BuildingControllerTest
     {
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("User id was not found in database");
 
-        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>())).Throws(new ObjectNotFoundAdapterException());
+        _buildingAdapter.Setup(adapter => adapter.GetAllBuildings(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundAdapterException());
 
         IActionResult controllerResponse = _buildingController.GetAllBuildings(It.IsAny<Guid>());
         _buildingAdapter.VerifyAll();
@@ -335,8 +336,14 @@ public class BuildingControllerTest
         _buildingAdapter.Setup(adapter =>
             adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()));
 
+        UpdateBuildingRequest updateBuildingRequest = new UpdateBuildingRequest
+        {
+            ConstructionCompanyId = new Guid(),
+            CommonExpenses = 1000
+        };
+        
         IActionResult controllerResponse =
-            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
+            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), updateBuildingRequest);
 
         _buildingAdapter.Verify(
             adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
@@ -474,5 +481,4 @@ public class BuildingControllerTest
     }
 
     #endregion
-    
 }
