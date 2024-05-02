@@ -9,6 +9,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [Route("api/v1/construction-companies")]
     [ApiController]
+    [CustomExceptionFilter]
     public class ConstructionCompanyController : ControllerBase
     {
         #region Constructor and atributes
@@ -27,15 +28,9 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetAllConstructionCompanies()
         {
-            try
-            {
-                return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            
+            return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
+            
         }
 
         #endregion
@@ -45,21 +40,9 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
-            try
-            {
-                CreateConstructionCompanyResponse response = _constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest);
-                
-                return CreatedAtAction(nameof(CreateConstructionCompany), new { id = response.Id }, response);
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            CreateConstructionCompanyResponse response = _constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest);
+            return CreatedAtAction(nameof(CreateConstructionCompany), new { id = response.Id }, response);
+           
         }
         
         #endregion

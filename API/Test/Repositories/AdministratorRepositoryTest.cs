@@ -40,7 +40,18 @@ public class AdministratorRepositoryTest
                 LastName = "Administrator1",
                 Email = "administrator@gmail.com",
                 Password = "password",
-
+                Invitations = new List<Invitation>
+                {
+                    new Invitation
+                    {
+                        Id = Guid.NewGuid(),
+                        Firstname = "Invitation1",
+                        Lastname = "Invitation1",
+                        Email = "invitation@example.com",
+                        ExpirationDate = DateTime.MaxValue,
+                        Status = StatusEnum.Pending
+                    }
+                }
             },
             new Administrator
             {
@@ -49,6 +60,7 @@ public class AdministratorRepositoryTest
                 LastName = "Administrator2",
                 Email = "administrato2@gmail.com",
                 Password = "password2",
+                Role = "Admin",
             }
         };
 
@@ -82,6 +94,8 @@ public class AdministratorRepositoryTest
             LastName = "Administrator1",
             Email = "admin@gmail.com",
             Password = "password",
+            Role = "Admin",
+            Invitations = new List<Invitation>()
         };
 
         _administratorRepository.CreateAdministrator(administratorToAdd);

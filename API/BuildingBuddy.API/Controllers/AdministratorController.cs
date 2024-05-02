@@ -11,6 +11,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [Route("api/v1/administrators")]
     [ApiController]
+    [CustomExceptionFilter]
     public class AdministratorController : ControllerBase
     {
         #region Constructor and attributes
@@ -29,20 +30,9 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequest request)
         {
-            try
-            {
-                CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(request);
-                return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            CreateAdministratorResponse response = _administratorAdapter.CreateAdministrator(request);
+            return CreatedAtAction(nameof(CreateAdministrator), new { id = response.Id }, response);
+            
         }
         
         #endregion

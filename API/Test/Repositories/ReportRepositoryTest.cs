@@ -46,6 +46,7 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
+                Role = "Manager",
                 Buildings = new List<Building>()
             },
             RequestHandler = new RequestHandler()
@@ -54,7 +55,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                LastName = "LastName"
+                LastName = "LastName",
+                Role = "RequestHandler"
             },
             Category = new Category
             {
@@ -105,6 +107,7 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
+                Role = "Manager",
                 Buildings = new List<Building>()
             },
             RequestHandler = new RequestHandler()
@@ -113,7 +116,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                LastName = "LastName"
+                LastName = "LastName",
+                Role = "RequestHandler"
             },
             Category = new Category
             {
@@ -179,7 +183,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                Buildings = new List<Building>()
+                Buildings = new List<Building>(),
+                Role = "Manager"
             },
             RequestHandler = new RequestHandler()
             {
@@ -187,7 +192,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                LastName = "LastName"
+                LastName = "LastName",
+                Role = "RequestHandler"
             },
             Category = new Category
             {
@@ -238,7 +244,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                Buildings = new List<Building>()
+                Buildings = new List<Building>(),
+                Role = "Manager"
             },
             RequestHandler = new RequestHandler()
             {
@@ -246,7 +253,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                LastName = "LastName"
+                LastName = "LastName",
+                Role = "RequestHandler"
             },
             Category = new Category
             {
@@ -313,7 +321,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                Buildings = new List<Building>()
+                Buildings = new List<Building>(),
+                Role = "Manager"
             },
             RequestHandler = new RequestHandler()
             {
@@ -321,7 +330,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                LastName = "LastName"
+                LastName = "LastName",
+                Role = "RequestHandler"
             },
             Category = new Category
             {
@@ -372,7 +382,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                Buildings = new List<Building>()
+                Buildings = new List<Building>(),
+                Role = "Manager"
             },
             RequestHandler = new RequestHandler()
             {
@@ -380,7 +391,8 @@ public class ReportRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
-                LastName = "LastName"
+                LastName = "LastName",
+                Role = "RequestHandler"
             },
             Category = new Category
             {

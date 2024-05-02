@@ -59,25 +59,7 @@ public class CategoryControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedControllerResponseValue.SequenceEqual(controllerResponseValueCasted));
     }
-
-    [TestMethod]
-    public void GetAllCategoriesRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _categoryAdapter.Setup(adapter => adapter.GetAllCategories()).Throws(new Exception("Specific Internal Error"));
-
-        IActionResult controllerResponse = _categoryController.GetAllCategories();
-        _categoryAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 
     #region Get Category By Id
@@ -108,44 +90,7 @@ public class CategoryControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(categoryFoundInDb.Equals(controllerValue));
     }
-
-    [TestMethod]
-    public void GetCategoryByIdRequest_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Category was not found in database");
-
-        _categoryAdapter.Setup(adapter => adapter.GetCategoryById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _categoryController.GetCategoryById(It.IsAny<Guid>());
-        _categoryAdapter.VerifyAll();
-        
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void GetCategoryByIdRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _categoryAdapter.Setup(adapter => adapter.GetCategoryById(It.IsAny<Guid>()))
-            .Throws(new Exception("Some specific error"));
-
-        IActionResult controllerResponse = _categoryController.GetCategoryById(It.IsAny<Guid>());
-        _categoryAdapter.VerifyAll();
-        
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode,controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value,controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 
     #region Create Category
@@ -174,44 +119,6 @@ public class CategoryControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerValue.Id, controllerValueResponse.Id);
     }
-
-    [TestMethod]
-    public void CreateCategoryRequest_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("An specific Error");
-
-        _categoryAdapter.Setup(adapter => adapter.CreateCategory(It.IsAny<CreateCategoryRequest>()))
-            .Throws(new ObjectErrorAdapterException("An specific Error"));
-
-        IActionResult controllerResponse = _categoryController.CreateCategory(It.IsAny<CreateCategoryRequest>());
-        _categoryAdapter.VerifyAll();
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void CreateCategoryRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _categoryAdapter.Setup(adapter => adapter.CreateCategory(It.IsAny<CreateCategoryRequest>()))
-            .Throws(new Exception("Exception not recognized"));
-
-        IActionResult controllerResponse = _categoryController.CreateCategory(It.IsAny<CreateCategoryRequest>());
-        _categoryAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 }

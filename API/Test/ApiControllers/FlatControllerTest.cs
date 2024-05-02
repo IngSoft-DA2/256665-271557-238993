@@ -45,64 +45,6 @@ namespace Test.ApiControllers
             Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         }
 
-        [TestMethod]
-        public void CreateFlatRequest_BadRequestIsReturned()
-        {
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
-                .Throws(new ObjectErrorAdapterException("Owner can't be null"));
-
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
-
-            BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Owner can't be null");
-
-            _flatAdapter.VerifyAll();
-
-            BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-            Assert.IsNotNull(controllerResponseCasted);
-
-            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        }
-
-        [TestMethod]
-        public void CreateFlatRequest_500StatusCodeIsReturned()
-        {
-            ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-            expectedControllerResponse.StatusCode = 500;
-
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
-                .Throws(new Exception("An specific error on the server"));
-
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
-            _flatAdapter.VerifyAll();
-
-            ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-            Assert.IsNotNull(controllerResponseCasted);
-
-            Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
-            Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
-        }
-
-        [TestMethod]
-        public void CreateFlatRequest_NotFoundIsReturned()
-        {
-            NotFoundObjectResult expectedControllerResponse =
-                new NotFoundObjectResult("Owner was not found in database");
-
-            _flatAdapter.Setup(adapter => adapter.CreateFlat(It.IsAny<CreateFlatRequest>()))
-                .Throws(new ObjectNotFoundAdapterException());
-
-            IActionResult controllerResponse = _flatController.CreateFlat(It.IsAny<CreateFlatRequest>());
-            _flatAdapter.VerifyAll();
-
-            NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-            Assert.IsNotNull(controllerResponseCasted);
-
-            Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-            Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-        }
-
         #endregion
-
     }
 }

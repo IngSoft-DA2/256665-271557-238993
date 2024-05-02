@@ -10,7 +10,6 @@ using Repositories.CustomExceptions;
 namespace Test.Repositories;
 
 [TestClass]
-
 public class MaintenaceRepositoryTest
 {
     #region Initialzing Aspects
@@ -19,7 +18,9 @@ public class MaintenaceRepositoryTest
     private MaintenanceRequestRepository _maintenanceRequestRepository;
     private MaintenanceRequest _maintenanceRequestInDb;
     private MaintenanceRequest _maintenanceRequestInDb2;
-
+    private RequestHandler _requestHanlder;
+    private Category _category;
+    private Manager _manager;
 
     [TestInitialize]
     public void TestInitialize()
@@ -27,6 +28,31 @@ public class MaintenaceRepositoryTest
         _dbContext = CreateDbContext("MaintenanceRepositoryTest");
         _dbContext.Set<MaintenanceRequest>();
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_dbContext);
+        _requestHanlder = new RequestHandler()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "FirstName",
+            Email = "Email",
+            LastName = "Lastname",
+            Password = "Password"
+        };
+        _category = new Category()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category"
+        };
+        _manager = new Manager()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "FirstName",
+            Email = "Email",
+            Password = "Password"
+        };
+
+        _dbContext.Set<RequestHandler>().Add(_requestHanlder);
+        _dbContext.Set<Category>().Add(_category);
+        _dbContext.Set<Manager>().Add(_manager);
+        _dbContext.SaveChanges();
 
         _maintenanceRequestInDb = new MaintenanceRequest
         {
@@ -44,23 +70,20 @@ public class MaintenaceRepositoryTest
                 Firstname = "FirstName",
                 Email = "Email",
                 LastName = "Lastname",
-                Password = "Password"
-
+                Password = "Password"      
             },
             RequestStatus = RequestStatusEnum.Closed,
-            Category = new Category()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Category"
-            },
+            Category = _category,
+            CategoryId = _category.Id,
             Description = "Bath broken",
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password"
+                Password = "Password",
             }
+
         };
 
         _maintenanceRequestInDb2 = new MaintenanceRequest
@@ -80,7 +103,6 @@ public class MaintenaceRepositoryTest
                 LastName = "Lastname",
                 Email = "Email",
                 Password = "Password"
-
             },
             RequestStatus = RequestStatusEnum.Open,
             Category = new Category()
@@ -94,7 +116,7 @@ public class MaintenaceRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password"
+                Password = "Password",
             }
         };
     }
@@ -127,11 +149,11 @@ public class MaintenaceRepositoryTest
     [TestMethod]
     public void GetAllMaintenanceRequests_MaintenanceRequestsAreReturnWhenQueryIsSet()
     {
-
         IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> { _maintenanceRequestInDb };
 
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
         _dbContext.SaveChanges();
 
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(_maintenanceRequestInDb.ManagerId);
@@ -157,7 +179,6 @@ public class MaintenaceRepositoryTest
     [TestMethod]
     public void GetMaintenanceRequestByCategory_MaintenanceRequestsAreReturn()
     {
-
         IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> { _maintenanceRequestInDb };
 
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
@@ -176,7 +197,8 @@ public class MaintenaceRepositoryTest
         _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
 
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestByCategory(Guid.NewGuid()));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _maintenanceRequestRepository.GetMaintenanceRequestByCategory(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
 
@@ -201,7 +223,8 @@ public class MaintenaceRepositoryTest
         _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
 
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.CreateMaintenanceRequest(_maintenanceRequestInDb));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _maintenanceRequestRepository.CreateMaintenanceRequest(_maintenanceRequestInDb));
         _mockDbContext.VerifyAll();
     }
 
@@ -220,7 +243,6 @@ public class MaintenaceRepositoryTest
         _maintenanceRequestRepository.UpdateMaintenanceRequest(_maintenanceRequestInDb.Id, _maintenanceRequestInDb);
 
         MaintenanceRequest maintenanceRequestResponse = _dbContext.Set<MaintenanceRequest>().Find(_maintenanceRequestInDb.Id);
-
         Assert.AreEqual(_maintenanceRequestInDb, maintenanceRequestResponse);
     }
 
@@ -231,7 +253,8 @@ public class MaintenaceRepositoryTest
         _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
 
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestInDb));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _maintenanceRequestRepository.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestInDb));
         _mockDbContext.VerifyAll();
     }
 
@@ -257,7 +280,8 @@ public class MaintenaceRepositoryTest
         _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
 
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestById(Guid.NewGuid()));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _maintenanceRequestRepository.GetMaintenanceRequestById(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
 
@@ -269,7 +293,6 @@ public class MaintenaceRepositoryTest
     public void GetMaintenanceRequestsByRequestHandler_MaintenanceRequestsAreReturn()
     {
         IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> { _maintenanceRequestInDb };
-
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
@@ -286,12 +309,12 @@ public class MaintenaceRepositoryTest
         _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
 
         _maintenanceRequestRepository = new MaintenanceRequestRepository(_mockDbContext.Object);
-        Assert.ThrowsException<UnknownRepositoryException>(() => _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _maintenanceRequestRepository.GetMaintenanceRequestsByRequestHandler(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
 
     #endregion
-
     [TestCleanup]
     public void TestCleanup()
     {

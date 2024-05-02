@@ -17,16 +17,22 @@ public class MaintenanceRequest
     public Category Category { get; set; }
     public Guid CategoryId { get; set; }
     public RequestStatusEnum RequestStatus { get; set; }
-    
+
     public override bool Equals(object? obj)
     {
         MaintenanceRequest? maintenanceRequestToCompare = obj as MaintenanceRequest;
-        
+
         return Id == maintenanceRequestToCompare.Id &&
                Description == maintenanceRequestToCompare.Description && FlatId == maintenanceRequestToCompare.FlatId &&
-               OpenedDate == maintenanceRequestToCompare.OpenedDate && ClosedDate == maintenanceRequestToCompare.ClosedDate &&
-               RequestHandlerId == maintenanceRequestToCompare.RequestHandlerId && CategoryId == maintenanceRequestToCompare.CategoryId &&
-               RequestStatus == maintenanceRequestToCompare.RequestStatus;
+               OpenedDate == maintenanceRequestToCompare.OpenedDate &&
+               ClosedDate == maintenanceRequestToCompare.ClosedDate &&
+               RequestHandlerId == maintenanceRequestToCompare.RequestHandlerId &&
+               CategoryId == maintenanceRequestToCompare.CategoryId &&
+               RequestStatus == maintenanceRequestToCompare.RequestStatus &&
+               Category == maintenanceRequestToCompare.Category &&
+               CategoryId == maintenanceRequestToCompare.CategoryId &&
+               RequestHandler == maintenanceRequestToCompare.RequestHandler &&
+               Manager == maintenanceRequestToCompare.Manager && ManagerId == maintenanceRequestToCompare.ManagerId;
     }
 
     public void MaintenanceRequestValidator()
