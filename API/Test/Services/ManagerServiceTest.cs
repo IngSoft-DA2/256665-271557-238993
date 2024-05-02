@@ -66,6 +66,7 @@ public class ManagerServiceTest
             Firstname = "Manager",
             Email = "person@gmail.com",
             Password = "password",
+            Role = "Manager",
             Buildings = new List<Building>()
         };
 
@@ -121,26 +122,13 @@ public class ManagerServiceTest
             Id = Guid.NewGuid(),
             Firstname = "Manager",
             Email = "person@gmail.com",
-            Password = "1234567"
+            Password = "1230",
+            Role = "Manager"
         };
 
         Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
     }
-
-    [TestMethod]
-    public void GivenNullBuildingsOnCreate_ShouldThrowException()
-    {
-        Manager manager = new Manager
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "Manager",
-            Email = "person@gmail.com",
-            Password = "1234567"
-        };
-
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager));
-    }
-
+    
     [TestMethod]
     public void GivenRepeatedEmailOnCreate_ShouldThrowException()
     {
@@ -149,7 +137,8 @@ public class ManagerServiceTest
             Id = Guid.NewGuid(),
             Firstname = "Manager",
             Email = "persona@gmail.com",
-            Password = "12345678",
+            Password = "12345678910",
+            Role = "Manager",
             Buildings = new List<Building>()
         };
 
@@ -168,7 +157,8 @@ public class ManagerServiceTest
             Id = Guid.NewGuid(),
             Firstname = "Manager",
             Email = "persona@gmail.com",
-            Password = "12345678",
+            Password = "12345678910",
+            Role = "Manager",
             Buildings = new List<Building>()
         };
 

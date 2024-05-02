@@ -37,7 +37,7 @@ public class SessionControllerTest
         _sessionService.Setup(x => x.Authenticate(userLoginModel.Email, userLoginModel.Password))
             .Returns(sessionString);
 
-        OkObjectResult expected = new OkObjectResult(new { sessionId = sessionString });
+        OkObjectResult expected = new OkObjectResult(sessionString);
 
         IActionResult result = _sessionController.Login(userLoginModel);
         _sessionService.VerifyAll();

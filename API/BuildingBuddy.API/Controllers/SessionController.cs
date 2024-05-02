@@ -22,7 +22,7 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
             Guid sessionString = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
-            return Ok(new { sessionId = sessionString });
+            return Ok(sessionString);
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
@@ -33,5 +33,4 @@ namespace BuildingBuddy.API.Controllers
             return Ok();
         }
     }
-
 }

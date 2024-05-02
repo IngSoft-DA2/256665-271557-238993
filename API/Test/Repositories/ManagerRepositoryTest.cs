@@ -39,7 +39,7 @@ public class ManagerRepositoryTest
                 Email = "manager1@gmail.com",
                 Password = "password1",
                 Role = "Manager",
-                Buildings = new List<Building>()
+                Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
             new Manager
@@ -49,7 +49,7 @@ public class ManagerRepositoryTest
                 Email = "manager2@gmail.com",
                 Password = "password2",
                 Role = "Manager",
-                Buildings = new List<Building>()
+                Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             }
         };

@@ -53,7 +53,8 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             },
             Flats = new List<Flat>
             {
@@ -188,6 +189,7 @@ public class BuildingRepositoryTest
             Firstname = "Manager 1",
             Email = "a@gmail.com",
             Password = "Password",
+            Role = "Manager",
             Buildings = new List<Building>(),
             Requests = new List<MaintenanceRequest>()
         };
@@ -288,7 +290,7 @@ public class BuildingRepositoryTest
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
                 Password = "Password",
-                Role = "Manager"
+                Role = "Manager",
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
@@ -372,7 +374,8 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             },
             Flats = new List<Flat>
             {
