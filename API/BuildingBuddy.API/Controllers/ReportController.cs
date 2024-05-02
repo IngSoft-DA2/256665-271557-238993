@@ -23,7 +23,6 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByBuilding
 
-        [AuthorizationFilter(RoleNeeded = "Manager")]
         [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid personId, [FromQuery] Guid buildingId)
@@ -37,7 +36,6 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByRequestHandler
         
-        [AuthorizationFilter(RoleNeeded = "Manager")]
         [Route("/request-handler/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId, [FromQuery] Guid buildingId, [FromQuery] Guid personId)
@@ -50,13 +48,12 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByCategory
         
-        [AuthorizationFilter(RoleNeeded = "Admin")]
         [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildignId, [FromQuery] Guid categoryId)
+        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildingId, [FromQuery] Guid categoryId)
         {
            
-            return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildignId, categoryId));
+            return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildingId, categoryId));
             
         }
         

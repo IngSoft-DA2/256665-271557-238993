@@ -23,8 +23,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
         
         #region Get All Maintenance Requests
-
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        
         [HttpGet]
         [Route("requests")]
         public IActionResult GetAllMaintenanceRequests()
@@ -36,8 +35,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
         
         #region Create Maintenance Request
-
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        
         [HttpPost]
         public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
         {
@@ -51,7 +49,6 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Category Id
 
         [HttpGet]
-        [AuthorizationFilter(RoleNeeded = "Manager")]
         [Route("/category/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
@@ -62,8 +59,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
         
         #region Assign Maintenance Request
-
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        
         [HttpPut]
         [Route("/request-handler/requests")]
         public IActionResult AssignMaintenanceRequest(Guid idOfRequestToUpdate, Guid idOfWorker)
@@ -77,8 +73,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
         
         #region Get Maintenance Requests By Request Handler
-
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        
         [HttpGet]
         [Route("/request-handler/{handlerId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
@@ -92,7 +87,6 @@ namespace BuildingBuddy.API.Controllers
         
         #region Update Maintenance Request
         
-        [AuthorizationFilter(RoleNeeded = "RequestHandler")]
         [HttpPut]
         [Route("/requests/{id:Guid}")]
         public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id,
@@ -107,8 +101,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
         
         #region Get Maintenance Request By Id
-
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        
         [HttpGet]
         [Route("/requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)

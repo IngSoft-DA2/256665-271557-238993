@@ -9,7 +9,6 @@ namespace BuildingBuddy.API.Controllers
 {
     
     [CustomExceptionFilter]
-    [AuthorizationFilter(RoleNeeded = "Manager")]
     [Route("api/v1/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase

@@ -27,7 +27,6 @@ namespace BuildingBuddy.API.Controllers
         
         #region Create Administrator
         
-        [AuthorizationFilter(RoleNeeded = "Admin")]
         [HttpPost]
         public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequest request)
         {

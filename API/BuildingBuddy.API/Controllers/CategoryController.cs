@@ -6,7 +6,6 @@ using WebModel.Requests.CategoryRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [AuthorizationFilter(RoleNeeded = "Admin")]
     [Route("api/v1/categories")]
     [ApiController]
     [CustomExceptionFilter]

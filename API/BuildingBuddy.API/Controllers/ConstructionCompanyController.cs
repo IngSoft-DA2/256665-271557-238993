@@ -7,7 +7,6 @@ using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [AuthorizationFilter(RoleNeeded = "Manager")]
     [Route("api/v1/construction-companies")]
     [ApiController]
     [CustomExceptionFilter]
