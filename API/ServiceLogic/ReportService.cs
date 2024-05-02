@@ -103,6 +103,7 @@ public class ReportService : IReportService
     private static void AddByCorrespondingStatusOnRequestHandlerReport(MaintenanceRequest request,
         RequestHandlerReport handlerReport)
     {
+        handlerReport.IdOfResourceToReport = (Guid)request.RequestHandlerId;
         if (request.RequestStatus == RequestStatusEnum.Closed && request.ClosedDate != null &&
             request.OpenedDate != null)
         {
