@@ -160,6 +160,7 @@ public class InvitationAdapter : IInvitationAdapter
         {
             Invitation invitation = new Invitation
             {
+                Id = idOfInvitationToUpdate,
                 Status = (StatusEnum)invitationToUpdateRequest.Status, 
                 ExpirationDate = invitationToUpdateRequest.ExpirationDate
             };
@@ -197,6 +198,10 @@ public class InvitationAdapter : IInvitationAdapter
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundAdapterException();
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
         }
         catch (Exception exceptionCaught)
         {

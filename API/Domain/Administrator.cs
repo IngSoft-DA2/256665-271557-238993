@@ -12,10 +12,9 @@ public class Administrator : SystemUser
     public override bool Equals(object? objectToCompare)
     {
         Administrator? administratorToCompare = objectToCompare as Administrator;
-        
+
         return Id == administratorToCompare.Id && Firstname == administratorToCompare.Firstname &&
-               LastName == administratorToCompare.LastName && Email == administratorToCompare.Email
-               && Invitations.SequenceEqual(administratorToCompare.Invitations);
+               LastName == administratorToCompare.LastName && Email == administratorToCompare.Email;
     }
 
     #region Validators

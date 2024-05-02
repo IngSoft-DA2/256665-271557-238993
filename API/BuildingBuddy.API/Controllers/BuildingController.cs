@@ -51,8 +51,7 @@ namespace BuildingBuddy.API.Controllers
         
         [HttpPut]
         [Route("{buildingId:Guid}")]
-        public IActionResult UpdateBuildingById([FromRoute] Guid buildingId,
-            [FromBody] UpdateBuildingRequest buildingWithUpdates)
+        public IActionResult UpdateBuildingById([FromRoute] Guid buildingId, [FromBody] UpdateBuildingRequest buildingWithUpdates)
         {
            
                 _buildingAdapter.UpdateBuildingById(buildingId, buildingWithUpdates);

@@ -73,8 +73,12 @@ public class InvitationRepository : IInvitationRepository
     {
         try
         {
-            _dbContext.Set<Invitation>().Update(invitationUpdated);
-            _dbContext.SaveChanges();
+            Invitation invitationInDb = _dbContext.Set<Invitation>().Find(invitationUpdated.Id);
+            if(invitationInDb != null)
+            {
+                _dbContext.Set<Invitation>().Entry(invitationInDb).CurrentValues.SetValues(invitationUpdated);
+                _dbContext.SaveChanges();
+            }
         }
         catch (Exception exceptionCaught)
         {

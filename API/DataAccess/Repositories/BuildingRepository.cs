@@ -18,7 +18,11 @@ public class BuildingRepository : IBuildingRepository
     {
         try
         {
-            return _dbContext.Set<Building>().Include(building => building.Flats)
+            return _dbContext.Set<Building>()
+                .Include(building => building.Flats).ThenInclude(flat => flat.OwnerAssigned)
+                .Include(building => building.ConstructionCompany)
+                .Include(building => building.Manager)
+                .Include(building => building.Location)
                 .Where(building => building.ManagerId == managerId).ToList();
         }
         catch (Exception exceptionCaught)
@@ -31,7 +35,11 @@ public class BuildingRepository : IBuildingRepository
     {
         try
         {
-            return _dbContext.Set<Building>().Include(building => building.Flats)
+            return _dbContext.Set<Building>()
+                .Include(building => building.Flats)
+                .Include(building => building.ConstructionCompany)
+                .Include(building => building.Manager)
+                .Include(building => building.Location)
                 .Where(building => building.Id == buildingId).FirstOrDefault();
         }
         catch (Exception exceptionCaught)
@@ -58,7 +66,10 @@ public class BuildingRepository : IBuildingRepository
         try
         {
             var buildingInDb = _dbContext.Set<Building>()
-                .Include(b => b.Flats).Include(b => b.ConstructionCompany)
+                .Include(b => b.Flats)
+                .Include(b => b.ConstructionCompany)
+                .Include(b => b.Manager)
+                .Include(b => b.Location)
                 .FirstOrDefault(b => b.Id == buildingWithUpdates.Id);
 
             _dbContext.Entry(buildingInDb).CurrentValues.SetValues(buildingWithUpdates);

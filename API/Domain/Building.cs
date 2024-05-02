@@ -3,6 +3,7 @@ namespace Domain;
 public class Building
 {
     #region Properties
+
     public Guid Id { get; set; }
     public Guid ManagerId { get; set; }
     public Manager Manager { get; set; }
@@ -13,9 +14,9 @@ public class Building
     public ConstructionCompany ConstructionCompany { get; set; }
     public double CommonExpenses { get; set; }
     public IEnumerable<Flat> Flats { get; set; } = new List<Flat>();
-    
+
     #endregion
-    
+
     #region Validations
 
     public void BuildingValidator()
@@ -93,16 +94,18 @@ public class Building
             throw new InvalidBuildingException("Flats list can't be null, you must provide a list of flats");
         }
     }
-    
+
     #endregion
 
     public override bool Equals(object? obj)
     {
         Building objectToCompare = obj as Building;
-        return objectToCompare.Id == Id && objectToCompare.ManagerId == ManagerId &&
-               objectToCompare.Name == Name && objectToCompare.Address == Address &&
-               objectToCompare.Location.Equals(Location) &&
-               objectToCompare.ConstructionCompany.Equals(ConstructionCompany) &&
+        return objectToCompare.Id == Id && 
+               objectToCompare.ManagerId == ManagerId && 
+               objectToCompare.Name == Name && 
+               objectToCompare.Address == Address &&
+               objectToCompare.Location.Equals(Location) && 
+               objectToCompare.ConstructionCompany.Equals(ConstructionCompany) && objectToCompare.ConstructionCompanyId == ConstructionCompanyId &&
                objectToCompare.CommonExpenses.Equals(CommonExpenses) &&
                objectToCompare.Flats.SequenceEqual(Flats);
     }

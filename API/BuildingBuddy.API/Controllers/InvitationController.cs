@@ -31,7 +31,7 @@ namespace BuildingBuddy.API.Controllers
         [AllowAnonymous]
         public IActionResult GetAllInvitations([FromQuery] string email)
         {
-           
+
                 if (!string.IsNullOrEmpty(email))
                 {
                     return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));

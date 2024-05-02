@@ -40,6 +40,7 @@ public class ManagerRepositoryTest
                 Password = "password1",
                 Role = "Manager",
                 Buildings = new List<Building>()
+                Requests = new List<MaintenanceRequest>()
             },
             new Manager
             {
@@ -49,6 +50,7 @@ public class ManagerRepositoryTest
                 Password = "password2",
                 Role = "Manager",
                 Buildings = new List<Building>()
+                Requests = new List<MaintenanceRequest>()
             }
         };
 

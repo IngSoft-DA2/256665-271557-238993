@@ -152,12 +152,13 @@ public class BuildingAdapter : IBuildingAdapter
                 Address = createBuildingRequest.Address,
                 Location = new Location
                 {
+                    Id = Guid.NewGuid(),
                     Latitude = createBuildingRequest.Location.Latitude,
                     Longitude = createBuildingRequest.Location.Longitude
                 },
-                ConstructionCompany =
-                    _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
+                ConstructionCompany = _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
                 CommonExpenses = createBuildingRequest.CommonExpenses,
+                
                 Flats = createBuildingRequest.Flats.Select(flat => new Flat
                 {
                     Id = Guid.NewGuid(),
@@ -215,7 +216,8 @@ public class BuildingAdapter : IBuildingAdapter
             {
                 Id = buildingIdToUpd,
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
-                ConstructionCompany = newConstructionCompany
+                ConstructionCompany = newConstructionCompany,
+                ConstructionCompanyId = newConstructionCompany.Id,
             };
 
             _buildingService.UpdateBuilding(buildingToUpd);

@@ -309,6 +309,18 @@ public class InvitationAdapterTest
 
         _invitationService.Verify(service => service.DeleteInvitation(It.IsAny<Guid>()), Times.Once);
     }
+
+    [TestMethod]
+    public void DeleteInvitation_ThrowsObjectErrorServiceException()
+    {
+        _invitationService.Setup(service => service.DeleteInvitation(It.IsAny<Guid>()))
+            .Throws(new ObjectErrorServiceException("Something went wrong"));
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _invitationAdapter.DeleteInvitation(_genericInvitation1.Id));
+
+        _invitationService.VerifyAll();
+    }
     
     [TestMethod]
     public void DeleteInvitation_ShouldThrowObjectNotFoundException()
