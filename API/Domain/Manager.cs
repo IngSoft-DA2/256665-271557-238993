@@ -16,7 +16,8 @@ public class Manager : Person
     {
         Manager managerToCompare = objectToCompare as Manager;
         return managerToCompare.Password == managerToCompare.Password &&
-               Buildings.SequenceEqual(managerToCompare.Buildings);
+               Buildings.SequenceEqual(managerToCompare.Buildings) &&
+                Requests.SequenceEqual(managerToCompare.Requests);
     }
 
     private void PasswordValidator()

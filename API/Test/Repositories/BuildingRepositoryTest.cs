@@ -51,11 +51,29 @@ public class BuildingRepositoryTest
             Manager = new Manager
             {
                 Id = Guid.NewGuid(),
-                Firstname = "Manager",
+                Firstname = "Manager 1",
                 Email = "manager@gmail.com",
                 Password = "Password"
             },
-            Flats = new List<Flat>()
+            Flats = new List<Flat>
+            {
+                new Flat
+                {
+                    Id = Guid.NewGuid(),
+                    Floor = 1,
+                    RoomNumber = 101,
+                    OwnerAssigned = new Owner
+                    {
+                        Id = Guid.NewGuid(),
+                        Firstname = "Owner 1",
+                        Lastname = "Owner 1",
+                        Email = "owner@gmail.com",
+                    },
+                    TotalRooms = 4,
+                    TotalBaths = 2,
+                    HasTerrace = true
+                }
+            }
         };
 
         IEnumerable<Building> buildingsInDb = new List<Building> { buildingInDb };
@@ -130,6 +148,7 @@ public class BuildingRepositoryTest
 
         Building buildingReturn = _buildingRepository.GetBuildingById(buildingInDb.Id);
         Assert.AreEqual(buildingInDb, buildingReturn);
+        Assert.IsTrue(buildingInDb.ConstructionCompany.Buildings.Equals(buildingReturn.ConstructionCompany.Buildings));
     }
 
     [TestMethod]
@@ -145,30 +164,50 @@ public class BuildingRepositoryTest
     [TestMethod]
     public void CreateBuilding_BuildingIsCreated()
     {
+
+        Owner OwnerAssigned = new Owner
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Owner 1",
+            Lastname = "Owner 1",
+            Email = "owner@gmail.com",
+            Flats = new List<Flat>()
+        };
+
+        ConstructionCompany constructionCompany = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company 1",
+            Buildings = new List<Building>()
+        };
+        
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager 1",
+            Email = "a@gmail.com",
+            Password = "Password",
+            Buildings = new List<Building>(),
+            Requests = new List<MaintenanceRequest>()
+        };
+
+        _dbContext.Set<Owner>().Add(OwnerAssigned);
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompany);
+        _dbContext.Set<Manager>().Add(manager);
+        _dbContext.SaveChanges();
+        
         Building buildingToCreate = new Building
         {
             Id = Guid.NewGuid(),
             Name = "Building 1",
             Address = "Address 1",
-            Location = new Location
-            {
-                Id = Guid.NewGuid(),
-                Latitude = 1.23,
-                Longitude = 6.56
-            },
+          
+            Manager = manager,
+            ManagerId = manager.Id,
             CommonExpenses = 100,
-            ConstructionCompany = new ConstructionCompany
-            {
-                Id = Guid.NewGuid(),
-                Name = "Construction Company 1",
-            },
-            Manager = new Manager
-            {
-                Id = Guid.NewGuid(),
-                Firstname = "Manager 1",
-                Email = "a@gmail.com",
-                Password = "Password"
-            },
+            ConstructionCompany = constructionCompany,
+            ConstructionCompanyId = constructionCompany.Id,
+           
             Flats = new List<Flat>
             {
                 new Flat
@@ -176,20 +215,26 @@ public class BuildingRepositoryTest
                     Id = Guid.NewGuid(),
                     Floor = 1,
                     RoomNumber = 101,
-                    OwnerAssigned = new Owner
-                    {
-                        Id = Guid.NewGuid(),
-                        Firstname = "Owner 1",
-                        Lastname = "Owner 1",
-                        Email = "owner@gmail.com",
-                    },
+                    OwnerAssigned = OwnerAssigned,
+                    OwnerId = OwnerAssigned.Id,
                     TotalRooms = 4,
                     TotalBaths = 2,
                     HasTerrace = true
                 }
             }
         };
-
+        
+        Location location = new Location
+        {
+            Id = Guid.NewGuid(),
+            Latitude = 1.23,
+            Longitude = 6.56,
+            Building = buildingToCreate,
+            BuildingId = buildingToCreate.Id
+        };
+        
+        buildingToCreate.Location = location;
+        
         _buildingRepository.CreateBuilding(buildingToCreate);
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToCreate.Id);
         Assert.AreEqual(buildingToCreate, buildingInDb);
@@ -213,16 +258,16 @@ public class BuildingRepositoryTest
             Id = Guid.NewGuid(),
             Name = "Construction Company 1",
         };
-        
+
         ConstructionCompany constructionCompanyToUpd = new ConstructionCompany
         {
             Id = Guid.NewGuid(),
             Name = "Construction Company To Update"
         };
-        
+
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToUpd);
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
-        
+
         Building buildingInDb = new Building
         {
             Id = Guid.NewGuid(),
@@ -241,9 +286,11 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password"
+                Password = "Password",
+                Buildings = new List<Building>(),
+                Requests = new List<MaintenanceRequest>()
             },
-                
+
             Flats = new List<Flat>
             {
                 new Flat
@@ -264,7 +311,7 @@ public class BuildingRepositoryTest
                 }
             }
         };
-        
+
 
         _dbContext.Set<Building>().Add(buildingInDb);
         _dbContext.SaveChanges();
@@ -287,7 +334,7 @@ public class BuildingRepositoryTest
         Building buildingInDbUpdated = _dbContext.Set<Building>().Find(buildingToUpdate.Id);
         Assert.IsTrue(buildingToUpdate.Equals(buildingInDbUpdated));
     }
-    
+
     [TestMethod]
     public void UpdateBuilding_ThrowsUnknownException()
     {
@@ -345,15 +392,15 @@ public class BuildingRepositoryTest
                 }
             }
         };
-        
+
         _dbContext.Set<Building>().Add(buildingToDelete);
         _dbContext.SaveChanges();
-        
+
         _buildingRepository.DeleteBuilding(buildingToDelete);
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToDelete.Id);
         Assert.IsNull(buildingInDb);
     }
-    
+
     [TestMethod]
     public void DeleteBuilding_ThrowsUnknownException()
     {
@@ -363,6 +410,4 @@ public class BuildingRepositoryTest
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.DeleteBuilding(new Building()));
     }
-    
-
 }
