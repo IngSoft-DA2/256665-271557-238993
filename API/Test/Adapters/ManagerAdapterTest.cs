@@ -120,13 +120,13 @@ public class ManagerAdapterTest
 
         CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()));
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(),It.IsAny<Guid>()));
 
-        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(dummyCreateRequest);
+        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(dummyCreateRequest,It.IsAny<Guid>());
 
         Assert.IsNotNull(expectedAdapterResponse.Id);
 
-        _managerService.Verify(service => service.CreateManager(It.IsAny<Manager>()), Times.Once);
+        _managerService.Verify(service => service.CreateManager(It.IsAny<Manager>(), It.IsAny<Guid>()), Times.Once);
     }
 
     [TestMethod]
@@ -134,10 +134,10 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(),It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>()));
 
         _managerService.VerifyAll();
     }
@@ -147,10 +147,10 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(), It.IsAny<Guid>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
 
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>()));
 
         _managerService.VerifyAll();
     }
@@ -160,10 +160,10 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(),It.IsAny<Guid>()))
             .Throws(new Exception("Something went wrong"));
 
-        Assert.ThrowsException<UnknownAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<UnknownAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>()));
 
         _managerService.VerifyAll();
     }

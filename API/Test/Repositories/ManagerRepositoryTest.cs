@@ -65,7 +65,7 @@ public class ManagerRepositoryTest
     [TestMethod]
     public void GetAllManagers_ThrowsUnknownException()
     {
-        
+
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(m => m.Set<Manager>()).Throws(new Exception());
 
@@ -124,14 +124,14 @@ public class ManagerRepositoryTest
                     }
                 }
             }
-        };       
+        };
         _dbContext.Set<Manager>().Add(managerInDb);
         _dbContext.SaveChanges();
 
         Manager managerReturn = _managerRepository.GetManagerById(managerInDb.Id);
         Assert.IsTrue(managerInDb.Equals(managerReturn));
     }
-    
+
     [TestMethod]
     public void GetManagerById_ThrowsUnknownException()
     {
@@ -154,12 +154,12 @@ public class ManagerRepositoryTest
             Password = "managerPassword",
             Role = "Manager",
         };
-        
+
         _managerRepository.CreateManager(managerToCreate);
         Manager managerInDb = _dbContext.Set<Manager>().Find(managerToCreate.Id);
         Assert.IsTrue(managerToCreate.Equals(managerInDb));
     }
-    
+
     [TestMethod]
     public void CreateManager_ThrowsUnknownException()
     {
@@ -222,10 +222,10 @@ public class ManagerRepositoryTest
                 }
             }
         };
-        
+
         _dbContext.Set<Manager>().Add(managerToDelete);
         _dbContext.SaveChanges();
-        
+
         _managerRepository.DeleteManager(managerToDelete);
         Manager managerInDb = _dbContext.Set<Manager>().Find(managerToDelete.Id);
         Assert.IsNull(managerInDb);
@@ -240,9 +240,12 @@ public class ManagerRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _managerRepository.DeleteManager(new Manager()));
         _mockDbContext.VerifyAll();
     }
-    
-    
-    
-    
-    
+
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
+    }
+
 }

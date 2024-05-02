@@ -40,7 +40,6 @@ public class AdministratorRepositoryTest
                 LastName = "Administrator1",
                 Email = "administrator@gmail.com",
                 Password = "password",
-                Role = "Admin",
                 Invitations = new List<Invitation>
                 {
                     new Invitation
@@ -116,5 +115,11 @@ public class AdministratorRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() =>
             _administratorRepository.CreateAdministrator(new Administrator()));
         _mockDbContext.VerifyAll();
+    }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
     }
 }

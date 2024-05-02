@@ -7,7 +7,7 @@ using WebModel.Responses.MaintenanceResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [CustomExceptionFilter]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/maintenance")]
     [ApiController]
     public class MaintenanceController : ControllerBase
     {
@@ -26,10 +26,9 @@ namespace BuildingBuddy.API.Controllers
         
         [HttpGet]
         [Route("requests")]
-        public IActionResult GetAllMaintenanceRequests()
+        public IActionResult GetAllMaintenanceRequests([FromQuery] Guid? managerId)
         {
             return Ok(_maintenanceAdapter.GetAllMaintenanceRequests());
-            
         }
         
         #endregion
@@ -49,7 +48,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Category Id
 
         [HttpGet]
-        [Route("/category/requests")]
+        [Route("category/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
             return Ok(_maintenanceAdapter.GetMaintenanceRequestByCategory(categoryId));
@@ -61,8 +60,8 @@ namespace BuildingBuddy.API.Controllers
         #region Assign Maintenance Request
         
         [HttpPut]
-        [Route("/request-handler/requests")]
-        public IActionResult AssignMaintenanceRequest(Guid idOfRequestToUpdate, Guid idOfWorker)
+        [Route("request-handler/requests")]
+        public IActionResult AssignMaintenanceRequest([FromQuery]Guid idOfRequestToUpdate, [FromQuery] Guid idOfWorker)
         {
             
             _maintenanceAdapter.AssignMaintenanceRequest(idOfRequestToUpdate, idOfWorker);
@@ -75,7 +74,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Requests By Request Handler
         
         [HttpGet]
-        [Route("/request-handler/{handlerId:Guid}/requests")]
+        [Route("request-handler/{handlerId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
         {
             
@@ -88,7 +87,7 @@ namespace BuildingBuddy.API.Controllers
         #region Update Maintenance Request
         
         [HttpPut]
-        [Route("/requests/{id:Guid}")]
+        [Route("requests/{id:Guid}")]
         public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id,
             [FromBody] UpdateMaintenanceRequestStatusRequest request)
         {
@@ -103,10 +102,9 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Id
         
         [HttpGet]
-        [Route("/requests/{id:Guid}")]
+        [Route("requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)
-        {
-           
+        {           
             return Ok(_maintenanceAdapter.GetMaintenanceRequestById(id));
             
         }

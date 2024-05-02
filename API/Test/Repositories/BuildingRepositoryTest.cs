@@ -415,4 +415,10 @@ public class BuildingRepositoryTest
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.DeleteBuilding(new Building()));
     }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
+    }
 }

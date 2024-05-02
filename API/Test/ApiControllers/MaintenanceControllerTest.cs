@@ -60,12 +60,12 @@ public class MaintenanceControllerTest
                     RequestStatus = StatusEnumMaintenanceResponse.Closed
                 }
             };
-        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests())
+        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests(It.IsAny<Guid>()))
             .Returns(expectedMaintenanceRequests.ToList());
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedMaintenanceRequests);
 
-        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests();
+        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests(It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 
@@ -79,7 +79,6 @@ public class MaintenanceControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(controllerResponseValueCasted));
     }
-
     #endregion
 
     #region Get Maintenance Request By Category

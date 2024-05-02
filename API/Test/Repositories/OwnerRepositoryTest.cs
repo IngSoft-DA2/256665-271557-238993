@@ -210,4 +210,10 @@ public class OwnerRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _ownerRepository.UpdateOwnerById(new Owner()));
         _mockDbContext.VerifyAll();
     }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
+    }
 }

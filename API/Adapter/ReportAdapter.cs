@@ -52,6 +52,7 @@ public class ReportAdapter : IReportAdapter
             IEnumerable<GetMaintenanceReportByRequestHandlerResponse> maintenanceReportResponses =
                 reports.Select(report => new GetMaintenanceReportByRequestHandlerResponse()
                 {
+                    RequestHandlerId = report.IdOfResourceToReport,
                     ClosedRequests = report.ClosedRequests,
                     OpenRequests = report.OpenRequests,
                     OnAttendanceRequests = report.OnAttendanceRequests,

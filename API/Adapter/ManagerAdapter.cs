@@ -70,7 +70,7 @@ public class ManagerAdapter : IManagerAdapter
     
     #region Create Manager
 
-    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest)
+    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationAccepted)
     {
         try
         {
@@ -83,7 +83,7 @@ public class ManagerAdapter : IManagerAdapter
                 Role = "Manager"
             };
 
-            _managerServiceLogic.CreateManager(manager);
+            _managerServiceLogic.CreateManager(manager, idOfInvitationAccepted);
 
             CreateManagerResponse adapterResponse = new CreateManagerResponse
             {

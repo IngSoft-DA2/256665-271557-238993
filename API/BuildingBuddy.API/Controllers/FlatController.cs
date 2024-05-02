@@ -21,32 +21,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-        
-        #region Get All Flats
-        
-        [HttpGet]
-        [Route("/flats")]
-        public IActionResult GetAllFlats([FromRoute] Guid buildingId)
-        {
-           
-            return Ok(_flatAdapter.GetAllFlats(buildingId));
-            
-        }
-
-        #endregion
-        
-        #region GetFlatById
-
-        [HttpGet("{id:Guid}")]
-        public IActionResult GetFlatById([FromQuery] Guid buildingId, [FromRoute] Guid idOfFlatToFind)
-        {
-           
-            return Ok(_flatAdapter.GetFlatById(buildingId,idOfFlatToFind));
-            
-        }
-
-        #endregion
-        
+       
         #region CreateFlat
 
         [HttpPost]
