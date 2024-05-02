@@ -19,8 +19,6 @@ public class MaintenanceRequest
     public RequestStatusEnum RequestStatus { get; set; }
 
     public override bool Equals(object? obj)
-    {
-        MaintenanceRequest? maintenanceRequestToCompare = obj as MaintenanceRequest;
 
         return Id == maintenanceRequestToCompare.Id &&
                Description == maintenanceRequestToCompare.Description && FlatId == maintenanceRequestToCompare.FlatId &&
