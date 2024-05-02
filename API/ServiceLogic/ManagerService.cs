@@ -45,6 +45,10 @@ public class ManagerService :IManagerService
 
             _managerRepository.CreateManager(manager);
         }
+        catch (InvalidSystemUserException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
         catch (InvalidPersonException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);

@@ -9,7 +9,6 @@ using WebModel.Responses.InvitationResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [CustomExceptionFilter]
-    [AuthorizationFilter(RoleNeeded = "Admin")]
     [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase

@@ -36,7 +36,8 @@ public class MaintenaceRepositoryTest
             Firstname = "FirstName",
             Email = "Email",
             LastName = "Lastname",
-            Password = "Password"
+            Password = "Password",
+            Role = "RequestHandler"
         };
         _category = new Category()
         {
@@ -48,7 +49,8 @@ public class MaintenaceRepositoryTest
             Id = Guid.NewGuid(),
             Firstname = "FirstName",
             Email = "Email",
-            Password = "Password"
+            Password = "Password",
+            Role = "Manager"
         };
 
         _dbContext.Set<RequestHandler>().Add(_requestHanlder);
@@ -108,8 +110,7 @@ public class MaintenaceRepositoryTest
                 LastName = "Lastname",
                 Email = "Email",
                 Password = "Password",
-                Role = "RequestHandler"
-                Password = "Password"
+                Role = "RequestHandler",
             },
             RequestStatus = RequestStatusEnum.Open,
             Category = new Category()

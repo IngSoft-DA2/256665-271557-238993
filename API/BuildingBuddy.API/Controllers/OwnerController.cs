@@ -8,7 +8,6 @@ using WebModel.Responses.OwnerResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [CustomExceptionFilter]
-    [AuthorizationFilter(RoleNeeded = "Manager")]
     [Route("api/v1/owners")]
     [ApiController]
     public class OwnerController : ControllerBase

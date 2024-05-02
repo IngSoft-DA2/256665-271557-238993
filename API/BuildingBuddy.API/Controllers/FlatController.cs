@@ -6,7 +6,6 @@ using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [AuthorizationFilter(RoleNeeded = "Manager")]
     [Route("api/v1/flats")]
     [ApiController]
     [CustomExceptionFilter]

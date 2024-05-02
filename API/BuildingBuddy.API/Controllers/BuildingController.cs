@@ -9,7 +9,6 @@ namespace BuildingBuddy.API.Controllers
     [Route("api/v1/buildings")]
     [ApiController]
     [CustomExceptionFilter]
-    [AuthorizationFilter(RoleNeeded = "Manager")]
     public class BuildingController : ControllerBase
     {
         

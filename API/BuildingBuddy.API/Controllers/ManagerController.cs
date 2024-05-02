@@ -1,6 +1,4 @@
-using Adapter.CustomExceptions;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ManagerRequests;
 using WebModel.Responses.ManagerResponses;
@@ -54,10 +52,8 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateManager(CreateManagerRequest createRequest)
         {
-            
                 CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
                 return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
-         
         }
         
         #endregion
