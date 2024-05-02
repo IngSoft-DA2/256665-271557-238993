@@ -11,5 +11,5 @@ public interface IMaintenanceRequestRepository
 
     void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample);
     MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate);
-    IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId);
+    IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid? requestHandlerId);
 }

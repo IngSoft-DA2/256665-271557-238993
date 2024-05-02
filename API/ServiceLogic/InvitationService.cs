@@ -148,9 +148,6 @@ public class InvitationService : IInvitationService
 
     private static void MapProperties(Invitation invitationWithUpdates, Invitation invitationWithoutUpdates)
     {
-        
-        
-
         if (invitationWithUpdates.Equals(invitationWithoutUpdates))
         {
             throw new ObjectRepeatedServiceException();

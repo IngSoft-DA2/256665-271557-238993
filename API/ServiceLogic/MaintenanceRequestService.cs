@@ -73,7 +73,8 @@ public class MaintenanceRequestService : IMaintenanceRequestService
             _maintenanceRequestRepository.GetMaintenanceRequestById(idToUpdate);
         try
         {
-            ValidateRequestsBeforeUpdate(maintenanceRequestNotUpdated, maintenanceRequestUpdated);
+            if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
+            MapProperties(maintenanceRequestUpdated, maintenanceRequestNotUpdated);
             maintenanceRequestUpdated.MaintenanceRequestValidator();
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequestUpdated);
         }
@@ -91,16 +92,30 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         }
     }
 
-    private void ValidateRequestsBeforeUpdate(MaintenanceRequest maintenanceRequestNotUpdated,
-        MaintenanceRequest maintenanceRequestUpdated)
+    private static void MapProperties(MaintenanceRequest maintenanceWithUpdates, MaintenanceRequest maintenanceNotUpdated)
     {
-        if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
-
-        if (maintenanceRequestNotUpdated.FlatId != maintenanceRequestUpdated.FlatId ||
-            maintenanceRequestNotUpdated.OpenedDate != maintenanceRequestUpdated.OpenedDate ||
-            maintenanceRequestNotUpdated.ClosedDate != maintenanceRequestUpdated.ClosedDate)
+        if (maintenanceWithUpdates.Equals(maintenanceNotUpdated))
         {
-            throw new InvalidMaintenanceRequestException("You can only update the status request");
+            throw new ObjectRepeatedServiceException();
+        }
+
+        foreach (PropertyInfo property in typeof(MaintenanceRequest).GetProperties())
+        {
+            object? originalValue = property.GetValue(maintenanceNotUpdated);
+            object? updatedValue = property.GetValue(maintenanceWithUpdates);
+
+            if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
+            {
+                if (id == Guid.Empty)
+                {
+                    property.SetValue(maintenanceWithUpdates, originalValue);
+                }
+            }
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(maintenanceWithUpdates, originalValue);
+            }
         }
     }
 
@@ -118,7 +133,7 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         }
     }
 
-    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
+    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid? requestHandlerId)
     {
         IEnumerable<MaintenanceRequest> maintenanceRequests;
         try

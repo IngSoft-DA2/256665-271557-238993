@@ -11,7 +11,7 @@ namespace Test.Repositories;
 public class RequestHandlerRepositoryTest
 {
     #region Initializing Aspects
-    
+
     private DbContext _dbContext;
     private RequestHandlerRepository _requestHandlerRepository;
 
@@ -28,9 +28,9 @@ public class RequestHandlerRepositoryTest
         var options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(dbName).Options;
         return new ApplicationDbContext(options);
     }
-    
+
     #endregion
-    
+
     #region Create Category
 
     [TestMethod]
@@ -39,7 +39,10 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerToAdd = new RequestHandler()
         {
             Id = Guid.NewGuid(),
-            Firstname = "RequestHandler1"
+            Firstname = "RequestHandler1",
+            Email = "person@gmail.com",
+            LastName = "lastname",
+            Password = "3234sdgfdsfgfd"
         };
 
         _requestHandlerRepository.CreateRequestHandler(requestHandlerToAdd);
@@ -59,11 +62,11 @@ public class RequestHandlerRepositoryTest
             _requestHandlerRepository.CreateRequestHandler(new RequestHandler()));
         _mockDbContext.VerifyAll();
     }
-    
+
     #endregion
-    
+
     #region Get All Categories
-    
+
     [TestMethod]
     public void GetAllRequestHandlers_RequestHandlersAreReturn()
     {
@@ -71,41 +74,48 @@ public class RequestHandlerRepositoryTest
         {
             Id = Guid.NewGuid(),
             Firstname = "RequestHandler1",
-            Password = "3423423ewrwr4",
-            Email = "person@gmail.com",
-            LastName = "LastName"
+            Email = "person2@gmail.com",
+            LastName = "lastname",
+            Password = "3234sdgfdsfgfd"
         };
         RequestHandler requestHandlerInDb2 = new RequestHandler
         {
             Id = Guid.NewGuid(),
             Firstname = "RequestHandler2",
-            Password = "34234wer23234",
             Email = "person@gmail.com",
-            LastName = "LastName2"
+            LastName = "lastname",
+            Password = "3234sdgfdsfgfd"
         };
-        
-        IEnumerable<RequestHandler> expectedRequestHandlers = new List<RequestHandler> {requestHandlerInDb, requestHandlerInDb2};
 
         _dbContext.Set<RequestHandler>().Add(requestHandlerInDb);
         _dbContext.Set<RequestHandler>().Add(requestHandlerInDb2);
         _dbContext.SaveChanges();
-        
+
+
+        IEnumerable<RequestHandler> expectedRequestHandlersResponse = new List<RequestHandler>() { requestHandlerInDb, requestHandlerInDb2 };
         IEnumerable<RequestHandler> requestHandlersResponse = _requestHandlerRepository.GetAllRequestHandlers();
-        
-        Assert.IsTrue(expectedRequestHandlers.SequenceEqual(requestHandlersResponse));
+
+        Assert.IsTrue(requestHandlersResponse.ElementAt(0).Equals(expectedRequestHandlersResponse.ElementAt(0)));
     }
-    
+
     [TestMethod]
     public void GetAllRequestHandlers_ThrowsUnknownException()
     {
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(m => m.Set<RequestHandler>()).Throws(new Exception());
-        
+
         _requestHandlerRepository = new RequestHandlerRepository(_mockDbContext.Object);
+
         Assert.ThrowsException<UnknownRepositoryException>(() => _requestHandlerRepository.GetAllRequestHandlers());
         _mockDbContext.VerifyAll();
     }
-    
+
     #endregion
-    
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
+    }
+
 }

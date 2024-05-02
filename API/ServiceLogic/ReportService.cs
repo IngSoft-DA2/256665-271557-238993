@@ -70,7 +70,7 @@ public class ReportService : IReportService
 
     #region Get maintenance report by request handler
 
-    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid reportHandlerId, Guid buildingId, Guid personId)
+    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid? reportHandlerId, Guid buildingId, Guid personId)
     {
         try
         {
@@ -81,14 +81,15 @@ public class ReportService : IReportService
 
             foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
             {
-                if (!reportsDictionary.ContainsKey(request.RequestHandlerId))
+                Guid requestHandlerId = (Guid) request.RequestHandlerId;
+                if (!reportsDictionary.ContainsKey(requestHandlerId))
                 {
-                    reportsDictionary[request.RequestHandlerId] = new RequestHandlerReport
+                    reportsDictionary[requestHandlerId] = new RequestHandlerReport
                     {
-                        IdOfResourceToReport = request.RequestHandlerId
+                        IdOfResourceToReport = requestHandlerId
                     };
                 }
-                RequestHandlerReport handlerReport = reportsDictionary[request.RequestHandlerId];
+                RequestHandlerReport handlerReport = reportsDictionary[requestHandlerId];
                 AddByCorrespondingStatusOnRequestHandlerReport(request, handlerReport);
             }
             return reportsDictionary.Values;

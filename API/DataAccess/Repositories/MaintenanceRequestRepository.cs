@@ -79,11 +79,16 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     #region Update Maintenance Request
 
-    public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample)
+    public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestWithUpdates)
     {
         try
         {
-            _context.Set<MaintenanceRequest>().Update(maintenanceRequestSample);
+            MaintenanceRequest maintenanceRequestOnDb = _context.Set<MaintenanceRequest>().Find(maintenanceRequestWithUpdates.Id);
+            if(maintenanceRequestOnDb != null)
+            {
+                _context.Set<MaintenanceRequest>().Entry(maintenanceRequestOnDb).CurrentValues.SetValues(maintenanceRequestWithUpdates);
+                _context.SaveChanges();
+            }
         }
         catch (Exception exceptionCaught)
         {
@@ -111,7 +116,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     #region Get Maintenance Requests By Request Handler
 
-    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
+    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid? requestHandlerId)
     {
         try
         {

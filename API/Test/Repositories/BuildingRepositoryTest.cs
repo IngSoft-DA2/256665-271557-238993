@@ -213,16 +213,16 @@ public class BuildingRepositoryTest
             Id = Guid.NewGuid(),
             Name = "Construction Company 1",
         };
-        
+
         ConstructionCompany constructionCompanyToUpd = new ConstructionCompany
         {
             Id = Guid.NewGuid(),
             Name = "Construction Company To Update"
         };
-        
+
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToUpd);
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
-        
+
         Building buildingInDb = new Building
         {
             Id = Guid.NewGuid(),
@@ -243,7 +243,7 @@ public class BuildingRepositoryTest
                 Email = "manager@gmail.com",
                 Password = "Password"
             },
-                
+
             Flats = new List<Flat>
             {
                 new Flat
@@ -264,7 +264,7 @@ public class BuildingRepositoryTest
                 }
             }
         };
-        
+
 
         _dbContext.Set<Building>().Add(buildingInDb);
         _dbContext.SaveChanges();
@@ -287,7 +287,7 @@ public class BuildingRepositoryTest
         Building buildingInDbUpdated = _dbContext.Set<Building>().Find(buildingToUpdate.Id);
         Assert.IsTrue(buildingToUpdate.Equals(buildingInDbUpdated));
     }
-    
+
     [TestMethod]
     public void UpdateBuilding_ThrowsUnknownException()
     {
@@ -345,15 +345,15 @@ public class BuildingRepositoryTest
                 }
             }
         };
-        
+
         _dbContext.Set<Building>().Add(buildingToDelete);
         _dbContext.SaveChanges();
-        
+
         _buildingRepository.DeleteBuilding(buildingToDelete);
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToDelete.Id);
         Assert.IsNull(buildingInDb);
     }
-    
+
     [TestMethod]
     public void DeleteBuilding_ThrowsUnknownException()
     {
@@ -363,6 +363,11 @@ public class BuildingRepositoryTest
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.DeleteBuilding(new Building()));
     }
-    
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
+    }
 
 }

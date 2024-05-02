@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Domain;
 
 public class RequestHandler : Person
@@ -24,9 +26,11 @@ public class RequestHandler : Person
     {
         RequestHandler? toCompare = objectToCompare as RequestHandler;
 
-        return base.Equals(toCompare) &&
+        bool areEqual =  base.Equals(toCompare) &&
                LastName == toCompare.LastName &&
                Password == toCompare.Password;
+
+        return areEqual;
     }
     
    

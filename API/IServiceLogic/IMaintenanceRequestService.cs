@@ -9,6 +9,6 @@ public interface IMaintenanceRequestService
     public void CreateMaintenanceRequest(MaintenanceRequest maintenanceRequest);
     public void UpdateMaintenanceRequest(Guid idToUpdate, MaintenanceRequest maintenanceRequest);
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker);
-    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId);
+    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid? requestHandlerId);
     public MaintenanceRequest GetMaintenanceRequestById(Guid id);
 }
