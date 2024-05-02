@@ -66,14 +66,29 @@ public class MaintenaceRepositoryTest
             },
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
-            RequestHandler = _requestHanlder,
-            RequestHandlerId = _requestHanlder.Id,
+            RequestHandler = new RequestHandler()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                LastName = "Lastname",
+                Password = "Password",
+                Role = "RequestHandler"
+                
+            },
             RequestStatus = RequestStatusEnum.Closed,
             Category = _category,
             CategoryId = _category.Id,
             Description = "Bath broken",
-            Manager = _manager,
-            ManagerId = _manager.Id
+            Manager = new Manager()
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password",
+                Role = "Manager"
+            }
+
         };
 
         _maintenanceRequestInDb2 = new MaintenanceRequest
@@ -92,6 +107,8 @@ public class MaintenaceRepositoryTest
                 Firstname = "FirstName",
                 LastName = "Lastname",
                 Email = "Email",
+                Password = "Password",
+                Role = "RequestHandler"
                 Password = "Password"
             },
             RequestStatus = RequestStatusEnum.Open,
@@ -106,7 +123,8 @@ public class MaintenaceRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password"
+                Password = "Password",
+                Role = "Manager"
             }
         };
     }

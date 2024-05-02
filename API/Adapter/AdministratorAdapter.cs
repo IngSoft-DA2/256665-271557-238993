@@ -33,7 +33,8 @@ public class AdministratorAdapter : IAdministratorAdapter
                 Firstname = request.Firstname,
                 LastName = request.Lastname,
                 Email = request.Email,
-                Password = request.Password
+                Password = request.Password,
+                Role = "Admin"
             };
             
             _administratorService.CreateAdministrator(administrator);

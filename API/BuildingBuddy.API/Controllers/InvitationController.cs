@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using IAdapter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests;
 using WebModel.Requests.InvitationRequests;
@@ -7,6 +8,8 @@ using WebModel.Responses.InvitationResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [CustomExceptionFilter]
+    [AuthorizationFilter(RoleNeeded = "Admin")]
     [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
@@ -25,27 +28,15 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Invitations
 
         [HttpGet]
-        public IActionResult GetAllInvitations([FromQuery] string? email)
+        [AllowAnonymous]
+        public IActionResult GetAllInvitations([FromQuery] string email)
         {
-            try
-            {
-                Console.WriteLine(email);
+
                 if (!string.IsNullOrEmpty(email))
                 {
                     return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
                 }
                 return Ok(_invitationAdapter.GetAllInvitations());
-                
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("No invitations were found in Database");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
         }
 
         #endregion
@@ -56,19 +47,7 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult GetInvitationById([FromRoute] Guid id)
         {
-            try
-            {
-                return Ok(_invitationAdapter.GetInvitationById(id));
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Invitation was not found, reload the page");
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+            return Ok(_invitationAdapter.GetInvitationById(id));
         }
 
         #endregion
@@ -78,20 +57,9 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
-            try
-            {
                 CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
                 return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+           
         }
 
         #endregion
@@ -102,24 +70,10 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
         {
-            try
-            {
-                _invitationAdapter.UpdateInvitation(id, request);
-                return NoContent();
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("The specific invitation was not found in Database");
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception exceptionCaught)
-            {
-                Console.WriteLine(exceptionCaught.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+           
+            _invitationAdapter.UpdateInvitation(id, request);
+            return NoContent();
+           
         }
 
         #endregion
@@ -130,24 +84,10 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult DeleteInvitation([FromRoute] Guid id)
         {
-            try
-            {
-                _invitationAdapter.DeleteInvitation(id);
-                return NoContent();
-            }
-            catch (ObjectNotFoundAdapterException)
-            {
-                return NotFound("Invitation to delete was not found");
-            }
-            catch (ObjectErrorAdapterException exceptionCaught)
-            {
-                return BadRequest(exceptionCaught.Message);
-            }
-            catch (Exception internalException)
-            {
-                Console.WriteLine(internalException.Message);
-                return StatusCode(500, "Internal Server Error");
-            }
+          
+            _invitationAdapter.DeleteInvitation(id);
+            return NoContent();
+           
         }
 
         #endregion

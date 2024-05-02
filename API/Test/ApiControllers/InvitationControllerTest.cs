@@ -71,41 +71,6 @@ public class InvitationControllerTest
         Assert.IsTrue(expectedInvitations.SequenceEqual(controllerResponseValueCasted));
     }
 
-    [TestMethod]
-    public void GetAllInvitations_NotFoundIsReturned_WhenEmailIsNotEmpty()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("No invitations were found in Database");
-
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
-        _invitationAdapter.VerifyAll();
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void GetAllInvitations_500StatusCodeIsReturned_WhenEmailIsNotEmpty()
-    {
-        _invitationAdapter.Setup(adapter => adapter.GetAllInvitationsByEmail(_email))
-            .Throws(new Exception("Database Broken"));
-
-        IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
-        _invitationAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
     #endregion
 
     #region Get All Invitations
@@ -132,25 +97,6 @@ public class InvitationControllerTest
         Assert.IsTrue(expectedInvitationResponse.SequenceEqual(controllerResponseValueCasted));
     }
 
-    [TestMethod]
-    public void GetAllInvitationsButWithoutEmail_500StatusCodeIsReturn()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-        
-        _invitationAdapter.Setup(invitationAdapter => invitationAdapter.GetAllInvitations())
-            .Throws(new Exception("Unknown Error"));
-        
-        IActionResult controllerResponse = _invitationController.GetAllInvitations(string.Empty);
-        _invitationAdapter.VerifyAll();
-        
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-        
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
     #endregion
 
     #region Get Invitation By Id
@@ -175,41 +121,7 @@ public class InvitationControllerTest
         Assert.IsTrue(_expectedInvitation.Equals(controllerValueCasted));
     }
 
-    [TestMethod]
-    public void GetInvitationByIdRequest_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedResponse = new NotFoundObjectResult("Invitation was not found, reload the page");
-
-        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _invitationController.GetInvitationById(It.IsAny<Guid>());
-        _invitationAdapter.VerifyAll();
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(controllerResponseCasted.Value, expectedResponse.Value);
-        Assert.AreEqual(expectedResponse.StatusCode, controllerResponseCasted.StatusCode);
-    }
-
-    [TestMethod]
-    public void GetInvitationByIdRequest_500StatusCodeIsReturned()
-    {
-        _invitationAdapter.Setup(adapter => adapter.GetInvitationById(It.IsAny<Guid>()))
-            .Throws(new Exception("Database Broken"));
-
-        IActionResult controllerResponse = _invitationController.GetInvitationById(It.IsAny<Guid>());
-
-        _invitationAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(_expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(_expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
+   
 
     #endregion
 
@@ -244,43 +156,7 @@ public class InvitationControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 
-    [TestMethod]
-    public void CreateInvitationRequest_BadRequestIsReturned()
-    {
-        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
-            .Throws(new ObjectErrorAdapterException("Firstname cannot be empty"));
-
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Firstname cannot be empty");
-
-        IActionResult controllerResponse = _invitationController.CreateInvitation(It.IsAny<CreateInvitationRequest>());
-        _invitationAdapter.VerifyAll();
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-
-    [TestMethod]
-    public void CreateInvitationRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _invitationAdapter.Setup(adapter => adapter.CreateInvitation(It.IsAny<CreateInvitationRequest>()))
-            .Throws(new Exception("An specific error on the server"));
-
-        IActionResult controllerResponse = _invitationController.CreateInvitation(It.IsAny<CreateInvitationRequest>());
-        _invitationAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(controllerResponseCasted.Value, expectedControllerResponse.Value);
-        Assert.AreEqual(controllerResponseCasted.StatusCode, expectedControllerResponse.StatusCode);
-    }
+    
 
     #endregion
 
@@ -305,69 +181,7 @@ public class InvitationControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-
-    [TestMethod]
-    public void UpdateInvitationRequest_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("The specific invitation was not found in Database");
-
-        _invitationAdapter.Setup(adapter =>
-                adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _invitationController
-            .UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
-        _invitationAdapter.VerifyAll();
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void UpdateInvitationRequest_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific Error");
-
-        _invitationAdapter.Setup(adapter =>
-                adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
-            .Throws(new ObjectErrorAdapterException("Specific Error"));
-
-        IActionResult controllerResponse =
-            _invitationController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
-        _invitationAdapter.VerifyAll();
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void UpdateInvitationRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _invitationAdapter
-            .Setup(adapter => adapter.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>()))
-            .Throws(new Exception("Unknown Error"));
-
-        IActionResult controllerResponse =
-            _invitationController.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<UpdateInvitationRequest>());
-        _invitationAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 
     #region Delete Invitation
@@ -388,64 +202,6 @@ public class InvitationControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-
-
-    [TestMethod]
-    public void DeleteInvitationRequest_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("Invitation to delete was not found");
-
-        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _invitationController.DeleteInvitation(It.IsAny<Guid>());
-        _invitationAdapter.VerifyAll();
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void DeleteInvitationRequest_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Some specific error");
-
-        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
-            .Throws(new ObjectErrorAdapterException("Some specific error"));
-
-        IActionResult controllerResponse = _invitationController.DeleteInvitation(It.IsAny<Guid>());
-        _invitationAdapter.VerifyAll();
-
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void DeleteInvitationRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _invitationAdapter.Setup(adapter => adapter.DeleteInvitation(It.IsAny<Guid>()))
-            .Throws(new Exception("Some specific internal error"));
-
-        IActionResult controllerResponse = _invitationController.DeleteInvitation(It.IsAny<Guid>());
-        _invitationAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 }

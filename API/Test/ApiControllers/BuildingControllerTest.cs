@@ -190,45 +190,7 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedBuildingValue.Equals(controllerValue));
     }
-
-    [TestMethod]
-    public void GetBuildingById_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("Building was not found in database");
-
-        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
-        _buildingAdapter.VerifyAll();
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void GetBuildById_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _buildingAdapter.Setup(adapter => adapter.GetBuildingById(It.IsAny<Guid>()))
-            .Throws(new Exception("Unknown error"));
-
-        IActionResult controllerResponse = _buildingController.GetBuildingById(It.IsAny<Guid>());
-        _buildingAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 
     #region Create Building
@@ -287,43 +249,6 @@ public class BuildingControllerTest
         Assert.AreEqual(response.Id, controllerValue.Id);
     }
 
-    [TestMethod]
-    public void CreateBuildingRequest_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
-
-        _buildingAdapter.Setup(adapter => adapter.CreateBuilding(It.IsAny<CreateBuildingRequest>()))
-            .Throws(new ObjectErrorAdapterException("Specific error message"));
-
-        IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
-        _buildingAdapter.VerifyAll();
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void CreateBuildingRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _buildingAdapter.Setup(adapter => adapter.CreateBuilding(It.IsAny<CreateBuildingRequest>()))
-            .Throws(new Exception("Unknown error"));
-
-        IActionResult controllerResponse = _buildingController.CreateBuilding(It.IsAny<CreateBuildingRequest>());
-        _buildingAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
     #endregion
 
     #region Update Building By Id
@@ -354,74 +279,6 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
 
-    [TestMethod]
-    public void UpdateBuildingById_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("Building was not found in database");
-
-        _buildingAdapter.Setup(adapter =>
-                adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse =
-            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
-
-        _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void UpdateBuildingById_BadRequestIsReturned()
-    {
-        BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Specific error message");
-
-        _buildingAdapter.Setup(adapter =>
-                adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
-            .Throws(new ObjectErrorAdapterException("Specific error message"));
-
-        IActionResult controllerResponse =
-            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
-
-        _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
-
-        BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void UpdateBuildingById_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _buildingAdapter.Setup(adapter =>
-                adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()))
-            .Throws(new Exception("Unknown error"));
-
-        IActionResult controllerResponse =
-            _buildingController.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>());
-
-        _buildingAdapter.Verify(
-            adapter => adapter.UpdateBuildingById(It.IsAny<Guid>(), It.IsAny<UpdateBuildingRequest>()), Times.Once());
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
     #endregion
 
     #region Delete Building By Id
@@ -441,44 +298,6 @@ public class BuildingControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-
-    [TestMethod]
-    public void DeleteBuildingRequest_NotFoundIsReturned()
-    {
-        NotFoundObjectResult expectedControllerResponse =
-            new NotFoundObjectResult("Building was not found in database");
-
-        _buildingAdapter.Setup(adapter => adapter.DeleteBuildingById(It.IsAny<Guid>()))
-            .Throws(new ObjectNotFoundAdapterException());
-
-        IActionResult controllerResponse = _buildingController.DeleteBuildingById(It.IsAny<Guid>());
-        _buildingAdapter.VerifyAll();
-
-        NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
-    [TestMethod]
-    public void DeleteBuildingRequest_500StatusCodeIsReturned()
-    {
-        ObjectResult expectedControllerResponse = new ObjectResult("Internal Server Error");
-        expectedControllerResponse.StatusCode = 500;
-
-        _buildingAdapter.Setup(adapter => adapter.DeleteBuildingById(It.IsAny<Guid>()))
-            .Throws(new Exception("Unknown error"));
-
-        IActionResult controllerResponse = _buildingController.DeleteBuildingById(It.IsAny<Guid>());
-        _buildingAdapter.VerifyAll();
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-
+    
     #endregion
 }
