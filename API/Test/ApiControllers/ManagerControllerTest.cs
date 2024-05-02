@@ -152,9 +152,9 @@ public class ManagerControllerTest
                 , dummyResponse.Id, dummyResponse);
 
         _managerAdapter.Setup(adapter =>
-            adapter.CreateManager(It.IsAny<CreateManagerRequest>())).Returns(dummyResponse);
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>())).Returns(dummyResponse);
 
-        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>());
         _managerAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -173,10 +173,10 @@ public class ManagerControllerTest
         NotFoundObjectResult expectedControllerResponse = new NotFoundObjectResult("Manager was not found in database");
 
         _managerAdapter.Setup(adapter =>
-            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundAdapterException());
 
-        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>());
         _managerAdapter.VerifyAll();
 
         NotFoundObjectResult? controllerResponseCasted = controllerResponse as NotFoundObjectResult;
@@ -192,10 +192,10 @@ public class ManagerControllerTest
         BadRequestObjectResult expectedControllerResponse = new BadRequestObjectResult("Error message");
 
         _managerAdapter.Setup(adapter =>
-            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>(),It.IsAny<Guid>()))
             .Throws(new ObjectErrorAdapterException("Error message"));
 
-        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>(),It.IsAny<Guid>());
         _managerAdapter.VerifyAll();
 
         BadRequestObjectResult? controllerResponseCasted = controllerResponse as BadRequestObjectResult;
@@ -212,10 +212,10 @@ public class ManagerControllerTest
         expectedControllerResponse.StatusCode = 500;
 
         _managerAdapter.Setup(adapter =>
-            adapter.CreateManager(It.IsAny<CreateManagerRequest>()))
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>()))
             .Throws(new Exception("Unknown error"));
 
-        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>());
         _managerAdapter.VerifyAll();
 
         ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;

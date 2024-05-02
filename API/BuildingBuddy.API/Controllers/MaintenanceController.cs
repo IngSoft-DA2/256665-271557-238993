@@ -6,7 +6,7 @@ using WebModel.Responses.MaintenanceResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/maintenance")]
     [ApiController]
     public class MaintenanceController : ControllerBase
     {
@@ -66,7 +66,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Category Id
 
         [HttpGet]
-        [Route("/category/requests")]
+        [Route("category/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
             try
@@ -89,8 +89,8 @@ namespace BuildingBuddy.API.Controllers
         #region Assign Maintenance Request
 
         [HttpPut]
-        [Route("/request-handler/requests")]
-        public IActionResult AssignMaintenanceRequest(Guid idOfRequestToUpdate, Guid idOfWorker)
+        [Route("request-handler/requests")]
+        public IActionResult AssignMaintenanceRequest([FromQuery]Guid idOfRequestToUpdate, [FromQuery] Guid idOfWorker)
         {
             try
             {
@@ -117,7 +117,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Requests By Request Handler
 
         [HttpGet]
-        [Route("/request-handler/{handlerId:Guid}/requests")]
+        [Route("request-handler/{handlerId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
         {
             try
@@ -140,7 +140,7 @@ namespace BuildingBuddy.API.Controllers
         #region Update Maintenance Request
 
         [HttpPut]
-        [Route("/requests/{id:Guid}")]
+        [Route("requests/{id:Guid}")]
         public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id,
             [FromBody] UpdateMaintenanceRequestStatusRequest request)
         {
@@ -169,7 +169,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Id
 
         [HttpGet]
-        [Route("/requests/{id:Guid}")]
+        [Route("requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)
         {
             try
@@ -185,7 +185,7 @@ namespace BuildingBuddy.API.Controllers
                 Console.WriteLine(exceptionCaught.Message);
                 return StatusCode(500, "Internal Server Error");
             }
-        }
+        }   
         
         #endregion
     }

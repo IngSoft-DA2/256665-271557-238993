@@ -67,7 +67,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Manager
 
         [HttpPost]
-        public IActionResult CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationAccepted)
+        public IActionResult CreateManager(CreateManagerRequest createRequest, [FromQuery] Guid idOfInvitationAccepted)
         {
             try
             {
