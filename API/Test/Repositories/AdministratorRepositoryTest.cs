@@ -60,7 +60,6 @@ public class AdministratorRepositoryTest
                 LastName = "Administrator2",
                 Email = "administrato2@gmail.com",
                 Password = "password2",
-                Role = "Admin",
             }
         };
 
@@ -94,7 +93,6 @@ public class AdministratorRepositoryTest
             LastName = "Administrator1",
             Email = "admin@gmail.com",
             Password = "password",
-            Role = "Admin",
             Invitations = new List<Invitation>()
         };
 

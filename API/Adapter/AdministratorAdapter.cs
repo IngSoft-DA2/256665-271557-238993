@@ -33,12 +33,11 @@ public class AdministratorAdapter : IAdministratorAdapter
                 Firstname = request.Firstname,
                 LastName = request.Lastname,
                 Email = request.Email,
-                Password = request.Password,
-                Role = "Admin"
+                Password = request.Password
             };
-            
+
             _administratorService.CreateAdministrator(administrator);
-            
+
             CreateAdministratorResponse adapterResponse = new CreateAdministratorResponse()
             {
                 Id = administrator.Id

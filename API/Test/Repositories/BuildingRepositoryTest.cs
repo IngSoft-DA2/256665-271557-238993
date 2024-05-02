@@ -53,8 +53,7 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password",
-                Role = "Manager"
+                Password = "Password"
             },
             Flats = new List<Flat>
             {
@@ -121,8 +120,7 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password",
-                Role = "Manager"
+                Password = "Password"
             },
             Flats = new List<Flat>
             {
@@ -182,14 +180,13 @@ public class BuildingRepositoryTest
             Name = "Construction Company 1",
             Buildings = new List<Building>()
         };
-        
+
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
             Firstname = "Manager 1",
             Email = "a@gmail.com",
             Password = "Password",
-            Role = "Manager",
             Buildings = new List<Building>(),
             Requests = new List<MaintenanceRequest>()
         };
@@ -198,19 +195,19 @@ public class BuildingRepositoryTest
         _dbContext.Set<ConstructionCompany>().Add(constructionCompany);
         _dbContext.Set<Manager>().Add(manager);
         _dbContext.SaveChanges();
-        
+
         Building buildingToCreate = new Building
         {
             Id = Guid.NewGuid(),
             Name = "Building 1",
             Address = "Address 1",
-          
+
             Manager = manager,
             ManagerId = manager.Id,
             CommonExpenses = 100,
             ConstructionCompany = constructionCompany,
             ConstructionCompanyId = constructionCompany.Id,
-           
+
             Flats = new List<Flat>
             {
                 new Flat
@@ -226,7 +223,7 @@ public class BuildingRepositoryTest
                 }
             }
         };
-        
+
         Location location = new Location
         {
             Id = Guid.NewGuid(),
@@ -235,9 +232,9 @@ public class BuildingRepositoryTest
             Building = buildingToCreate,
             BuildingId = buildingToCreate.Id
         };
-        
+
         buildingToCreate.Location = location;
-        
+
         _buildingRepository.CreateBuilding(buildingToCreate);
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToCreate.Id);
         Assert.AreEqual(buildingToCreate, buildingInDb);
@@ -290,7 +287,6 @@ public class BuildingRepositoryTest
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
                 Password = "Password",
-                Role = "Manager",
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
@@ -374,8 +370,7 @@ public class BuildingRepositoryTest
                 Id = Guid.NewGuid(),
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password",
-                Role = "Manager"
+                Password = "Password"
             },
             Flats = new List<Flat>
             {

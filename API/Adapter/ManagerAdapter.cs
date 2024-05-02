@@ -67,7 +67,7 @@ public class ManagerAdapter : IManagerAdapter
     }
 
     #endregion
-    
+
     #region Create Manager
 
     public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationAccepted)
@@ -79,8 +79,7 @@ public class ManagerAdapter : IManagerAdapter
                 Id = Guid.NewGuid(),
                 Firstname = createRequest.FirstName,
                 Email = createRequest.Email,
-                Password = createRequest.Password,
-                Role = "Manager"
+                Password = createRequest.Password
             };
 
             _managerServiceLogic.CreateManager(manager, idOfInvitationAccepted);
@@ -105,6 +104,6 @@ public class ManagerAdapter : IManagerAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 }

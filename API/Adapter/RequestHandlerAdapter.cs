@@ -27,11 +27,10 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
                 Firstname = createRequest.Firstname,
                 LastName = createRequest.Lastname,
                 Email = createRequest.Email,
-                Password = createRequest.Password,
-                Role = "RequestHandler"
+                Password = createRequest.Password
             };
             _requestHandlerService.CreateRequestHandler(requestHandlerToCreate);
-            
+
             CreateRequestHandlerResponse createRequestHandlerResponse = new CreateRequestHandlerResponse
             {
                 Id = requestHandlerToCreate.Id

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240502003939_UpdateMaintenanceRequest3")]
-    partial class UpdateMaintenanceRequest3
+    [Migration("20240502225354_newMigration23")]
+    partial class newMigration23
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,7 +129,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("HasTerrace")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<Guid?>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RoomNumber")
@@ -156,6 +156,9 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AdministratorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -175,6 +178,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdministratorId");
 
                     b.ToTable("Invitations");
                 });
@@ -348,11 +353,16 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Owner", "OwnerAssigned")
                         .WithMany("Flats")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
 
                     b.Navigation("OwnerAssigned");
+                });
+
+            modelBuilder.Entity("Domain.Invitation", b =>
+                {
+                    b.HasOne("Domain.Administrator", null)
+                        .WithMany("Invitations")
+                        .HasForeignKey("AdministratorId");
                 });
 
             modelBuilder.Entity("Domain.Location", b =>
@@ -397,6 +407,11 @@ namespace DataAccess.Migrations
                     b.Navigation("Manager");
 
                     b.Navigation("RequestHandler");
+                });
+
+            modelBuilder.Entity("Domain.Administrator", b =>
+                {
+                    b.Navigation("Invitations");
                 });
 
             modelBuilder.Entity("Domain.Building", b =>

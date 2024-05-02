@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class newMigration23 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,9 +17,9 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,29 +51,13 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invitations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Managers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,13 +84,35 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RequestHandlers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invitations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    AdministratorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitations_Administrators_AdministratorId",
+                        column: x => x.AdministratorId,
+                        principalTable: "Administrators",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -145,7 +151,7 @@ namespace DataAccess.Migrations
                     BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Floor = table.Column<int>(type: "int", nullable: false),
                     RoomNumber = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TotalRooms = table.Column<int>(type: "int", nullable: false),
                     TotalBaths = table.Column<int>(type: "int", nullable: false),
                     HasTerrace = table.Column<bool>(type: "bit", nullable: false)
@@ -163,8 +169,7 @@ namespace DataAccess.Migrations
                         name: "FK_Flat_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -196,7 +201,7 @@ namespace DataAccess.Migrations
                     FlatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OpenedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ClosedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RequestHandlerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RequestHandlerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RequestStatus = table.Column<int>(type: "int", nullable: false)
@@ -226,8 +231,7 @@ namespace DataAccess.Migrations
                         name: "FK_MaintenanceRequests_RequestHandlers_RequestHandlerId",
                         column: x => x.RequestHandlerId,
                         principalTable: "RequestHandlers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -249,6 +253,11 @@ namespace DataAccess.Migrations
                 name: "IX_Flat_OwnerId",
                 table: "Flat",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invitations_AdministratorId",
+                table: "Invitations",
+                column: "AdministratorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Location_BuildingId",
@@ -281,9 +290,6 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Administrators");
-
-            migrationBuilder.DropTable(
                 name: "Invitations");
 
             migrationBuilder.DropTable(
@@ -291,6 +297,9 @@ namespace DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "MaintenanceRequests");
+
+            migrationBuilder.DropTable(
+                name: "Administrators");
 
             migrationBuilder.DropTable(
                 name: "Categories");
