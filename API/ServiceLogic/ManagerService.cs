@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Enums;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -10,10 +11,12 @@ public class ManagerService :IManagerService
     #region Constructor and Atributes
     
     private readonly IManagerRepository _managerRepository;
+    private readonly IInvitationService _invitationService;
 
-    public ManagerService(IManagerRepository managerRepository)
+    public ManagerService(IManagerRepository managerRepository, IInvitationService invitationService)
     {
         _managerRepository = managerRepository;
+        _invitationService = invitationService;
     }
     
     #endregion
@@ -36,13 +39,14 @@ public class ManagerService :IManagerService
     
     #region Create Manager
 
-    public void CreateManager(Manager manager)
+    public void CreateManager(Manager manager, Guid idOfInvitationAccepted)
     {
         try
         {
             manager.ManagerValidator();
             CheckIfEmailIsAlreadyRegistered(manager);
-
+            Invitation invitationToUpdate = _invitationService.GetInvitationById(idOfInvitationAccepted);
+            _invitationService.UpdateInvitation(idOfInvitationAccepted, invitationToUpdate);
             _managerRepository.CreateManager(manager);
         }
         catch (InvalidPersonException exceptionCaught)
@@ -71,6 +75,7 @@ public class ManagerService :IManagerService
             throw new ObjectRepeatedServiceException();
         }
     }
+    
     
     #endregion
     
