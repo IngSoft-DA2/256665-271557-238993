@@ -39,14 +39,13 @@ public class ManagerService :IManagerService
     
     #region Create Manager
 
-    public void CreateManager(Manager manager, Guid idOfInvitationAccepted)
+    public void CreateManager(Manager manager, Invitation invitationAccepted)
     {
         try
         {
             manager.ManagerValidator();
             CheckIfEmailIsAlreadyRegistered(manager);
-            Invitation invitationToUpdate = _invitationService.GetInvitationById(idOfInvitationAccepted);
-            _invitationService.UpdateInvitation(idOfInvitationAccepted, invitationToUpdate);
+            _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
             _managerRepository.CreateManager(manager);
         }
         catch (InvalidSystemUserException exceptionCaught)

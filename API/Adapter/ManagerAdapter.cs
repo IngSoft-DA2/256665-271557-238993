@@ -1,5 +1,6 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IAdapter;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ public class ManagerAdapter : IManagerAdapter
     #region Constructor and attributes
 
     private readonly IManagerService _managerServiceLogic;
+    private readonly IInvitationService _invitationServiceLogic;
 
-    public ManagerAdapter(IManagerService managerServiceLogic)
+    public ManagerAdapter(IManagerService managerServiceLogic, IInvitationService invitationServiceLogic)
     {
         _managerServiceLogic = managerServiceLogic;
+        _invitationServiceLogic = invitationServiceLogic;
     }
 
     #endregion
@@ -70,7 +73,7 @@ public class ManagerAdapter : IManagerAdapter
 
     #region Create Manager
 
-    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationAccepted)
+    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
     {
         try
         {
@@ -81,8 +84,17 @@ public class ManagerAdapter : IManagerAdapter
                 Email = createRequest.Email,
                 Password = createRequest.Password
             };
-
-            _managerServiceLogic.CreateManager(manager, idOfInvitationAccepted);
+            
+            Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
+           
+            Invitation invitationAccepted = new Invitation
+            {
+                Id = invitationToAccept.Id,
+                Status = StatusEnum.Accepted,
+                ExpirationDate = invitationToAccept.ExpirationDate
+            };
+            
+            _managerServiceLogic.CreateManager(manager, invitationAccepted);
 
             CreateManagerResponse adapterResponse = new CreateManagerResponse
             {

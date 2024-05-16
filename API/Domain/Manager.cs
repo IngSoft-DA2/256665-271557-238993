@@ -11,6 +11,16 @@ public class Manager : SystemUser
         PasswordValidator();
     }
 
+
+    protected override void ValidateName(string name, string fieldName)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new InvalidPersonException($"{fieldName} is required");
+        }
+    }
+
+    
     public override bool Equals(object? objectToCompare)
     {
         Manager managerToCompare = objectToCompare as Manager;
