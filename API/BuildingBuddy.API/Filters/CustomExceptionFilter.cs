@@ -2,7 +2,7 @@ using Adapter.CustomExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace BuildingBuddy.API;
+namespace BuildingBuddy.API.Filters;
 
 public class CustomExceptionFilter : Attribute, IExceptionFilter
 {
@@ -12,9 +12,9 @@ public class CustomExceptionFilter : Attribute, IExceptionFilter
         {
             throw context.Exception;
         }
-        catch (ObjectErrorAdapterException e)
+        catch (ObjectErrorAdapterException exceptionCaught)
         {
-            context.Result = new BadRequestResult();
+            context.Result = new BadRequestObjectResult(new { Message = exceptionCaught.Message }) {StatusCode = 400};
         }
         catch (ObjectNotFoundAdapterException)
         {
