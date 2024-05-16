@@ -84,7 +84,7 @@ public class ManagerServiceTest
     {
         Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "" };
 
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
     }
 
     [TestMethod]
@@ -92,7 +92,7 @@ public class ManagerServiceTest
     {
         Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager", Email = "" };
 
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
     }
 
     [TestMethod]
@@ -100,7 +100,7 @@ public class ManagerServiceTest
     {
         Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "Manager", Email = "invalidemail" };
 
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
     }
 
     [TestMethod]
@@ -114,7 +114,7 @@ public class ManagerServiceTest
             Password = ""
         };
 
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
     }
 
     [TestMethod]
@@ -128,7 +128,7 @@ public class ManagerServiceTest
             Password = "1230",
         };
 
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
     }
 
     [TestMethod]
@@ -142,7 +142,7 @@ public class ManagerServiceTest
             Password = "1234567"
         };
 
-        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectErrorServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
     }
 
 
@@ -160,7 +160,7 @@ public class ManagerServiceTest
 
         _managerRepository.Setup(x => x.GetAllManagers()).Returns(new List<Manager> { manager });
 
-        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Invitation>()));
 
         _managerRepository.VerifyAll();
     }

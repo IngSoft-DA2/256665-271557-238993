@@ -53,9 +53,9 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult CreateManager(CreateManagerRequest createRequest, [FromQuery] Guid idOfInvitationAccepted)
         {
           
-                CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest, idOfInvitationAccepted);
+                CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(createRequest, idOfInvitationAccepted);
 
-                return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
+                return CreatedAtAction(nameof(CreateManager), new { id = adapterResponse.Id }, adapterResponse);
         }
         
         #endregion

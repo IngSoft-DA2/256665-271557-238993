@@ -102,6 +102,7 @@ public class InvitationService : IInvitationService
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationUpdated)
     {
         Invitation invitationNotUpdated = GetInvitationById(idOfInvitationToUpdate);
+        
         try
         {
             ValidationForBeingPossibleToUpdate(invitationUpdated, invitationNotUpdated);
