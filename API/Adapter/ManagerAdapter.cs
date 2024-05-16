@@ -73,7 +73,7 @@ public class ManagerAdapter : IManagerAdapter
 
     #region Create Manager
 
-    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationAccepted)
+    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
     {
         try
         {
@@ -85,13 +85,13 @@ public class ManagerAdapter : IManagerAdapter
                 Password = createRequest.Password
             };
             
-            Invitation invitationNotUpdated = _invitationServiceLogic.GetInvitationById(idOfInvitationAccepted);
+            Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
            
             Invitation invitationAccepted = new Invitation
             {
-                Id = invitationNotUpdated.Id,
+                Id = invitationToAccept.Id,
                 Status = StatusEnum.Accepted,
-                ExpirationDate = invitationNotUpdated.ExpirationDate
+                ExpirationDate = invitationToAccept.ExpirationDate
             };
             
             _managerServiceLogic.CreateManager(manager, invitationAccepted);
