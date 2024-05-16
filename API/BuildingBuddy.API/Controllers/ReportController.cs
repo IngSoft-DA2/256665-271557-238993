@@ -1,3 +1,4 @@
+using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
