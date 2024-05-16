@@ -181,24 +181,30 @@ public class ManagerServiceTest
         _managerRepository.VerifyAll();
     }
 
-    //[TestMethod]
-    //public void CreateManager_ShouldThrowUnknownServiceException()
-    //{
-    //    Manager manager = new Manager
-    //    {
-    //        Id = Guid.NewGuid(),
-    //        Firstname = "Manager",
-    //        Email = "persona@gmail.com",
-    //        Password = "12345678910",
-    //        Buildings = new List<Building>()
-    //    };
+    [TestMethod]
+    public void CreateManager_ShouldThrowUnknownServiceException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "persona@gmail.com",
+            Password = "12345678910",
+            Buildings = new List<Building>()
+        };
 
-    //    _managerRepository.Setup(x => x.CreateManager(manager)).Throws(new Exception());
+        Invitation dummyInvitation = new Invitation();
 
-    //    Assert.ThrowsException<UnknownServiceException>(() => _managerService.CreateManager(manager, It.IsAny<Guid>()));
+        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers()).Returns(new List<Manager>());
+        _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager)).Throws(new Exception());
+        
+        _invitationService.Setup(invitationService => invitationService.UpdateInvitation
+            (It.IsAny<Guid>(),It.IsAny<Invitation>()));
 
-    //    _managerRepository.VerifyAll();
-    //}
+        Assert.ThrowsException<UnknownServiceException>(() => _managerService.CreateManager(manager, dummyInvitation));
+
+        _managerRepository.VerifyAll();
+    }
 
     #endregion
 
