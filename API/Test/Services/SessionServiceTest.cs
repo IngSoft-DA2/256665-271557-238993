@@ -114,6 +114,8 @@ public class SessionServiceTest
 
     #endregion
 
+    #region Authenticate user
+
     [TestMethod]
     public void Authenticate_UserIsAuthenticated()
     {
@@ -190,4 +192,6 @@ public class SessionServiceTest
         Assert.ThrowsException<UnknownServiceException>(() =>
             _sessionService.Authenticate(It.IsAny<string>(), It.IsAny<string>()));
     }
+
+    #endregion
 }
