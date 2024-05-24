@@ -170,6 +170,11 @@ public class SessionServiceTest
 
         Assert.ThrowsException<InvalidCredentialException>(() =>
             _sessionService.Authenticate(It.IsAny<string>(), It.IsAny<string>()));
+        
+        _administratorRepository.VerifyAll();
+        _managerRepository.VerifyAll();
+        _requestHandlerRepository.VerifyAll();
+        _sessionRepository.VerifyAll();
     }
 
     [TestMethod]
@@ -191,6 +196,32 @@ public class SessionServiceTest
 
         Assert.ThrowsException<UnknownServiceException>(() =>
             _sessionService.Authenticate(It.IsAny<string>(), It.IsAny<string>()));
+        
+        _administratorRepository.VerifyAll();
+        _managerRepository.VerifyAll();
+        _requestHandlerRepository.VerifyAll();
+        _sessionRepository.VerifyAll();
+    }
+
+    #endregion
+
+    #region Logout user
+
+    
+    [TestMethod]
+    
+    public void Logout_UserIsLoggedOut()
+    {
+        Session dummySession = new Session();
+        dummySession.UserId = _sampleUserGuid;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.DeleteSession(It.IsAny<Session>()));
+
+        _sessionService.Logout(It.IsAny<Guid>());
+        _sessionRepository.VerifyAll();
     }
 
     #endregion
