@@ -4,7 +4,6 @@ public class Manager : SystemUser
 {
     public IEnumerable<Building> Buildings { get; set; } = new List<Building>();
     public IEnumerable<MaintenanceRequest> Requests { get; set; } = new List<MaintenanceRequest>(); 
-    public string Password { get; set; }
 
     public void ManagerValidator()
     {

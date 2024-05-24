@@ -1,4 +1,5 @@
 using Adapter.CustomExceptions;
+using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using WebModel.Responses.ManagerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [CustomExceptionFilter]
+    [ExceptionFilter]
     [Route("api/v1/managers")]
     [ApiController]
     public class ManagerController : ControllerBase

@@ -1,42 +1,56 @@
+using Domain;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace BuildingBuddy.API;
+namespace BuildingBuddy.API.Filters;
 
-public class AuthenticationFilter : Attribute, IAuthorizationFilter
-
+public class AuthenticationFilter : Attribute, IActionFilter
 {
-    private readonly ISessionService _sessionService;
+    private readonly List<string> _roles;
 
-    public AuthenticationFilter(ISessionService sessionService)
+    public AuthenticationFilter(string[] roles)
     {
-        _sessionService = sessionService;
+        _roles = new List<string>(roles);
     }
-
-    public virtual void OnAuthorization(AuthorizationFilterContext context)
+    
+    public void OnActionExecuting(ActionExecutingContext context)
     {
-        var authorizationHeader = context.HttpContext.Request.Headers["Authorization"].ToString();
-        Guid sessionString = Guid.Empty;
+        string authHeader = context.HttpContext.Request.Headers["Authorization"];
 
-        if (string.IsNullOrEmpty(authorizationHeader) || !Guid.TryParse(authorizationHeader, out sessionString))
+        if (authHeader is null)
         {
-            context.Result = new ObjectResult(new { Message = "Authorization header is missing" })
-            {
-                StatusCode = 401
-            };
+            context.Result = new UnauthorizedObjectResult("Authorization header is required");
         }
         else
         {
-            var currentUser = _sessionService.GetCurrentUser(sessionString);
-
-            if (currentUser == null)
+            try
             {
-                context.Result = new ObjectResult(new { Message = "Unauthorized" })
+                Guid userToken = Guid.Parse(authHeader);
+                var sessionManagerObject = context.HttpContext.RequestServices.GetService(typeof(ISessionService))!;
+           
+                ISessionService sessionService = sessionManagerObject as ISessionService;
+                
+                SystemUser? systemUser = sessionService.GetCurrentUser(userToken);
+                if (systemUser is null)
                 {
-                    StatusCode = 403
-                };
+                    context.Result = new UnauthorizedObjectResult("User was not found");
+                }
+                
+                else if (!_roles.Contains(systemUser.Role))
+                {
+                    context.Result = new ForbidResult("Access denied");
+                    context.HttpContext.Items.Add("UserId", systemUser.Id);
+                }
+            }
+            catch (Exception)
+            {
+                context.Result = new UnauthorizedObjectResult("Invalid authorization token");
             }
         }
+    }
+
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
     }
 }

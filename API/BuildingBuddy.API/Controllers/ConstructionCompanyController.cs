@@ -1,4 +1,5 @@
 using Adapter.CustomExceptions;
+using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyRequests;
@@ -7,10 +8,10 @@ using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [AuthorizationFilter(RoleNeeded = "Manager")]
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])]
     [Route("api/v1/construction-companies")]
     [ApiController]
-    [CustomExceptionFilter]
     public class ConstructionCompanyController : ControllerBase
     {
         #region Constructor and atributes

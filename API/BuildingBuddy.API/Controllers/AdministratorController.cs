@@ -1,4 +1,5 @@
 using Adapter.CustomExceptions;
+using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ using WebModel.Responses.BuildingResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [ExceptionFilter]
     [Route("api/v1/administrators")]
     [ApiController]
-    [CustomExceptionFilter]
     public class AdministratorController : ControllerBase
     {
         #region Constructor and attributes
@@ -27,7 +28,7 @@ namespace BuildingBuddy.API.Controllers
         
         #region Create Administrator
         
-        [AuthorizationFilter(RoleNeeded = "Admin")]
+        [AuthenticationFilter(["Admin"])]
         [HttpPost]
         public IActionResult CreateAdministrator([FromBody] CreateAdministratorRequest request)
         {

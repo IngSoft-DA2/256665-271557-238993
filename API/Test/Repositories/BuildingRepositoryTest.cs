@@ -51,6 +51,7 @@ public class BuildingRepositoryTest
             Manager = new Manager
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
                 Password = "Password"
@@ -185,6 +186,7 @@ public class BuildingRepositoryTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "Manager 1",
             Email = "a@gmail.com",
             Password = "Password",
@@ -288,7 +290,7 @@ public class BuildingRepositoryTest
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
                 Password = "Password",
-                Role = "Manager"
+                Role = "Manager",
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
@@ -370,6 +372,7 @@ public class BuildingRepositoryTest
             Manager = new Manager
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
                 Password = "Password"

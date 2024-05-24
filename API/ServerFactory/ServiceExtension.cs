@@ -15,15 +15,15 @@ public static class ServiceExtension
 {
     public static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<ICategoryAdapter,CategoryAdapter>();
-        services.AddScoped<ICategoryService , CategoryService>();
-        services.AddScoped<ICategoryRepository , CategoryRepository>();
+        services.AddScoped<ICategoryAdapter, CategoryAdapter>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IOwnerAdapter, OwnerAdapter>();
         services.AddScoped<IOwnerService, OwnerService>();
         services.AddScoped<IOwnerRepository, OwnerRepository>();
-        services.AddScoped<IConstructionCompanyAdapter,ConstructionCompanyAdapter>();
-        services.AddScoped<IConstructionCompanyService , ConstructionCompanyService>();
-        services.AddScoped<IConstructionCompanyRepository , ConstructionCompanyRepository>();
+        services.AddScoped<IConstructionCompanyAdapter, ConstructionCompanyAdapter>();
+        services.AddScoped<IConstructionCompanyService, ConstructionCompanyService>();
+        services.AddScoped<IConstructionCompanyRepository, ConstructionCompanyRepository>();
         services.AddScoped<IInvitationAdapter, InvitationAdapter>();
         services.AddScoped<IInvitationService, InvitationService>();
         services.AddScoped<IInvitationRepository, InvitationRepository>();
@@ -42,6 +42,7 @@ public static class ServiceExtension
         services.AddScoped<IReportAdapter, ReportAdapter>();
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IReportRepository, ReportRepository>();
+  
     }
 
     public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

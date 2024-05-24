@@ -33,6 +33,7 @@ public class MaintenaceRepositoryTest
         _requestHanlder = new RequestHandler()
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "FirstName",
             Email = "Email",
             LastName = "Lastname",
@@ -46,6 +47,7 @@ public class MaintenaceRepositoryTest
         _manager = new Manager()
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "FirstName",
             Email = "Email",
             Password = "Password"
@@ -109,7 +111,6 @@ public class MaintenaceRepositoryTest
                 Email = "Email",
                 Password = "Password",
                 Role = "RequestHandler"
-                Password = "Password"
             },
             RequestStatus = RequestStatusEnum.Open,
             Category = new Category()

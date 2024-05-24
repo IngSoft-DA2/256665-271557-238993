@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.CustomExceptions;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -46,6 +47,10 @@ public class ManagerService :IManagerService
             _managerRepository.CreateManager(manager);
         }
         catch (InvalidPersonException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (InvalidSystemUserException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }

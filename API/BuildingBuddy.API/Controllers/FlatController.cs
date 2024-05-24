@@ -1,4 +1,5 @@
 using Adapter.CustomExceptions;
+using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,10 +7,10 @@ using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [AuthorizationFilter(RoleNeeded = "Manager")]
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])]
     [Route("api/v1/flats")]
     [ApiController]
-    [CustomExceptionFilter]
     public class FlatController : ControllerBase
     {
         #region Constructor and atributes

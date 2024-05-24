@@ -1,11 +1,10 @@
+using BuildingBuddy.API.Filters;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebModel.Responses.ReportResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [CustomExceptionFilter]
+    [ExceptionFilter]
     [Route("api/v1/")]
     [ApiController]
     public class ReportController : ControllerBase
@@ -23,7 +22,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByBuilding
 
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        [AuthenticationFilter(["Manager"])]
         [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid personId, [FromQuery] Guid buildingId)
@@ -37,7 +36,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByRequestHandler
         
-        [AuthorizationFilter(RoleNeeded = "Manager")]
+        [AuthenticationFilter(["Manager"])]
         [Route("/request-handler/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId, [FromQuery] Guid buildingId, [FromQuery] Guid personId)
@@ -50,7 +49,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region  GetMaintenanceRequestsByCategory
         
-        [AuthorizationFilter(RoleNeeded = "Admin")]
+        [AuthenticationFilter(["Admin"])]
         [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildignId, [FromQuery] Guid categoryId)

@@ -1,3 +1,4 @@
+using BuildingBuddy.API.Filters;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.SessionRequests;
@@ -5,9 +6,9 @@ using WebModel.Requests.SessionRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [ExceptionFilter]
     [Route("api/v1/sessions")]
     [ApiController]
-    [CustomExceptionFilter]
     public class SessionController : ControllerBase
     {
         private readonly ISessionService _sessionService;
@@ -22,7 +23,8 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
             Guid sessionString = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
-            return Ok(new { sessionId = sessionString });
+            
+            return Ok(sessionString);
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]

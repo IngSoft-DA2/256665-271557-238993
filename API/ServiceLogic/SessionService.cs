@@ -8,60 +8,65 @@ namespace ServiceLogic;
 public class SessionService : ISessionService
 {
     #region Constructor and Dependency Injection
-    
+
     private SystemUser _currentUser;
     private readonly ISessionRepository _sessionRepository;
     private readonly IAdministratorRepository _administratorRepository;
     private readonly IManagerRepository _managerRepository;
     private readonly IRequestHandlerRepository _requestHandlerRepository;
-    
-    
-    public SessionService(ISessionRepository sessionRepository, IManagerRepository managerRepository, IAdministratorRepository administratorRepository, IRequestHandlerRepository requestHandlerRepository)
+
+
+    public SessionService(ISessionRepository sessionRepository,
+        IManagerRepository managerRepository,
+        IAdministratorRepository administratorRepository,
+        IRequestHandlerRepository requestHandlerRepository)
     {
         _sessionRepository = sessionRepository;
         _managerRepository = managerRepository;
         _administratorRepository = administratorRepository;
         _requestHandlerRepository = requestHandlerRepository;
     }
-    
+
     #endregion
-    
-    
+
+
     public Guid Authenticate(string email, string password)
     {
         IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
         IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
         IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
-        
-        
+
+
         //cast entities to system user type
         List<SystemUser> users = new List<SystemUser>();
         foreach (var requestHandler in requestHandlers)
         {
             users.Add(requestHandler);
         }
+
         foreach (var manager in managers)
         {
             users.Add(manager);
         }
+
         foreach (var administrator in administrators)
         {
             users.Add(administrator);
         }
-        
+
         //find user with matching email and password
         SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
-        
+
         if (user == null)
             throw new InvalidCredentialException("Invalid credentials");
-        
+
         var session = new Session()
         {
             User = user,
         };
         _sessionRepository.CreateSession(session);
         _sessionRepository.Save();
-        
+
         return session.SessionString;
     }
 
@@ -72,20 +77,11 @@ public class SessionService : ISessionService
         _sessionRepository.Save();
     }
 
-    public SystemUser? GetCurrentUser(Guid? sessionString = null)
+    public SystemUser? GetCurrentUser(Guid? token = null)
     {
-        if (_currentUser != null)
-            return _currentUser;
+        if (token is null) throw new ArgumentException("Cant retrieve user without it's token");
 
-        if (sessionString == null)
-            throw new ArgumentException("Cant retrieve user without session string");
-
-        var session = _sessionRepository.GetSessionById(sessionString.Value);
-
-        if (session != null)
-            _currentUser = session.User;
-
-        return _currentUser;
-        
+        var session = _sessionRepository.GetSessionById(token.Value);
+        return session.User;
     }
 }
