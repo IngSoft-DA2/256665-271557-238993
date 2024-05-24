@@ -30,9 +30,21 @@ public class SessionRepositoryTest
     #endregion
 
 
-    
-    
-    
+    [TestMethod]
+    public void CreateSessionTest()
+    {
+        var sessionToBeAdded = new Session()
+        {
+            UserId = Guid.NewGuid(),
+            SessionString = Guid.NewGuid(),
+            UserRole = "Admin"
+        };
+        
+        _sessionRepository.CreateSession(sessionToBeAdded);
+
+        Assert.AreEqual(1, _dbContext.Set<Session>().Count());
+    }
+
 
     [TestCleanup]
     public void TestCleanup()

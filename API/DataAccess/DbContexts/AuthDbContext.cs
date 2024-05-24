@@ -15,7 +15,7 @@ public class AuthDbContext : DbContext
     {
     }
 
-    public DbSet<Category> Categories2 { get; set; }
+    public DbSet<Session> Session { get; set; }
     
 
 
