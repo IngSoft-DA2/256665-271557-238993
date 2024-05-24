@@ -33,41 +33,52 @@ public class SessionService : ISessionService
 
     public Guid Authenticate(string email, string password)
     {
-        IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
-        IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
-        IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
-
-        //cast entities to system user type
-        List<SystemUser> users = new List<SystemUser>();
-        foreach (var requestHandler in requestHandlers)
+        try
         {
-            users.Add(requestHandler);
+            IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
+            IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
+            IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
+
+            //cast entities to system user type
+            List<SystemUser> users = new List<SystemUser>();
+            foreach (var requestHandler in requestHandlers)
+            {
+                users.Add(requestHandler);
+            }
+
+            foreach (var manager in managers)
+            {
+                users.Add(manager);
+            }
+
+            foreach (var administrator in administrators)
+            {
+                users.Add(administrator);
+            }
+
+            //find user with matching email and password
+            SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
+
+            if (user is null) throw new InvalidCredentialException("Invalid credentials");
+
+            var session = new Session()
+            {
+                SessionString = Guid.NewGuid(),
+                UserId = user.Id,
+                UserRole = user.Role
+            };
+            _sessionRepository.CreateSession(session);
+
+            return session.SessionString;
         }
-
-        foreach (var manager in managers)
+        catch (InvalidCredentialException exceptionCaught)
         {
-            users.Add(manager);
+            throw new InvalidCredentialException(exceptionCaught.Message);
         }
-
-        foreach (var administrator in administrators)
+        catch (Exception exceptionCaught)
         {
-            users.Add(administrator);
+            throw new UnknownServiceException(exceptionCaught.Message);
         }
-
-        //find user with matching email and password
-        SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
-
-        if (user is null) throw new InvalidCredentialException("Invalid credentials");
-
-        var session = new Session()
-        {
-            SessionString = Guid.NewGuid(),
-            UserId = user.Id,
-            UserRole = user.Role
-        };
-        _sessionRepository.CreateSession(session);
-
-        return session.SessionString;
     }
 
     #endregion

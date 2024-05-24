@@ -16,8 +16,7 @@ namespace BuildingBuddy.API.Controllers
         {
             _sessionService = sessionService;
         }
-
-
+        
         [HttpPost]
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
