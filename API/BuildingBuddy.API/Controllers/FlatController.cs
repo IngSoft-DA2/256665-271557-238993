@@ -7,9 +7,10 @@ using WebModel.Requests.FlatRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])]
     [Route("api/v1/flats")]
     [ApiController]
-    [CustomExceptionFilter]
     public class FlatController : ControllerBase
     {
         #region Constructor and atributes

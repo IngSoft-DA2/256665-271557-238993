@@ -1,4 +1,5 @@
 using Domain;
+using Domain.CustomExceptions;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;

@@ -7,14 +7,14 @@ using WebModel.Responses.BuildingResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])]
     [Route("api/v1/buildings")]
     [ApiController]
-    [CustomExceptionFilter]
     public class BuildingController : ControllerBase
     {
-        
         #region Constructor and atributes
-        
+
         private readonly IBuildingAdapter _buildingAdapter;
 
         public BuildingController(IBuildingAdapter buildingAdapter)
@@ -25,53 +25,48 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region Get All Buildings
-        
-        
+
         [HttpGet]
         public IActionResult GetAllBuildings([FromQuery] Guid userId)
-        { 
+        {
             return Ok(_buildingAdapter.GetAllBuildings(userId));
-            
         }
-        
+
         #endregion
 
         #region Get Building By Id
-        
+
         [HttpGet]
         [Route("{buildingId:Guid}")]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
-        { 
+        {
             return Ok(_buildingAdapter.GetBuildingById(buildingId));
         }
-        
+
         #endregion
 
-        #region Update Building 
-        
+        #region Update Building
+
         [HttpPut]
         [Route("{buildingId:Guid}")]
-        public IActionResult UpdateBuildingById([FromRoute] Guid buildingId, [FromBody] UpdateBuildingRequest buildingWithUpdates)
+        public IActionResult UpdateBuildingById([FromRoute] Guid buildingId,
+            [FromBody] UpdateBuildingRequest buildingWithUpdates)
         {
-           
-                _buildingAdapter.UpdateBuildingById(buildingId, buildingWithUpdates);
-                return NoContent();
-            
+            _buildingAdapter.UpdateBuildingById(buildingId, buildingWithUpdates);
+            return NoContent();
         }
-        
+
         #endregion
-        
+
         #region Create Building
 
         [HttpPost]
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
         {
-          
-                CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
-                return CreatedAtAction(nameof(CreateBuilding), new { id = response.Id }, response);
-            
+            CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
+            return CreatedAtAction(nameof(CreateBuilding), new { id = response.Id }, response);
         }
-        
+
         #endregion
 
         #region Delete Building
@@ -83,7 +78,7 @@ namespace BuildingBuddy.API.Controllers
             _buildingAdapter.DeleteBuildingById(buildingId);
             return NoContent();
         }
-        
+
         #endregion
     }
 }

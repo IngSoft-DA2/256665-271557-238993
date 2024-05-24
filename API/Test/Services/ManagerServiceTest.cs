@@ -146,18 +146,17 @@ public class ManagerServiceTest
     }
 
     [TestMethod]
-    public void GivenNullBuildingsOnCreate_ShouldThrowException()
+    public void GivenManagerToCreate_BuildingListIsInitialized()
     {
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "Manager",
             Email = "person@gmail.com",
-            Password = "1234567"
+            Password = "123456789"
         };
-
-        Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _managerService.CreateManager(manager, It.IsAny<Invitation>()));
+        Assert.IsNotNull(manager.Buildings);
     }
 
 
@@ -167,6 +166,7 @@ public class ManagerServiceTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "Manager",
             Email = "persona@gmail.com",
             Password = "12345678910",

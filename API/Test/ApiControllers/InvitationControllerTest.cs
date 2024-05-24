@@ -57,7 +57,7 @@ public class InvitationControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedInvitations);
 
-        IActionResult controllerResponse = _invitationController.GetAllInvitations(_email);
+        IActionResult controllerResponse = _invitationController.GetInvitationsByEmail(_email);
         _invitationAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
@@ -70,6 +70,7 @@ public class InvitationControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedInvitations.SequenceEqual(controllerResponseValueCasted));
     }
+    
 
     #endregion
 
@@ -84,7 +85,7 @@ public class InvitationControllerTest
         _invitationAdapter.Setup(invitationAdapter =>
             invitationAdapter.GetAllInvitations()).Returns(expectedInvitationResponse);
 
-        IActionResult controllerResponse = _invitationController.GetAllInvitations(string.Empty);
+        IActionResult controllerResponse = _invitationController.GetAllInvitations();
         _invitationAdapter.VerifyAll();
 
         OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;

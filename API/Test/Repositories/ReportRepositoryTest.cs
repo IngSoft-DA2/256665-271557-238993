@@ -43,6 +43,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -51,6 +52,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
+                Role = "RequestHandler",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -102,6 +104,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -110,6 +113,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
+                Role = "RequestHandler",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -176,6 +180,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -184,6 +189,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
+                Role = "RequestHandler",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -235,6 +241,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -243,6 +250,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
+                Role = "RequestHandler",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -310,6 +318,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -318,6 +327,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
+                Role = "RequestHandler",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -369,6 +379,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -377,6 +388,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
+                Role = "RequestHandler",
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",

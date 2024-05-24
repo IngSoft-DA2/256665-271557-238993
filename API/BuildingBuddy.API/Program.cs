@@ -1,3 +1,4 @@
+using BuildingBuddy.API.Filters;
 using ServerFactory;
 
 var builder = WebApplication.CreateBuilder(args);

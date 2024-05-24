@@ -7,9 +7,10 @@ using WebModel.Requests.CategoryRequests;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [ExceptionFilter]
+    [AuthenticationFilter(["Admin"])]
     [Route("api/v1/categories")]
     [ApiController]
-    [CustomExceptionFilter]
     public class CategoryController : ControllerBase
     {
         private ICategoryAdapter _categoryAdapter;
@@ -18,20 +19,18 @@ namespace BuildingBuddy.API.Controllers
         {
             _categoryAdapter = categoryAdapter;
         }
+
         [HttpGet]
         public IActionResult GetAllCategories()
         {
             return Ok(_categoryAdapter.GetAllCategories());
         }
-        
+
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetCategoryById([FromRoute] Guid id)
         {
-          
             return Ok(_categoryAdapter.GetCategoryById(id));
-           
-            
         }
 
         [HttpPost]

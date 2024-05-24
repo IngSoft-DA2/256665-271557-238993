@@ -8,9 +8,10 @@ using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])]
     [Route("api/v1/construction-companies")]
     [ApiController]
-    [CustomExceptionFilter]
     public class ConstructionCompanyController : ControllerBase
     {
         #region Constructor and atributes
@@ -29,23 +30,22 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetAllConstructionCompanies()
         {
-            
             return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
-            
         }
 
         #endregion
-        
+
         #region CreateConstructionCompany
-        
+
         [HttpPost]
-        public IActionResult CreateConstructionCompany([FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
+        public IActionResult CreateConstructionCompany(
+            [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
-            CreateConstructionCompanyResponse response = _constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest);
+            CreateConstructionCompanyResponse response =
+                _constructionCompanyAdapter.CreateConstructionCompany(createConstructionCompanyRequest);
             return CreatedAtAction(nameof(CreateConstructionCompany), new { id = response.Id }, response);
-           
         }
-        
+
         #endregion
     }
 }

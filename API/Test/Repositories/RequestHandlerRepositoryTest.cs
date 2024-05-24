@@ -39,6 +39,7 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerToAdd = new RequestHandler()
         {
             Id = Guid.NewGuid(),
+            Role = "RequestHandler",
             Firstname = "RequestHandler1",
             Email = "person@gmail.com",
             LastName = "lastname",
@@ -73,6 +74,7 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerInDb = new RequestHandler
         {
             Id = Guid.NewGuid(),
+            Role = "RequestHandler",
             Firstname = "RequestHandler1",
             Email = "person2@gmail.com",
             LastName = "lastname",
@@ -81,6 +83,7 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerInDb2 = new RequestHandler
         {
             Id = Guid.NewGuid(),
+            Role = "RequestHandler",
             Firstname = "RequestHandler2",
             Email = "person@gmail.com",
             LastName = "lastname",

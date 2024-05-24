@@ -36,6 +36,7 @@ public class AdministratorRepositoryTest
             new Administrator
             {
                 Id = Guid.NewGuid(),
+                Role = "Admin",
                 Firstname = "Administrator1",
                 LastName = "Administrator1",
                 Email = "administrator@gmail.com",
@@ -56,6 +57,7 @@ public class AdministratorRepositoryTest
             new Administrator
             {
                 Id = Guid.NewGuid(),
+                Role = "Admin",
                 Firstname = "Administrator2",
                 LastName = "Administrator2",
                 Email = "administrato2@gmail.com",
@@ -89,6 +91,7 @@ public class AdministratorRepositoryTest
         Administrator administratorToAdd = new Administrator
         {
             Id = Guid.NewGuid(),
+            Role = "Admin",
             Firstname = "Administrator1",
             LastName = "Administrator1",
             Email = "admin@gmail.com",

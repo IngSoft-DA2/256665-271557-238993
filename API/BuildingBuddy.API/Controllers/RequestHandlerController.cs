@@ -1,15 +1,13 @@
-using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Differencing;
 using WebModel.Requests.RequestHandlerRequests;
 using WebModel.Responses.RequestHandlerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    
-    [CustomExceptionFilter]
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])]
     [Route("api/v1/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase
@@ -24,11 +22,10 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateRequestHandler([FromBody] CreateRequestHandlerRequest requestHandlerRequest)
         {
-        
-                CreateRequestHandlerResponse response =
-                    _requestHandlerAdapter.CreateRequestHandler(requestHandlerRequest);
-                return CreatedAtAction(nameof(CreateRequestHandler),
-                    new { id = response.Id }, response);
+            CreateRequestHandlerResponse response =
+                _requestHandlerAdapter.CreateRequestHandler(requestHandlerRequest);
+            return CreatedAtAction(nameof(CreateRequestHandler),
+                new { id = response.Id }, response);
         }
     }
 }

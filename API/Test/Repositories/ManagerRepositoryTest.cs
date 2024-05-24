@@ -38,6 +38,7 @@ public class ManagerRepositoryTest
                 Firstname = "Manager1",
                 Email = "manager1@gmail.com",
                 Password = "password1",
+                Role = "Manager",
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
@@ -47,6 +48,7 @@ public class ManagerRepositoryTest
                 Firstname = "Manager2",
                 Email = "manager2@gmail.com",
                 Password = "password2",
+                Role = "Manager",
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             }
@@ -78,6 +80,7 @@ public class ManagerRepositoryTest
         Manager managerInDb = new Manager
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
@@ -146,6 +149,7 @@ public class ManagerRepositoryTest
         Manager managerToCreate = new Manager
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
@@ -173,6 +177,7 @@ public class ManagerRepositoryTest
         Manager managerToDelete = new Manager
         {
             Id = Guid.NewGuid(),
+            Role = "Manager",
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",

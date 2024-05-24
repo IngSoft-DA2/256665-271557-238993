@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Enums;
+using Domain.CustomExceptions;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;

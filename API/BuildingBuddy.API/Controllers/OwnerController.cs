@@ -1,14 +1,13 @@
-using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.OwnerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [CustomExceptionFilter]
+    [ExceptionFilter]
+    [AuthenticationFilter(["Manager"])] 
     [Route("api/v1/owners")]
     [ApiController]
     public class OwnerController : ControllerBase

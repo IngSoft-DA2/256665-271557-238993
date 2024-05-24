@@ -1,15 +1,14 @@
-using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using IAdapter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebModel.Requests;
 using WebModel.Requests.InvitationRequests;
 using WebModel.Responses.InvitationResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [CustomExceptionFilter]
+    [ExceptionFilter]
+    [AuthenticationFilter(["Admin"])]
     [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
@@ -28,15 +27,17 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Invitations
 
         [HttpGet]
-        [AllowAnonymous]
-        public IActionResult GetAllInvitations([FromQuery] string email)
+        public IActionResult GetAllInvitations()
         {
+            return Ok(_invitationAdapter.GetAllInvitations());
+        }
 
-                if (!string.IsNullOrEmpty(email))
-                {
-                    return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
-                }
-                return Ok(_invitationAdapter.GetAllInvitations());
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/v1/guest/invitations")]
+        public IActionResult GetInvitationsByEmail([FromQuery] string email)
+        {
+            return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
         }
 
         #endregion
@@ -57,9 +58,8 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
-                CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
-                return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
-           
+            CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
+            return CreatedAtAction(nameof(CreateInvitation), new { id = response.Id }, response);
         }
 
         #endregion
@@ -70,10 +70,8 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
         {
-           
             _invitationAdapter.UpdateInvitation(id, request);
             return NoContent();
-           
         }
 
         #endregion
@@ -84,10 +82,8 @@ namespace BuildingBuddy.API.Controllers
         [Route("{id:Guid}")]
         public IActionResult DeleteInvitation([FromRoute] Guid id)
         {
-          
             _invitationAdapter.DeleteInvitation(id);
             return NoContent();
-           
         }
 
         #endregion

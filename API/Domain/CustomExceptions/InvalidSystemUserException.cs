@@ -1,4 +1,5 @@
-﻿namespace Domain;
+
+namespace Domain.CustomExceptions;
 
 public class InvalidSystemUserException : Exception
 {

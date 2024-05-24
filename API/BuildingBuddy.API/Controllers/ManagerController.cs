@@ -6,7 +6,7 @@ using WebModel.Responses.ManagerResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [CustomExceptionFilter]
+    [ExceptionFilter]
     [Route("api/v1/managers")]
     [ApiController]
     public class ManagerController : ControllerBase
