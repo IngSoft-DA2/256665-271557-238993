@@ -3,6 +3,7 @@ using Domain;
 using IDataAccess;
 using IRepository;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
@@ -17,10 +18,8 @@ public class SessionService : ISessionService
     private readonly IRequestHandlerRepository _requestHandlerRepository;
 
 
-    public SessionService(ISessionRepository sessionRepository,
-        IManagerRepository managerRepository,
-        IAdministratorRepository administratorRepository,
-        IRequestHandlerRepository requestHandlerRepository)
+    public SessionService(ISessionRepository sessionRepository, IManagerRepository managerRepository,
+        IAdministratorRepository administratorRepository, IRequestHandlerRepository requestHandlerRepository)
     {
         _sessionRepository = sessionRepository;
         _managerRepository = managerRepository;
@@ -30,13 +29,13 @@ public class SessionService : ISessionService
 
     #endregion
 
+    #region Authenticate
 
     public Guid Authenticate(string email, string password)
     {
         IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
         IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
         IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
-
 
         //cast entities to system user type
         List<SystemUser> users = new List<SystemUser>();
@@ -58,31 +57,96 @@ public class SessionService : ISessionService
         //find user with matching email and password
         SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
 
-        if (user == null)
-            throw new InvalidCredentialException("Invalid credentials");
+        if (user is null) throw new InvalidCredentialException("Invalid credentials");
 
         var session = new Session()
         {
-            User = user,
+            SessionString = Guid.NewGuid(),
+            UserId = user.Id,
+            UserRole = user.Role
         };
         _sessionRepository.CreateSession(session);
-        _sessionRepository.Save();
 
         return session.SessionString;
     }
 
+    #endregion
+
+    #region Logout
+
     public void Logout(Guid sessionId)
     {
-        Session session = _sessionRepository.GetSessionById(sessionId);
+        Session? session = _sessionRepository.GetSessionBySessionString(sessionId);
+        if (session is null)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+
         _sessionRepository.DeleteSession(session);
-        _sessionRepository.Save();
     }
 
-    public SystemUser? GetCurrentUser(Guid? token = null)
+    #endregion
+
+    #region Get current userId by session string
+
+    public Guid GetCurrentUserIdBySessionString(Guid sessionString)
     {
-        if (token is null) throw new ArgumentException("Cant retrieve user without it's token");
+        try
+        {
+            Session? session = _sessionRepository.GetSessionBySessionString(sessionString);
 
-        var session = _sessionRepository.GetSessionById(token.Value);
-        return session.User;
+            if (session is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+
+            return session.UserId;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
+
+    #endregion
+
+    #region Get user role by session string
+
+    public string GetUserRoleBySessionString(Guid sessionStringOfUser)
+    {
+        try
+        {
+            Session? session = _sessionRepository.GetSessionBySessionString(sessionStringOfUser);
+
+            if (session is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+
+            return session.UserRole;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    #endregion
+
+    #region Is session valid
+
+    public bool IsSessionValid(Guid sessionString)
+    {
+        try
+        {
+            Session? session = _sessionRepository.GetSessionBySessionString(sessionString);
+            return session != null;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    #endregion
 }

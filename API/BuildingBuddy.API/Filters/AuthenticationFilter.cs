@@ -26,22 +26,24 @@ public class AuthenticationFilter : Attribute, IActionFilter
         {
             try
             {
-                Guid userToken = Guid.Parse(authHeader);
+                Guid sessionStringOfUser = Guid.Parse(authHeader);
                 var sessionManagerObject = context.HttpContext.RequestServices.GetService(typeof(ISessionService))!;
            
                 ISessionService sessionService = sessionManagerObject as ISessionService;
                 
-                SystemUser? systemUser = sessionService.GetCurrentUser(userToken);
-                if (systemUser is null)
+                if(sessionService.IsSessionValid(sessionStringOfUser) == false) 
                 {
-                    context.Result = new UnauthorizedObjectResult("User was not found");
+                    context.Result = new UnauthorizedObjectResult("Session is not valid");
                 }
+                //Here ends Authorization, now we check if the user has the required roles (Authentication)
                 
-                else if (!_roles.Contains(systemUser.Role))
+                string userRole = sessionService.GetUserRoleBySessionString(sessionStringOfUser);
+                
+                if (!_roles.Contains(userRole))
                 {
                     context.Result = new ForbidResult("Access denied");
-                    context.HttpContext.Items.Add("UserId", systemUser.Id);
                 }
+                context.HttpContext.Items.Add("UserRole", userRole);
             }
             catch (Exception)
             {

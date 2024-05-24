@@ -1,92 +1,120 @@
-using System.Security.Authentication;
+using DataAccess.Repositories;
 using Domain;
 using IDataAccess;
 using IRepository;
-using IServiceLogic;
+using Moq;
+using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
-namespace ServiceLogic;
+namespace Test.Services;
 
-public class SessionService : ISessionService
+[TestClass]
+public class SessionServiceTest
 {
-    #region Constructor and Dependency Injection
-    
-    private SystemUser _currentUser;
-    private readonly ISessionRepository _sessionRepository;
-    private readonly IAdministratorRepository _administratorRepository;
-    private readonly IManagerRepository _managerRepository;
-    private readonly IRequestHandlerRepository _requestHandlerRepository;
-    
-    
-    public SessionService(ISessionRepository sessionRepository, IManagerRepository managerRepository, IAdministratorRepository administratorRepository, IRequestHandlerRepository requestHandlerRepository)
+    #region Test Initialization
+
+    private Mock<ISessionRepository> _sessionRepository;
+    private Mock<IAdministratorRepository> _administratorRepository;
+    private Mock<IManagerRepository> _managerRepository;
+    private Mock<IRequestHandlerRepository> _requestHandlerRepository;
+    private SessionService _sessionService;
+    private Guid _sampleUserGuid;
+
+    [TestInitialize]
+    public void Initialize()
     {
-        _sessionRepository = sessionRepository;
-        _managerRepository = managerRepository;
-        _administratorRepository = administratorRepository;
-        _requestHandlerRepository = requestHandlerRepository;
+        _administratorRepository = new Mock<IAdministratorRepository>(MockBehavior.Strict);
+        _managerRepository = new Mock<IManagerRepository>(MockBehavior.Strict);
+        _requestHandlerRepository = new Mock<IRequestHandlerRepository>(MockBehavior.Strict);
+        _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
+
+        _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object,
+            _administratorRepository.Object, _requestHandlerRepository.Object);
     }
-    
+
     #endregion
+
+    #region IsValidSessionString
+
+    [TestMethod]
+    public void IsValidSessionString_SessionStringIsReturn()
+    {
+        Guid sessionString = Guid.NewGuid();
+        Session dummySession = new Session();
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        bool result = _sessionService.IsSessionValid(sessionString);
+        _sessionRepository.VerifyAll();
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public void IsValidSessionString_InvalidSessionString_ReturnsFalse()
+    {
+        Guid sessionString = Guid.NewGuid();
+        Session dummySession = null;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        bool result = _sessionService.IsSessionValid(sessionString);
+
+        _sessionRepository.VerifyAll();
+        Assert.IsFalse(result);
+    }
     
+    [TestMethod]
+    public void IsValidSessionString_UnknownExceptionIsThrown()
+    {
+        Guid sessionString = Guid.NewGuid();
+        Session dummySession = null;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Throws<Exception>();
+       
+        Assert.ThrowsException<UnknownServiceException>(() => _sessionService.IsSessionValid(sessionString));
+        _sessionRepository.VerifyAll();
+    }
     
-    public Guid Authenticate(string email, string password)
+   
+
+    #endregion
+
+    #region GetUserRoleBySessionString
+
+    [TestMethod]
+    public void GetUserRoleBySessionString_RolesAreReturn()
     {
-        IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
-        IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
-        IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
         
+        Session dummySession = new Session();
+        dummySession.UserRole = "Administrator";
         
-        //cast entities to system user type
-        List<SystemUser> users = new List<SystemUser>();
-        foreach (var requestHandler in requestHandlers)
-        {
-            users.Add(requestHandler);
-        }
-        foreach (var manager in managers)
-        {
-            users.Add(manager);
-        }
-        foreach (var administrator in administrators)
-        {
-            users.Add(administrator);
-        }
+        _sessionRepository.Setup(_sessionRepository => _sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        string role = _sessionService.GetUserRoleBySessionString(It.IsAny<Guid>());
+        _sessionRepository.VerifyAll();
         
-        //find user with matching email and password
-        SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
-        
-        if (user == null)
-            throw new InvalidCredentialException("Invalid credentials");
-        
-        var session = new Session()
-        {
-            User = user,
-        };
-        _sessionRepository.CreateSession(session);
-        _sessionRepository.Save();
-        
-        return session.SessionString;
+        Assert.AreEqual(dummySession.UserRole, role);
     }
 
-    public void Logout(Guid sessionId)
+    [TestMethod]
+    public void GetUserRoleBySessionString_UnknownExceptionIsThrown()
     {
-        Session session = _sessionRepository.GetSessionById(sessionId);
-        _sessionRepository.DeleteSession(session);
-        _sessionRepository.Save();
-    }
-
-    public SystemUser? GetCurrentUser(Guid? sessionString = null)
-    {
-        if (_currentUser != null)
-            return _currentUser;
-
-        if (sessionString == null)
-            throw new ArgumentException("Cant retrieve user without session string");
-
-        var session = _sessionRepository.GetSessionById(sessionString.Value);
-
-        if (session != null)
-            _currentUser = session.User;
-
-        return _currentUser;
         
+        Session dummySession = new Session();
+        dummySession.UserRole = "Administrator";
+        
+        _sessionRepository.Setup(_sessionRepository => _sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Throws<Exception>();
+        
+        Assert.ThrowsException<UnknownServiceException>(() => _sessionService.GetUserRoleBySessionString(It.IsAny<Guid>()));
+       _sessionRepository.VerifyAll();
     }
+
+    #endregion
+
+    
 }

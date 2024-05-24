@@ -4,7 +4,8 @@ namespace IServiceLogic;
 
 public interface ISessionService
 {
-    Guid Authenticate(string email, string password);
-    void Logout(Guid sessionId);
-    SystemUser? GetCurrentUser (Guid? authToken = null);
+    public Guid Authenticate(string email, string password);
+    public void Logout(Guid sessionId);
+    public bool IsSessionValid(Guid sessionString);
+    public string GetUserRoleBySessionString(Guid sessionStringOfUser);
 }
