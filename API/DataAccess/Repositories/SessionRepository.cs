@@ -2,7 +2,6 @@ using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
-using ServiceLogic.CustomExceptions;
 
 namespace DataAccess.Repositories;
 

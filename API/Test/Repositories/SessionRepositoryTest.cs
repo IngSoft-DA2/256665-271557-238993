@@ -2,6 +2,8 @@
 using DataAccess.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using Repositories.CustomExceptions;
 
 namespace Test.Repositories;
 
@@ -31,7 +33,7 @@ public class SessionRepositoryTest
 
 
     [TestMethod]
-    public void CreateSessionTest()
+    public void CreateSession_SessionIsCreated()
     {
         var sessionToBeAdded = new Session()
         {
@@ -44,7 +46,24 @@ public class SessionRepositoryTest
 
         Assert.AreEqual(1, _dbContext.Set<Session>().Count());
     }
-
+    
+    [TestMethod]
+    public void CreateSession_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Session>()).Throws(new Exception("Unknown exception"));
+        
+        var sessionToBeAdded = new Session()
+        {
+            UserId = Guid.NewGuid(),
+            SessionString = Guid.NewGuid(),
+            UserRole = "Admin"
+        };
+        
+        SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => sessionRepository.CreateSession(sessionToBeAdded));
+    }
+    
 
     [TestCleanup]
     public void TestCleanup()
