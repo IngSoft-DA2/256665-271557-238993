@@ -1,6 +1,6 @@
 using Domain;
 
-namespace IRepository;
+namespace IDataAccess;
 
 
 public interface ISessionRepository

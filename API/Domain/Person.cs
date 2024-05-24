@@ -18,7 +18,7 @@ public abstract class Person
         ValidateName(Firstname, "Firstname");
     }
 
-    public void ValidateName(string name, string fieldName)
+    protected virtual void ValidateName(string name, string fieldName)
     {
         if (string.IsNullOrEmpty(name))
         {

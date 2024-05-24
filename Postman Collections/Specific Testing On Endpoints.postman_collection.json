@@ -1,0 +1,457 @@
+{
+	"info": {
+		"_postman_id": "595f84f9-f592-45af-b4b2-92376e0aa01e",
+		"name": "Specific Testing On Endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24218913",
+		"_collection_link": "https://lunar-crescent-502372.postman.co/workspace/Team-Workspace~2009ce0b-9f83-4607-82a6-d339c2ab7d2e/collection/24218913-595f84f9-f592-45af-b4b2-92376e0aa01e?action=share&source=collection_link&creator=24218913"
+	},
+	"item": [
+		{
+			"name": "Invitation Tests",
+			"item": [
+				{
+					"name": "CreateInvitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"invitation_id\", pm.response.json().id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"Gustavo\",\r\n  \"lastname\": \"Fernandez\",\r\n  \"email\": \"gustavo@gmail.com\",\r\n  \"expirationDate\": \"2027-05-02T19:42:43.963Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/invitations",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteInvitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/v1/invitations/{{invitation_Id}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"invitations",
+								"{{invitation_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateInvitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Guardar el ID en una variable de entorno\r",
+									"pm.environment.set(\"invitation_Id\", pm.response.json().id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": 1,\r\n  \"expirationDate\": \"2029-05-02T20:45:41.036Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/invitations/{{invitation_Id}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"invitations",
+								"{{invitation_Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Building Tests",
+			"item": [
+				{
+					"name": "CreateManager",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Guardar el ID en una variable de entorno\r",
+									"pm.environment.set(\"manager_id\", pm.response.json().id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Martin\",\r\n  \"email\": \"martin@gmail.com\",\r\n  \"password\": \"stri4324234244ss23ng\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/managers?idOfInvitationAccepted={{invitation_Id}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"managers"
+							],
+							"query": [
+								{
+									"key": "idOfInvitationAccepted",
+									"value": "{{invitation_Id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateOwner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Guardar el ID en una variable de entorno\r",
+									"pm.environment.set(\"owner_id\", pm.response.json().id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"Gerardo\",\r\n  \"lastname\": \"Alba\",\r\n  \"email\": \"gerardo@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/owners",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateConstructionCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Guardar el ID en una variable de entorno\r",
+									"pm.environment.set(\"construction_company_id\", pm.response.json().id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"BuilderSA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/construction-companies",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"construction-companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateBuilding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Guardar el ID en una variable de entorno\r",
+									"pm.environment.set(\"building_id\", pm.response.json().id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"managerId\": {{manager_id}},\r\n  \"name\": \"BuildingTower\",\r\n  \"address\": \"Nt street\",\r\n  \"location\": {\r\n    \"latitude\": 0,\r\n    \"longitude\": 0\r\n  },\r\n  \"constructionCompanyId\": {{construction_company_id}},\r\n  \"commonExpenses\": 2000,\r\n  \"flats\": [\r\n    {\r\n      \"floor\": 3,\r\n      \"roomNumber\": 2,\r\n      \"ownerAssignedId\": {{owner_id}},\r\n      \"totalRooms\": 2,\r\n      \"totalBaths\": 1,\r\n      \"hasTerrace\": true\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/buildings",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateBuilding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"constructionCompanyId\": {{construction_company_id}},\r\n  \"commonExpenses\": 200000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}api/v1/buildings/{{building_id}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"buildings",
+								"{{building_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBuilding",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}api/v1/buildings/{{building_id}}",
+							"host": [
+								"{{domain}}api"
+							],
+							"path": [
+								"v1",
+								"buildings",
+								"{{building_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "https://localhost:7041/"
+		},
+		{
+			"key": "building_id",
+			"value": "Guid"
+		},
+		{
+			"key": "owner_id",
+			"value": "Guid"
+		},
+		{
+			"key": "construction_company_id",
+			"value": "Guid"
+		},
+		{
+			"key": "invitation_Id",
+			"value": "Guid"
+		},
+		{
+			"key": "manager_id",
+			"value": "Guid"
+		}
+	]
+}

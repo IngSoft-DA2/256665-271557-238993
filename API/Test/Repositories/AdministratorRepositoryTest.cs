@@ -36,11 +36,11 @@ public class AdministratorRepositoryTest
             new Administrator
             {
                 Id = Guid.NewGuid(),
+                Role = "Admin",
                 Firstname = "Administrator1",
                 LastName = "Administrator1",
                 Email = "administrator@gmail.com",
                 Password = "password",
-                Role = "Admin",
                 Invitations = new List<Invitation>
                 {
                     new Invitation
@@ -57,11 +57,11 @@ public class AdministratorRepositoryTest
             new Administrator
             {
                 Id = Guid.NewGuid(),
+                Role = "Admin",
                 Firstname = "Administrator2",
                 LastName = "Administrator2",
                 Email = "administrato2@gmail.com",
                 Password = "password2",
-                Role = "Admin",
             }
         };
 
@@ -91,11 +91,11 @@ public class AdministratorRepositoryTest
         Administrator administratorToAdd = new Administrator
         {
             Id = Guid.NewGuid(),
+            Role = "Admin",
             Firstname = "Administrator1",
             LastName = "Administrator1",
             Email = "admin@gmail.com",
             Password = "password",
-            Role = "Admin",
             Invitations = new List<Invitation>()
         };
 
@@ -116,5 +116,11 @@ public class AdministratorRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() =>
             _administratorRepository.CreateAdministrator(new Administrator()));
         _mockDbContext.VerifyAll();
+    }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
     }
 }

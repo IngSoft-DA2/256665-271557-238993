@@ -7,13 +7,10 @@ using WebModel.Responses.BuildingResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
-    [ApiController]
     [ExceptionFilter]
     [AuthenticationFilter(["Manager"])]
     [Route("api/v1/buildings")]
-    
-
-    
+    [ApiController]
     public class BuildingController : ControllerBase
     {
         #region Constructor and atributes

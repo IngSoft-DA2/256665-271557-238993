@@ -92,7 +92,6 @@ public class BuildingControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.IsTrue(expectedBuildings.Equals(controllerResponseValue));
     }
-
     
     #endregion
 

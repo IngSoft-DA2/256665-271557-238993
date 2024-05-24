@@ -119,10 +119,10 @@ public class BuildingRepositoryTest
             Manager = new Manager
             {
                 Id = Guid.NewGuid(),
+                Role = "Manager",
                 Firstname = "Manager 1",
                 Email = "manager@gmail.com",
-                Password = "Password",
-                Role = "Manager"
+                Password = "Password"
             },
             Flats = new List<Flat>
             {
@@ -182,7 +182,7 @@ public class BuildingRepositoryTest
             Name = "Construction Company 1",
             Buildings = new List<Building>()
         };
-        
+
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
@@ -198,19 +198,19 @@ public class BuildingRepositoryTest
         _dbContext.Set<ConstructionCompany>().Add(constructionCompany);
         _dbContext.Set<Manager>().Add(manager);
         _dbContext.SaveChanges();
-        
+
         Building buildingToCreate = new Building
         {
             Id = Guid.NewGuid(),
             Name = "Building 1",
             Address = "Address 1",
-          
+
             Manager = manager,
             ManagerId = manager.Id,
             CommonExpenses = 100,
             ConstructionCompany = constructionCompany,
             ConstructionCompanyId = constructionCompany.Id,
-           
+
             Flats = new List<Flat>
             {
                 new Flat
@@ -226,7 +226,7 @@ public class BuildingRepositoryTest
                 }
             }
         };
-        
+
         Location location = new Location
         {
             Id = Guid.NewGuid(),
@@ -235,9 +235,9 @@ public class BuildingRepositoryTest
             Building = buildingToCreate,
             BuildingId = buildingToCreate.Id
         };
-        
+
         buildingToCreate.Location = location;
-        
+
         _buildingRepository.CreateBuilding(buildingToCreate);
         Building buildingInDb = _dbContext.Set<Building>().Find(buildingToCreate.Id);
         Assert.AreEqual(buildingToCreate, buildingInDb);
@@ -414,5 +414,11 @@ public class BuildingRepositoryTest
 
         BuildingRepository buildingRepository = new BuildingRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => buildingRepository.DeleteBuilding(new Building()));
+    }
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
     }
 }

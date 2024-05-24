@@ -1,7 +1,5 @@
-using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using IAdapter;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ManagerRequests;
 using WebModel.Responses.ManagerResponses;
@@ -53,12 +51,12 @@ namespace BuildingBuddy.API.Controllers
         #region Create Manager
 
         [HttpPost]
-        public IActionResult CreateManager(CreateManagerRequest createRequest)
+        public IActionResult CreateManager(CreateManagerRequest createRequest, [FromQuery] Guid idOfInvitationAccepted)
         {
-            
-                CreateManagerResponse adapterReponse = _managerAdapter.CreateManager(createRequest);
-                return CreatedAtAction(nameof(CreateManager), new { id = adapterReponse.Id }, adapterReponse);
-         
+          
+                CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(createRequest, idOfInvitationAccepted);
+
+                return CreatedAtAction(nameof(CreateManager), new { id = adapterResponse.Id }, adapterResponse);
         }
         
         #endregion

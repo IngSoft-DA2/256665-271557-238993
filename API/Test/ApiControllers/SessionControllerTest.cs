@@ -10,8 +10,7 @@ namespace Test.ApiControllers;
 public class SessionControllerTest
 {
     #region Test Initialize
-
-    private Mock<ISessionService> _sessionService;
+    private Mock<ISessionService> _sessionService; 
     private SessionController _sessionController;
 
     [TestInitialize]
@@ -51,4 +50,5 @@ public class SessionControllerTest
     }
 
     #endregion
+    
 }

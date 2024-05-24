@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
@@ -8,7 +9,7 @@ namespace DataAccess.Repositories;
 public class SessionRepository : ISessionRepository
 {
     private readonly DbContext _dbContext;
-    
+
     public SessionRepository(DbContext dbContext)
     {
         _dbContext = dbContext;

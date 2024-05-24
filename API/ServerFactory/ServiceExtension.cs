@@ -42,7 +42,9 @@ public static class ServiceExtension
         services.AddScoped<IReportAdapter, ReportAdapter>();
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IReportRepository, ReportRepository>();
-  
+        services.AddScoped<IRequestHandlerAdapter, RequestHandlerAdapter>();
+        services.AddScoped<IRequestHandlerService, RequestHandlerService>();
+        services.AddScoped<IRequestHandlerRepository, RequestHandlerRepository>();
     }
 
     public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

@@ -25,6 +25,7 @@ public class RequestHandlerRepository : IRequestHandlerRepository
         try
         {
             _dbContext.Set<RequestHandler>().Add(requestHandlerToAdd);
+            _dbContext.SaveChanges();
         }
         catch (Exception exceptionCaught)
         {

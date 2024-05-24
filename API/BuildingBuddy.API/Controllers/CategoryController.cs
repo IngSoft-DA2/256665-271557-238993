@@ -19,20 +19,18 @@ namespace BuildingBuddy.API.Controllers
         {
             _categoryAdapter = categoryAdapter;
         }
+
         [HttpGet]
         public IActionResult GetAllCategories()
         {
             return Ok(_categoryAdapter.GetAllCategories());
         }
-        
+
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetCategoryById([FromRoute] Guid id)
         {
-          
             return Ok(_categoryAdapter.GetCategoryById(id));
-           
-            
         }
 
         [HttpPost]

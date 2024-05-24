@@ -24,12 +24,12 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
 
     #region Get All Maintenance Requests
 
-    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests()
+    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid? managerId)
     {
         try
         {
             IEnumerable<MaintenanceRequest> maintenanceRequestsInDb =
-                _maintenanceRequestService.GetAllMaintenanceRequests();
+                _maintenanceRequestService.GetAllMaintenanceRequests(managerId);
 
             IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestsToReturn =
                 maintenanceRequestsInDb.Select(maintenanceRequest => new GetMaintenanceRequestResponse
@@ -41,7 +41,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
-                    FlatId = maintenanceRequest.FlatId
+                    FlatId = maintenanceRequest.FlatId,
                 });
             return maintenanceRequestsToReturn;
         }
@@ -98,13 +98,12 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
             MaintenanceRequest maintenanceRequest = new MaintenanceRequest
             {
                 Id = Guid.NewGuid(),
-                Flat = new Flat
-                {
-                    Id = maintenanceRequestToCreate.FlatId
-                },
+                OpenedDate = DateTime.Now,
+                RequestStatus = RequestStatusEnum.Open,
                 Description = maintenanceRequestToCreate.Description,
                 FlatId = maintenanceRequestToCreate.FlatId,
                 CategoryId = maintenanceRequestToCreate.Category,
+                ManagerId = maintenanceRequestToCreate.ManagerId,
             };
 
             _maintenanceRequestService.CreateMaintenanceRequest(maintenanceRequest);
@@ -134,6 +133,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
         {
             MaintenanceRequest maintenanceRequestWithUpdates = new MaintenanceRequest
             {
+                Id = id,
                 RequestStatus = (RequestStatusEnum)maintenanceRequestToUpdate.RequestStatus
             };
 
@@ -177,7 +177,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
 
     #region Get Maintenance Requests By Request Handler
 
-    public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
+    public IEnumerable<GetMaintenanceRequestResponse> GetMaintenanceRequestsByRequestHandler(Guid? requestHandlerId)
     {
         try
         {

@@ -107,7 +107,7 @@ public class InvitationRepositoryTest
 
         IEnumerable<Invitation> invitationsObtained =
             _invitationRepository.GetAllInvitationsByEmail(invitationsWithThatEmail.ElementAt(0).Email);
-        
+
         Assert.IsTrue(invitationsWithThatEmail.SequenceEqual(invitationsObtained));
     }
 
@@ -220,4 +220,10 @@ public class InvitationRepositoryTest
     }
 
     #endregion
+
+    [TestCleanup]
+    public void TestCleanup()
+    {
+        _dbContext.Database.EnsureDeleted();
+    }
 }

@@ -11,10 +11,12 @@ public class ManagerService :IManagerService
     #region Constructor and Atributes
     
     private readonly IManagerRepository _managerRepository;
+    private readonly IInvitationService _invitationService;
 
-    public ManagerService(IManagerRepository managerRepository)
+    public ManagerService(IManagerRepository managerRepository, IInvitationService invitationService)
     {
         _managerRepository = managerRepository;
+        _invitationService = invitationService;
     }
     
     #endregion
@@ -37,20 +39,20 @@ public class ManagerService :IManagerService
     
     #region Create Manager
 
-    public void CreateManager(Manager manager)
+    public void CreateManager(Manager manager, Invitation invitationAccepted)
     {
         try
         {
             manager.ManagerValidator();
             CheckIfEmailIsAlreadyRegistered(manager);
-
+            _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
             _managerRepository.CreateManager(manager);
         }
-        catch (InvalidPersonException exceptionCaught)
+        catch (InvalidSystemUserException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-        catch (InvalidSystemUserException exceptionCaught)
+        catch (InvalidPersonException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
@@ -76,6 +78,7 @@ public class ManagerService :IManagerService
             throw new ObjectRepeatedServiceException();
         }
     }
+    
     
     #endregion
     

@@ -14,5 +14,5 @@ public abstract class SystemUser : Person
             throw new InvalidSystemUserException("Password must have at least 8 characters");
         }
     }
-    
+
 }

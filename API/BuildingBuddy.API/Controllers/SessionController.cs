@@ -3,7 +3,6 @@ using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.SessionRequests;
 
-
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]

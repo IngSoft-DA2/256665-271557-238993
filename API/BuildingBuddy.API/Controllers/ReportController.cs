@@ -21,7 +21,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region GetMaintenanceRequestsByBuilding
-
+        
         [AuthenticationFilter(["Manager"])]
         [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
@@ -52,10 +52,10 @@ namespace BuildingBuddy.API.Controllers
         [AuthenticationFilter(["Admin"])]
         [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildignId, [FromQuery] Guid categoryId)
+        public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildingId, [FromQuery] Guid categoryId)
         {
            
-            return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildignId, categoryId));
+            return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildingId, categoryId));
             
         }
         

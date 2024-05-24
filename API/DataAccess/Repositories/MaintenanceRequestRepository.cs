@@ -8,32 +8,41 @@ namespace DataAccess.Repositories;
 public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 {
     #region Constructor and attributes
-    
+
     private readonly DbContext _context;
 
     public MaintenanceRequestRepository(DbContext context)
     {
         _context = context;
     }
-    
+
     #endregion
-    
+
     #region Get All Maintenance Requests
 
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests()
+    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId)
     {
         try
         {
-            return _context.Set<MaintenanceRequest>().ToList();
+            if (managerId != null)
+            {
+                return _context.Set<MaintenanceRequest>()
+                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId).ToList();
+            }
+            else
+            {
+                return _context.Set<MaintenanceRequest>()
+                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == Guid.Empty).ToList();
+            }
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request By Category
 
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid categoryId)
@@ -48,9 +57,9 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Create Maintenance Request
 
     public void CreateMaintenanceRequest(MaintenanceRequest requestToCreate)
@@ -65,25 +74,30 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Update Maintenance Request
 
-    public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestSample)
+    public void UpdateMaintenanceRequest(Guid isAny, MaintenanceRequest maintenanceRequestWithUpdates)
     {
         try
         {
-            _context.Set<MaintenanceRequest>().Update(maintenanceRequestSample);
+            MaintenanceRequest maintenanceRequestOnDb = _context.Set<MaintenanceRequest>().Find(maintenanceRequestWithUpdates.Id);
+            if(maintenanceRequestOnDb != null)
+            {
+                _context.Set<MaintenanceRequest>().Entry(maintenanceRequestOnDb).CurrentValues.SetValues(maintenanceRequestWithUpdates);
+                _context.SaveChanges();
+            }
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Request By Id
 
     public MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate)
@@ -97,12 +111,12 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Get Maintenance Requests By Request Handler
 
-    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid requestHandlerId)
+    public IEnumerable<MaintenanceRequest> GetMaintenanceRequestsByRequestHandler(Guid? requestHandlerId)
     {
         try
         {
@@ -114,6 +128,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 }

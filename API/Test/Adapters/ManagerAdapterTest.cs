@@ -3,6 +3,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ManagerRequests;
 using WebModel.Responses.ManagerResponses;
@@ -15,13 +16,15 @@ public class ManagerAdapterTest
     #region Initialize
 
     private Mock<IManagerService> _managerService;
+    private Mock<IInvitationService> _invitationService;
     private ManagerAdapter _managerAdapter;
 
     [TestInitialize]
     public void Initialize()
     {
         _managerService = new Mock<IManagerService>(MockBehavior.Strict);
-        _managerAdapter = new ManagerAdapter(_managerService.Object);
+        _invitationService = new Mock<IInvitationService>(MockBehavior.Strict);
+        _managerAdapter = new ManagerAdapter(_managerService.Object, _invitationService.Object);
     }
 
     #endregion
@@ -118,15 +121,17 @@ public class ManagerAdapterTest
             Password = ";"
         };
 
-        CreateManagerResponse expectedAdapterResponse = new CreateManagerResponse();
+        _managerService.Setup(managerService =>
+            managerService.CreateManager(It.IsAny<Manager>(), It.IsAny<Invitation>()));
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(new Invitation());
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()));
+        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>());
 
-        CreateManagerResponse adapterResponse = _managerAdapter.CreateManager(dummyCreateRequest);
+        Assert.IsNotNull(adapterResponse.Id);
 
-        Assert.IsNotNull(expectedAdapterResponse.Id);
-
-        _managerService.Verify(service => service.CreateManager(It.IsAny<Manager>()), Times.Once);
+        _managerService.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     [TestMethod]
@@ -134,12 +139,16 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(), It.IsAny<Invitation>()))
             .Throws(new ObjectNotFoundServiceException());
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(new Invitation());
 
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>()));
 
         _managerService.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     [TestMethod]
@@ -147,12 +156,16 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(), It.IsAny<Invitation>()))
             .Throws(new ObjectErrorServiceException("Something went wrong"));
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(new Invitation());
 
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>()));
 
         _managerService.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     [TestMethod]
@@ -160,12 +173,16 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest();
 
-        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>()))
+        _managerService.Setup(service => service.CreateManager(It.IsAny<Manager>(), It.IsAny<Invitation>()))
             .Throws(new Exception("Something went wrong"));
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(new Invitation());
 
-        Assert.ThrowsException<UnknownAdapterException>(() => _managerAdapter.CreateManager(dummyCreateRequest));
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _managerAdapter.CreateManager(dummyCreateRequest, It.IsAny<Guid>()));
 
         _managerService.VerifyAll();
+        _invitationService.VerifyAll();
     }
 
     #endregion

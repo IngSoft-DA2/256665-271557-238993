@@ -13,12 +13,14 @@ public class Category
             throw new InvalidCategoryException("Category name is required");
         }
     }
-    
-    
+
+
     public override bool Equals(object? obj)
     {
         Category? objectToCompareWith = obj as Category;
-        
+
+        if (objectToCompareWith is null) return false;
+
         return Id == objectToCompareWith.Id && Name == objectToCompareWith.Name;
     }
 }

@@ -9,5 +9,5 @@ public interface IManagerAdapter
     public IEnumerable<GetManagerResponse> GetAllManagers();
     
     public void DeleteManagerById(Guid managerId);
-    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest);
+    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept);
 }

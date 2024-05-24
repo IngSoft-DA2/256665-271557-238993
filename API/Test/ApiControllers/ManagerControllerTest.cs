@@ -94,9 +94,9 @@ public class ManagerControllerTest
                 , dummyResponse.Id, dummyResponse);
 
         _managerAdapter.Setup(adapter =>
-            adapter.CreateManager(It.IsAny<CreateManagerRequest>())).Returns(dummyResponse);
+            adapter.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>())).Returns(dummyResponse);
 
-        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>());
+        IActionResult controllerResponse = _managerController.CreateManager(It.IsAny<CreateManagerRequest>(), It.IsAny<Guid>());
         _managerAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -108,7 +108,6 @@ public class ManagerControllerTest
         Assert.IsTrue(dummyResponse.Equals(controllerResponseValue));
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
-    
     
     
     #endregion

@@ -102,6 +102,7 @@ public class InvitationService : IInvitationService
     public void UpdateInvitation(Guid idOfInvitationToUpdate, Invitation invitationUpdated)
     {
         Invitation invitationNotUpdated = GetInvitationById(idOfInvitationToUpdate);
+        
         try
         {
             ValidationForBeingPossibleToUpdate(invitationUpdated, invitationNotUpdated);
@@ -148,9 +149,6 @@ public class InvitationService : IInvitationService
 
     private static void MapProperties(Invitation invitationWithUpdates, Invitation invitationWithoutUpdates)
     {
-        
-        
-
         if (invitationWithUpdates.Equals(invitationWithoutUpdates))
         {
             throw new ObjectRepeatedServiceException();
