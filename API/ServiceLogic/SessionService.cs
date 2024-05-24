@@ -87,13 +87,20 @@ public class SessionService : ISessionService
 
     public void Logout(Guid sessionId)
     {
-        Session? session = _sessionRepository.GetSessionBySessionString(sessionId);
-        if (session is null)
+        try
         {
-            throw new ObjectNotFoundServiceException();
-        }
+            Session? session = _sessionRepository.GetSessionBySessionString(sessionId);
+            if (session is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
 
-        _sessionRepository.DeleteSession(session);
+            _sessionRepository.DeleteSession(session);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     #endregion

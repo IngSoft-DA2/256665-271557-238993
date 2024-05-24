@@ -174,7 +174,6 @@ public class SessionServiceTest
         _administratorRepository.VerifyAll();
         _managerRepository.VerifyAll();
         _requestHandlerRepository.VerifyAll();
-        _sessionRepository.VerifyAll();
     }
 
     [TestMethod]
@@ -190,10 +189,7 @@ public class SessionServiceTest
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
             .Returns(new List<RequestHandler>());
-
-        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
-            .Returns(dummySession);
-
+        
         Assert.ThrowsException<UnknownServiceException>(() =>
             _sessionService.Authenticate(It.IsAny<string>(), It.IsAny<string>()));
         
@@ -221,6 +217,19 @@ public class SessionServiceTest
         _sessionRepository.Setup(sessionRepository => sessionRepository.DeleteSession(It.IsAny<Session>()));
 
         _sessionService.Logout(It.IsAny<Guid>());
+        _sessionRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void Logout_UnknownExceptionIsThrown()
+    {
+        Session dummySession = new Session();
+        dummySession.UserId = _sampleUserGuid;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _sessionService.Logout(It.IsAny<Guid>()));
         _sessionRepository.VerifyAll();
     }
 
