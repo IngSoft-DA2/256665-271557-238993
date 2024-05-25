@@ -32,6 +32,8 @@ public class SessionRepositoryTest
     #endregion
 
 
+    #region Create Session
+
     [TestMethod]
     public void CreateSession_SessionIsCreated()
     {
@@ -41,33 +43,61 @@ public class SessionRepositoryTest
             SessionString = Guid.NewGuid(),
             UserRole = "Admin"
         };
-        
+
         _sessionRepository.CreateSession(sessionToBeAdded);
 
         Assert.AreEqual(1, _dbContext.Set<Session>().Count());
     }
-    
+
     [TestMethod]
     public void CreateSession_ThrowsUnknownException()
     {
         Mock<DbContext> dbContextMock = new Mock<DbContext>();
         dbContextMock.Setup(dbContext => dbContext.Set<Session>()).Throws(new Exception("Unknown exception"));
-        
+
         var sessionToBeAdded = new Session()
         {
             UserId = Guid.NewGuid(),
             SessionString = Guid.NewGuid(),
             UserRole = "Admin"
         };
-        
+
         SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => sessionRepository.CreateSession(sessionToBeAdded));
     }
+
+    #endregion
     
+    #region Delete Session
+    
+    [TestMethod]
+    public void DeleteSession_SessionIsDeleted()
+    {
+        var sessionToBeDeleted = new Session()
+        {
+            UserId = Guid.NewGuid(),
+            SessionString = Guid.NewGuid(),
+            UserRole = "Admin"
+        };
+
+        _dbContext.Set<Session>().Add(sessionToBeDeleted);
+        _dbContext.SaveChanges();
+
+        _sessionRepository.DeleteSession(sessionToBeDeleted);
+
+        Assert.AreEqual(0, _dbContext.Set<Session>().Count());
+    }
+    
+    #endregion
+
+
+    #region Test Clean Up
 
     [TestCleanup]
     public void TestCleanup()
     {
         _dbContext.Database.EnsureDeleted();
     }
+
+    #endregion
 }
