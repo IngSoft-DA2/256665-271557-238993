@@ -1,5 +1,6 @@
 using System.Security.Authentication;
 using Domain;
+using Domain.Enums;
 using IDataAccess;
 using IRepository;
 using IServiceLogic;
@@ -130,7 +131,7 @@ public class SessionService : ISessionService
 
     #region Get user role by session string
 
-    public string GetUserRoleBySessionString(Guid sessionStringOfUser)
+    public SystemUserRoleEnum GetUserRoleBySessionString(Guid sessionStringOfUser)
     {
         try
         {

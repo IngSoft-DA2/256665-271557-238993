@@ -1,6 +1,7 @@
 using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Domain;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repositories.CustomExceptions;
@@ -38,7 +39,7 @@ public class ManagerRepositoryTest
                 Firstname = "Manager1",
                 Email = "manager1@gmail.com",
                 Password = "password1",
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
@@ -48,7 +49,7 @@ public class ManagerRepositoryTest
                 Firstname = "Manager2",
                 Email = "manager2@gmail.com",
                 Password = "password2",
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             }
@@ -80,7 +81,7 @@ public class ManagerRepositoryTest
         Manager managerInDb = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
@@ -149,7 +150,7 @@ public class ManagerRepositoryTest
         Manager managerToCreate = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",
@@ -177,7 +178,7 @@ public class ManagerRepositoryTest
         Manager managerToDelete = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager1",
             Email = "manager@gmail.com",
             Password = "managerPassword",

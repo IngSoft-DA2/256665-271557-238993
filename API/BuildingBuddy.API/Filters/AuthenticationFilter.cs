@@ -8,9 +8,9 @@ namespace BuildingBuddy.API.Filters;
 
 public class AuthenticationFilter : Attribute, IActionFilter
 {
-    private readonly List<string> _roles;
+    private readonly List<SystemUserRoleEnum> _roles;
 
-    public AuthenticationFilter(params string[] roles)
+    public AuthenticationFilter(params SystemUserRoleEnum[] roles)
     {
         _roles = roles.ToList();
     }
@@ -38,7 +38,7 @@ public class AuthenticationFilter : Attribute, IActionFilter
                 }
                 //Here ends Authorization, now we check if the user has the required roles (Authentication)
                 
-                string userRole = sessionService.GetUserRoleBySessionString(sessionStringOfUser);
+                SystemUserRoleEnum userRole = sessionService.GetUserRoleBySessionString(sessionStringOfUser);
                 
                 if (!_roles.Contains(userRole))
                 {

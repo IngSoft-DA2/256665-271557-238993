@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using WebModel.Requests.FlatRequests;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(["Manager"])]
+    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v1/flats")]
     [ApiController]
     public class FlatController : ControllerBase

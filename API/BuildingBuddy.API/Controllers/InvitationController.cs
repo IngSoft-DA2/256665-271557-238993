@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ using WebModel.Responses.InvitationResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(["Admin"])]
+    [AuthenticationFilter(SystemUserRoleEnum.Admin)]
     [Route("api/v1/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase

@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Differencing;
@@ -8,7 +9,7 @@ using WebModel.Requests.CategoryRequests;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(["Admin"])]
+    [AuthenticationFilter(SystemUserRoleEnum.Admin)]
     [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase

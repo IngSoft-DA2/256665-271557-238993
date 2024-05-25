@@ -1,6 +1,7 @@
 ﻿using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Domain;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repositories.CustomExceptions;
@@ -40,7 +41,7 @@ public class SessionRepositoryTest
         {
             UserId = Guid.NewGuid(),
             SessionString = Guid.NewGuid(),
-            UserRole = "Admin"
+            UserRole = SystemUserRoleEnum.Admin
         };
 
         _sessionRepository.CreateSession(sessionToBeAdded);
@@ -58,7 +59,7 @@ public class SessionRepositoryTest
         {
             UserId = Guid.NewGuid(),
             SessionString = Guid.NewGuid(),
-            UserRole = "Admin"
+            UserRole = SystemUserRoleEnum.Admin
         };
 
         SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
@@ -76,7 +77,7 @@ public class SessionRepositoryTest
         {
             UserId = Guid.NewGuid(),
             SessionString = Guid.NewGuid(),
-            UserRole = "Admin"
+            UserRole = SystemUserRoleEnum.Admin
         };
 
         _dbContext.Set<Session>().Add(sessionToBeDeleted);
@@ -97,7 +98,7 @@ public class SessionRepositoryTest
         {
             UserId = Guid.NewGuid(),
             SessionString = Guid.NewGuid(),
-            UserRole = "Admin"
+            UserRole = SystemUserRoleEnum.Admin
         };
 
         SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
@@ -115,7 +116,7 @@ public class SessionRepositoryTest
         {
             UserId = Guid.NewGuid(),
             SessionString = Guid.NewGuid(),
-            UserRole = "Admin"
+            UserRole = SystemUserRoleEnum.Admin
         };
 
         _dbContext.Set<Session>().Add(sessionToBeReturned);

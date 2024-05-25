@@ -43,7 +43,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -52,7 +52,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
-                Role = "RequestHandler",
+                Role = SystemUserRoleEnum.RequestHandler,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -104,7 +104,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -113,7 +113,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
-                Role = "RequestHandler",
+                Role = SystemUserRoleEnum.RequestHandler,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -180,7 +180,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -189,7 +189,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
-                Role = "RequestHandler",
+                Role = SystemUserRoleEnum.RequestHandler,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -241,7 +241,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -250,7 +250,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
-                Role = "RequestHandler",
+                Role = SystemUserRoleEnum.RequestHandler,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -318,7 +318,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -327,7 +327,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
-                Role = "RequestHandler",
+                Role = SystemUserRoleEnum.RequestHandler,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -379,7 +379,7 @@ public class ReportRepositoryTest
             Manager = new Manager()
             {
                 Id = Guid.NewGuid(),
-                Role = "Manager",
+                Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",
@@ -388,7 +388,7 @@ public class ReportRepositoryTest
             RequestHandler = new RequestHandler()
             {
                 Id = Guid.NewGuid(),
-                Role = "RequestHandler",
+                Role = SystemUserRoleEnum.RequestHandler,
                 Firstname = "FirstName",
                 Email = "Email",
                 Password = "Password",

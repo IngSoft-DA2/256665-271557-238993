@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.MaintenanceRequests;
@@ -24,7 +25,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Get All Maintenance Requests
         
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [HttpGet]
         [Route("requests")]
         public IActionResult GetAllMaintenanceRequests([FromQuery] Guid? managerId)
@@ -36,7 +37,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Create Maintenance Request
         
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [HttpPost]
         public IActionResult CreateMaintenanceRequest([FromBody] CreateRequestMaintenanceRequest request)
         {
@@ -50,7 +51,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get Maintenance Request By Category Id
 
         [HttpGet]
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [Route("/category/requests")]
         public IActionResult GetMaintenanceRequestByCategory([FromQuery] Guid categoryId)
         {
@@ -62,7 +63,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Assign Maintenance Request
         
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [HttpPut]
         [Route("request-handler/requests")]
         public IActionResult AssignMaintenanceRequest([FromQuery] Guid idOfRequestToUpdate, [FromQuery] Guid idOfWorker)
@@ -77,7 +78,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Get Maintenance Requests By Request Handler
         
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [HttpGet]
         [Route("request-handler/{handlerId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
@@ -91,7 +92,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Update Maintenance Request
         
-        [AuthenticationFilter(["RequestHandler"])]
+        [AuthenticationFilter(SystemUserRoleEnum.RequestHandler)]
         [HttpPut]
         [Route("requests/{id:Guid}")]
         public IActionResult UpdateMaintenanceRequestStatus([FromRoute] Guid id,
@@ -107,7 +108,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Get Maintenance Request By Id
         
-        [AuthenticationFilter(["Manager"])]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [HttpGet]
         [Route("requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)

@@ -1,5 +1,6 @@
 using System.Security.Authentication;
 using Domain;
+using Domain.Enums;
 using IDataAccess;
 using IRepository;
 using Moq;
@@ -86,12 +87,12 @@ public class SessionServiceTest
     public void GetUserRoleBySessionString_RolesAreReturn()
     {
         Session dummySession = new Session();
-        dummySession.UserRole = "Administrator";
+        dummySession.UserRole = SystemUserRoleEnum.Admin;
 
         _sessionRepository.Setup(_sessionRepository => _sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
             .Returns(dummySession);
 
-        string role = _sessionService.GetUserRoleBySessionString(It.IsAny<Guid>());
+        SystemUserRoleEnum role = _sessionService.GetUserRoleBySessionString(It.IsAny<Guid>());
         _sessionRepository.VerifyAll();
 
         Assert.AreEqual(dummySession.UserRole, role);
@@ -101,7 +102,7 @@ public class SessionServiceTest
     public void GetUserRoleBySessionString_UnknownExceptionIsThrown()
     {
         Session dummySession = new Session();
-        dummySession.UserRole = "Administrator";
+        dummySession.UserRole = SystemUserRoleEnum.Admin;
 
         _sessionRepository.Setup(_sessionRepository => _sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
             .Throws<Exception>();
@@ -123,7 +124,7 @@ public class SessionServiceTest
             Id = Guid.NewGuid(),
             Email = "example@gmail.com",
             Password = "Password2003",
-            Role = "Administrator"
+            Role = SystemUserRoleEnum.Admin
         };
 
         Session dummySession = new Session();

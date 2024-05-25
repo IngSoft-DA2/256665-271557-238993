@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Enums;
 using IRepository;
 using IServiceLogic;
 using Moq;
@@ -151,7 +152,7 @@ public class ManagerServiceTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager",
             Email = "person@gmail.com",
             Password = "123456789"
@@ -166,7 +167,7 @@ public class ManagerServiceTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager",
             Email = "persona@gmail.com",
             Password = "12345678910",

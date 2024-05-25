@@ -1,6 +1,7 @@
 ﻿using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using Domain;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Repositories.CustomExceptions;
@@ -39,7 +40,7 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerToAdd = new RequestHandler()
         {
             Id = Guid.NewGuid(),
-            Role = "RequestHandler",
+            Role = SystemUserRoleEnum.RequestHandler,
             Firstname = "RequestHandler1",
             Email = "person@gmail.com",
             LastName = "lastname",
@@ -74,7 +75,7 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerInDb = new RequestHandler
         {
             Id = Guid.NewGuid(),
-            Role = "RequestHandler",
+            Role = SystemUserRoleEnum.RequestHandler,
             Firstname = "RequestHandler1",
             Email = "person2@gmail.com",
             LastName = "lastname",
@@ -83,7 +84,7 @@ public class RequestHandlerRepositoryTest
         RequestHandler requestHandlerInDb2 = new RequestHandler
         {
             Id = Guid.NewGuid(),
-            Role = "RequestHandler",
+            Role =SystemUserRoleEnum.RequestHandler,
             Firstname = "RequestHandler2",
             Email = "person@gmail.com",
             LastName = "lastname",
