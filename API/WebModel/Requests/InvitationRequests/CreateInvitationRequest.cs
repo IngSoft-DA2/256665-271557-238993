@@ -8,5 +8,5 @@ public class CreateInvitationRequest
     public string Lastname { get; set; }
     public string Email { get; set; }
     public DateTime ExpirationDate { get; set; }
-    public SystemUserRoleEnum Role { get; set; }
+    public SystemUserRoleEnumRequest Role { get; set; }
 }

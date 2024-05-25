@@ -38,7 +38,8 @@ public class InvitationAdapter : IInvitationAdapter
                     ExpirationDate = invitation.ExpirationDate,
                     Email = invitation.Email,
                     Firstname = invitation.Firstname,
-                    Lastname = invitation.Lastname
+                    Lastname = invitation.Lastname,
+                    Role = (SystemUserRoleEnumResponse)invitation.Role
                 });
 
             return adapterResponse;
@@ -66,7 +67,8 @@ public class InvitationAdapter : IInvitationAdapter
                 ExpirationDate = serviceResponse.ExpirationDate,
                 Email = serviceResponse.Email,
                 Firstname = serviceResponse.Firstname,
-                Lastname = serviceResponse.Lastname
+                Lastname = serviceResponse.Lastname,
+                Role = (SystemUserRoleEnumResponse)serviceResponse.Role
             };
 
             return adapterResponse;
@@ -98,7 +100,8 @@ public class InvitationAdapter : IInvitationAdapter
                     ExpirationDate = invitation.ExpirationDate,
                     Email = invitation.Email,
                     Firstname = invitation.Firstname,
-                    Lastname = invitation.Lastname
+                    Lastname = invitation.Lastname,
+                    Role = (SystemUserRoleEnumResponse)invitation.Role
                 });
 
             return adapterResponse;
@@ -128,7 +131,7 @@ public class InvitationAdapter : IInvitationAdapter
                 Lastname = invitationToCreate.Lastname,
                 Email = invitationToCreate.Email,
                 ExpirationDate = invitationToCreate.ExpirationDate,
-                Role = (SystemUserRoleEnum)invitationToCreate.Role
+                Role = (SystemUserRoleEnum) invitationToCreate.Role
             };
 
             _invitationServiceLogic.CreateInvitation(invitation);

@@ -1,3 +1,5 @@
+using Domain.Enums;
+
 namespace WebModel.Responses.InvitationResponses;
 
 public class GetInvitationResponse
@@ -8,6 +10,7 @@ public class GetInvitationResponse
     public string Email { get; set; }
     public StatusEnumResponse Status { get; set; }
     public DateTime ExpirationDate { get; set; }
+    public SystemUserRoleEnumResponse Role { get; set; }
 
     public override bool Equals(object objectToCompare)
     {
@@ -18,6 +21,7 @@ public class GetInvitationResponse
                Lastname == toCompare.Lastname &&
                Email == toCompare.Email &&
                Status == toCompare.Status &&
-               ExpirationDate == toCompare.ExpirationDate;
+               ExpirationDate == toCompare.ExpirationDate &&
+               Role == toCompare.Role;
     }
 }
