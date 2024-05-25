@@ -127,7 +127,8 @@ public class InvitationAdapter : IInvitationAdapter
                 Firstname = invitationToCreate.Firstname,
                 Lastname = invitationToCreate.Lastname,
                 Email = invitationToCreate.Email,
-                ExpirationDate = invitationToCreate.ExpirationDate
+                ExpirationDate = invitationToCreate.ExpirationDate,
+                Role = (SystemUserRoleEnum)invitationToCreate.Role
             };
 
             _invitationServiceLogic.CreateInvitation(invitation);

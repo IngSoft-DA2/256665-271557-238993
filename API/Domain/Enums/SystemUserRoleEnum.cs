@@ -4,5 +4,6 @@ public enum SystemUserRoleEnum
 {
     Admin = 1,
     Manager,
-    RequestHandler
+    RequestHandler,
+    ConstructionCompanyAdmin
 }

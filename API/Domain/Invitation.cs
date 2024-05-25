@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain;
 
@@ -11,7 +12,7 @@ public class Invitation
     public string Email { get; set; }
     public DateTime ExpirationDate { get; set; }
     public StatusEnum Status { get; set; } = StatusEnum.Pending;
-
+    public SystemUserRoleEnum Role { get; set; }
 
     public void InvitationValidator()
     {
@@ -19,6 +20,7 @@ public class Invitation
         LastnameValidation();
         EmailValidation();
         ExpirationDateValidation();
+        RoleValidator();
     }
 
     public override bool Equals(object? obj)
@@ -26,7 +28,8 @@ public class Invitation
         Invitation? invitationToCompare = obj as Invitation;
         return Id == invitationToCompare.Id && Firstname == invitationToCompare.Firstname &&
                Lastname == invitationToCompare.Lastname && Email == invitationToCompare.Email &&
-               ExpirationDate == invitationToCompare.ExpirationDate && Status == invitationToCompare.Status;
+               ExpirationDate == invitationToCompare.ExpirationDate && Status == invitationToCompare.Status &&
+                Role == invitationToCompare.Role;
     }
 
     private void FirstnameValidation()
@@ -74,6 +77,14 @@ public class Invitation
         if (ExpirationDate <= DateTime.Today)
         {
             throw new InvalidInvitationException("Expiration date must be greater than today");
+        }
+    }
+    
+    private void RoleValidator()
+    {
+        if (Role != SystemUserRoleEnum.Manager && Role != SystemUserRoleEnum.ConstructionCompanyAdmin)
+        {
+            throw new InvalidInvitationException("Role must be Manager or Construction Company Administrator");
         }
     }
 }
