@@ -182,7 +182,7 @@ public class ConstructionCompanyServiceTest
     #region Create Construction Company, Repository Validations
     
     [TestMethod]
-    public void CreateConstructionCompanyWithUsedName_ThrowsRepeatedObjectErrorException()
+    public void CreateConstructionCompanyWithUsedName_ThrowsRepeatedObjectRepeatedServiceException()
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = new List<ConstructionCompany>
         {
@@ -233,8 +233,6 @@ public class ConstructionCompanyServiceTest
         
         _constructionCompanyRepository.VerifyAll();
     }
-    
-    
     
     
     #endregion
