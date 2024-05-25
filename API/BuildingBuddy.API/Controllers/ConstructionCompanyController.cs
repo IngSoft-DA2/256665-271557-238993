@@ -10,7 +10,6 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v1/construction-companies")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
@@ -29,6 +28,7 @@ namespace BuildingBuddy.API.Controllers
         #region GetConstructionCompanies
 
         [HttpGet]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         public IActionResult GetAllConstructionCompanies()
         {
             return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
@@ -39,6 +39,7 @@ namespace BuildingBuddy.API.Controllers
         #region CreateConstructionCompany
 
         [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager, SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany(
             [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {

@@ -252,7 +252,7 @@ public class ConstructionCompanyServiceTest
                 UserCreator = Guid.NewGuid()
             }
         };
-
+        
         ConstructionCompany constructionCompanyToAdd = new ConstructionCompany
         {
             Id = Guid.NewGuid(),
