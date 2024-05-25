@@ -88,6 +88,23 @@ public class SessionRepositoryTest
         Assert.AreEqual(0, _dbContext.Set<Session>().Count());
     }
     
+    [TestMethod]
+public void DeleteSession_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Session>()).Throws(new Exception("Unknown exception"));
+
+        var sessionToBeDeleted = new Session()
+        {
+            UserId = Guid.NewGuid(),
+            SessionString = Guid.NewGuid(),
+            UserRole = "Admin"
+        };
+
+        SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() => sessionRepository.DeleteSession(sessionToBeDeleted));
+    }
+    
     #endregion
 
 
