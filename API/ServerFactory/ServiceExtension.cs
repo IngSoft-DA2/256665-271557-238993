@@ -2,6 +2,7 @@ using Adapter;
 using DataAccess.DbContexts;
 using DataAccess.Repositories;
 using IAdapter;
+using IDataAccess;
 using IRepository;
 using IServiceLogic;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,8 @@ public static class ServiceExtension
         services.AddScoped<IRequestHandlerAdapter, RequestHandlerAdapter>();
         services.AddScoped<IRequestHandlerService, RequestHandlerService>();
         services.AddScoped<IRequestHandlerRepository, RequestHandlerRepository>();
+        services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<ISessionRepository, SessionRepository>();
     }
 
     public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)
