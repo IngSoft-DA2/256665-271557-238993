@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Enums;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,9 +10,9 @@ public class AuthenticationFilter : Attribute, IActionFilter
 {
     private readonly List<string> _roles;
 
-    public AuthenticationFilter(string[] roles)
+    public AuthenticationFilter(params string[] roles)
     {
-        _roles = new List<string>(roles);
+        _roles = roles.ToList();
     }
     
     public void OnActionExecuting(ActionExecutingContext context)

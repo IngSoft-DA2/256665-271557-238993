@@ -30,7 +30,7 @@ public class SessionRepositoryTest
     }
 
     #endregion
-    
+
     #region Create Session
 
     [TestMethod]
@@ -66,9 +66,9 @@ public class SessionRepositoryTest
     }
 
     #endregion
-    
+
     #region Delete Session
-    
+
     [TestMethod]
     public void DeleteSession_SessionIsDeleted()
     {
@@ -86,9 +86,9 @@ public class SessionRepositoryTest
 
         Assert.AreEqual(0, _dbContext.Set<Session>().Count());
     }
-    
+
     [TestMethod]
-public void DeleteSession_ThrowsUnknownException()
+    public void DeleteSession_ThrowsUnknownException()
     {
         Mock<DbContext> dbContextMock = new Mock<DbContext>();
         dbContextMock.Setup(dbContext => dbContext.Set<Session>()).Throws(new Exception("Unknown exception"));
@@ -103,9 +103,29 @@ public void DeleteSession_ThrowsUnknownException()
         SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => sessionRepository.DeleteSession(sessionToBeDeleted));
     }
-    
+
     #endregion
-    
+
+    #region Get Session By Session String
+
+    [TestMethod]
+    public void GetSessionBySessionString_SessionIsReturned()
+    {
+        var sessionToBeReturned = new Session()
+        {
+            UserId = Guid.NewGuid(),
+            SessionString = Guid.NewGuid(),
+            UserRole = "Admin"
+        };
+
+        _dbContext.Set<Session>().Add(sessionToBeReturned);
+        _dbContext.SaveChanges();
+
+        Session sessionReturned = _sessionRepository.GetSessionBySessionString(sessionToBeReturned.SessionString);
+
+        Assert.AreEqual(sessionToBeReturned, sessionReturned);
+    }
+    #endregion
 
     #region Test Clean Up
 
