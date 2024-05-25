@@ -30,7 +30,6 @@ public class MaintenanceRequestServiceTest
             RequestHandlerId = Guid.NewGuid(),
             CategoryId = Guid.NewGuid(),
             RequestStatus = RequestStatusEnum.Closed
-
         };
     }
 
@@ -66,9 +65,11 @@ public class MaintenanceRequestServiceTest
         };
 
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
-            maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>())).Returns(expectedRepositoryResponse);
+                maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>()))
+            .Returns(expectedRepositoryResponse);
 
-        IEnumerable<MaintenanceRequest> actualResponse = _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>());
+        IEnumerable<MaintenanceRequest> actualResponse =
+            _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>());
 
         Assert.AreEqual(expectedRepositoryResponse, actualResponse);
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
@@ -80,7 +81,8 @@ public class MaintenanceRequestServiceTest
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>())).Throws(new Exception());
 
-        Assert.ThrowsException<UnknownServiceException>(() => _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>()));
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>()));
     }
 
     #endregion
@@ -237,10 +239,12 @@ public class MaintenanceRequestServiceTest
         };
 
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
-            maintenanceRequestRepository.GetMaintenanceRequestById(maintenanceRequestInDb.Id)).Returns(maintenanceRequestInDb);
+                maintenanceRequestRepository.GetMaintenanceRequestById(maintenanceRequestInDb.Id))
+            .Returns(maintenanceRequestInDb);
 
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
-            maintenanceRequestRepository.UpdateMaintenanceRequest(maintenanceRequestInDb.Id, maintenanceRequestWithUpdates));
+            maintenanceRequestRepository.UpdateMaintenanceRequest(maintenanceRequestInDb.Id,
+                maintenanceRequestWithUpdates));
 
         _maintenanceRequestService.UpdateMaintenanceRequest(maintenanceRequestInDb.Id, maintenanceRequestWithUpdates);
 
@@ -263,7 +267,6 @@ public class MaintenanceRequestServiceTest
     [TestMethod]
     public void UpdateMaintenanceRequest_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
     {
-
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
                 maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>()))
             .Returns(_maintenanceRequestSample);
@@ -274,12 +277,11 @@ public class MaintenanceRequestServiceTest
 
         Assert.ThrowsException<UnknownServiceException>(() =>
             _maintenanceRequestService.UpdateMaintenanceRequest(Guid.NewGuid(), _maintenanceRequestSample));
-        
+
         _maintenanceRequestRepository.Verify(maintenanceRequestRepository =>
             maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>()), Times.Once);
     }
-
-
+    
     [TestMethod]
     public void AssignMaintenanceRequest_MaintenanceRequestIsAssigned()
     {

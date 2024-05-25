@@ -97,6 +97,19 @@ public class SessionServiceTest
 
         Assert.AreEqual(dummySession.UserRole, role);
     }
+    
+    [TestMethod]
+    public void GetUserRoleBySessionString_SessionStringIsNotFound()
+    {
+        Session dummySession = null;
+
+        _sessionRepository.Setup(_sessionRepository => _sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _sessionService.GetUserRoleBySessionString(It.IsAny<Guid>()));
+        _sessionRepository.VerifyAll();
+    }
 
     [TestMethod]
     public void GetUserRoleBySessionString_UnknownExceptionIsThrown()
@@ -126,18 +139,20 @@ public class SessionServiceTest
             Password = "Password2003",
             Role = SystemUserRoleEnum.Admin
         };
-
+        
+        Manager manager = new Manager();
+        RequestHandler requestHandler= new RequestHandler();
         Session dummySession = new Session();
         dummySession.UserId = _sampleUserGuid;
 
         _administratorRepository.Setup(administratorRepository => administratorRepository.GetAllAdministrators())
             .Returns(new List<Administrator> { user });
-
+        
         _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
-            .Returns(new List<Manager>());
+            .Returns(new List<Manager>{manager});
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
-            .Returns(new List<RequestHandler>());
+            .Returns(new List<RequestHandler>{requestHandler});
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.CreateSession(It.IsAny<Session>()));
 
@@ -155,7 +170,7 @@ public class SessionServiceTest
     public void Authenticate_UserIsNotAuthenticated()
     {
         Session dummySession = null;
-
+        
         _administratorRepository.Setup(administratorRepository => administratorRepository.GetAllAdministrators())
             .Returns(new List<Administrator>());
 
@@ -216,7 +231,19 @@ public class SessionServiceTest
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.DeleteSession(It.IsAny<Session>()));
 
-        _sessionService.Logout(It.IsAny<Guid>());
+        _sessionService.Logout(dummySession.UserId);
+        _sessionRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void Logout_UserIsNotFound()
+    {
+        Session dummySession = null;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _sessionService.Logout(It.IsAny<Guid>()));
         _sessionRepository.VerifyAll();
     }
     

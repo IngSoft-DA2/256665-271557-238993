@@ -98,28 +98,9 @@ public class SessionService : ISessionService
 
             _sessionRepository.DeleteSession(session);
         }
-        catch (Exception exceptionCaught)
+        catch (ObjectNotFoundServiceException)
         {
-            throw new UnknownServiceException(exceptionCaught.Message);
-        }
-    }
-
-    #endregion
-
-    #region Get current userId by session string
-
-    public Guid GetCurrentUserIdBySessionString(Guid sessionString)
-    {
-        try
-        {
-            Session? session = _sessionRepository.GetSessionBySessionString(sessionString);
-
-            if (session is null)
-            {
-                throw new ObjectNotFoundServiceException();
-            }
-
-            return session.UserId;
+            throw new ObjectNotFoundServiceException();
         }
         catch (Exception exceptionCaught)
         {
@@ -128,7 +109,7 @@ public class SessionService : ISessionService
     }
 
     #endregion
-
+    
     #region Get user role by session string
 
     public SystemUserRoleEnum GetUserRoleBySessionString(Guid sessionStringOfUser)
@@ -143,6 +124,10 @@ public class SessionService : ISessionService
             }
 
             return session.UserRole;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
         }
         catch (Exception exceptionCaught)
         {

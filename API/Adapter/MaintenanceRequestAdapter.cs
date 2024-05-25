@@ -103,7 +103,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                 Description = maintenanceRequestToCreate.Description,
                 FlatId = maintenanceRequestToCreate.FlatId,
                 CategoryId = maintenanceRequestToCreate.Category,
-                ManagerId = maintenanceRequestToCreate.ManagerId,
+                ManagerId = maintenanceRequestToCreate.ManagerId
             };
 
             _maintenanceRequestService.CreateMaintenanceRequest(maintenanceRequest);
