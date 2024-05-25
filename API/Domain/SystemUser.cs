@@ -1,11 +1,12 @@
 using Domain.CustomExceptions;
+using Domain.Enums;
 
 namespace Domain;
 
 public abstract class SystemUser : Person
 {
     public string Password { get; set; }
-    public string Role { get; set; }
+    public SystemUserRoleEnum Role { get; set; }
     
     public void PasswordValidator()
     {

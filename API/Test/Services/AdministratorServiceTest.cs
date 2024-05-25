@@ -44,6 +44,7 @@ public class AdministratorServiceTest
         _administratorService.CreateAdministrator(_genericAdministrator);
 
         Assert.IsNotNull(_genericAdministrator);
+        Assert.IsNotNull(_genericAdministrator.Invitations);
 
         _administratorRepository.VerifyAll();
     }

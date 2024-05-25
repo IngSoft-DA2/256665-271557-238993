@@ -1,6 +1,5 @@
 using Domain;
 using IDataAccess;
-using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
 
@@ -14,6 +13,7 @@ public class SessionRepository : ISessionRepository
     {
         _dbContext = dbContext;
     }
+
     public void CreateSession(Session session)
     {
         try
@@ -41,35 +41,14 @@ public class SessionRepository : ISessionRepository
         }
     }
 
-    public Session GetSessionById(Guid sessionId)
+    public Session GetSessionBySessionString(Guid sessionString)
     {
         try
         {
-            return _dbContext.Set<Session>().Find(sessionId);
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownRepositoryException(exceptionCaught.Message);
-        }
-    }
-
-    public IEnumerable<Session> GetAllSessions()
-    {
-        try
-        {
-            return _dbContext.Set<Session>().Include(session => session.User).ToList();
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownRepositoryException(exceptionCaught.Message);
-        }
-    }
-
-    public void Save()
-    {
-        try
-        {
-            _dbContext.SaveChanges();
+            Session? sessionFound = _dbContext.Set<Session>()
+                .FirstOrDefault(session => session.SessionString.Equals(sessionString));
+            
+            return sessionFound;
         }
         catch (Exception exceptionCaught)
         {

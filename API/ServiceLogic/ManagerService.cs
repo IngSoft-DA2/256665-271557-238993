@@ -56,10 +56,6 @@ public class ManagerService :IManagerService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-        catch (InvalidManagerException exceptionCaught)
-        {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
         catch (ObjectRepeatedServiceException)
         {
             throw new ObjectRepeatedServiceException();

@@ -1,10 +1,14 @@
-﻿namespace Domain;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Enums;
+
+namespace Domain;
 
 public class Session
 {
-    public Guid Id { get; set; }
+    [Key] 
     public Guid SessionString { get; set; }
-    public SystemUser User { get; set; }
+    public Guid UserId { get; set; }
+    public SystemUserRoleEnum UserRole { get; set; }
 
     public Session()
     {

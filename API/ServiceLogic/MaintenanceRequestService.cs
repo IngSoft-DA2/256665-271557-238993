@@ -78,10 +78,6 @@ public class MaintenanceRequestService : IMaintenanceRequestService
             maintenanceRequestUpdated.MaintenanceRequestValidator();
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequestUpdated);
         }
-        catch (InvalidMaintenanceRequestException exceptionCaught)
-        {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundServiceException();

@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.AdministratorRequests;
@@ -7,8 +8,8 @@ using WebModel.Responses.AdministratorResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
+    [AuthenticationFilter(SystemUserRoleEnum.Admin)]
     [Route("api/v1/administrators")]
-    [AuthenticationFilter(["Admin"])]
     [ApiController]
     public class AdministratorController : ControllerBase
     {

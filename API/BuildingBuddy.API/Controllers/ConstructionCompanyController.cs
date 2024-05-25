@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyRequests;
@@ -9,7 +10,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(["Manager"])]
+    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v1/construction-companies")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase

@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.RequestHandlerRequests;
@@ -7,7 +8,7 @@ using WebModel.Responses.RequestHandlerResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(["Manager"])]
+    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v1/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase

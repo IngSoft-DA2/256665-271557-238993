@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using Azure.Core;
+using Domain;
+using Domain.Enums;
 using IRepository;
 using IServiceLogic;
 using Moq;
@@ -74,7 +76,7 @@ public class ManagerServiceTest
         };
 
         Invitation dummyInvitation = new Invitation();
-        
+
         _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers()).Returns(new List<Manager>());
         _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager));
         _invitationService.Setup(invitationService =>
@@ -85,7 +87,7 @@ public class ManagerServiceTest
         _managerRepository.VerifyAll();
         _invitationService.Verify(
             invitationRepository => invitationRepository.UpdateInvitation
-                (It.IsAny<Guid>(),It.IsAny<Invitation>()), Times.Once);
+                (It.IsAny<Guid>(), It.IsAny<Invitation>()), Times.Once);
     }
 
     [TestMethod]
@@ -151,7 +153,7 @@ public class ManagerServiceTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager",
             Email = "person@gmail.com",
             Password = "123456789"
@@ -159,14 +161,31 @@ public class ManagerServiceTest
         Assert.IsNotNull(manager.Buildings);
     }
 
-
     [TestMethod]
-    public void GivenRepeatedEmailOnCreate_ShouldThrowException()
+    public void GivenManagerWithEmptyName_ShouldThrowObjectErrorServiceException()
     {
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
-            Role = "Manager",
+            Role = SystemUserRoleEnum.Manager,
+            Firstname = "",
+            Email = "a@gmail.com",
+            Buildings = new List<Building>(),
+            Password = "131312321",
+            Requests = new List<MaintenanceRequest>()
+        };
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _managerService.CreateManager(manager, It.IsAny<Invitation>()));
+    }
+
+    [TestMethod]
+    public void GivenRepeatedEmailOnCreate_ShouldThrowObjectRepeteadException()
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Role = SystemUserRoleEnum.Manager,
             Firstname = "Manager",
             Email = "persona@gmail.com",
             Password = "12345678910",
@@ -195,13 +214,16 @@ public class ManagerServiceTest
 
         Invitation dummyInvitation = new Invitation();
 
-        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers()).Returns(new List<Manager>());
-        _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager)).Throws(new Exception());
-        
-        _invitationService.Setup(invitationService => invitationService.UpdateInvitation
-            (It.IsAny<Guid>(),It.IsAny<Invitation>()));
+        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
+            .Returns(new List<Manager>());
+        _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager))
+            .Throws(new Exception());
 
-        Assert.ThrowsException<UnknownServiceException>(() => _managerService.CreateManager(manager, dummyInvitation));
+        _invitationService.Setup(invitationService => invitationService.UpdateInvitation
+            (It.IsAny<Guid>(), It.IsAny<Invitation>()));
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _managerService.CreateManager(manager, dummyInvitation));
 
         _managerRepository.VerifyAll();
     }

@@ -18,15 +18,16 @@ public class ApplicationDbContext : DbContext
     public DbSet<Administrator> Administrators { get; set; }
     public DbSet<Manager> Managers { get; set; }
     public DbSet<RequestHandler> RequestHandlers { get; set; }
+    public DbSet<Session> Sessions { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<MaintenanceRequest>()
-            .HasOne(mr => mr.Manager) 
+            .HasOne(mr => mr.Manager)
             .WithMany(m => m.Requests)
-            .HasForeignKey(mr => mr.ManagerId) 
+            .HasForeignKey(mr => mr.ManagerId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

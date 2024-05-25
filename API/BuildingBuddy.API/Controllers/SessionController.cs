@@ -16,8 +16,7 @@ namespace BuildingBuddy.API.Controllers
         {
             _sessionService = sessionService;
         }
-
-
+        
         [HttpPost]
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
@@ -25,13 +24,12 @@ namespace BuildingBuddy.API.Controllers
             
             return Ok(sessionString);
         }
-
-        [ServiceFilter(typeof(AuthenticationFilter))]
+        
         [HttpDelete]
         public IActionResult Logout([FromHeader] Guid sessionId)
         {
             _sessionService.Logout(sessionId);
-            return Ok();
+            return NoContent();
         }
     }
 

@@ -10,7 +10,8 @@ namespace Test.ApiControllers;
 public class SessionControllerTest
 {
     #region Test Initialize
-    private Mock<ISessionService> _sessionService; 
+
+    private Mock<ISessionService> _sessionService;
     private SessionController _sessionController;
 
     [TestInitialize]
@@ -50,5 +51,25 @@ public class SessionControllerTest
     }
 
     #endregion
-    
+
+    #region Logout
+
+    [TestMethod]
+    public void Logout()
+    {
+        Guid sessionId = Guid.NewGuid();
+
+        _sessionService.Setup(x => x.Logout(sessionId));
+
+        NoContentResult expected = new NoContentResult();
+
+        IActionResult result = _sessionController.Logout(sessionId);
+        _sessionService.VerifyAll();
+
+        NoContentResult? resultCasted = result as NoContentResult;
+        Assert.IsNotNull(resultCasted);
+
+        Assert.AreEqual(expected.StatusCode, resultCasted.StatusCode);
+    }
+    #endregion
 }
