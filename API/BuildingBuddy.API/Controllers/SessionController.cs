@@ -29,7 +29,7 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult Logout([FromHeader] Guid sessionId)
         {
             _sessionService.Logout(sessionId);
-            return Ok();
+            return NoContent();
         }
     }
 
