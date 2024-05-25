@@ -125,6 +125,14 @@ public class SessionRepositoryTest
 
         Assert.AreEqual(sessionToBeReturned, sessionReturned);
     }
+    
+    [TestMethod]
+    public void GetSessionBySessionString_SessionIsNull()
+    {
+        Session sessionReturned = _sessionRepository.GetSessionBySessionString(Guid.NewGuid());
+
+        Assert.IsNull(sessionReturned);
+    }
     #endregion
 
     #region Test Clean Up
