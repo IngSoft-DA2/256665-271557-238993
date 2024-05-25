@@ -125,7 +125,7 @@ public class SessionRepositoryTest
 
         Assert.AreEqual(sessionToBeReturned, sessionReturned);
     }
-    
+
     [TestMethod]
     public void GetSessionBySessionString_SessionIsNull()
     {
@@ -133,6 +133,18 @@ public class SessionRepositoryTest
 
         Assert.IsNull(sessionReturned);
     }
+
+    [TestMethod]
+    public void GetSessionBySessionString_ThrowsUnknownException()
+    {
+        Mock<DbContext> dbContextMock = new Mock<DbContext>();
+        dbContextMock.Setup(dbContext => dbContext.Set<Session>()).Throws(new Exception("Unknown exception"));
+
+        SessionRepository sessionRepository = new SessionRepository(dbContextMock.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            sessionRepository.GetSessionBySessionString(Guid.NewGuid()));
+    }
+
     #endregion
 
     #region Test Clean Up
