@@ -30,8 +30,7 @@ public class SessionRepositoryTest
     }
 
     #endregion
-
-
+    
     #region Create Session
 
     [TestMethod]
@@ -106,7 +105,7 @@ public void DeleteSession_ThrowsUnknownException()
     }
     
     #endregion
-
+    
 
     #region Test Clean Up
 
