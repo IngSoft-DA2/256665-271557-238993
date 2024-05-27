@@ -22,45 +22,48 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region GetMaintenanceRequestsByBuilding
-        
+
         [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [Route("/buildings/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid personId, [FromQuery] Guid buildingId)
+        public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid managerId, [FromQuery] Guid buildingId)
         {
-          
-            return Ok(_reportAdapter.GetMaintenanceReportByBuilding(personId, buildingId));
-          
+            return Ok(_reportAdapter.GetMaintenanceReportByBuilding(managerId, buildingId));
         }
-        
+
         #endregion
 
-        #region  GetMaintenanceRequestsByRequestHandler
-        
+        #region GetMaintenanceRequestsByRequestHandler
+
         [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [Route("/request-handler/maintenance-requests/reports")]
         [HttpGet]
-        public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId, [FromQuery] Guid buildingId, [FromQuery] Guid personId)
+        public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId,
+            [FromQuery] Guid buildingId, [FromQuery] Guid managerId)
         {
-            return Ok(_reportAdapter.GetMaintenanceReportByRequestHandler(requestHandlerId, buildingId, personId));
-            
+            return Ok(_reportAdapter.GetMaintenanceReportByRequestHandler(requestHandlerId, buildingId, managerId));
         }
-        
+
         #endregion
 
-        #region  GetMaintenanceRequestsByCategory
-        
+        #region GetMaintenanceRequestsByCategory
+
         [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("/categories/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildingId, [FromQuery] Guid categoryId)
         {
-           
             return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildingId, categoryId));
-            
         }
-        
+
         #endregion
-        
+
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
+        [Route("/flats/maintenance-requests/reports")]
+        [HttpGet]
+        public IActionResult GetFlatRequestsByBuildingReport([FromQuery] Guid buildingId)
+        {
+            return Ok(_reportAdapter.GetFlatRequestsByBuildingReport(buildingId));
+        }
     }
 }

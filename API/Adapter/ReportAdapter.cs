@@ -92,4 +92,9 @@ public class ReportAdapter : IReportAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    public IEnumerable<GetFlatRequestsReportByBuildingResponse> GetFlatRequestsByBuildingReport(Guid buildingId)
+    {
+        throw new NotImplementedException();
+    }
 }

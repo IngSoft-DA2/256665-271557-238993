@@ -151,4 +151,42 @@ public class ReportControllerTest
     
     #endregion
 
+    [TestMethod]
+    public void GetFlatRequestsByBuildingReport_OkIsReturned()
+    {
+        IEnumerable<GetFlatRequestsReportByBuildingResponse> expectedResponseValue = new List<GetFlatRequestsReportByBuildingResponse>()
+        {
+            new GetFlatRequestsReportByBuildingResponse()
+            {
+                FlatNumber = "3B",
+                OpenRequests = 10,
+                ClosedRequests = 5,
+                OnAttendanceRequests = 8,
+                OwnerName = "John Wick"
+            }
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+
+        _reportAdapter
+            .Setup(adapter => adapter.GetFlatRequestsByBuildingReport(It.IsAny<Guid>()))
+            .Returns(expectedResponseValue);
+
+        IActionResult controllerResponse =
+            _reportController.GetFlatRequestsByBuildingReport(It.IsAny<Guid>());
+
+        _reportAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetFlatRequestsReportByBuildingResponse>? controllerResponseValueCasted =
+            controllerResponseCasted.Value as List<GetFlatRequestsReportByBuildingResponse>;
+
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(controllerResponseValueCasted.SequenceEqual(expectedResponseValue));
+    }
+
 }
