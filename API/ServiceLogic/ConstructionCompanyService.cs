@@ -64,7 +64,8 @@ public class ConstructionCompanyService : IConstructionCompanyService
         try
         {
             constructionCompanyToAdd.ConstructionCompanyValidator();
-            CheckIfNameIsUsed(constructionCompanyToAdd.Name);
+            CheckIfNameIsUsedAndUserCreatedACompanyBefore(constructionCompanyToAdd);
+            
             _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
         }
         catch (InvalidConstructionCompanyException exceptionCaught)
@@ -82,12 +83,13 @@ public class ConstructionCompanyService : IConstructionCompanyService
         }
     }
 
-    private void CheckIfNameIsUsed(string nameToCheck)
+    private void CheckIfNameIsUsedAndUserCreatedACompanyBefore(ConstructionCompany constructionCompanyToCreate)
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();
         
         if (constructionCompaniesInDb.Any(constructionCompany =>
-                constructionCompany.Name.Equals(nameToCheck)))
+                constructionCompany.Name.Equals(constructionCompanyToCreate.Name) ||
+                constructionCompany.UserCreator.Equals(constructionCompanyToCreate.UserCreator)))
         {
             throw new ObjectRepeatedServiceException();
         }

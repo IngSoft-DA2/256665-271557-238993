@@ -30,7 +30,8 @@ public class InvitationServiceTest
             Lastname = "lastnameExample",
             Email = "example@gmail.com",
             ExpirationDate = DateTime.MaxValue,
-            Status = StatusEnum.Pending
+            Status = StatusEnum.Pending,
+            Role = SystemUserRoleEnum.Manager
         };
     }
 
@@ -188,7 +189,8 @@ public class InvitationServiceTest
             Lastname = "Ken",
             Email = "Michael@gmail.com",
             ExpirationDate = DateTime.MaxValue,
-            Status = StatusEnum.Pending
+            Status = StatusEnum.Pending,
+            Role = SystemUserRoleEnum.Manager
         };
 
         _invitationRepository.Setup(invitationRepository =>
@@ -300,6 +302,14 @@ public class InvitationServiceTest
         Invitation invitationToCheckStatus = new Invitation();
         Assert.AreEqual(StatusEnum.Pending, (invitationToCheckStatus).Status);
     }
+    
+    [TestMethod]
+    public void CreateInvitationWithWrongRole_ThrowsObjectErrorServiceException()
+    {
+        _invitationExample.Role = SystemUserRoleEnum.Admin;
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.CreateInvitation(_invitationExample));
+    }
 
     #endregion
 
@@ -371,7 +381,8 @@ public class InvitationServiceTest
         {
             Id = _invitationExample.Id,
             Status = StatusEnum.Rejected,
-            ExpirationDate = DateTime.MaxValue
+            ExpirationDate = DateTime.MaxValue,
+            Role = SystemUserRoleEnum.Manager
         };
         Guid idOfInvitationToUpdate = _invitationExample.Id;
 
@@ -389,7 +400,8 @@ public class InvitationServiceTest
         Invitation invitationWithUpdates = new Invitation
         {
             Status = StatusEnum.Pending,
-            ExpirationDate = DateTime.MaxValue
+            ExpirationDate = DateTime.MaxValue,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
         };
 
         _invitationRepository.Setup(invitationRepository => invitationRepository.GetInvitationById(It.IsAny<Guid>()))
@@ -425,7 +437,8 @@ public class InvitationServiceTest
         Invitation invitationUpdated = new Invitation
         {
             Status = StatusEnum.Accepted,
-            ExpirationDate = DateTime.MaxValue
+            ExpirationDate = DateTime.MaxValue,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
         };
 
         _invitationRepository

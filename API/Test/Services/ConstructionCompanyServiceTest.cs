@@ -182,7 +182,7 @@ public class ConstructionCompanyServiceTest
     #region Create Construction Company, Repository Validations
     
     [TestMethod]
-    public void CreateConstructionCompanyWithUsedName_ThrowsRepeatedObjectErrorException()
+    public void CreateConstructionCompanyWithUsedName_ThrowsRepeatedObjectRepeatedServiceException()
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = new List<ConstructionCompany>
         {
@@ -234,8 +234,40 @@ public class ConstructionCompanyServiceTest
         _constructionCompanyRepository.VerifyAll();
     }
     
-    
-    
+    [TestMethod]
+    public void CreateConstructionCompanyWithUserWhoHasCreatedOneBefore_ShouldThrowObjectRepeatedServiceException()
+    {
+        IEnumerable<ConstructionCompany> constructionCompaniesInDb = new List<ConstructionCompany>
+        {
+            new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Company 1",
+                UserCreator = Guid.NewGuid()
+            },
+            new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Company 2",
+                UserCreator = Guid.NewGuid()
+            }
+        };
+        
+        ConstructionCompany constructionCompanyToAdd = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Company 3",
+            UserCreator = constructionCompaniesInDb.First().UserCreator
+        };
+
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+            constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd));
+        
+        _constructionCompanyRepository.VerifyAll();
+    }
     
     #endregion
 

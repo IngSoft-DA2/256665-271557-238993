@@ -38,6 +38,7 @@ public class InvitationAdapterTest
             Email = "johndoe@gmail.com",
             ExpirationDate = DateTime.Now,
             Status = StatusEnum.Pending,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
         };
 
         _genericInvitationResponse = new GetInvitationResponse
@@ -47,7 +48,8 @@ public class InvitationAdapterTest
             Lastname = _genericInvitation1.Lastname,
             Email = _genericInvitation1.Email,
             ExpirationDate = _genericInvitation1.ExpirationDate,
-            Status = (StatusEnumResponse)_genericInvitation1.Status
+            Status = (StatusEnumResponse)_genericInvitation1.Status,
+            Role = (SystemUserRoleEnumResponse)_genericInvitation1.Role
         };
 
         _genericInvitationToCreate = new CreateInvitationRequest
@@ -55,7 +57,8 @@ public class InvitationAdapterTest
             Firstname = _genericInvitation1.Firstname,
             Lastname = _genericInvitation1.Lastname,
             Email = _genericInvitation1.Email,
-            ExpirationDate = _genericInvitation1.ExpirationDate
+            ExpirationDate = _genericInvitation1.ExpirationDate,
+            Role = (SystemUserRoleEnumRequest)_genericInvitation1.Role
         };
         
         _invitationWithUpdatesRequest = new UpdateInvitationRequest
