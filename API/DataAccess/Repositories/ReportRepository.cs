@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using System.Collections;
+using Domain;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
@@ -126,7 +127,8 @@ public class ReportRepository : IReportRepository
         }
         else
         {
-            return _dbContext.Set<MaintenanceRequest>().ToList();
+            IEnumerable<MaintenanceRequest> response= new List<MaintenanceRequest>();
+            return response;
         }
     }
 

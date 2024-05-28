@@ -513,6 +513,17 @@ public class ReportRepositoryTest
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
 
+    [TestMethod]
+    public void GetFlatRequestsReportByBuilding_ReturnsEmptyListWhenNoBuildingComesFromQuery()
+    {
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest>();
+
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse =
+            _reportRepository.GetFlatRequestsReportByBuilding(Guid.Empty);
+
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+
     #endregion
 
     [TestCleanup]
