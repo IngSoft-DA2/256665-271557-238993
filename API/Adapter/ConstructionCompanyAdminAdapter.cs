@@ -51,6 +51,10 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         {
             throw new ObjectRepeatedAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
        
         
     }

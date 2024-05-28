@@ -74,6 +74,21 @@ public class ConstructionCompanyAdminAdapterTest
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
             _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createDummyRequest));
+        _constructionCompanyAdminService.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateConstructionCompanyAdmin_ThrowsUnknownAdapterException()
+    {
+        CreateConstructionCompanyAdminRequest createDummyRequest = new CreateConstructionCompanyAdminRequest();
+
+        _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
+                constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
+            .Throws(new Exception("Unknown Error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createDummyRequest));
+        _constructionCompanyAdminService.VerifyAll();
     }
 
     #endregion
