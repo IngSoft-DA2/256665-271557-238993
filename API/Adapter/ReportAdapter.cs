@@ -97,18 +97,26 @@ public class ReportAdapter : IReportAdapter
 
     public IEnumerable<GetFlatRequestsReportByBuildingResponse> GetFlatRequestsByBuildingReport(Guid buildingId)
     {
-        IEnumerable<FlatRequestReport> reports = _reportService.GetFlatRequestsByBuildingReport(buildingId);
+        try
+        {
+            IEnumerable<FlatRequestReport> reports = _reportService.GetFlatRequestsByBuildingReport(buildingId);
 
-        IEnumerable<GetFlatRequestsReportByBuildingResponse> flatReportResponses =
-            reports.Select(report => new GetFlatRequestsReportByBuildingResponse()
-            {
-                BuildingId = report.IdOfResourceToReport,
-                ClosedRequests = report.ClosedRequests,
-                OpenRequests = report.OpenRequests,
-                OnAttendanceRequests = report.OnAttendanceRequests,
-                OwnerName = report.OwnerName
-            });
+            IEnumerable<GetFlatRequestsReportByBuildingResponse> flatReportResponses =
+                reports.Select(report => new GetFlatRequestsReportByBuildingResponse()
+                {
+                    BuildingId = report.IdOfResourceToReport,
+                    ClosedRequests = report.ClosedRequests,
+                    OpenRequests = report.OpenRequests,
+                    OnAttendanceRequests = report.OnAttendanceRequests,
+                    OwnerName = report.OwnerName
+                });
 
-        return flatReportResponses;
+            return flatReportResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            Console.WriteLine(exceptionCaught);
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 }

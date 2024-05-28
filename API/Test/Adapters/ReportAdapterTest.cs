@@ -234,5 +234,17 @@ public class ReportAdapterTest
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
     
+    [TestMethod]
+    public void GetFlatRequestsByBuildingReport_ThrowsUnknownAdapterException()
+    {
+        _reportService.Setup(service =>
+            service.GetFlatRequestsByBuildingReport(It.IsAny<Guid>())).Throws(new Exception("Internal Server Error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _reportAdapter.GetFlatRequestsByBuildingReport(It.IsAny<Guid>()));
+
+        _reportService.VerifyAll();
+    }
+    
     #endregion
 }
