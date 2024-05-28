@@ -243,13 +243,13 @@ public class ConstructionCompanyServiceTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Company 1",
-                UserCreator = Guid.NewGuid()
+                UserCreatorId = Guid.NewGuid()
             },
             new ConstructionCompany
             {
                 Id = Guid.NewGuid(),
                 Name = "Company 2",
-                UserCreator = Guid.NewGuid()
+                UserCreatorId = Guid.NewGuid()
             }
         };
         
@@ -257,7 +257,7 @@ public class ConstructionCompanyServiceTest
         {
             Id = Guid.NewGuid(),
             Name = "Company 3",
-            UserCreator = constructionCompaniesInDb.First().UserCreator
+            UserCreatorId = constructionCompaniesInDb.First().UserCreatorId
         };
 
         _constructionCompanyRepository.Setup(constructionCompanyRepository =>

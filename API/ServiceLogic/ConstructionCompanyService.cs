@@ -91,13 +91,16 @@ public class ConstructionCompanyService : IConstructionCompanyService
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();
 
-        bool nameExists = constructionCompaniesInDb.Any(company => company.Name.Equals(constructionCompanyToCreate.Name));
+        bool nameExists =
+            constructionCompaniesInDb.Any(company => company.Name.Equals(constructionCompanyToCreate.Name));
         if (nameExists)
         {
             throw new ObjectRepeatedServiceException();
         }
 
-        bool userCreatedCompanyBefore = constructionCompaniesInDb.Any(company => company.UserCreator.Equals(constructionCompanyToCreate.UserCreator));
+        bool userCreatedCompanyBefore = constructionCompaniesInDb.Any(company =>
+            company.UserCreatorId.Equals(constructionCompanyToCreate.UserCreatorId));
+        
         if (userCreatedCompanyBefore)
         {
             throw new ObjectErrorServiceException("User has already created a company");

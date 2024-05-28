@@ -4,8 +4,7 @@ public class ConstructionCompany
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    
-    public Guid UserCreator { get; set; }
+    public Guid UserCreatorId { get; set; }
 
     public IEnumerable<Building> Buildings { get; set; } = new List<Building>();
 

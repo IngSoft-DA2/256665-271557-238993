@@ -86,7 +86,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
             {
                 Id = Guid.NewGuid(),
                 Name = createConstructionCompanyRequest.Name,
-                UserCreator = createConstructionCompanyRequest.UserCreator
+                UserCreatorId = createConstructionCompanyRequest.UserCreator
             };
 
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);
