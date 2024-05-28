@@ -4,6 +4,6 @@ namespace WebModel.Requests.BuildingRequests;
 
 public class UpdateBuildingRequest
 {
-    public Guid ManagerId { get; set; }
+    public Guid ConstructionCompanyId {get; set; }
     public int CommonExpenses { get; set; }
 }

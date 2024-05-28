@@ -213,7 +213,7 @@ public class BuildingAdapter : IBuildingAdapter
             {
                 Id = buildingIdToUpd,
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
-                ManagerId = updateBuildingRequest.ManagerId
+                ConstructionCompanyId = updateBuildingRequest.ConstructionCompanyId
             };
             _buildingService.UpdateBuilding(buildingToUpd);
         }
