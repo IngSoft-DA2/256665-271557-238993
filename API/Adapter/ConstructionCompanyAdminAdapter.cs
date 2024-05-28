@@ -32,19 +32,24 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
                 ConstructionCompany = null,
                 Role = SystemUserRoleEnum.ConstructionCompanyAdmin
             };
-        
+
             _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
-        
-            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
-            {
-                Id = constructionCompanyAdminToCreate.Id
-            };
-        
+
+            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse =
+                new CreateConstructionCompanyAdminResponse
+                {
+                    Id = constructionCompanyAdminToCreate.Id
+                };
+
             return constructionCompanyAdminResponse;
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedAdapterException();
         }
        
         

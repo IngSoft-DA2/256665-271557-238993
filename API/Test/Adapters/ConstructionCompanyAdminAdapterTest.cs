@@ -57,9 +57,23 @@ public class ConstructionCompanyAdminAdapterTest
         _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
                 constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
             .Throws(new ObjectErrorServiceException("Specific Error"));
-        
+
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(constructionCompanyDummy));
+        _constructionCompanyAdminService.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CreateConstructionCompanyAdmin_ThrowsObjectRepeatedAdapterException()
+    {
+        CreateConstructionCompanyAdminRequest createDummyRequest = new CreateConstructionCompanyAdminRequest();
+
+        _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
+                constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
+            .Throws(new ObjectRepeatedServiceException());
+
+        Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createDummyRequest));
     }
 
     #endregion
