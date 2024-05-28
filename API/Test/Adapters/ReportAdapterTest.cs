@@ -193,6 +193,8 @@ public class ReportAdapterTest
     }
 
     #endregion
+    
+    #region Get Flat Requests By Building Report
 
     [TestMethod]
     public void GetFlatRequestsByBuildingReport_ReturnsGetFlatRequestsReportByBuildingResponse()
@@ -231,4 +233,6 @@ public class ReportAdapterTest
 
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
     }
+    
+    #endregion
 }
