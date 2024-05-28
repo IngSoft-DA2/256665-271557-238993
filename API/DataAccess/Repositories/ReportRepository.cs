@@ -113,7 +113,7 @@ public class ReportRepository : IReportRepository
         }
     }
 
-    public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId, Guid personId)
+    public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId)
     {
         throw new NotImplementedException();
     }

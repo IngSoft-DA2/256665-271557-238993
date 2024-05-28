@@ -44,7 +44,7 @@ public class BuildingServiceTest
                 new Flat
                 {
                     Id = Guid.NewGuid(),
-                    RoomNumber = 1,
+                    RoomNumber = "1",
                     OwnerAssigned = new Owner()
                     {
                         Id = Guid.NewGuid(),
@@ -244,7 +244,7 @@ public class BuildingServiceTest
                 new Flat
                 {
                     Id = Guid.NewGuid(),
-                    RoomNumber = 1,
+                    RoomNumber = "1",
                     OwnerAssigned = new Owner()
                     {
                         Id = Guid.NewGuid(),

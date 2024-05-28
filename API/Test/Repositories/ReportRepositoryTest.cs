@@ -77,8 +77,9 @@ public class ReportRepositoryTest
                     Firstname = "FirstName",
                     Email = "Email",
                     Flats = new List<Flat>(),
-                    Lastname = "Lastname"
-                }
+                    Lastname = "Lastname",
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -138,8 +139,9 @@ public class ReportRepositoryTest
                     Firstname = "FirstName",
                     Email = "Email",
                     Flats = new List<Flat>(),
-                    Lastname = "Lastname"
-                }
+                    Lastname = "Lastname",
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -215,7 +217,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -276,7 +279,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -353,7 +357,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -414,7 +419,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 

@@ -62,7 +62,8 @@ public class MaintenaceRepositoryTest
             Flat = new Flat
             {
                 Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid()
+                BuildingId = Guid.NewGuid(),
+                RoomNumber = "302"
             },
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
@@ -85,7 +86,7 @@ public class MaintenaceRepositoryTest
                 Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password",
+                Password = "Password"
             }
 
         };
@@ -96,7 +97,8 @@ public class MaintenaceRepositoryTest
             Flat = new Flat
             {
                 Id = Guid.NewGuid(),
-                BuildingId = Guid.NewGuid()
+                BuildingId = Guid.NewGuid(),
+                RoomNumber = "301"
             },
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
@@ -107,7 +109,7 @@ public class MaintenaceRepositoryTest
                 Firstname = "FirstName",
                 LastName = "Lastname",
                 Email = "Email",
-                Password = "Password",
+                Password = "Password"
             },
             RequestStatus = RequestStatusEnum.Open,
             Category = new Category()
@@ -122,7 +124,7 @@ public class MaintenaceRepositoryTest
                 Role = SystemUserRoleEnum.Manager,
                 Firstname = "FirstName",
                 Email = "Email",
-                Password = "Password",
+                Password = "Password"
             }
         };
     }

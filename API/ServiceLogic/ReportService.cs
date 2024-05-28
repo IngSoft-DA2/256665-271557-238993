@@ -39,9 +39,11 @@ public class ReportService : IReportService
                         IdOfResourceToReport = request.Flat.BuildingId
                     };
                 }
+
                 Report buildingReport = reportsDictionary[request.Flat.BuildingId];
                 AddByCorespondingStatus(request, buildingReport);
             }
+
             return reportsDictionary.Values;
         }
         catch (Exception exceptionCaught)
@@ -70,7 +72,8 @@ public class ReportService : IReportService
 
     #region Get maintenance report by request handler
 
-    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid? reportHandlerId, Guid buildingId, Guid personId)
+    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid? reportHandlerId,
+        Guid buildingId, Guid personId)
     {
         try
         {
@@ -81,7 +84,7 @@ public class ReportService : IReportService
 
             foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
             {
-                Guid requestHandlerId = (Guid) request.RequestHandlerId;
+                Guid requestHandlerId = (Guid)request.RequestHandlerId;
                 if (!reportsDictionary.ContainsKey(requestHandlerId))
                 {
                     reportsDictionary[requestHandlerId] = new RequestHandlerReport
@@ -89,9 +92,11 @@ public class ReportService : IReportService
                         IdOfResourceToReport = requestHandlerId
                     };
                 }
+
                 RequestHandlerReport handlerReport = reportsDictionary[requestHandlerId];
                 AddByCorrespondingStatusOnRequestHandlerReport(request, handlerReport);
             }
+
             return reportsDictionary.Values;
         }
         catch (Exception exceptionCaught)
@@ -152,9 +157,11 @@ public class ReportService : IReportService
                         IdOfResourceToReport = request.CategoryId
                     };
                 }
+
                 Report categoryReport = reportsDictionary[request.CategoryId];
-                AddByCorespondingStatus(request, categoryReport);   
+                AddByCorespondingStatus(request, categoryReport);
             }
+
             return reportsDictionary.Values;
         }
         catch (Exception exceptionCaught)
@@ -166,35 +173,6 @@ public class ReportService : IReportService
     public IEnumerable<FlatRequestReport> GetFlatRequestsByBuildingReport(Guid buildingId)
     {
         throw new NotImplementedException();
-    }
-
-    public IEnumerable<FlatRequestReport> GetFlatRequestsReportByBuilding(Guid buildingId, Guid personId)
-    {
-        try
-        {
-            List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
-                _reportRepository.GetFlatRequestsReportByBuilding(buildingId, personId).ToList();
-
-            Dictionary<Guid, FlatRequestReport> reportsDictionary = new Dictionary<Guid, FlatRequestReport>();
-
-            foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
-            {
-                if (!reportsDictionary.ContainsKey(request.FlatId))
-                {
-                    reportsDictionary[request.FlatId] = new FlatRequestReport
-                    {
-                        IdOfResourceToReport = request.FlatId
-                    };
-                }
-                FlatRequestReport flatReport = reportsDictionary[request.FlatId];
-                AddByCorespondingStatus(request, flatReport);
-            }
-            return reportsDictionary.Values;
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownServiceException(exceptionCaught.Message);
-        }
     }
 
     #endregion

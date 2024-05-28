@@ -8,5 +8,5 @@ public interface IReportRepository
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid? requestHandlerId, Guid buildingId,
         Guid personId);
     public IEnumerable<MaintenanceRequest> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId);
-    public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId, Guid personId);
+    public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId);
 }
