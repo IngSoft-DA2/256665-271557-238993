@@ -11,6 +11,5 @@ public class GetMaintenanceReportByCategoryResponse
     {
         GetMaintenanceReportByCategoryResponse? objectToCompare = obj as GetMaintenanceReportByCategoryResponse;
         return OpenRequests == objectToCompare.OpenRequests && ClosedRequests == objectToCompare.ClosedRequests && OnAttendanceRequests == objectToCompare.OnAttendanceRequests && CategoryId == objectToCompare.CategoryId;
-
     }
 }

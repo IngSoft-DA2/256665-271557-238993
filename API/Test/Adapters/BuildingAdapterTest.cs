@@ -66,7 +66,7 @@ public class BuildingAdapterTest
                     {
                         Id = Guid.NewGuid(),
                         Floor = 1,
-                        RoomNumber = 102,
+                        RoomNumber = "102",
                         OwnerAssigned = new Owner
                         {
                             Id = Guid.NewGuid(),
@@ -169,7 +169,7 @@ public class BuildingAdapterTest
                 {
                     Id = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 102,
+                    RoomNumber = "102",
                     OwnerAssigned = new Owner
                     {
                         Id = Guid.NewGuid(),
@@ -271,7 +271,7 @@ public class BuildingAdapterTest
             new CreateFlatRequest
             {
                 Floor = 1,
-                RoomNumber = 101,
+                RoomNumber = "101",
                 OwnerAssignedId = Guid.NewGuid(),
                 TotalRooms = 4,
                 TotalBaths = 2,

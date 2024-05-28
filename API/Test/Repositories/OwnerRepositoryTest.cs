@@ -44,7 +44,7 @@ public class OwnerRepositoryTest
                     Id = Guid.NewGuid(),
                     BuildingId = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     TotalRooms = 4,
                     TotalBaths = 2,
                     HasTerrace = true
@@ -65,7 +65,7 @@ public class OwnerRepositoryTest
                     Id = Guid.NewGuid(),
                     BuildingId = Guid.NewGuid(),
                     Floor = 2,
-                    RoomNumber = 201,
+                    RoomNumber = "201",
                     TotalRooms = 3,
                     TotalBaths = 1,
                     HasTerrace = false
@@ -110,7 +110,7 @@ public class OwnerRepositoryTest
                     Id = Guid.NewGuid(),
                     BuildingId = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     TotalRooms = 4,
                     TotalBaths = 2,
                     HasTerrace = true
@@ -120,7 +120,7 @@ public class OwnerRepositoryTest
                     Id = Guid.NewGuid(),
                     BuildingId = Guid.NewGuid(),
                     Floor = 2,
-                    RoomNumber = 201,
+                    RoomNumber = "201",
                     TotalRooms = 3,
                     TotalBaths = 1,
                     HasTerrace = false

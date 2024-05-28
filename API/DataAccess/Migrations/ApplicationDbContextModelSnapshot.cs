@@ -135,8 +135,9 @@ namespace DataAccess.Migrations
                     b.Property<Guid?>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("RoomNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalBaths")
                         .HasColumnType("int");

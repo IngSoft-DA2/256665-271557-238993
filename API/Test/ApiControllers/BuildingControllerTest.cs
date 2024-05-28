@@ -60,7 +60,7 @@ public class BuildingControllerTest
                     new GetFlatResponse()
                     {
                         Floor = 1,
-                        RoomNumber = 102,
+                        RoomNumber = "102",
                         OwnerAssigned = new GetOwnerResponse()
                         {
                             Id = Guid.NewGuid(),
@@ -120,7 +120,7 @@ public class BuildingControllerTest
                 new GetFlatResponse()
                 {
                     Floor = 1,
-                    RoomNumber = 102,
+                    RoomNumber = "102",
                     OwnerAssigned = new GetOwnerResponse()
                     {
                         Id = Guid.NewGuid(),
@@ -177,7 +177,7 @@ public class BuildingControllerTest
                 new CreateFlatRequest
                 {
                     Floor = 1,
-                    RoomNumber = 102,
+                    RoomNumber = "102",
                     OwnerAssignedId = Guid.NewGuid(),
                     TotalRooms = 4,
                     TotalBaths = 2,

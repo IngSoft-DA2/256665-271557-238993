@@ -77,8 +77,9 @@ public class ReportRepositoryTest
                     Firstname = "FirstName",
                     Email = "Email",
                     Flats = new List<Flat>(),
-                    Lastname = "Lastname"
-                }
+                    Lastname = "Lastname",
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -138,8 +139,9 @@ public class ReportRepositoryTest
                     Firstname = "FirstName",
                     Email = "Email",
                     Flats = new List<Flat>(),
-                    Lastname = "Lastname"
-                }
+                    Lastname = "Lastname",
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -215,7 +217,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -276,7 +279,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -353,7 +357,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -414,7 +419,8 @@ public class ReportRepositoryTest
                     Email = "Email",
                     Flats = new List<Flat>(),
                     Lastname = "Lastname"
-                }
+                },
+                RoomNumber = "301"
             }
         };
 
@@ -439,6 +445,94 @@ public class ReportRepositoryTest
         _reportRepository = new ReportRepository(_mockDbContext.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() =>
             _reportRepository.GetMaintenanceReportByCategory(Guid.NewGuid(), Guid.NewGuid()));
+        _mockDbContext.VerifyAll();
+    }
+
+    #endregion
+
+    #region Get Flat Requests Report By Building
+
+    [TestMethod]
+    public void GetFlatRequestsReportByBuilding_ReturnsMaintenanceRequestsWhenBuildingFromQueryIsSet()
+    {
+        MaintenanceRequest maintenanceRequestInDb2 = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            Manager = new Manager()
+            {
+                Id = Guid.NewGuid(),
+                Role = SystemUserRoleEnum.Manager,
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password",
+                Buildings = new List<Building>()
+            },
+            RequestHandler = new RequestHandler()
+            {
+                Id = Guid.NewGuid(),
+                Role = SystemUserRoleEnum.RequestHandler,
+                Firstname = "FirstName",
+                Email = "Email",
+                Password = "Password",
+                LastName = "LastName"
+            },
+            Category = new Category
+            {
+                Id = Guid.NewGuid(),
+                Name = "Category"
+            },
+            Description = "Description",
+            OpenedDate = DateTime.Now,
+            ClosedDate = DateTime.Now,
+            RequestStatus = RequestStatusEnum.Open,
+            Flat = new Flat
+            {
+                Id = Guid.NewGuid(),
+                BuildingId = Guid.NewGuid(),
+                OwnerAssigned = new Owner()
+                {
+                    Id = Guid.NewGuid(),
+                    Firstname = "FirstName",
+                    Email = "Email",
+                    Flats = new List<Flat>(),
+                    Lastname = "Lastname",
+                },
+                RoomNumber = "301"
+            }
+        };
+
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests =
+            new List<MaintenanceRequest> { maintenanceRequestInDb2 };
+
+        _dbContext.Set<MaintenanceRequest>().Add(maintenanceRequestInDb2);
+        _dbContext.SaveChanges();
+
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse =
+            _reportRepository.GetFlatRequestsReportByBuilding(maintenanceRequestInDb2.Flat.BuildingId);
+
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+
+    [TestMethod]
+    public void GetFlatRequestsReportByBuilding_ReturnsEmptyListWhenNoBuildingComesFromQuery()
+    {
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest>();
+
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse =
+            _reportRepository.GetFlatRequestsReportByBuilding(Guid.Empty);
+
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+    
+    [TestMethod]
+    public void GetFlatRequestsReportByBuilding_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<MaintenanceRequest>()).Throws(new Exception());
+
+        _reportRepository = new ReportRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _reportRepository.GetFlatRequestsReportByBuilding(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
 

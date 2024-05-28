@@ -63,7 +63,7 @@ public class BuildingRepositoryTest
                 {
                     Id = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     OwnerAssigned = new Owner
                     {
                         Id = Guid.NewGuid(),
@@ -131,7 +131,7 @@ public class BuildingRepositoryTest
                 {
                     Id = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     OwnerAssigned = new Owner
                     {
                         Id = Guid.NewGuid(),
@@ -218,7 +218,7 @@ public class BuildingRepositoryTest
                 {
                     Id = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     OwnerAssigned = OwnerAssigned,
                     OwnerId = OwnerAssigned.Id,
                     TotalRooms = 4,
@@ -302,7 +302,7 @@ public class BuildingRepositoryTest
                 {
                     Id = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     OwnerAssigned = new Owner
                     {
                         Id = Guid.NewGuid(),
@@ -384,7 +384,7 @@ public class BuildingRepositoryTest
                 {
                     Id = Guid.NewGuid(),
                     Floor = 1,
-                    RoomNumber = 101,
+                    RoomNumber = "101",
                     OwnerAssigned = new Owner
                     {
                         Id = Guid.NewGuid(),
