@@ -265,6 +265,7 @@ public class BuildingRepositoryTest
 
         Manager managerToUpdate = new Manager
         {
+            Id = Guid.NewGuid(),
             Firstname = "managerToUpdFirstname",
             Email = "managerToUpd@gmail.com",
             Password = "managerToUpdPassword",
