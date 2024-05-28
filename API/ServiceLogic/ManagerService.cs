@@ -6,10 +6,10 @@ using ServiceLogic.CustomExceptions;
 
 namespace ServiceLogic;
 
-public class ManagerService :IManagerService
+public class ManagerService : IManagerService
 {
     #region Constructor and Atributes
-    
+
     private readonly IManagerRepository _managerRepository;
     private readonly IInvitationService _invitationService;
 
@@ -18,9 +18,9 @@ public class ManagerService :IManagerService
         _managerRepository = managerRepository;
         _invitationService = invitationService;
     }
-    
+
     #endregion
-    
+
     #region Get All Managers
 
     public IEnumerable<Manager> GetAllManagers()
@@ -34,18 +34,25 @@ public class ManagerService :IManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 
     #region Get Manager By Id
-    
+
     public Manager GetManagerById(Guid managerId)
     {
-        return _managerRepository.GetManagerById(managerId);
+        Manager managerFound = _managerRepository.GetManagerById(managerId);
+
+        if (managerFound is null)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+
+        return managerFound;
     }
 
     #endregion
-    
+
     #region Create Manager
 
     public void CreateManager(Manager manager, Invitation invitationAccepted)
@@ -74,7 +81,7 @@ public class ManagerService :IManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
     private void CheckIfEmailIsAlreadyRegistered(Manager manager)
     {
         IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
@@ -83,10 +90,9 @@ public class ManagerService :IManagerService
             throw new ObjectRepeatedServiceException();
         }
     }
-    
-    
+
     #endregion
-    
+
     #region Delete Manager
 
     public void DeleteManagerById(Guid managerId)
@@ -94,7 +100,7 @@ public class ManagerService :IManagerService
         try
         {
             Manager managerToDelete = _managerRepository.GetManagerById(managerId);
-            
+
             if (managerToDelete is null) throw new ObjectNotFoundServiceException();
             _managerRepository.DeleteManager(managerToDelete);
         }
@@ -107,6 +113,6 @@ public class ManagerService :IManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 }

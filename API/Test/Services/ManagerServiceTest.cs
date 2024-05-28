@@ -87,6 +87,20 @@ public class ManagerServiceTest
 
        
     }
+    
+    [TestMethod]
+    public void GetManagerById_ThrowsObjectNotFoundServiceException()
+    {
+        Guid managerId = Guid.NewGuid();
+        Manager manager = null;
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Returns(manager);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _managerService.GetManagerById(managerId));
+
+        _managerRepository.VerifyAll();
+    }
+    
     #endregion
 
     #region Create Manager
