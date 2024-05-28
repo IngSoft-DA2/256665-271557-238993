@@ -51,7 +51,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPut]
         [Route("{buildingId:Guid}")]
-        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult UpdateBuildingById([FromRoute] Guid buildingId,
             [FromBody] UpdateBuildingRequest buildingWithUpdates)
         {

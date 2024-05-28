@@ -215,7 +215,6 @@ public class BuildingAdapter : IBuildingAdapter
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
                 ManagerId = updateBuildingRequest.ManagerId
             };
-            
             _buildingService.UpdateBuilding(buildingToUpd);
         }
         catch (ObjectNotFoundServiceException)
