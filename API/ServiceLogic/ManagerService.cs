@@ -41,14 +41,25 @@ public class ManagerService : IManagerService
 
     public Manager GetManagerById(Guid managerId)
     {
-        Manager managerFound = _managerRepository.GetManagerById(managerId);
-
-        if (managerFound is null)
+        try
         {
-            throw new ObjectNotFoundServiceException();
-        }
+            Manager managerFound = _managerRepository.GetManagerById(managerId);
 
-        return managerFound;
+            if (managerFound is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+
+            return managerFound;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     #endregion

@@ -101,6 +101,20 @@ public class ManagerServiceTest
         _managerRepository.VerifyAll();
     }
     
+    [TestMethod]
+    
+    public void GetManagerById_ThrowsUnknownServiceException()
+    {
+        Guid managerId = Guid.NewGuid();
+
+        _managerRepository.Setup(repo => repo.GetManagerById(managerId)).Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _managerService.GetManagerById(managerId));
+
+        _managerRepository.VerifyAll();
+    }
+    
+    
     #endregion
 
     #region Create Manager
