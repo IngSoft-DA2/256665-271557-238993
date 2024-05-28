@@ -80,25 +80,18 @@ public class ManagerAdapter : IManagerAdapter
             Manager manager = new Manager
             {
                 Id = Guid.NewGuid(),
-                Firstname = createRequest.FirstName,
                 Email = createRequest.Email,
                 Password = createRequest.Password
             };
             
             Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
-           
-            Invitation invitationAccepted = new Invitation
-            {
-                Id = invitationToAccept.Id,
-                Status = StatusEnum.Accepted,
-                ExpirationDate = invitationToAccept.ExpirationDate
-            };
             
-            _managerServiceLogic.CreateManager(manager, invitationAccepted);
+            _managerServiceLogic.CreateManager(manager, invitationToAccept);
 
             CreateManagerResponse adapterResponse = new CreateManagerResponse
             {
-                Id = manager.Id
+                Id = manager.Id,
+                Firstname = invitationToAccept.Firstname
             };
 
             return adapterResponse;

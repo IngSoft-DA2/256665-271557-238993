@@ -125,16 +125,18 @@ public class ManagerServiceTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
-            Firstname = "Manager",
             Email = "person@gmail.com",
             Password = "password",
             Buildings = new List<Building>()
         };
 
-        Invitation dummyInvitation = new Invitation();
+        Invitation dummyInvitation = new Invitation
+        {
+            Firstname = manager.Firstname,
+            Email = manager.Email
+        };
 
-        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
-            .Returns(new List<Manager>());
+        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers()).Returns(new List<Manager>());
         _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager));
         _invitationService.Setup(invitationService =>
             invitationService.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<Invitation>()));
@@ -142,20 +144,10 @@ public class ManagerServiceTest
         _managerService.CreateManager(manager, dummyInvitation);
 
         _managerRepository.VerifyAll();
-        _invitationService.Verify(
-            invitationRepository => invitationRepository.UpdateInvitation
-                (It.IsAny<Guid>(), It.IsAny<Invitation>()), Times.Once);
+        _invitationService.Verify(invitationRepository => invitationRepository.
+            UpdateInvitation(It.IsAny<Guid>(), It.IsAny<Invitation>()), Times.Once);
     }
-
-    [TestMethod]
-    public void GivenEmptyNameOnCreate_ShouldThrowException()
-    {
-        Manager manager = new Manager { Id = Guid.NewGuid(), Firstname = "" };
-
-        Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _managerService.CreateManager(manager, It.IsAny<Invitation>()));
-    }
-
+    
     [TestMethod]
     public void GivenEmptyEmailOnCreate_ShouldThrowException()
     {
@@ -217,25 +209,7 @@ public class ManagerServiceTest
         };
         Assert.IsNotNull(manager.Buildings);
     }
-
-    [TestMethod]
-    public void GivenManagerWithEmptyName_ShouldThrowObjectErrorServiceException()
-    {
-        Manager manager = new Manager
-        {
-            Id = Guid.NewGuid(),
-            Role = SystemUserRoleEnum.Manager,
-            Firstname = "",
-            Email = "a@gmail.com",
-            Buildings = new List<Building>(),
-            Password = "131312321",
-            Requests = new List<MaintenanceRequest>()
-        };
-
-        Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _managerService.CreateManager(manager, It.IsAny<Invitation>()));
-    }
-
+    
     [TestMethod]
     public void GivenRepeatedEmailOnCreate_ShouldThrowObjectRepeteadException()
     {
@@ -263,18 +237,22 @@ public class ManagerServiceTest
         Manager manager = new Manager
         {
             Id = Guid.NewGuid(),
-            Firstname = "Manager",
             Email = "persona@gmail.com",
             Password = "12345678910",
             Buildings = new List<Building>()
         };
 
-        Invitation dummyInvitation = new Invitation();
-
-        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
-            .Returns(new List<Manager>());
-        _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager))
-            .Throws(new Exception());
+        Invitation dummyInvitation = new Invitation
+        {
+            Firstname = "managerFirstname",
+            Email = "persona@gmail.com"
+        };
+        
+        _managerRepository.Setup(managerRepository =>
+            managerRepository.GetAllManagers()).Returns(new List<Manager>());
+        
+        _managerRepository.Setup(managerRepository =>
+            managerRepository.CreateManager(manager)).Throws(new Exception());
 
         _invitationService.Setup(invitationService => invitationService.UpdateInvitation
             (It.IsAny<Guid>(), It.IsAny<Invitation>()));

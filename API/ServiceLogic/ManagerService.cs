@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.CustomExceptions;
+using Domain.Enums;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -66,12 +67,15 @@ public class ManagerService : IManagerService
 
     #region Create Manager
 
-    public void CreateManager(Manager manager, Invitation invitationAccepted)
+    public void CreateManager(Manager manager, Invitation invitationToAccept)
     {
         try
         {
             manager.ManagerValidator();
             CheckIfEmailIsAlreadyRegistered(manager);
+            CheckIfEmailIsTheSameAsInvitationEmail(manager, invitationToAccept);
+            Invitation invitationAccepted = AcceptInvitation(manager, invitationToAccept);
+            
             _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
             _managerRepository.CreateManager(manager);
         }
@@ -93,6 +97,14 @@ public class ManagerService : IManagerService
         }
     }
 
+    private void CheckIfEmailIsTheSameAsInvitationEmail(Manager manager, Invitation invitationToAccept)
+    {
+        if (manager.Email != invitationToAccept.Email)
+        {
+            throw new ObjectErrorServiceException("Email is not the same as the invitation email");
+        }
+    }
+
     private void CheckIfEmailIsAlreadyRegistered(Manager manager)
     {
         IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
@@ -100,6 +112,19 @@ public class ManagerService : IManagerService
         {
             throw new ObjectRepeatedServiceException();
         }
+    }
+    
+    private Invitation AcceptInvitation(Manager manager, Invitation invitationToAccept)
+    {
+        Invitation invitationAccepted = new Invitation
+        {
+            Id = invitationToAccept.Id,
+            Status = StatusEnum.Accepted,
+            ExpirationDate = invitationToAccept.ExpirationDate
+        };
+        manager.Firstname = invitationToAccept.Firstname;
+
+        return invitationAccepted;
     }
 
     #endregion

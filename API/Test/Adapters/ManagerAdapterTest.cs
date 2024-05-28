@@ -116,7 +116,6 @@ public class ManagerAdapterTest
     {
         CreateManagerRequest dummyCreateRequest = new CreateManagerRequest()
         {
-            FirstName = "Michael Jordan",
             Email = "",
             Password = ";"
         };

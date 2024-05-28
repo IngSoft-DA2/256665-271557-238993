@@ -14,10 +14,6 @@ public class Manager : SystemUser
 
     protected override void ValidateName(string name, string fieldName)
     {
-        if (string.IsNullOrEmpty(name))
-        {
-            throw new InvalidPersonException($"{fieldName} is required");
-        }
     }
 
     
