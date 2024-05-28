@@ -1,7 +1,9 @@
 ﻿using Domain;
+using Domain.Enums;
 using IDataAccess;
 using Moq;
 using ServiceLogic;
+using ServiceLogic.CustomExceptions;
 
 
 namespace Test.Services;
@@ -26,19 +28,47 @@ public class ConstructionCompanyAdminServiceTest
 
     #region Create Construction Company Admin
 
+    //Happy path
     [TestMethod]
     public void CreateConstructionCompanyAdmin_CreateConstructionCompanyAdminIsCreated()
     {
+        ConstructionCompanyAdmin constructionCompanyAdminDummy = new ConstructionCompanyAdmin
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "ConstructionCompanyAdminFirstname",
+            Lastname = "ConstructionCompanyAdminLastname",
+            Email = "ConstructionCompanyAdminEmail@gmail.com",
+            Password = "ConstructionCompanyAdminPassword",
+            ConstructionCompany = null,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+        };
         
-        ConstructionCompanyAdmin constructionCompanyAdminDummy = new ConstructionCompanyAdmin();
         _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()));
-        
+
         _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminDummy);
-        
+
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
-            constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()), Times.Once);
+                constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()),
+            Times.Once);
     }
+
+    #region Create Construction Company Admin , Domain Validations
+
+    [TestMethod]
+    public void CreateConstructionCompanyAdminWithEmptyFirstname_ThrowsObjectErrorServiceException()
+    {
+        ConstructionCompanyAdmin constructionCompanyAdminWithError = new ConstructionCompanyAdmin()
+        {
+            Id = Guid.NewGuid(),
+            Firstname = ""
+        };
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminWithError));
+        
+    }
+
+    #endregion
 
     #endregion
 }
