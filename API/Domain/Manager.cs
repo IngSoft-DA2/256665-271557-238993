@@ -2,6 +2,7 @@
 
 public class Manager : SystemUser
 {
+    public string Firstname { get; set; }
     public IEnumerable<Building> Buildings { get; set; } = new List<Building>();
     public IEnumerable<MaintenanceRequest> Requests { get; set; } = new List<MaintenanceRequest>();
 

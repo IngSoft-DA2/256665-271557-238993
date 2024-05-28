@@ -218,6 +218,7 @@ public class InvitationServiceTest
     public void CreateInvitationThatHasFirstnameWithSpecialChars_ShouldThrowException()
     {
         _invitationExample.Firstname = "Michael@";
+        _invitationExample.Role = SystemUserRoleEnum.ConstructionCompanyAdmin;
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
     }
@@ -239,33 +240,41 @@ public class InvitationServiceTest
     }
 
     [TestMethod]
-    public void CreateInvitationWithEmptyLastname_ThrowsObjectErrorServiceException()
+    public void
+        CreateInvitationWithEmptyLastname_ThrowsObjectErrorServiceException_WhenSystemUserIsAConstructionCompanyAdmin()
     {
         _invitationExample.Lastname = "";
+        _invitationExample.Role = SystemUserRoleEnum.ConstructionCompanyAdmin;
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
     }
 
     [TestMethod]
-    public void CreateInvitationWithLastnameThatHasBlanks_ShouldThrowException()
+    public void
+        CreateInvitationWithLastnameThatHasBlanks_ShouldThrowException_WhenSystemUserIsAConstructionCompanyAdmin()
     {
         _invitationExample.Lastname = "Ken t";
+        _invitationExample.Role = SystemUserRoleEnum.ConstructionCompanyAdmin;
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
     }
 
     [TestMethod]
-    public void CreateInvitationWithLastnameThatHasSpecialChars_ShouldThrowException()
+    public void
+        CreateInvitationWithLastnameThatHasSpecialChars_ShouldThrowException_WhenSystemUserIsAConstructionCompanyAdmin()
     {
-        _invitationExample.Firstname = "Michael@";
+        _invitationExample.Lastname = "Michael@";
+        _invitationExample.Role = SystemUserRoleEnum.ConstructionCompanyAdmin;
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
     }
 
     [TestMethod]
-    public void CreateInvitationWithNumericLastname_ThrowsObjectErrorServiceException()
+    public void
+        CreateInvitationWithNumericLastname_ThrowsObjectErrorServiceException_WhenSystemUserIsAConstructionCompanyAdmin()
     {
         _invitationExample.Lastname = "123";
+        _invitationExample.Role = SystemUserRoleEnum.ConstructionCompanyAdmin;
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _invitationService.CreateInvitation(_invitationExample));
     }
@@ -302,7 +311,7 @@ public class InvitationServiceTest
         Invitation invitationToCheckStatus = new Invitation();
         Assert.AreEqual(StatusEnum.Pending, (invitationToCheckStatus).Status);
     }
-    
+
     [TestMethod]
     public void CreateInvitationWithWrongRole_ThrowsObjectErrorServiceException()
     {
