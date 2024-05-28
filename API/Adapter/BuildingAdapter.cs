@@ -209,17 +209,13 @@ public class BuildingAdapter : IBuildingAdapter
     {
         try
         {
-            ConstructionCompany newConstructionCompany =
-                _constructionCompanyService.GetConstructionCompanyById(updateBuildingRequest.ConstructionCompanyId);
-
             Building buildingToUpd = new Building
             {
                 Id = buildingIdToUpd,
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
-                ConstructionCompany = newConstructionCompany,
-                ConstructionCompanyId = newConstructionCompany.Id
+                ManagerId = updateBuildingRequest.ManagerId
             };
-
+            
             _buildingService.UpdateBuilding(buildingToUpd);
         }
         catch (ObjectNotFoundServiceException)
