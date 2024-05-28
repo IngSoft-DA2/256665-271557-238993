@@ -11,14 +11,21 @@ namespace Adapter;
 
 public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
 {
+    #region Constructor And Dependency Injection
+
     private readonly IConstructionCompanyAdminService _constructionCompanyAdminService;
 
     public ConstructionCompanyAdminAdapter(IConstructionCompanyAdminService constructionCompanyAdminService)
     {
         _constructionCompanyAdminService = constructionCompanyAdminService;
     }
-    
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(CreateConstructionCompanyAdminRequest createRequest)
+
+    #endregion
+
+    #region Create Construction Company Admin
+
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
+        CreateConstructionCompanyAdminRequest createRequest)
     {
         try
         {
@@ -55,7 +62,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         {
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
-       
-        
     }
+
+    #endregion
 }

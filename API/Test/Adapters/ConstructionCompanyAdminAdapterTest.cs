@@ -4,9 +4,7 @@ using Domain;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
-using WebModel.Requests.AdministratorRequests;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
-using WebModel.Responses.AdministratorResponses;
 using WebModel.Responses.ConstructionCompanyAdminResponses;
 
 namespace Test.Adapters;
