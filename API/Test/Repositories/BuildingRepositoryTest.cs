@@ -263,13 +263,17 @@ public class BuildingRepositoryTest
             Name = "Construction Company 1",
         };
 
-        ConstructionCompany constructionCompanyToUpd = new ConstructionCompany
+        Manager managerToUpdate = new Manager
         {
-            Id = Guid.NewGuid(),
-            Name = "Construction Company To Update"
+            Firstname = "managerToUpdFirstname",
+            Email = "managerToUpd@gmail.com",
+            Password = "managerToUpdPassword",
+            Buildings = new List<Building>(),
+            Requests = new List<MaintenanceRequest>(),
+            Role = SystemUserRoleEnum.Manager
         };
-
-        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyToUpd);
+        
+        _dbContext.Set<Manager>().Add(managerToUpdate);
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
 
         Building buildingInDb = new Building
@@ -321,23 +325,23 @@ public class BuildingRepositoryTest
         _dbContext.Set<Building>().Add(buildingInDb);
         _dbContext.SaveChanges();
 
-        Building buildingToUpdate = new Building
+        Building buildingWithUpdates = new Building
         {
             Id = buildingInDb.Id,
             Name = "Building 1",
             Address = "Address 1",
             Location = buildingInDb.Location,
             CommonExpenses = 200,
-            ConstructionCompanyId = constructionCompanyToUpd.Id,
-            ConstructionCompany = constructionCompanyToUpd,
-            Manager = buildingInDb.Manager,
-            ManagerId = buildingInDb.ManagerId,
+            ConstructionCompanyId = constructionCompanyInDb.Id,
+            ConstructionCompany = constructionCompanyInDb,
+            Manager = managerToUpdate,
+            ManagerId = managerToUpdate.Id,
             Flats = buildingInDb.Flats
         };
 
-        _buildingRepository.UpdateBuilding(buildingToUpdate);
-        Building buildingInDbUpdated = _dbContext.Set<Building>().Find(buildingToUpdate.Id);
-        Assert.IsTrue(buildingToUpdate.Equals(buildingInDbUpdated));
+        _buildingRepository.UpdateBuilding(buildingWithUpdates);
+        Building buildingInDbUpdated = _dbContext.Set<Building>().Find(buildingInDb.Id);
+        Assert.IsTrue(buildingWithUpdates.Equals(buildingInDbUpdated));
     }
 
     [TestMethod]
