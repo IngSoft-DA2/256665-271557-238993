@@ -9,6 +9,8 @@ public class GetFlatRequestsReportByBuildingResponse
     public int OpenRequests { get; set; }
     public int ClosedRequests { get; set; }
     public int OnAttendanceRequests { get; set; }
+
+    public Guid BuildingId { get; set; }
     
     public override bool Equals(object obj)
     {

@@ -63,7 +63,14 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetFlatRequestsByBuildingReport([FromQuery] Guid buildingId)
         {
-            return Ok(_reportAdapter.GetFlatRequestsByBuildingReport(buildingId));
+            try
+            {
+                return Ok(_reportAdapter.GetFlatRequestsByBuildingReport(buildingId));
+            }
+            catch (Exception exceptionCaught)
+            {
+                return BadRequest(exceptionCaught.Message);
+            }
         }
     }
 }

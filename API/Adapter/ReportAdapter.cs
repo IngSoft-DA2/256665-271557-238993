@@ -11,6 +11,7 @@ namespace Adapter;
 public class ReportAdapter : IReportAdapter
 {
     private IReportService _reportService;
+
     public ReportAdapter(IReportService reportService)
     {
         _reportService = reportService;
@@ -39,10 +40,10 @@ public class ReportAdapter : IReportAdapter
             Console.WriteLine(exceptionCaught);
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
-
     }
 
-    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceReportByRequestHandler(Guid requestHandlerId, Guid buildingId, Guid personId)
+    public IEnumerable<GetMaintenanceReportByRequestHandlerResponse> GetMaintenanceReportByRequestHandler(
+        Guid requestHandlerId, Guid buildingId, Guid personId)
     {
         try
         {
@@ -56,7 +57,7 @@ public class ReportAdapter : IReportAdapter
                     ClosedRequests = report.ClosedRequests,
                     OpenRequests = report.OpenRequests,
                     OnAttendanceRequests = report.OnAttendanceRequests,
-                    AverageTimeToCloseRequest = report.AvgTimeToCloseRequest,
+                    AverageTimeToCloseRequest = report.AvgTimeToCloseRequest
                 });
 
             return maintenanceReportResponses;
@@ -68,7 +69,8 @@ public class ReportAdapter : IReportAdapter
         }
     }
 
-    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceReportByCategory(Guid buildingId, Guid categoryId)
+    public IEnumerable<GetMaintenanceReportByCategoryResponse> GetMaintenanceReportByCategory(Guid buildingId,
+        Guid categoryId)
     {
         try
         {
@@ -95,6 +97,18 @@ public class ReportAdapter : IReportAdapter
 
     public IEnumerable<GetFlatRequestsReportByBuildingResponse> GetFlatRequestsByBuildingReport(Guid buildingId)
     {
-        throw new NotImplementedException();
+        IEnumerable<FlatRequestReport> reports = _reportService.GetFlatRequestsByBuildingReport(buildingId);
+
+        IEnumerable<GetFlatRequestsReportByBuildingResponse> flatReportResponses =
+            reports.Select(report => new GetFlatRequestsReportByBuildingResponse()
+            {
+                BuildingId = report.IdOfResourceToReport,
+                ClosedRequests = report.ClosedRequests,
+                OpenRequests = report.OpenRequests,
+                OnAttendanceRequests = report.OnAttendanceRequests,
+                OwnerName = report.OwnerName
+            });
+
+        return flatReportResponses;
     }
 }

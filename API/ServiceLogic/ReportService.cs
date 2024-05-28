@@ -162,7 +162,40 @@ public class ReportService : IReportService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-    
+
+    public IEnumerable<FlatRequestReport> GetFlatRequestsByBuildingReport(Guid buildingId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<FlatRequestReport> GetFlatRequestsReportByBuilding(Guid buildingId, Guid personId)
+    {
+        try
+        {
+            List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
+                _reportRepository.GetFlatRequestsReportByBuilding(buildingId, personId).ToList();
+
+            Dictionary<Guid, FlatRequestReport> reportsDictionary = new Dictionary<Guid, FlatRequestReport>();
+
+            foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
+            {
+                if (!reportsDictionary.ContainsKey(request.FlatId))
+                {
+                    reportsDictionary[request.FlatId] = new FlatRequestReport
+                    {
+                        IdOfResourceToReport = request.FlatId
+                    };
+                }
+                FlatRequestReport flatReport = reportsDictionary[request.FlatId];
+                AddByCorespondingStatus(request, flatReport);
+            }
+            return reportsDictionary.Values;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
 
     #endregion
 }

@@ -112,6 +112,11 @@ public class ReportRepository : IReportRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
+    public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId, Guid personId)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }
