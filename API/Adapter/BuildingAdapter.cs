@@ -18,7 +18,7 @@ public class BuildingAdapter : IBuildingAdapter
     private readonly IBuildingService _buildingService;
     private readonly IConstructionCompanyService _constructionCompanyService;
     private readonly IOwnerService _ownerService;
-
+    
     public BuildingAdapter(IBuildingService buildingService, IConstructionCompanyService constructionCompanyService,
         IOwnerService ownerService)
     {
@@ -156,9 +156,10 @@ public class BuildingAdapter : IBuildingAdapter
                     Latitude = createBuildingRequest.Location.Latitude,
                     Longitude = createBuildingRequest.Location.Longitude
                 },
-                ConstructionCompany = _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
+                ConstructionCompany =
+                    _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
                 CommonExpenses = createBuildingRequest.CommonExpenses,
-                
+
                 Flats = createBuildingRequest.Flats.Select(flat => new Flat
                 {
                     Id = Guid.NewGuid(),

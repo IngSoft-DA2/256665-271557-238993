@@ -235,7 +235,7 @@ public class ConstructionCompanyServiceTest
     }
     
     [TestMethod]
-    public void CreateConstructionCompanyWithUserWhoHasCreatedOneBefore_ShouldThrowObjectRepeatedServiceException()
+    public void CreateConstructionCompanyWithUserWhoHasCreatedOneBefore_ShouldThrowObjectErrorServiceException()
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = new List<ConstructionCompany>
         {
@@ -263,7 +263,7 @@ public class ConstructionCompanyServiceTest
         _constructionCompanyRepository.Setup(constructionCompanyRepository =>
             constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
 
-        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyToAdd));
         
         _constructionCompanyRepository.VerifyAll();

@@ -389,9 +389,7 @@ public class BuildingAdapterTest
     public void UpdateBuildingById_UpdatesSuccessfully()
     {
         _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()));
-        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
-            .Returns(new ConstructionCompany());
-
+        
         UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
 
         _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest);
@@ -405,9 +403,6 @@ public class BuildingAdapterTest
     {
         _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()))
             .Throws(new ObjectNotFoundServiceException());
-        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
-            .Returns(new ConstructionCompany());
-
         UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>

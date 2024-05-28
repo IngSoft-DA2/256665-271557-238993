@@ -74,7 +74,11 @@ public class ConstructionCompanyService : IConstructionCompanyService
         }
         catch (ObjectRepeatedServiceException)
         {
-            throw new ObjectRepeatedServiceException();
+            throw;
+        }
+        catch (ObjectErrorServiceException)
+        {
+            throw;
         }
 
         catch (Exception exceptionCaught)

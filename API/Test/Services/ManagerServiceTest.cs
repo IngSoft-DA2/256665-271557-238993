@@ -77,7 +77,8 @@ public class ManagerServiceTest
 
         Invitation dummyInvitation = new Invitation();
 
-        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers()).Returns(new List<Manager>());
+        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
+            .Returns(new List<Manager>());
         _managerRepository.Setup(managerRepository => managerRepository.CreateManager(manager));
         _invitationService.Setup(invitationService =>
             invitationService.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<Invitation>()));

@@ -65,7 +65,7 @@ public class ManagerService :IManagerService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
+    
     private void CheckIfEmailIsAlreadyRegistered(Manager manager)
     {
         IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
