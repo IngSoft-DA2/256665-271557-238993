@@ -25,7 +25,7 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region GetConstructionCompanies
+        #region Get Construction Companies
 
         [HttpGet]
         [AuthenticationFilter(SystemUserRoleEnum.Manager)]
@@ -36,10 +36,10 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region CreateConstructionCompany
+        #region Create Construction Company
 
         [HttpPost]
-        [AuthenticationFilter(SystemUserRoleEnum.Manager, SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter( SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany(
             [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
@@ -49,5 +49,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
+        
+        
     }
 }
