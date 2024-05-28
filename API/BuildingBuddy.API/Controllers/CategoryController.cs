@@ -1,10 +1,9 @@
-using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Differencing;
 using WebModel.Requests.CategoryRequests;
+using WebModel.Responses.CategoryResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -37,7 +36,8 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult CreateCategory([FromBody] CreateCategoryRequest categoryToCreate)
         {
-            return Ok(_categoryAdapter.CreateCategory(categoryToCreate));
+            CreateCategoryResponse response = _categoryAdapter.CreateCategory(categoryToCreate);
+            return CreatedAtAction(nameof(CreateCategory), new { id = response.Id }, response);
         }
     }
 }
