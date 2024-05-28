@@ -4,6 +4,7 @@ public class FlatRequestReport : Report
 {
     public string FlatNumber { get; set; }
     public string OwnerName { get; set; }
+    public Guid BuildingId { get; set; }
     
     public override bool Equals(object obj)
     {

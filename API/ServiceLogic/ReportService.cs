@@ -172,7 +172,29 @@ public class ReportService : IReportService
 
     public IEnumerable<FlatRequestReport> GetFlatRequestsByBuildingReport(Guid buildingId)
     {
-        throw new NotImplementedException();
+        List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
+            _reportRepository.GetFlatRequestsReportByBuilding(buildingId).ToList();
+
+        Dictionary<Guid, FlatRequestReport> reportsDictionary = new Dictionary<Guid, FlatRequestReport>();
+
+        foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
+        {
+            if (!reportsDictionary.ContainsKey(request.FlatId))
+            {
+                reportsDictionary[request.FlatId] = new FlatRequestReport
+                {
+                    IdOfResourceToReport = request.FlatId,
+                    OwnerName = request.Flat.OwnerAssigned.Firstname,
+                    FlatNumber = request.Flat.RoomNumber,
+                    BuildingId = request.Flat.BuildingId
+                };
+            }
+
+            FlatRequestReport flatReport = reportsDictionary[request.FlatId];
+            AddByCorespondingStatus(request, flatReport);
+        }
+
+        return reportsDictionary.Values;
     }
 
     #endregion

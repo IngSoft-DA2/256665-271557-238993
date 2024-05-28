@@ -17,6 +17,8 @@ public class ReportServiceTest
 
     private Guid _buildingId;
     private Guid _buildingId2;
+    private Guid _flatId;
+    private Guid _flatId2;
 
     private Guid _categoryId1;
     private Guid _categoryId2;
@@ -60,6 +62,9 @@ public class ReportServiceTest
         _expectedReports = new List<Report>
             { reportNode1, reportNode2 };
 
+        _flatId = Guid.NewGuid();
+        _flatId2 = Guid.NewGuid();
+
         _expectedRepositoryResponse = new List<MaintenanceRequest>
         {
             new MaintenanceRequest()
@@ -67,28 +72,42 @@ public class ReportServiceTest
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId
+                    Id = _flatId,
+                    BuildingId = _buildingId,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "Someone"
+                    },
+                    RoomNumber = "3B"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.Closed,
                 CategoryId = _categoryId1,
                 Description = "Bath broken",
-                RequestHandlerId = _requestHandlerId
+                RequestHandlerId = _requestHandlerId,
+                FlatId = _flatId
             },
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId
+                    Id = _flatId,
+                    BuildingId = _buildingId,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "Someone"
+                    },
+                    RoomNumber = "3B"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.Closed,
                 CategoryId = _categoryId1,
                 Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
+                RequestHandlerId = _requestHandlerId,
+                FlatId = _flatId
             },
 
             new MaintenanceRequest()
@@ -96,28 +115,42 @@ public class ReportServiceTest
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId
+                    Id = _flatId,
+                    BuildingId = _buildingId,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "Someone"
+                    },
+                    RoomNumber = "3B"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.Open,
                 CategoryId = _categoryId1,
                 Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
+                RequestHandlerId = _requestHandlerId,
+                FlatId = _flatId
             },
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId
+                    Id = _flatId,
+                    BuildingId = _buildingId,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "Someone"
+                    },
+                    RoomNumber = "3B"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.Open,
                 CategoryId = _categoryId1,
                 Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
+                RequestHandlerId = _requestHandlerId,
+                FlatId = _flatId
             },
 
             new MaintenanceRequest()
@@ -125,14 +158,21 @@ public class ReportServiceTest
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId
+                    Id = _flatId,
+                    BuildingId = _buildingId,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "Someone"
+                    },
+                    RoomNumber = "3B"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.Open,
                 CategoryId = _categoryId1,
                 Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
+                RequestHandlerId = _requestHandlerId,
+                FlatId = _flatId
             },
 
             new MaintenanceRequest()
@@ -140,28 +180,42 @@ public class ReportServiceTest
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId
+                    Id = _flatId,
+                    BuildingId = _buildingId,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "Someone"
+                    },
+                    RoomNumber = "3B"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.InProgress,
                 CategoryId = _categoryId1,
                 Description = "Room broken",
-                RequestHandlerId = _requestHandlerId
+                RequestHandlerId = _requestHandlerId,
+                FlatId = _flatId
             },
             new MaintenanceRequest()
             {
                 Id = Guid.NewGuid(),
                 Flat = new Flat()
                 {
-                    BuildingId = _buildingId2
+                    Id = _flatId2,
+                    BuildingId = _buildingId2,
+                    OwnerAssigned = new Owner()
+                    {
+                        Firstname = "SomeoneTwo"
+                    },
+                    RoomNumber = "3C"
                 },
                 ClosedDate = new DateTime(2029, 12, 31),
                 OpenedDate = new DateTime(2029, 12, 29),
                 RequestStatus = RequestStatusEnum.InProgress,
                 CategoryId = _categoryId2,
                 Description = "Room broken",
-                RequestHandlerId = _requestHandlerId2
+                RequestHandlerId = _requestHandlerId2,
+                FlatId = _flatId2
             },
         };
     }
@@ -173,10 +227,12 @@ public class ReportServiceTest
     [TestMethod]
     public void GetMaintenanceReportByBuilding_ReportsAreReturned()
     {
-        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>()))
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Returns(_expectedRepositoryResponse);
 
-        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),Guid.Empty);
+        IEnumerable<Report> actualResponse =
+            _reportService.GetMaintenanceReportByBuilding(It.IsAny<Guid>(), Guid.Empty);
 
         _reportRepository.VerifyAll();
 
@@ -186,11 +242,12 @@ public class ReportServiceTest
     [TestMethod]
     public void GetMaintenanceReportByBuilding_ExceptionThrown()
     {
-        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>()))
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetMaintenanceReportByBuilding(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
-            _reportService.GetMaintenanceReportByBuilding(It.IsAny<Guid>(),It.IsAny<Guid>()));
+            _reportService.GetMaintenanceReportByBuilding(It.IsAny<Guid>(), It.IsAny<Guid>()));
 
         _reportRepository.VerifyAll();
     }
@@ -225,7 +282,8 @@ public class ReportServiceTest
         };
 
         _reportRepository.Setup(reportRepository =>
-                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(),
+                    It.IsAny<Guid>()))
             .Returns(_expectedRepositoryResponse);
 
         IEnumerable<RequestHandlerReport> actualResponse =
@@ -240,7 +298,8 @@ public class ReportServiceTest
     public void GetMaintenanceReportByRequestHandler_ExceptionThrown()
     {
         _reportRepository.Setup(reportRepository =>
-                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), It.IsAny<Guid>(),
+                    It.IsAny<Guid>()))
             .Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
@@ -275,10 +334,12 @@ public class ReportServiceTest
         _expectedReports = new List<Report>
             { reportNode1, reportNode2 };
 
-        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>(),It.IsAny<Guid>()))
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Returns(_expectedRepositoryResponse);
 
-        IEnumerable<Report> actualResponse = _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>(),It.IsAny<Guid>());
+        IEnumerable<Report> actualResponse =
+            _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _reportRepository.VerifyAll();
 
@@ -288,14 +349,54 @@ public class ReportServiceTest
     [TestMethod]
     public void GetMaintenanceReportByCategory_ExceptionThrown()
     {
-        _reportRepository.Setup(reportRepository => reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>()))
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
-            _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>(),It.IsAny<Guid>()));
+            _reportService.GetMaintenanceReportByCategory(It.IsAny<Guid>(), It.IsAny<Guid>()));
 
         _reportRepository.VerifyAll();
     }
 
     #endregion
+
+    [TestMethod]
+    public void GetFlatReportByBuilding_ReportsAreReturnedCorrectly()
+    {
+        IEnumerable<FlatRequestReport> expectedReportResponse = new List<FlatRequestReport>
+        {
+            new FlatRequestReport()
+            {
+                IdOfResourceToReport = _flatId,
+                ClosedRequests = 2,
+                OpenRequests = 3,
+                OnAttendanceRequests = 1,
+                BuildingId = _buildingId,
+                OwnerName = "Someone",
+                FlatNumber = "3B"
+            },
+            new FlatRequestReport()
+            {
+                IdOfResourceToReport = _flatId2,
+                ClosedRequests = 0,
+                OpenRequests = 0,
+                OnAttendanceRequests = 1,
+                BuildingId = _buildingId2,
+                OwnerName = "SomeoneTwo",
+                FlatNumber = "3C"
+            }
+        };
+
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetFlatRequestsReportByBuilding(It.IsAny<Guid>()))
+            .Returns(_expectedRepositoryResponse);
+
+        IEnumerable<FlatRequestReport> actualResponse =
+            _reportService.GetFlatRequestsByBuildingReport(It.IsAny<Guid>());
+
+        _reportRepository.VerifyAll();
+
+        Assert.IsTrue(expectedReportResponse.SequenceEqual(actualResponse));
+    }
 }
