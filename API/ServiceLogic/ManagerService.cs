@@ -36,6 +36,15 @@ public class ManagerService :IManagerService
     }
     
     #endregion
+
+    #region Get Manager By Id
+    
+    public Manager GetManagerById(Guid managerId)
+    {
+        return _managerRepository.GetManagerById(managerId);
+    }
+
+    #endregion
     
     #region Create Manager
 

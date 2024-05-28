@@ -61,6 +61,34 @@ public class ManagerServiceTest
 
     #endregion
 
+    #region Get Manager By Id
+
+    [TestMethod]
+    public void GetManagerById_ShouldReturnManager()
+    {
+        Manager expectedManager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Manager",
+            Email = "manager@gmail.com",
+            Password = "123456789",
+            Buildings = new List<Building>(),
+            Requests = new List<MaintenanceRequest>(),
+            Role = SystemUserRoleEnum.Manager
+        };
+
+        _managerRepository.Setup(managerRepository =>
+            managerRepository.GetManagerById(expectedManager.Id)).Returns(expectedManager);
+
+        Manager actualManager = _managerService.GetManagerById(expectedManager.Id);
+        
+        _managerRepository.VerifyAll();
+        Assert.IsTrue(expectedManager.Equals(actualManager));
+
+       
+    }
+    #endregion
+
     #region Create Manager
 
     [TestMethod]
