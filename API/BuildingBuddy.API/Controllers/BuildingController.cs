@@ -76,6 +76,7 @@ namespace BuildingBuddy.API.Controllers
         #region Delete Building
 
         [HttpDelete]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         [Route("{buildingId:Guid}")]
         public IActionResult DeleteBuildingById([FromRoute] Guid buildingId)
         {
