@@ -225,7 +225,6 @@ public class BuildingControllerTest
 
         UpdateBuildingRequest updateBuildingRequest = new UpdateBuildingRequest
         {
-            ConstructionCompanyId = new Guid(),
             CommonExpenses = 1000
         };
         

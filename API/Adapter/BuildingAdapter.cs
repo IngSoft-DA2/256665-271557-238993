@@ -209,15 +209,10 @@ public class BuildingAdapter : IBuildingAdapter
     {
         try
         {
-            ConstructionCompany newConstructionCompany =
-                _constructionCompanyService.GetConstructionCompanyById(updateBuildingRequest.ConstructionCompanyId);
-
             Building buildingToUpd = new Building
             {
                 Id = buildingIdToUpd,
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
-                ConstructionCompany = newConstructionCompany,
-                ConstructionCompanyId = newConstructionCompany.Id
             };
 
             _buildingService.UpdateBuilding(buildingToUpd);
