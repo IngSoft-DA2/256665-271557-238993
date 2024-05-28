@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Domain;
 
 public class ConstructionCompany
@@ -6,6 +8,9 @@ public class ConstructionCompany
     public string Name { get; set; }
     public Guid UserCreatorId { get; set; }
 
+    [ForeignKey("ConstructionCompanyAdmin")] 
+    public Guid? ConstructionCompanyAdminId { get; set; }
+    
     public IEnumerable<Building> Buildings { get; set; } = new List<Building>();
 
     public void ConstructionCompanyValidator()
