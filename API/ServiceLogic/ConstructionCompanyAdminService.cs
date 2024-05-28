@@ -16,6 +16,6 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
     }
     public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
     {
-        throw new NotImplementedException();
+        _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
     }
 }
