@@ -172,29 +172,36 @@ public class ReportService : IReportService
 
     public IEnumerable<FlatRequestReport> GetFlatRequestsByBuildingReport(Guid buildingId)
     {
-        List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
-            _reportRepository.GetFlatRequestsReportByBuilding(buildingId).ToList();
-
-        Dictionary<Guid, FlatRequestReport> reportsDictionary = new Dictionary<Guid, FlatRequestReport>();
-
-        foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
+        try
         {
-            if (!reportsDictionary.ContainsKey(request.FlatId))
+            List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
+                _reportRepository.GetFlatRequestsReportByBuilding(buildingId).ToList();
+
+            Dictionary<Guid, FlatRequestReport> reportsDictionary = new Dictionary<Guid, FlatRequestReport>();
+
+            foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
             {
-                reportsDictionary[request.FlatId] = new FlatRequestReport
+                if (!reportsDictionary.ContainsKey(request.FlatId))
                 {
-                    IdOfResourceToReport = request.FlatId,
-                    OwnerName = request.Flat.OwnerAssigned.Firstname,
-                    FlatNumber = request.Flat.RoomNumber,
-                    BuildingId = request.Flat.BuildingId
-                };
+                    reportsDictionary[request.FlatId] = new FlatRequestReport
+                    {
+                        IdOfResourceToReport = request.FlatId,
+                        OwnerName = request.Flat.OwnerAssigned.Firstname,
+                        FlatNumber = request.Flat.RoomNumber,
+                        BuildingId = request.Flat.BuildingId
+                    };
+                }
+
+                FlatRequestReport flatReport = reportsDictionary[request.FlatId];
+                AddByCorespondingStatus(request, flatReport);
             }
 
-            FlatRequestReport flatReport = reportsDictionary[request.FlatId];
-            AddByCorespondingStatus(request, flatReport);
+            return reportsDictionary.Values;
         }
-
-        return reportsDictionary.Values;
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     #endregion

@@ -399,4 +399,17 @@ public class ReportServiceTest
 
         Assert.IsTrue(expectedReportResponse.SequenceEqual(actualResponse));
     }
+    
+    [TestMethod]
+    public void GetFlatReportByBuilding_ExceptionThrown()
+    {
+        _reportRepository.Setup(reportRepository =>
+                reportRepository.GetFlatRequestsReportByBuilding(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _reportService.GetFlatRequestsByBuildingReport(It.IsAny<Guid>()));
+
+        _reportRepository.VerifyAll();
+    }
 }
