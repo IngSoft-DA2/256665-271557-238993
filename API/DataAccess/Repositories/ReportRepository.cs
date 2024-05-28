@@ -116,19 +116,26 @@ public class ReportRepository : IReportRepository
 
     public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId)
     {
-        if (!(Guid.Empty == buildingId))
+        try
         {
-            return _dbContext.Set<MaintenanceRequest>()
-                .Where(mr => mr.Flat.BuildingId == buildingId)
-                .Include(mr => mr.Category)
-                .Include(mr => mr.Flat)
-                .Include(mr => mr.Manager)
-                .Include(mr => mr.RequestHandler).ToList();
+            if (!(Guid.Empty == buildingId))
+            {
+                return _dbContext.Set<MaintenanceRequest>()
+                    .Where(mr => mr.Flat.BuildingId == buildingId)
+                    .Include(mr => mr.Category)
+                    .Include(mr => mr.Flat)
+                    .Include(mr => mr.Manager)
+                    .Include(mr => mr.RequestHandler).ToList();
+            }
+            else
+            {
+                IEnumerable<MaintenanceRequest> response = new List<MaintenanceRequest>();
+                return response;
+            }
         }
-        else
+        catch (Exception exceptionCaught)
         {
-            IEnumerable<MaintenanceRequest> response= new List<MaintenanceRequest>();
-            return response;
+            throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
 
