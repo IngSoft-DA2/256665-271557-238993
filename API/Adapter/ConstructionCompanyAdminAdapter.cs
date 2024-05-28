@@ -1,7 +1,9 @@
+using Adapter.CustomExceptions;
 using Domain;
 using Domain.Enums;
 using IAdapter;
 using IServiceLogic;
+using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
 using WebModel.Responses.ConstructionCompanyAdminResponses;
 
@@ -18,25 +20,33 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
     
     public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(CreateConstructionCompanyAdminRequest createRequest)
     {
-        ConstructionCompanyAdmin constructionCompanyAdminToCreate = new ConstructionCompanyAdmin
+        try
         {
-            Id = Guid.NewGuid(),
-            Firstname = createRequest.Firstname,
-            Lastname = createRequest.Lastname,
-            Email = createRequest.Email,
-            Password = createRequest.Password,
-            ConstructionCompany = null,
-            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
-        };
+            ConstructionCompanyAdmin constructionCompanyAdminToCreate = new ConstructionCompanyAdmin
+            {
+                Id = Guid.NewGuid(),
+                Firstname = createRequest.Firstname,
+                Lastname = createRequest.Lastname,
+                Email = createRequest.Email,
+                Password = createRequest.Password,
+                ConstructionCompany = null,
+                Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+            };
         
-        _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         
-        CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
+            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
+            {
+                Id = constructionCompanyAdminToCreate.Id
+            };
+        
+            return constructionCompanyAdminResponse;
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
         {
-            Id = constructionCompanyAdminToCreate.Id
-        };
-        
-        return constructionCompanyAdminResponse;
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+       
         
     }
 }
