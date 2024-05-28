@@ -114,6 +114,9 @@ public class ReportRepository : IReportRepository
         }
     }
 
+    #endregion
+    
+    #region Get Flat Requests Report By Building
     public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId)
     {
         try
@@ -138,6 +141,6 @@ public class ReportRepository : IReportRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-
+    
     #endregion
 }

@@ -170,6 +170,10 @@ public class ReportService : IReportService
         }
     }
 
+    #endregion
+    
+    #region Get flat requests by building report
+    
     public IEnumerable<FlatRequestReport> GetFlatRequestsByBuildingReport(Guid buildingId)
     {
         try
@@ -203,6 +207,6 @@ public class ReportService : IReportService
             throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
-
+    
     #endregion
 }

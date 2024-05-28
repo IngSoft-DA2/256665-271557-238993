@@ -361,6 +361,8 @@ public class ReportServiceTest
 
     #endregion
 
+    #region Get flat report by building
+
     [TestMethod]
     public void GetFlatReportByBuilding_ReportsAreReturnedCorrectly()
     {
@@ -412,4 +414,6 @@ public class ReportServiceTest
 
         _reportRepository.VerifyAll();
     }
+    
+    #endregion
 }
