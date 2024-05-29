@@ -25,7 +25,8 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
 
     #region Create Construction Company Admin
 
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByInvitation(CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept)
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
+        CreateConstructionCompanyAdminRequest createRequest, SystemUserRoleEnum? userRole)
     {
         try
         {
@@ -40,14 +41,17 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
                 Role = SystemUserRoleEnum.ConstructionCompanyAdmin
             };
 
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(constructionCompanyAdminToCreate,
-                invitationIdToAccept);
-
-            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse =
-                new CreateConstructionCompanyAdminResponse
-                {
-                    Id = constructionCompanyAdminToCreate.Id
-                };
+            if (userRole is null)
+            {
+                _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                    constructionCompanyAdminToCreate, createRequest.InvitationId);
+            }
+            else _constructionCompanyAdminService.CreateConstructionCompanyAdminForAdmins(constructionCompanyAdminToCreate);
+            
+            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
+            {
+                Id = constructionCompanyAdminToCreate.Id
+            };
 
             return constructionCompanyAdminResponse;
         }
@@ -62,35 +66,6 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundAdapterException();
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownAdapterException(exceptionCaught.Message);
-        }
-    }
-
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByAnotherAdmin(CreateConstructionCompanyAdminRequest createRequest)
-    {
-        try
-        {
-            ConstructionCompanyAdmin constructionCompanyAdminToCreate = new ConstructionCompanyAdmin
-            {
-                Id = Guid.NewGuid(),
-                Firstname = createRequest.Firstname,
-                Lastname = createRequest.Lastname,
-                Email = createRequest.Email,
-                Password = createRequest.Password,
-                ConstructionCompany = null,
-                Role = SystemUserRoleEnum.ConstructionCompanyAdmin
-            };
-
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByAnotherAdmin(constructionCompanyAdminToCreate);
-        
-            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
-            {
-                Id = constructionCompanyAdminToCreate.Id
-            };
-            return constructionCompanyAdminResponse;
         }
         catch (Exception exceptionCaught)
         {

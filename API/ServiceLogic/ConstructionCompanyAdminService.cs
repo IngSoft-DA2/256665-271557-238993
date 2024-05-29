@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using System.Diagnostics.CodeAnalysis;
+using Domain;
 using Domain.CustomExceptions;
 using Domain.Enums;
 using IDataAccess;
@@ -26,24 +27,47 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
     #region Create Construction Company Admin
 
     public void CreateConstructionCompanyAdminByInvitation(ConstructionCompanyAdmin constructionCompanyAdminToCreate,
-        Guid invitationId)
+        Guid? invitationId)
     {
         try
         {
-            constructionCompanyAdminToCreate.ConstructionCompanyAdminValidator();
+            ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
 
-            IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
-                _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+            if (invitationId is null)
+                throw new InvalidConstructionCompanyAdminException(
+                    "Invitation id is required unless user role is ConstructionCompanyAdmin");
 
-            CheckIfEmailIsAlreadyRegistered(constructionCompanyAdminToCreate,allConstructionCompanyAdmins);
-
-            Invitation invitationToAccept = _invitationService.GetInvitationById(invitationId);
-            Invitation invitationAccepted = AcceptInvitation(invitationToAccept);
-            _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
-
+            MarkInvitationAsValid(invitationId.Value);
             _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         }
-        
+
+        catch (InvalidConstructionCompanyAdminException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+    }
+
+
+    public void CreateConstructionCompanyAdminForAdmins(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
+    {
+        try
+        {
+            ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
+            _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
+        }
+
         catch (InvalidConstructionCompanyAdminException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
@@ -54,9 +78,15 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         }
     }
 
-    public void CreateConstructionCompanyAdminByAnotherAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
+    #region Auxiliary Functions
+
+    private void ValidationsForBeingPossibleToCreate(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
     {
-        throw new NotImplementedException();
+        constructionCompanyAdminToCreate.ConstructionCompanyAdminValidator();
+
+        IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
+            _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+        CheckIfEmailIsAlreadyRegistered(constructionCompanyAdminToCreate, allConstructionCompanyAdmins);
     }
 
     private void CheckIfEmailIsAlreadyRegistered(ConstructionCompanyAdmin constructionCompanyAdminToCheck,
@@ -69,6 +99,13 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         }
     }
 
+    private void MarkInvitationAsValid(Guid invitationId)
+    {
+        Invitation invitationToAccept = _invitationService.GetInvitationById(invitationId);
+        Invitation invitationAccepted = AcceptInvitation(invitationToAccept);
+        _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
+    }
+
     private Invitation AcceptInvitation(Invitation invitationToAccept)
     {
         Invitation invitationAccepted = new Invitation
@@ -79,6 +116,8 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         };
         return invitationAccepted;
     }
+
+    #endregion
 
     #endregion
 

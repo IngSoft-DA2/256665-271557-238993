@@ -3,9 +3,7 @@ using BuildingBuddy.API.Controllers;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using WebModel.Requests.AdministratorRequests;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
-using WebModel.Responses.AdministratorResponses;
 using WebModel.Responses.ConstructionCompanyAdminResponses;
 
 namespace Test.ApiControllers;
@@ -43,14 +41,13 @@ public class ConstructionCompanyAdminControllerTest
             "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id,
             expectedConstructionCompanyAdminResponse);
 
-        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
-                constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(
-                    It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>()))
+        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter => constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
+                    It.IsAny<CreateConstructionCompanyAdminRequest>(), null))
             .Returns(expectedConstructionCompanyAdminResponse);
 
-        IActionResult controllerResponse =
-            _constructionCompanyAdminController.CreateConstructionCompanyAdminByInvitation(
-                It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>());
+        IActionResult controllerResponse = _constructionCompanyAdminController
+            .CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
+        
         _constructionCompanyAdminAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -78,8 +75,8 @@ public class ConstructionCompanyAdminControllerTest
             expectedConstructionCompanyAdminResponse);
 
         _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
-                constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByAnotherAdmin(
-                    It.IsAny<CreateConstructionCompanyAdminRequest>()))
+                constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
+                    It.IsAny<CreateConstructionCompanyAdminRequest>(), null))
             .Returns(expectedConstructionCompanyAdminResponse);
 
         IActionResult controllerResponse =
@@ -94,20 +91,6 @@ public class ConstructionCompanyAdminControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-
-    [TestMethod]
-    public void CreateConstructionCompanyAdminByAnotherAdmin_ThrowsUnknownAdapterException()
-    {
-        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
-                constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByAnotherAdmin(
-                    It.IsAny<CreateConstructionCompanyAdminRequest>()))
-            .Throws(new UnknownAdapterException("Unknown Error"));
-
-        Assert.ThrowsException<UnknownAdapterException>(() =>
-            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
-                It.IsAny<CreateConstructionCompanyAdminRequest>()));
-        _constructionCompanyAdminAdapter.VerifyAll();
-    }
-
+    
     #endregion
 }

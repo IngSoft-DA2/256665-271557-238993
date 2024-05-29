@@ -20,26 +20,26 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
-        [Route("{invitationIdToAccept:Guid}")]
-        public IActionResult CreateConstructionCompanyAdminByInvitation(
-            [FromBody] CreateConstructionCompanyAdminRequest createRequest, [FromRoute] Guid invitationIdToAccept)
+        public IActionResult CreateConstructionCompanyAdmin(
+            [FromBody] CreateConstructionCompanyAdminRequest createRequest)
         {
-            CreateConstructionCompanyAdminResponse response =
-                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(createRequest,invitationIdToAccept);
+            SystemUserRoleEnum? userRole = null;
 
-            return CreatedAtAction(nameof(CreateConstructionCompanyAdminByInvitation), new { id = response.Id }, response);
-        }
-        
-        [HttpPost]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
-        public IActionResult CreateConstructionCompanyAdmin([FromBody] CreateConstructionCompanyAdminRequest createRequest)
-        {
-            CreateConstructionCompanyAdminResponse response =
-                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByAnotherAdmin(createRequest);
+            if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj) && userRoleObj is string userRoleStr)
+            {
+                if (Enum.TryParse(userRoleStr, out SystemUserRoleEnum parsedUserRole))
+                {
+                    if (parsedUserRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
+                    {
+                        return Forbid("Only ConstructionCompanyAdmin people is allowed.");
+                    }
+                    userRole = parsedUserRole;
+                }
+                else return Unauthorized();
+            }
 
+            CreateConstructionCompanyAdminResponse response = _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, userRole);
             return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
         }
-        
     }
 }
