@@ -74,6 +74,14 @@ public class ConstructionCompanyAdminServiceTest
             _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample));
         
     }
+    
+    [TestMethod]
+    public void CreateConstructionCompanyAdminWithIncorrectEmail_ThrowsObjectErrorServiceException()
+    {
+        _constructionCompanyAdminExample.Email = "a.com";
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample));
+    }
 
     #endregion
 

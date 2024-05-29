@@ -11,6 +11,7 @@ public class ConstructionCompanyAdmin : SystemUser
     {
         PersonValidator();
         LastnameValidator();
+        
     }
 
     private void LastnameValidator()
