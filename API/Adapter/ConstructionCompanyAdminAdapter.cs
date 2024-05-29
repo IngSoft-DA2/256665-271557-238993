@@ -25,8 +25,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
 
     #region Create Construction Company Admin
 
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByInvitation(
-        CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept)
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByInvitation(CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept)
     {
         try
         {
@@ -70,27 +69,33 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         }
     }
 
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
-        CreateConstructionCompanyAdminRequest createRequest)
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByAnotherAdmin(CreateConstructionCompanyAdminRequest createRequest)
     {
-        ConstructionCompanyAdmin constructionCompanyAdminToCreate = new ConstructionCompanyAdmin
+        try
         {
-            Id = Guid.NewGuid(),
-            Firstname = createRequest.Firstname,
-            Lastname = createRequest.Lastname,
-            Email = createRequest.Email,
-            Password = createRequest.Password,
-            ConstructionCompany = null,
-            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
-        };
+            ConstructionCompanyAdmin constructionCompanyAdminToCreate = new ConstructionCompanyAdmin
+            {
+                Id = Guid.NewGuid(),
+                Firstname = createRequest.Firstname,
+                Lastname = createRequest.Lastname,
+                Email = createRequest.Email,
+                Password = createRequest.Password,
+                ConstructionCompany = null,
+                Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+            };
 
-        _constructionCompanyAdminService.CreateConstructionCompanyAdminByAnotherAdmin(constructionCompanyAdminToCreate);
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByAnotherAdmin(constructionCompanyAdminToCreate);
         
-        CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
+            CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
+            {
+                Id = constructionCompanyAdminToCreate.Id
+            };
+            return constructionCompanyAdminResponse;
+        }
+        catch (Exception exceptionCaught)
         {
-            Id = constructionCompanyAdminToCreate.Id
-        };
-        return constructionCompanyAdminResponse;
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 
     #endregion

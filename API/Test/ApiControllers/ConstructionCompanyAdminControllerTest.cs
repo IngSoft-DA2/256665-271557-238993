@@ -62,10 +62,10 @@ public class ConstructionCompanyAdminControllerTest
 
     #endregion
 
-    #region Create Construction Company Admin
+    #region Create Construction Company Admin By Another Construction Company Admin
 
     [TestMethod]
-    public void CreateConstructionCompanyAdmin_ConstructionCompanyAdminIsCreated()
+    public void CreateConstructionCompanyAdminByAnotherAdmin_ConstructionCompanyAdminIsCreated()
     {
         CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse =
             new CreateConstructionCompanyAdminResponse()
@@ -78,14 +78,14 @@ public class ConstructionCompanyAdminControllerTest
             expectedConstructionCompanyAdminResponse);
 
         _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
-                constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
+                constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByAnotherAdmin(
                     It.IsAny<CreateConstructionCompanyAdminRequest>()))
             .Returns(expectedConstructionCompanyAdminResponse);
 
         IActionResult controllerResponse =
             _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
                 It.IsAny<CreateConstructionCompanyAdminRequest>());
-        
+
         _constructionCompanyAdminAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -93,6 +93,20 @@ public class ConstructionCompanyAdminControllerTest
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    [TestMethod]
+    public void CreateConstructionCompanyAdminByAnotherAdmin_ThrowsUnknownAdapterException()
+    {
+        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
+                constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByAnotherAdmin(
+                    It.IsAny<CreateConstructionCompanyAdminRequest>()))
+            .Throws(new UnknownAdapterException("Unknown Error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
+                It.IsAny<CreateConstructionCompanyAdminRequest>()));
+        _constructionCompanyAdminAdapter.VerifyAll();
     }
 
     #endregion

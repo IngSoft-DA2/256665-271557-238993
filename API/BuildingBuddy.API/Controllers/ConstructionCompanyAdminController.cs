@@ -36,7 +36,7 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult CreateConstructionCompanyAdmin([FromBody] CreateConstructionCompanyAdminRequest createRequest)
         {
             CreateConstructionCompanyAdminResponse response =
-                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest);
+                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByAnotherAdmin(createRequest);
 
             return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
         }
