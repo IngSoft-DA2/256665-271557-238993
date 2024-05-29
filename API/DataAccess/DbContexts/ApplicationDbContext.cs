@@ -18,6 +18,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Administrator> Administrators { get; set; }
     public DbSet<Manager> Managers { get; set; }
     public DbSet<RequestHandler> RequestHandlers { get; set; }
+    public DbSet<ConstructionCompanyAdmin> ConstructionCompanyAdmins { get; set; }
     public DbSet<Session> Sessions { get; set; }
 
 
