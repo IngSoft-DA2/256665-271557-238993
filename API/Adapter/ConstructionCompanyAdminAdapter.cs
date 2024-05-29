@@ -14,6 +14,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
     #region Constructor And Dependency Injection
 
     private readonly IConstructionCompanyAdminService _constructionCompanyAdminService;
+    private readonly IInvitationService _invitationService;
 
     public ConstructionCompanyAdminAdapter(IConstructionCompanyAdminService constructionCompanyAdminService)
     {
@@ -25,7 +26,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
     #region Create Construction Company Admin
 
     public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
-        CreateConstructionCompanyAdminRequest createRequest)
+        CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept)
     {
         try
         {
@@ -40,7 +41,8 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
                 Role = SystemUserRoleEnum.ConstructionCompanyAdmin
             };
 
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate,
+                invitationIdToAccept);
 
             CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse =
                 new CreateConstructionCompanyAdminResponse
@@ -57,6 +59,10 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         catch (ObjectRepeatedServiceException)
         {
             throw new ObjectRepeatedAdapterException();
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
         }
         catch (Exception exceptionCaught)
         {

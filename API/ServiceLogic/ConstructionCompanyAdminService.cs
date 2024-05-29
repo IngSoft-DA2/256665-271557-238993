@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.CustomExceptions;
+using Domain.Enums;
 using IDataAccess;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -11,17 +12,21 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
     #region Constructor and Dependency Injection
 
     private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
+    private readonly IInvitationService _invitationService;
 
-    public ConstructionCompanyAdminService(IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
+    public ConstructionCompanyAdminService(IConstructionCompanyAdminRepository constructionCompanyAdminRepository,
+        IInvitationService invitationService)
     {
         _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
+        _invitationService = invitationService;
     }
 
     #endregion
 
     #region Create Construction Company Admin
 
-    public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
+    public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate,
+        Guid invitationId)
     {
         try
         {
@@ -30,13 +35,15 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
             IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
                 _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
 
-            CheckIfEmailAlreadyExists(constructionCompanyAdminToCreate, allConstructionCompanyAdmins);
+            CheckIfEmailIsAlreadyRegistered(constructionCompanyAdminToCreate,allConstructionCompanyAdmins);
+
+            Invitation invitationToAccept = _invitationService.GetInvitationById(invitationId);
+            Invitation invitationAccepted = AcceptInvitation(invitationToAccept);
+            _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
+
             _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         }
-        catch (InvalidPersonException exceptionCaught)
-        {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
+        
         catch (InvalidConstructionCompanyAdminException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
@@ -46,14 +53,26 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
             throw new ObjectRepeatedServiceException();
         }
     }
-
-    private static void CheckIfEmailAlreadyExists(ConstructionCompanyAdmin constructionCompanyAdminToCheck,
-        IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins)
+    
+    private void CheckIfEmailIsAlreadyRegistered(ConstructionCompanyAdmin constructionCompanyAdminToCheck,
+        IEnumerable<ConstructionCompanyAdmin> constructionCompanyAdmins)
     {
-        if (allConstructionCompanyAdmins.Any(a => a.Email == constructionCompanyAdminToCheck.Email))
+        if (constructionCompanyAdmins.Any(constructionCompanyAdmin =>
+                constructionCompanyAdmin.Email == constructionCompanyAdminToCheck.Email))
         {
             throw new ObjectRepeatedServiceException();
         }
+    }
+
+    private Invitation AcceptInvitation(Invitation invitationToAccept)
+    {
+        Invitation invitationAccepted = new Invitation
+        {
+            Id = invitationToAccept.Id,
+            Status = StatusEnum.Accepted,
+            ExpirationDate = invitationToAccept.ExpirationDate
+        };
+        return invitationAccepted;
     }
 
     #endregion

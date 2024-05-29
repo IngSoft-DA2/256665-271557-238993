@@ -14,9 +14,9 @@ public class ConstructionCompanyAdmin : SystemUser
             PersonValidator();
             PasswordValidator();
         }
-        catch (InvalidPersonException eexceptionCaught)
+        catch (InvalidPersonException exceptionCaught)
         {
-            throw new InvalidConstructionCompanyAdminException(eexceptionCaught.Message);
+            throw new InvalidConstructionCompanyAdminException(exceptionCaught.Message);
         }
         catch (InvalidSystemUserException exceptionCaught)
         {

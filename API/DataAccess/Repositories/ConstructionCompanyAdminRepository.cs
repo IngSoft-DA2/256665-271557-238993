@@ -17,8 +17,7 @@ public class ConstructionCompanyAdminRepository : IConstructionCompanyAdminRepos
     }
 
     #endregion
-
-
+    
     #region Create Construction Company Admin
 
     public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToAdd)

@@ -44,10 +44,10 @@ public class ConstructionCompanyAdminControllerTest
         
         _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
             constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
-                It.IsAny<CreateConstructionCompanyAdminRequest>())).Returns(expectedConstructionCompanyAdminResponse);
+                It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>())).Returns(expectedConstructionCompanyAdminResponse);
 
         IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
-            It.IsAny<CreateConstructionCompanyAdminRequest>());
+            It.IsAny<CreateConstructionCompanyAdminRequest>(),It.IsAny<Guid>());
         _constructionCompanyAdminAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;

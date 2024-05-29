@@ -18,12 +18,13 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpPost]
+        [Route("{invitationIdToAccept:Guid}")]
         public IActionResult CreateConstructionCompanyAdmin(
-            [FromBody] CreateConstructionCompanyAdminRequest createRequest)
+            [FromBody] CreateConstructionCompanyAdminRequest createRequest, [FromRoute] Guid invitationIdToAccept)
         {
             CreateConstructionCompanyAdminResponse response =
-                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest);
-            
+                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest,invitationIdToAccept);
+
             return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
         }
     }
