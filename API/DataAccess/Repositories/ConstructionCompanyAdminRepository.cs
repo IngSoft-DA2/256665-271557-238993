@@ -36,6 +36,8 @@ public class ConstructionCompanyAdminRepository : IConstructionCompanyAdminRepos
 
     #endregion
 
+    #region Get All Construction Company Admins
+
     public IEnumerable<ConstructionCompanyAdmin> GetAllConstructionCompanyAdmins()
     {
         try
@@ -46,6 +48,7 @@ public class ConstructionCompanyAdminRepository : IConstructionCompanyAdminRepos
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-        
     }
+
+    #endregion
 }
