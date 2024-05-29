@@ -11,6 +11,8 @@ namespace Test.Repositories;
 [TestClass]
 public class ConstructionCompanyAdminRepositoryTest
 {
+    #region Initializr
+
     private DbContext _dbContext;
     private ConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
 
@@ -28,6 +30,10 @@ public class ConstructionCompanyAdminRepositoryTest
         return new ApplicationDbContext(options);
     }
 
+    #endregion
+
+
+    #region Create Construction Company Admin
 
     [TestMethod]
     public void CreateConstructionCompanyAdmin_ConstructionCompanyAdminIsAddedToDb()
@@ -56,17 +62,24 @@ public class ConstructionCompanyAdminRepositoryTest
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(mockDbContext => mockDbContext.Set<ConstructionCompanyAdmin>()).Throws(new Exception());
 
-        ConstructionCompanyAdminRepository constructionCompanyAdminRepository = new ConstructionCompanyAdminRepository(_mockDbContext.Object);
-        
+        ConstructionCompanyAdminRepository constructionCompanyAdminRepository =
+            new ConstructionCompanyAdminRepository(_mockDbContext.Object);
+
         Assert.ThrowsException<UnknownRepositoryException>(() =>
             constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()));
-        
+
         _mockDbContext.VerifyAll();
     }
+
+    #endregion
+
+    #region Cleanup
 
     [TestCleanup]
     public void TestCleanup()
     {
         _dbContext.Database.EnsureDeleted();
     }
+
+    #endregion
 }
