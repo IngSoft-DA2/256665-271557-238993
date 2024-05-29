@@ -43,8 +43,8 @@ public class ConstructionCompanyAdminServiceTest
 
     #endregion
 
-    #region Create Construction Company Admin
-
+    #region Create Construction Company Admin By Invitation
+    
     //Happy path
     [TestMethod]
     public void CreateConstructionCompanyAdminByInvitation_CreateConstructionCompanyAdminIsCreated()
@@ -172,6 +172,34 @@ public class ConstructionCompanyAdminServiceTest
 
     #endregion
 
+    #endregion
+    
+    #region Create Construction Company Admin For Admins
+    
+    //Happy path
+    [TestMethod]
+    public void CreateConstructionCompanyAdminForAdmins_CreateConstructionCompanyAdminIsCreated()
+    {
+        
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+            constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()));
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
+
+        
+        _constructionCompanyAdminService.CreateConstructionCompanyAdminForAdmins(_constructionCompanyAdminExample);
+
+        _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()),
+            Times.Once);
+        
+        _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
+            constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
+    }
+    
+    
     #endregion
 
     #region Get All Construction Company Admins
