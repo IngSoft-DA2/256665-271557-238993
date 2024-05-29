@@ -109,9 +109,27 @@ public class ConstructionCompanyAdminServiceTest
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
+    [TestMethod]
+    public void CreateConstructionCompanyAdminByInvitation_InvitationServiceCrashes()
+    {
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
+
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Throws(new UnknownServiceException("Specific error on invitationService"));
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample, It.IsAny<Guid>()));
+        
+        _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
+            constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
+        _invitationService.VerifyAll();
+    }
 
 
-    #region Create Construction Company Admin , Domain Validations
+    #region Create Construction Company Admin By Invitation, Domain Validations
 
     [TestMethod]
     public void CreateConstructionCompanyAdminWithEmptyFirstname_ThrowsObjectErrorServiceException()
@@ -155,7 +173,7 @@ public class ConstructionCompanyAdminServiceTest
 
     #endregion
 
-    #region Create Construction Company Admin , Repository Validations
+    #region Create Construction Company Admin By Invitation , Repository Validations
 
     [TestMethod]
     public void CreateConstructionCompanyAdminWithExistingEmail_ThrowsObjectRepeatedServiceException()
@@ -171,7 +189,7 @@ public class ConstructionCompanyAdminServiceTest
     }
     
     [TestMethod]
-    public void CreateConstructionCompanyAdmin_ThrowsUnexpectedException()
+    public void CreateConstructionCompanyAdmin_ConstructionCompanyRepositoryThrowsUnexpectedException()
     {
         _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
                 constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
