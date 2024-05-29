@@ -82,6 +82,14 @@ public class ConstructionCompanyAdminServiceTest
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
+    
+    [TestMethod]
+    public void CreateConstructionCompanyAdminWithEmptyInvitationId_ThrowsObjectErrorServiceException()
+    {
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+                null));
+    }
 
     #region Create Construction Company Admin , Domain Validations
 
@@ -120,7 +128,7 @@ public class ConstructionCompanyAdminServiceTest
             _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
-
+    
     #endregion
 
     #region Create Construction Company Admin , Repository Validations

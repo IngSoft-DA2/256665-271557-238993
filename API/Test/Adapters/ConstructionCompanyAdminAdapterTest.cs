@@ -2,7 +2,6 @@
 using Adapter.CustomExceptions;
 using Domain;
 using Domain.Enums;
-using Humanizer;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
@@ -151,6 +150,7 @@ public class ConstructionCompanyAdminAdapterTest
 
     #region Create Construction Company Admin By Another Admin
 
+    //Happy path
     [TestMethod]
     public void CreateConstructionCompanyAdminByAnotherAdmin_ReturnsCreateConstructionCompanyAdminResponse()
     {

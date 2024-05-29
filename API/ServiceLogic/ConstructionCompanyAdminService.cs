@@ -31,12 +31,11 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
     {
         try
         {
-            ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
-
             if (invitationId is null)
                 throw new InvalidConstructionCompanyAdminException(
                     "Invitation id is required unless user role is ConstructionCompanyAdmin");
-
+            ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
+            
             MarkInvitationAsValid(invitationId.Value);
             _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         }
@@ -75,6 +74,10 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         catch (ObjectRepeatedServiceException)
         {
             throw new ObjectRepeatedServiceException();
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
     }
 
