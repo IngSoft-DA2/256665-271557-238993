@@ -9,9 +9,21 @@ public class ConstructionCompanyAdmin : SystemUser
 
     public void ConstructionCompanyAdminValidator()
     {
-        PersonValidator();
+        try
+        {
+            PersonValidator();
+            PasswordValidator();
+        }
+        catch (InvalidPersonException eexceptionCaught)
+        {
+            throw new InvalidConstructionCompanyAdminException(eexceptionCaught.Message);
+        }
+        catch (InvalidSystemUserException exceptionCaught)
+        {
+            throw new InvalidConstructionCompanyAdminException(exceptionCaught.Message);
+        }
+
         LastnameValidator();
-        
     }
 
     private void LastnameValidator()

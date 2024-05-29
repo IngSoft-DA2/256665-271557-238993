@@ -82,6 +82,14 @@ public class ConstructionCompanyAdminServiceTest
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
             _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample));
     }
+    
+    [TestMethod]
+    public void CreateConstructionCompanyAdminWithIncorrectPassword_ThrowsObjectErrorServiceException()
+    {
+        _constructionCompanyAdminExample.Password = "pass";
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample));
+    }
 
     #endregion
 
