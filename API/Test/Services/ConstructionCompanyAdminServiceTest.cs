@@ -233,6 +233,24 @@ public class ConstructionCompanyAdminServiceTest
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
 
+    [TestMethod]
+    public void CreateConstructionCompanyAdminForAdmins_ThrowsUnknownServiceException()
+    {
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
+            .Throws<Exception>();
+        
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminForAdmins(_constructionCompanyAdminExample));
+        
+        _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
+            constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
+    }
+
     #endregion
 
     #region Get All Construction Company Admins
