@@ -1,3 +1,5 @@
+using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
@@ -19,13 +21,13 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPost]
         [Route("{invitationIdToAccept:Guid}")]
-        public IActionResult CreateConstructionCompanyAdmin(
+        public IActionResult CreateConstructionCompanyAdminByInvitation(
             [FromBody] CreateConstructionCompanyAdminRequest createRequest, [FromRoute] Guid invitationIdToAccept)
         {
             CreateConstructionCompanyAdminResponse response =
-                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest,invitationIdToAccept);
+                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(createRequest,invitationIdToAccept);
 
-            return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
+            return CreatedAtAction(nameof(CreateConstructionCompanyAdminByInvitation), new { id = response.Id }, response);
         }
     }
 }

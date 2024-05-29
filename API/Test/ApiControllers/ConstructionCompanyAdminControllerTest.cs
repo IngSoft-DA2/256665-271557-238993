@@ -43,10 +43,10 @@ public class ConstructionCompanyAdminControllerTest
             "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id, expectedConstructionCompanyAdminResponse);
         
         _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
-            constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
+            constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(
                 It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>())).Returns(expectedConstructionCompanyAdminResponse);
 
-        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
+        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdminByInvitation(
             It.IsAny<CreateConstructionCompanyAdminRequest>(),It.IsAny<Guid>());
         _constructionCompanyAdminAdapter.VerifyAll();
 

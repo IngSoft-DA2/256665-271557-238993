@@ -47,7 +47,7 @@ public class ConstructionCompanyAdminServiceTest
 
     //Happy path
     [TestMethod]
-    public void CreateConstructionCompanyAdmin_CreateConstructionCompanyAdminIsCreated()
+    public void CreateConstructionCompanyAdminByInvitation_CreateConstructionCompanyAdminIsCreated()
     {
         Invitation dummyInvitation = new Invitation
         {
@@ -73,7 +73,7 @@ public class ConstructionCompanyAdminServiceTest
         _invitationService.Setup(invitationService =>
             invitationService.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<Invitation>()));
 
-        _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample,
+        _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
             It.IsAny<Guid>());
 
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
@@ -90,7 +90,7 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Firstname = "";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -99,7 +99,7 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Lastname = "";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -108,7 +108,7 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Email = "a.com";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -117,7 +117,7 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Password = "pass";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -133,7 +133,7 @@ public class ConstructionCompanyAdminServiceTest
             .Returns(new List<ConstructionCompanyAdmin> { _constructionCompanyAdminExample });
 
         Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 

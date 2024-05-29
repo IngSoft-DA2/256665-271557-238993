@@ -4,6 +4,6 @@ namespace IServiceLogic;
 
 public interface IConstructionCompanyAdminService
 {
-    public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate, Guid invitationId);
+    public void CreateConstructionCompanyAdminByInvitation(ConstructionCompanyAdmin constructionCompanyAdminToCreate, Guid invitationId);
     
 }

@@ -25,7 +25,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
 
     #region Create Construction Company Admin
 
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByInvitation(
         CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept)
     {
         try
@@ -41,7 +41,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
                 Role = SystemUserRoleEnum.ConstructionCompanyAdmin
             };
 
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(constructionCompanyAdminToCreate,
                 invitationIdToAccept);
 
             CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse =

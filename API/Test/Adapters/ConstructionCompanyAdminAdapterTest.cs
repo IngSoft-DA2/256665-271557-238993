@@ -37,15 +37,15 @@ public class ConstructionCompanyAdminAdapterTest
         CreateConstructionCompanyAdminRequest createRequest = new CreateConstructionCompanyAdminRequest();
 
         _constructionCompanyAdminService.Setup(service =>
-            service.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>(), It.IsAny<Guid>()));
+            service.CreateConstructionCompanyAdminByInvitation(It.IsAny<ConstructionCompanyAdmin>(), It.IsAny<Guid>()));
 
         CreateConstructionCompanyAdminResponse response =
-            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, It.IsAny<Guid>());
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(createRequest, It.IsAny<Guid>());
 
         Assert.IsNotNull(response);
 
         _constructionCompanyAdminService.Verify(createConstructionCompanyAdminService =>
-            createConstructionCompanyAdminService.CreateConstructionCompanyAdmin(
+            createConstructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
                 It.IsAny<ConstructionCompanyAdmin>(), It.IsAny<Guid>()), Times.Once());
         
     }
@@ -57,12 +57,12 @@ public class ConstructionCompanyAdminAdapterTest
         Guid invitationIdDummy = Guid.NewGuid();
 
         _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
-                constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>(),
+                constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(It.IsAny<ConstructionCompanyAdmin>(),
                     It.IsAny<Guid>()))
             .Throws(new ObjectErrorServiceException("Specific Error"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
-            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(constructionCompanyDummy,
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(constructionCompanyDummy,
                 invitationIdDummy));
         _constructionCompanyAdminService.VerifyAll();
     }
@@ -75,12 +75,12 @@ public class ConstructionCompanyAdminAdapterTest
 
 
         _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
-                constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>(),
+                constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(It.IsAny<ConstructionCompanyAdmin>(),
                     It.IsAny<Guid>()))
             .Throws(new ObjectRepeatedServiceException());
 
         Assert.ThrowsException<ObjectRepeatedAdapterException>(() =>
-            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createDummyRequest, invitationIdDummy));
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(createDummyRequest, invitationIdDummy));
         _constructionCompanyAdminService.VerifyAll();
     }
 
@@ -91,12 +91,12 @@ public class ConstructionCompanyAdminAdapterTest
         Guid invitationIdDummy = Guid.NewGuid();
 
         _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
-                constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>(),
+                constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(It.IsAny<ConstructionCompanyAdmin>(),
                     It.IsAny<Guid>()))
             .Throws(new Exception("Unknown Error"));
 
         Assert.ThrowsException<UnknownAdapterException>(() =>
-            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createDummyRequest, invitationIdDummy));
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(createDummyRequest, invitationIdDummy));
         _constructionCompanyAdminService.VerifyAll();
     }
 
@@ -107,11 +107,11 @@ public class ConstructionCompanyAdminAdapterTest
         Guid invitationIdDummy = Guid.NewGuid();
 
         _constructionCompanyAdminService.Setup(constructionCompanyAdminService =>
-                constructionCompanyAdminService.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>(), It.IsAny<Guid>()))
+                constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(It.IsAny<ConstructionCompanyAdmin>(), It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
-            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createDummyRequest, invitationIdDummy));
+            _constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(createDummyRequest, invitationIdDummy));
         _constructionCompanyAdminService.VerifyAll();
     }
 

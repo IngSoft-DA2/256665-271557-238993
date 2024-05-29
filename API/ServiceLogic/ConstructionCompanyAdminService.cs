@@ -25,7 +25,7 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
 
     #region Create Construction Company Admin
 
-    public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate,
+    public void CreateConstructionCompanyAdminByInvitation(ConstructionCompanyAdmin constructionCompanyAdminToCreate,
         Guid invitationId)
     {
         try

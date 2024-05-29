@@ -5,6 +5,6 @@ namespace IAdapter;
 
 public interface IConstructionCompanyAdminAdapter
 {
-    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByInvitation(
         CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept);
 }
