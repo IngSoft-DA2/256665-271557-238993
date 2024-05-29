@@ -28,7 +28,7 @@ public class ConstructionCompanyAdminControllerTest
 
     #endregion
 
-    #region Create Construction Company Admin
+    #region Create Construction Company Admin By Invitation
 
     [TestMethod]
     public void CreateConstructionCompanyAdmin_CreatedAtActionResultIsReturn()
@@ -40,14 +40,52 @@ public class ConstructionCompanyAdminControllerTest
             };
 
         CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateConstructionCompanyAdmin",
-            "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id, expectedConstructionCompanyAdminResponse);
-        
-        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
-            constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(
-                It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>())).Returns(expectedConstructionCompanyAdminResponse);
+            "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id,
+            expectedConstructionCompanyAdminResponse);
 
-        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdminByInvitation(
-            It.IsAny<CreateConstructionCompanyAdminRequest>(),It.IsAny<Guid>());
+        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
+                constructionCompanyAdminAdapter.CreateConstructionCompanyAdminByInvitation(
+                    It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>()))
+            .Returns(expectedConstructionCompanyAdminResponse);
+
+        IActionResult controllerResponse =
+            _constructionCompanyAdminController.CreateConstructionCompanyAdminByInvitation(
+                It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<Guid>());
+        _constructionCompanyAdminAdapter.VerifyAll();
+
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+
+    #endregion
+
+    #region Create Construction Company Admin
+
+    [TestMethod]
+    public void CreateConstructionCompanyAdmin_ConstructionCompanyAdminIsCreated()
+    {
+        CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse =
+            new CreateConstructionCompanyAdminResponse()
+            {
+                Id = Guid.NewGuid()
+            };
+
+        CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateConstructionCompanyAdmin",
+            "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id,
+            expectedConstructionCompanyAdminResponse);
+
+        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
+                constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
+                    It.IsAny<CreateConstructionCompanyAdminRequest>()))
+            .Returns(expectedConstructionCompanyAdminResponse);
+
+        IActionResult controllerResponse =
+            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
+                It.IsAny<CreateConstructionCompanyAdminRequest>());
+        
         _constructionCompanyAdminAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;

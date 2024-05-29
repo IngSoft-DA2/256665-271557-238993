@@ -7,4 +7,6 @@ public interface IConstructionCompanyAdminAdapter
 {
     public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdminByInvitation(
         CreateConstructionCompanyAdminRequest createRequest, Guid invitationIdToAccept);
+
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(CreateConstructionCompanyAdminRequest createRequest);
 }

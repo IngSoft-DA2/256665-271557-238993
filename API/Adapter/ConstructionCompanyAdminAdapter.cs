@@ -70,5 +70,11 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         }
     }
 
+    public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
+        CreateConstructionCompanyAdminRequest createRequest)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

@@ -29,5 +29,16 @@ namespace BuildingBuddy.API.Controllers
 
             return CreatedAtAction(nameof(CreateConstructionCompanyAdminByInvitation), new { id = response.Id }, response);
         }
+        
+        [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        public IActionResult CreateConstructionCompanyAdmin([FromBody] CreateConstructionCompanyAdminRequest createRequest)
+        {
+            CreateConstructionCompanyAdminResponse response =
+                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest);
+
+            return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
+        }
+        
     }
 }
