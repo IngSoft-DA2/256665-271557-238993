@@ -20,6 +20,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("{invitationIdToAccept:Guid}")]
         public IActionResult CreateConstructionCompanyAdminByInvitation(
             [FromBody] CreateConstructionCompanyAdminRequest createRequest, [FromRoute] Guid invitationIdToAccept)

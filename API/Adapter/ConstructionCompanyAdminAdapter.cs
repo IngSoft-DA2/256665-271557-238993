@@ -73,7 +73,24 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
     public CreateConstructionCompanyAdminResponse CreateConstructionCompanyAdmin(
         CreateConstructionCompanyAdminRequest createRequest)
     {
-        throw new NotImplementedException();
+        ConstructionCompanyAdmin constructionCompanyAdminToCreate = new ConstructionCompanyAdmin
+        {
+            Id = Guid.NewGuid(),
+            Firstname = createRequest.Firstname,
+            Lastname = createRequest.Lastname,
+            Email = createRequest.Email,
+            Password = createRequest.Password,
+            ConstructionCompany = null,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+        };
+
+        _constructionCompanyAdminService.CreateConstructionCompanyAdminByAnotherAdmin(constructionCompanyAdminToCreate);
+        
+        CreateConstructionCompanyAdminResponse constructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse
+        {
+            Id = constructionCompanyAdminToCreate.Id
+        };
+        return constructionCompanyAdminResponse;
     }
 
     #endregion

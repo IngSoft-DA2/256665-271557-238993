@@ -53,7 +53,12 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
             throw new ObjectRepeatedServiceException();
         }
     }
-    
+
+    public void CreateConstructionCompanyAdminByAnotherAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
+    {
+        throw new NotImplementedException();
+    }
+
     private void CheckIfEmailIsAlreadyRegistered(ConstructionCompanyAdmin constructionCompanyAdminToCheck,
         IEnumerable<ConstructionCompanyAdmin> constructionCompanyAdmins)
     {
