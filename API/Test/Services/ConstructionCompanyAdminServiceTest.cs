@@ -113,4 +113,23 @@ public class ConstructionCompanyAdminServiceTest
     #endregion
 
     #endregion
+
+    #region Get All Construction Company Admins
+
+    [TestMethod]
+    public void GetAllConstructionCompanyAdmins_ReturnsAllConstructionCompanyAdmins()
+    {
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin> { _constructionCompanyAdminExample });
+
+        IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
+            _constructionCompanyAdminService.GetAllConstructionCompanyAdmins();
+
+        Assert.AreEqual(1, allConstructionCompanyAdmins.Count());
+        Assert.IsTrue(_constructionCompanyAdminExample.Equals(allConstructionCompanyAdmins.First()));
+    }
+    
+
+    #endregion
 }

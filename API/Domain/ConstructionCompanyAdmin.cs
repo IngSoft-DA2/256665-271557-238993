@@ -33,4 +33,16 @@ public class ConstructionCompanyAdmin : SystemUser
             throw new InvalidConstructionCompanyAdminException("Lastname is required");
         }
     }
+
+    public override bool Equals(object? objToCompare)
+    {
+        ConstructionCompanyAdmin constructionCompanyAdminToCompare = objToCompare as ConstructionCompanyAdmin;
+
+        return Id == constructionCompanyAdminToCompare.Id && Firstname == constructionCompanyAdminToCompare.Firstname &&
+               Lastname == constructionCompanyAdminToCompare.Lastname &&
+               Email == constructionCompanyAdminToCompare.Email &&
+               Password == constructionCompanyAdminToCompare.Password &&
+               ConstructionCompany == constructionCompanyAdminToCompare.ConstructionCompany &&
+               Role == constructionCompanyAdminToCompare.Role;
+    }
 }
