@@ -4,7 +4,6 @@ using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
 using WebModel.Responses.ConstructionCompanyAdminResponses;
-using WebModel.Responses.ConstructionCompanyResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -27,15 +26,23 @@ namespace BuildingBuddy.API.Controllers
 
             if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj) && userRoleObj is string userRoleStr)
             {
+                ObjectResult notAllowedResponse = new ObjectResult("");
                 if (Enum.TryParse(userRoleStr, out SystemUserRoleEnum parsedUserRole))
                 {
                     if (parsedUserRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
                     {
-                        return Forbid("Only ConstructionCompanyAdmin people is allowed.");
+                        notAllowedResponse.Value = "Only ConstructionCompanyAdmin people is allowed.";
+                        notAllowedResponse.StatusCode = 403;
+                        return notAllowedResponse;
                     }
                     userRole = parsedUserRole;
                 }
-                else return Unauthorized();
+                else
+                {
+                    notAllowedResponse.Value = "Error while authorizing.";
+                    notAllowedResponse.StatusCode = 401;
+                    return notAllowedResponse;
+                }
             }
 
             CreateConstructionCompanyAdminResponse response = _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, userRole);

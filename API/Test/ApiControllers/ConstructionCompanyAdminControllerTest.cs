@@ -112,5 +112,23 @@ public class ConstructionCompanyAdminControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    [TestMethod]
+    public void CreateConstructionCompanyAdminWithNotAllowedRole_ObjectResult403IsReturn()
+    {
+        // Simulating that the user is a ConstructionCompanyAdmin
+        _controllerContext.HttpContext.Items["UserRole"] = SystemUserRoleEnum.Manager.ToString();
+        
+        ObjectResult expectedControllerResponse = new ObjectResult("Only ConstructionCompanyAdmin people is allowed.");
+        expectedControllerResponse.StatusCode = StatusCodes.Status403Forbidden;
+        
+        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
     #endregion
 }
