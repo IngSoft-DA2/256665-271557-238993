@@ -1,7 +1,6 @@
 ﻿using Domain;
 using Domain.CustomExceptions;
 using IDataAccess;
-using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 
@@ -9,12 +8,18 @@ namespace ServiceLogic;
 
 public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
 {
+    #region Constructor and Dependency Injection
+
     private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
 
     public ConstructionCompanyAdminService(IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
     {
         _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
     }
+
+    #endregion
+
+    #region Create Construction Company Admin
 
     public void CreateConstructionCompanyAdmin(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
     {
@@ -50,4 +55,6 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
             throw new ObjectRepeatedServiceException();
         }
     }
+
+    #endregion
 }
