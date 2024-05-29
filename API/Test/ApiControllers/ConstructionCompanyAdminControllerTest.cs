@@ -1,6 +1,8 @@
 using Adapter.CustomExceptions;
 using BuildingBuddy.API.Controllers;
+using Domain.Enums;
 using IAdapter;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
@@ -15,6 +17,7 @@ public class ConstructionCompanyAdminControllerTest
 
     private Mock<IConstructionCompanyAdminAdapter> _constructionCompanyAdminAdapter;
     private ConstructionCompanyAdminController _constructionCompanyAdminController;
+    private ControllerContext _controllerContext;
 
     [TestInitialize]
     public void Initialize()
@@ -22,6 +25,12 @@ public class ConstructionCompanyAdminControllerTest
         _constructionCompanyAdminAdapter = new Mock<IConstructionCompanyAdminAdapter>(MockBehavior.Strict);
         _constructionCompanyAdminController =
             new ConstructionCompanyAdminController(_constructionCompanyAdminAdapter.Object);
+        
+         _controllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext()
+        };
+        _constructionCompanyAdminController.ControllerContext = _controllerContext;
     }
 
     #endregion
@@ -31,12 +40,11 @@ public class ConstructionCompanyAdminControllerTest
     [TestMethod]
     public void CreateConstructionCompanyAdmin_CreatedAtActionResultIsReturn()
     {
-        CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse =
-            new CreateConstructionCompanyAdminResponse()
+        CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse()
             {
                 Id = Guid.NewGuid()
             };
-
+        
         CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateConstructionCompanyAdmin",
             "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id,
             expectedConstructionCompanyAdminResponse);
@@ -45,8 +53,18 @@ public class ConstructionCompanyAdminControllerTest
                     It.IsAny<CreateConstructionCompanyAdminRequest>(), null))
             .Returns(expectedConstructionCompanyAdminResponse);
 
+
+        CreateConstructionCompanyAdminRequest request = new CreateConstructionCompanyAdminRequest
+        {
+            Firstname = "Firstname",
+            Lastname = "Lastname",
+            Email = "email@gmail.com",
+            Password = "Password",
+            InvitationId = Guid.NewGuid()
+        };
+        
         IActionResult controllerResponse = _constructionCompanyAdminController
-            .CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
+            .CreateConstructionCompanyAdmin(request);
         
         _constructionCompanyAdminAdapter.VerifyAll();
 
@@ -64,6 +82,9 @@ public class ConstructionCompanyAdminControllerTest
     [TestMethod]
     public void CreateConstructionCompanyAdminByAnotherAdmin_ConstructionCompanyAdminIsCreated()
     {
+        // Simulating that the user is a ConstructionCompanyAdmin
+        _controllerContext.HttpContext.Items["UserRole"] = SystemUserRoleEnum.ConstructionCompanyAdmin.ToString();
+        
         CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse =
             new CreateConstructionCompanyAdminResponse()
             {
@@ -76,12 +97,11 @@ public class ConstructionCompanyAdminControllerTest
 
         _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
                 constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
-                    It.IsAny<CreateConstructionCompanyAdminRequest>(), null))
+                    It.IsAny<CreateConstructionCompanyAdminRequest>(), It.IsAny<SystemUserRoleEnum>()))
             .Returns(expectedConstructionCompanyAdminResponse);
 
         IActionResult controllerResponse =
-            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(
-                It.IsAny<CreateConstructionCompanyAdminRequest>());
+            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
 
         _constructionCompanyAdminAdapter.VerifyAll();
 
