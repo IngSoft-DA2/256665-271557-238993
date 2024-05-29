@@ -21,6 +21,11 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         try
         {
             constructionCompanyAdminToCreate.ConstructionCompanyAdminValidator();
+
+            IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
+                _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+
+            CheckIfEmailAlreadyExists(constructionCompanyAdminToCreate, allConstructionCompanyAdmins);
             _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         }
         catch (InvalidPersonException exceptionCaught)
@@ -31,6 +36,18 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-    
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+    }
+
+    private static void CheckIfEmailAlreadyExists(ConstructionCompanyAdmin constructionCompanyAdminToCheck,
+        IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins)
+    {
+        if (allConstructionCompanyAdmins.Any(a => a.Email == constructionCompanyAdminToCheck.Email))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
     }
 }
