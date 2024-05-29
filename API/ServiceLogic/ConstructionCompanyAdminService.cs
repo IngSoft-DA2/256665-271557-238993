@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.CustomExceptions;
 using IDataAccess;
 using IRepository;
 using IServiceLogic;
@@ -26,5 +27,10 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
+        catch (InvalidConstructionCompanyAdminException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+    
     }
 }

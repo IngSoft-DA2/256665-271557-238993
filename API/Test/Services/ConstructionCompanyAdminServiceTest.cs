@@ -15,13 +15,25 @@ public class ConstructionCompanyAdminServiceTest
 
     private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepository;
     private ConstructionCompanyAdminService _constructionCompanyAdminService;
-
+    private  ConstructionCompanyAdmin _constructionCompanyAdminExample;
     [TestInitialize]
     public void Initilize()
     {
         _constructionCompanyAdminRepository = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
         _constructionCompanyAdminService =
             new ConstructionCompanyAdminService(_constructionCompanyAdminRepository.Object);
+        
+        
+        _constructionCompanyAdminExample = new ConstructionCompanyAdmin
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "ConstructionCompanyAdminFirstname",
+            Lastname = "ConstructionCompanyAdminLastname",
+            Email = "ConstructionCompanyAdminEmail@gmail.com",
+            Password = "ConstructionCompanyAdminPassword",
+            ConstructionCompany = null,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+        };
     }
 
     #endregion
@@ -32,21 +44,11 @@ public class ConstructionCompanyAdminServiceTest
     [TestMethod]
     public void CreateConstructionCompanyAdmin_CreateConstructionCompanyAdminIsCreated()
     {
-        ConstructionCompanyAdmin constructionCompanyAdminDummy = new ConstructionCompanyAdmin
-        {
-            Id = Guid.NewGuid(),
-            Firstname = "ConstructionCompanyAdminFirstname",
-            Lastname = "ConstructionCompanyAdminLastname",
-            Email = "ConstructionCompanyAdminEmail@gmail.com",
-            Password = "ConstructionCompanyAdminPassword",
-            ConstructionCompany = null,
-            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
-        };
         
         _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()));
 
-        _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminDummy);
+        _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample);
 
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
                 constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()),
@@ -58,13 +60,18 @@ public class ConstructionCompanyAdminServiceTest
     [TestMethod]
     public void CreateConstructionCompanyAdminWithEmptyFirstname_ThrowsObjectErrorServiceException()
     {
-        ConstructionCompanyAdmin constructionCompanyAdminWithError = new ConstructionCompanyAdmin()
-        {
-            Id = Guid.NewGuid(),
-            Firstname = ""
-        };
+        _constructionCompanyAdminExample.Firstname = "";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(constructionCompanyAdminWithError));
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample));
+        
+    }
+    
+    [TestMethod]
+    public void CreateConstructionCompanyAdminWithEmptyLastname_ThrowsObjectErrorServiceException()
+    {
+        _constructionCompanyAdminExample.Lastname = "";
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdmin(_constructionCompanyAdminExample));
         
     }
 
