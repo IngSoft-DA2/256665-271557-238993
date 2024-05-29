@@ -130,5 +130,23 @@ public class ConstructionCompanyAdminControllerTest
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
     
+    [TestMethod]
+    public void CreateConstructionCompanyAdminAnErrorWhileAuthorizingHappens_ObjectResult401IsReturn()
+    {
+        // Simulating that the user is a ConstructionCompanyAdmin
+        _controllerContext.HttpContext.Items["UserRole"] = "ConstComp213#@!";
+        
+        ObjectResult expectedControllerResponse = new ObjectResult("Error while authorizing.");
+        expectedControllerResponse.StatusCode = StatusCodes.Status401Unauthorized;
+        
+        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
+
+        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
+    }
+    
     #endregion
 }
