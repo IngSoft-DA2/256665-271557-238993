@@ -169,6 +169,19 @@ public class ConstructionCompanyAdminServiceTest
                 _constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
+    
+    [TestMethod]
+    public void CreateConstructionCompanyAdmin_ThrowsUnexpectedException()
+    {
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
+            .Throws<Exception>();
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
+                It.IsAny<Guid>()));
+    }
 
     #endregion
 
@@ -198,7 +211,6 @@ public class ConstructionCompanyAdminServiceTest
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
-    
     
     #endregion
 

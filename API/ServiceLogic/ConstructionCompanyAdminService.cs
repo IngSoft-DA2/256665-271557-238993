@@ -29,51 +29,33 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
     public void CreateConstructionCompanyAdminByInvitation(ConstructionCompanyAdmin constructionCompanyAdminToCreate,
         Guid? invitationId)
     {
+        if (invitationId is null) throw new ObjectErrorServiceException(
+            "Invitation id is required unless user role is ConstructionCompanyAdmin");
+        
+        ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
+        MarkInvitationAsValid(invitationId.Value);
+        
         try
         {
-            if (invitationId is null)
-                throw new InvalidConstructionCompanyAdminException(
-                    "Invitation id is required unless user role is ConstructionCompanyAdmin");
-            ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
-            
-            MarkInvitationAsValid(invitationId.Value);
             _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         }
-
-        catch (InvalidConstructionCompanyAdminException exceptionCaught)
+        catch (Exception exceptionCaught)
         {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
-        catch (ObjectRepeatedServiceException)
-        {
-            throw new ObjectRepeatedServiceException();
-        }
-        catch (ObjectNotFoundServiceException)
-        {
-            throw new ObjectNotFoundServiceException();
+            throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
 
 
     public void CreateConstructionCompanyAdminForAdmins(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
     {
+        ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
         try
         {
-            ValidationsForBeingPossibleToCreate(constructionCompanyAdminToCreate);
             _constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(constructionCompanyAdminToCreate);
         }
-
-        catch (InvalidConstructionCompanyAdminException exceptionCaught)
+        catch (Exception exceptionCaught)
         {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
-        catch (ObjectRepeatedServiceException)
-        {
-            throw new ObjectRepeatedServiceException();
-        }
-        catch (ObjectErrorServiceException exceptionCaught)
-        {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
+            throw new UnknownServiceException(exceptionCaught.Message);
         }
     }
 
@@ -81,11 +63,26 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
 
     private void ValidationsForBeingPossibleToCreate(ConstructionCompanyAdmin constructionCompanyAdminToCreate)
     {
-        constructionCompanyAdminToCreate.ConstructionCompanyAdminValidator();
+        try
+        {
+            constructionCompanyAdminToCreate.ConstructionCompanyAdminValidator();
 
-        IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
-            _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
-        CheckIfEmailIsAlreadyRegistered(constructionCompanyAdminToCreate, allConstructionCompanyAdmins);
+            IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
+                _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+            CheckIfEmailIsAlreadyRegistered(constructionCompanyAdminToCreate, allConstructionCompanyAdmins);
+        }
+        catch (InvalidConstructionCompanyAdminException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectRepeatedServiceException)
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private void CheckIfEmailIsAlreadyRegistered(ConstructionCompanyAdmin constructionCompanyAdminToCheck,
@@ -100,9 +97,20 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
 
     private void MarkInvitationAsValid(Guid invitationId)
     {
-        Invitation invitationToAccept = _invitationService.GetInvitationById(invitationId);
-        Invitation invitationAccepted = AcceptInvitation(invitationToAccept);
-        _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
+        try
+        {
+            Invitation invitationToAccept = _invitationService.GetInvitationById(invitationId);
+            Invitation invitationAccepted = AcceptInvitation(invitationToAccept);
+            _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private Invitation AcceptInvitation(Invitation invitationToAccept)
