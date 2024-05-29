@@ -52,10 +52,6 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
         {
             throw new ObjectNotFoundServiceException();
         }
-        catch (ObjectErrorServiceException exceptionCaught)
-        {
-            throw new ObjectErrorServiceException(exceptionCaught.Message);
-        }
     }
 
 

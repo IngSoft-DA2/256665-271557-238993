@@ -59,7 +59,7 @@ public class ConstructionCompanyAdminServiceTest
             ExpirationDate = DateTime.MaxValue,
             Role = SystemUserRoleEnum.ConstructionCompanyAdmin,
         };
-        
+
         _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()));
 
@@ -82,14 +82,34 @@ public class ConstructionCompanyAdminServiceTest
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
-    
+
     [TestMethod]
     public void CreateConstructionCompanyAdminWithEmptyInvitationId_ThrowsObjectErrorServiceException()
     {
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
                 null));
     }
+
+    [TestMethod]
+    public void CreateConstructionCompanyAdminByInvitation_InvitationIsNotFound()
+    {
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
+
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample, It.IsAny<Guid>()));
+        
+        _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
+            constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
+    }
+
 
     #region Create Construction Company Admin , Domain Validations
 
@@ -98,7 +118,8 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Firstname = "";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -107,7 +128,8 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Lastname = "";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -116,7 +138,8 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Email = "a.com";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
@@ -125,10 +148,11 @@ public class ConstructionCompanyAdminServiceTest
     {
         _constructionCompanyAdminExample.Password = "pass";
         Assert.ThrowsException<ObjectErrorServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
-    
+
     #endregion
 
     #region Create Construction Company Admin , Repository Validations
@@ -141,7 +165,8 @@ public class ConstructionCompanyAdminServiceTest
             .Returns(new List<ConstructionCompanyAdmin> { _constructionCompanyAdminExample });
 
         Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
+                _constructionCompanyAdminExample,
                 It.IsAny<Guid>()));
     }
 
