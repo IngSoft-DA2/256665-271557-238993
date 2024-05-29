@@ -113,6 +113,21 @@ public class ConstructionCompanyAdminRepositoryTest
         Assert.IsTrue(constructionCompanyAdmins.Last().Equals(constructionCompanyAdmin2));
     }
     
+    [TestMethod]
+    public void GetAllConstructionCompanyAdmins_ThrowsUnknownRepositoryException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(mockDbContext => mockDbContext.Set<ConstructionCompanyAdmin>()).Throws(new Exception());
+
+        ConstructionCompanyAdminRepository constructionCompanyAdminRepository =
+            new ConstructionCompanyAdminRepository(_mockDbContext.Object);
+
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins());
+
+        _mockDbContext.VerifyAll();
+    }
+    
     
 
     #endregion

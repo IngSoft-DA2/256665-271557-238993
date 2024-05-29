@@ -38,6 +38,14 @@ public class ConstructionCompanyAdminRepository : IConstructionCompanyAdminRepos
 
     public IEnumerable<ConstructionCompanyAdmin> GetAllConstructionCompanyAdmins()
     {
-        return _dbContext.Set<ConstructionCompanyAdmin>().ToList();
+        try
+        {
+            return _dbContext.Set<ConstructionCompanyAdmin>().ToList();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+        
     }
 }
