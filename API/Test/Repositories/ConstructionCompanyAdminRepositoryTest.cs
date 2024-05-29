@@ -73,6 +73,50 @@ public class ConstructionCompanyAdminRepositoryTest
 
     #endregion
 
+    #region Get All Construction Company Admins
+
+    [TestMethod]
+    public void GetAllConstructionCompanyAdmins_AllConstructionCompanyAdminsAreReturn()
+    {
+        ConstructionCompanyAdmin constructionCompanyAdmin1 = new ConstructionCompanyAdmin
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "constructionCompanyAdminFirstname1",
+            Lastname = "constructionCompanyAdminLastname1",
+            Email = "constructionCompanyAdminEmail1",
+            Password = "constructionCompanyAdminPassword1",
+            ConstructionCompany = null,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+        };
+
+        ConstructionCompanyAdmin constructionCompanyAdmin2 = new ConstructionCompanyAdmin
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "constructionCompanyAdminFirstname2",
+            Lastname = "constructionCompanyAdminLastname2",
+            Email = "constructionCompanyAdminEmail2",
+            Password = "constructionCompanyAdminPassword2",
+            ConstructionCompany = null,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin
+        };
+
+        _dbContext.Set<ConstructionCompanyAdmin>().Add(constructionCompanyAdmin1);
+        _dbContext.Set<ConstructionCompanyAdmin>().Add(constructionCompanyAdmin2);
+        _dbContext.SaveChanges();
+
+        IEnumerable<ConstructionCompanyAdmin> constructionCompanyAdmins =
+            _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+
+        Assert.AreEqual(2, constructionCompanyAdmins.Count());
+        
+        Assert.IsTrue(constructionCompanyAdmins.First().Equals(constructionCompanyAdmin1));
+        Assert.IsTrue(constructionCompanyAdmins.Last().Equals(constructionCompanyAdmin2));
+    }
+    
+    
+
+    #endregion
+
     #region Cleanup
 
     [TestCleanup]

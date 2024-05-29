@@ -38,6 +38,6 @@ public class ConstructionCompanyAdminRepository : IConstructionCompanyAdminRepos
 
     public IEnumerable<ConstructionCompanyAdmin> GetAllConstructionCompanyAdmins()
     {
-        throw new NotImplementedException();
+        return _dbContext.Set<ConstructionCompanyAdmin>().ToList();
     }
 }
