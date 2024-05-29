@@ -58,7 +58,7 @@ public class ConstructionCompanyAdminServiceTest
                 constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()),
             Times.Once);
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
-                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
+            constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
 
     #region Create Construction Company Admin , Domain Validations
@@ -126,10 +126,24 @@ public class ConstructionCompanyAdminServiceTest
         IEnumerable<ConstructionCompanyAdmin> allConstructionCompanyAdmins =
             _constructionCompanyAdminService.GetAllConstructionCompanyAdmins();
 
+        _constructionCompanyAdminRepository.VerifyAll();
+
         Assert.AreEqual(1, allConstructionCompanyAdmins.Count());
         Assert.IsTrue(_constructionCompanyAdminExample.Equals(allConstructionCompanyAdmins.First()));
     }
-    
+
+    [TestMethod]
+    public void GetAllConstructionCompanyAdmins_ThrowsUnexpectedServiceException()
+    {
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyAdminService.GetAllConstructionCompanyAdmins());
+
+        _constructionCompanyAdminRepository.VerifyAll();
+    }
 
     #endregion
 }

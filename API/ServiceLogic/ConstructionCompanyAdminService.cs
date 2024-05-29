@@ -57,14 +57,20 @@ public class ConstructionCompanyAdminService : IConstructionCompanyAdminService
     }
 
     #endregion
-    
+
     #region Get All Construction Company Admins
-    
+
     public IEnumerable<ConstructionCompanyAdmin> GetAllConstructionCompanyAdmins()
     {
-        return _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+        try
+        {
+            return _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
-    
+
     #endregion
-    
 }
