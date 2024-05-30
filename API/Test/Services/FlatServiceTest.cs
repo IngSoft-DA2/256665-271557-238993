@@ -32,7 +32,7 @@ public class FlatServiceTest
         {
             Id = Guid.NewGuid(),
             Floor = 1,
-            RoomNumber = 101,
+            RoomNumber = "101",
             OwnerAssigned = new Owner(),
             TotalRooms = 2,
             TotalBaths = 1,
@@ -50,7 +50,7 @@ public class FlatServiceTest
         {
             Id = Guid.NewGuid(),
             Floor = 1,
-            RoomNumber = 101,
+            RoomNumber = "101",
             OwnerAssigned = new Owner(),
             TotalRooms = 0,
             TotalBaths = 1,
@@ -67,7 +67,7 @@ public class FlatServiceTest
         {
             Id = Guid.NewGuid(),
             Floor = 1,
-            RoomNumber = 101,
+            RoomNumber = "101",
             OwnerAssigned = new Owner(),
             TotalRooms = 1,
             TotalBaths = -1,
@@ -88,7 +88,7 @@ public class FlatServiceTest
         {
             Id = Guid.NewGuid(),
             Floor = 1,
-            RoomNumber = 101,
+            RoomNumber = "101",
             OwnerAssigned = null,
             TotalRooms = 1,
             TotalBaths = 1,

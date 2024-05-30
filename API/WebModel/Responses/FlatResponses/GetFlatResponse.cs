@@ -13,7 +13,7 @@ namespace WebModel.Responses.FlatResponses
     {
         public Guid Id { get; set; }
         public int Floor { get; set; }
-        public int RoomNumber { get; set; }
+        public string RoomNumber { get; set; }
         public GetOwnerResponse? OwnerAssigned { get; set; }
         public int TotalRooms { get; set; }
         public int TotalBaths { get; set; }

@@ -168,7 +168,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Floor = table.Column<int>(type: "int", nullable: false),
-                    RoomNumber = table.Column<int>(type: "int", nullable: false),
+                    RoomNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TotalRooms = table.Column<int>(type: "int", nullable: false),
                     TotalBaths = table.Column<int>(type: "int", nullable: false),

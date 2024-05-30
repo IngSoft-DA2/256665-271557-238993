@@ -222,7 +222,6 @@ public class BuildingAdapter : IBuildingAdapter
                 Manager = managerFound,
                 ManagerId = managerFound.Id
             };
-
             _buildingService.UpdateBuilding(buildingToUpd);
         }
         catch (ObjectNotFoundServiceException)

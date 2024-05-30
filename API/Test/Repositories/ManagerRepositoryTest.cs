@@ -110,7 +110,7 @@ public class ManagerRepositoryTest
                         {
                             Id = Guid.NewGuid(),
                             Floor = 1,
-                            RoomNumber = 101,
+                            RoomNumber = "101",
                             OwnerAssigned = new Owner
                             {
                                 Id = Guid.NewGuid(),
@@ -207,7 +207,7 @@ public class ManagerRepositoryTest
                         {
                             Id = Guid.NewGuid(),
                             Floor = 1,
-                            RoomNumber = 101,
+                            RoomNumber = "101",
                             OwnerAssigned = new Owner
                             {
                                 Id = Guid.NewGuid(),
