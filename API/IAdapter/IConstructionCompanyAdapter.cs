@@ -6,5 +6,5 @@ namespace IAdapter;
 public interface IConstructionCompanyAdapter
 {
     public IEnumerable<GetConstructionCompanyResponse> GetAllConstructionCompanies();
-    public CreateConstructionCompanyResponse CreateConstructionCompany(CreateConstructionCompanyRequest name);
+    public CreateConstructionCompanyResponse CreateConstructionCompany(CreateConstructionCompanyRequest request);
 }

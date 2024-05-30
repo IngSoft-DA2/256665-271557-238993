@@ -4,6 +4,7 @@ using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
 using Moq;
+using ServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.BuildingRequests;
 using WebModel.Requests.FlatRequests;
@@ -22,6 +23,7 @@ public class BuildingAdapterTest
     private Mock<IBuildingService> _buildingService;
     private Mock<IConstructionCompanyService> _constructionCompanyService;
     private Mock<IOwnerService> _ownerService;
+    private Mock<IManagerService> _managerService;
     private BuildingAdapter _buildingAdapter;
 
     [TestInitialize]
@@ -30,8 +32,11 @@ public class BuildingAdapterTest
         _buildingService = new Mock<IBuildingService>(MockBehavior.Strict);
         _constructionCompanyService = new Mock<IConstructionCompanyService>(MockBehavior.Strict);
         _ownerService = new Mock<IOwnerService>(MockBehavior.Strict);
+        _managerService = new Mock<IManagerService>(MockBehavior.Strict);
+
+
         _buildingAdapter = new BuildingAdapter(_buildingService.Object, _constructionCompanyService.Object,
-            _ownerService.Object);
+            _ownerService.Object, _managerService.Object);
     }
 
     #endregion
@@ -280,7 +285,7 @@ public class BuildingAdapterTest
         };
         dummyCreateRequest.Location = dummyLocationRequest;
         dummyCreateRequest.Flats = dummyFlats;
-        
+
         CreateBuildingResponse buildingResponse = _buildingAdapter.CreateBuilding(dummyCreateRequest);
 
         _constructionCompanyService.VerifyAll();
@@ -388,61 +393,69 @@ public class BuildingAdapterTest
     [TestMethod]
     public void UpdateBuildingById_UpdatesSuccessfully()
     {
-        _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()));
-        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
-            .Returns(new ConstructionCompany());
-
+        Manager dummyManager = new Manager();
         UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
 
-        _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest);
+        _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()));
+        _managerService.Setup(managerService => managerService.GetManagerById(It.IsAny<Guid>())).Returns(dummyManager);
 
-        _constructionCompanyService.VerifyAll();
+        _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest);
+        _managerService.VerifyAll();
         _buildingService.Verify(service => service.UpdateBuilding(It.IsAny<Building>()), Times.Once);
     }
 
     [TestMethod]
     public void UpdateBuildingById_ThrowsNotFoundAdapterException()
     {
+        Manager dummyManager = new Manager();
+        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+
         _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()))
             .Throws(new ObjectNotFoundServiceException());
-        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
-            .Returns(new ConstructionCompany());
 
-        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+        _managerService.Setup(managerService => managerService.GetManagerById(It.IsAny<Guid>())).Returns(dummyManager);
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
 
-        _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
     }
 
     [TestMethod]
     public void UpdateBuildingId_ThrowsObjectErrorException()
     {
+        Manager dummyManager = new Manager();
+        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+
         _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()))
             .Throws(new ObjectErrorServiceException("Specific Error"));
-        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
-            .Returns(new ConstructionCompany());
 
-        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+        _managerService.Setup(managerService => managerService.GetManagerById(It.IsAny<Guid>())).Returns(dummyManager);
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
+
+        _buildingService.VerifyAll();
+        _managerService.VerifyAll();
     }
 
     [TestMethod]
     public void UpdateBuildingId_ThrowsUnknownAdapterException()
     {
+        Manager dummyManager = new Manager();
+        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+
         _buildingService.Setup(service => service.UpdateBuilding(It.IsAny<Building>()))
             .Throws(new Exception());
-        _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
-            .Returns(new ConstructionCompany());
 
-        UpdateBuildingRequest dummyUpdateRequest = new UpdateBuildingRequest();
+        _managerService.Setup(managerService => managerService.GetManagerById(It.IsAny<Guid>())).Returns(dummyManager);
 
         Assert.ThrowsException<UnknownAdapterException>(() =>
             _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
+        
+        _buildingService.VerifyAll();
+        _managerService.VerifyAll();
     }
 
     #endregion
@@ -453,18 +466,19 @@ public class BuildingAdapterTest
     public void DeleteBuildingById_DeletesSuccessfully()
     {
         _buildingService.Setup(service => service.DeleteBuilding(It.IsAny<Guid>()));
-        
+
         _buildingAdapter.DeleteBuildingById(Guid.NewGuid());
         _buildingService.Verify(_buildingService => _buildingService.DeleteBuilding(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void DeleteBuildingById_ThrowsNotFoundAdapterException()
     {
         _buildingService.Setup(service => service.DeleteBuilding(It.IsAny<Guid>()))
             .Throws(new ObjectNotFoundServiceException());
 
-        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(
+            () => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
         _buildingService.VerifyAll();
     }
 
@@ -477,6 +491,7 @@ public class BuildingAdapterTest
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
         _buildingService.VerifyAll();
     }
+
     [TestMethod]
     public void DeleteBuildingById_ThrowsUnknownAdapterException()
     {
@@ -486,6 +501,6 @@ public class BuildingAdapterTest
         Assert.ThrowsException<UnknownAdapterException>(() => _buildingAdapter.DeleteBuildingById(Guid.NewGuid()));
         _buildingService.VerifyAll();
     }
-    
+
     #endregion
 }

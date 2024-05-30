@@ -8,7 +8,7 @@ public class Invitation
 {
     public Guid Id { get; set; }
     public string Firstname { get; set; }
-    public string Lastname { get; set; }
+    public string? Lastname { get; set; }
     public string Email { get; set; }
     public DateTime ExpirationDate { get; set; }
     public StatusEnum Status { get; set; } = StatusEnum.Pending;
@@ -29,7 +29,7 @@ public class Invitation
         return Id == invitationToCompare.Id && Firstname == invitationToCompare.Firstname &&
                Lastname == invitationToCompare.Lastname && Email == invitationToCompare.Email &&
                ExpirationDate == invitationToCompare.ExpirationDate && Status == invitationToCompare.Status &&
-                Role == invitationToCompare.Role;
+               Role == invitationToCompare.Role;
     }
 
     private void FirstnameValidation()
@@ -47,14 +47,17 @@ public class Invitation
 
     private void LastnameValidation()
     {
-        if (String.IsNullOrEmpty(Lastname))
+        if (Role.Equals(SystemUserRoleEnum.ConstructionCompanyAdmin))
         {
-            throw new InvalidInvitationException("Lastname is required");
-        }
+            if (String.IsNullOrEmpty(Lastname))
+            {
+                throw new InvalidInvitationException("Lastname is required");
+            }
 
-        if (!Lastname.All(char.IsLetter))
-        {
-            throw new InvalidInvitationException("Firstname cannot contain special characters.");
+            if (!Lastname.All(char.IsLetter))
+            {
+                throw new InvalidInvitationException("Lastname cannot contain special characters.");
+            }
         }
     }
 
@@ -79,7 +82,7 @@ public class Invitation
             throw new InvalidInvitationException("Expiration date must be greater than today");
         }
     }
-    
+
     private void RoleValidator()
     {
         if (Role != SystemUserRoleEnum.Manager && Role != SystemUserRoleEnum.ConstructionCompanyAdmin)

@@ -65,18 +65,22 @@ public class ConstructionCompanyService : IConstructionCompanyService
         {
             constructionCompanyToAdd.ConstructionCompanyValidator();
             CheckIfNameIsUsedAndUserCreatedACompanyBefore(constructionCompanyToAdd);
-            
+
             _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
         }
         catch (InvalidConstructionCompanyException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-        catch(ObjectRepeatedServiceException)
+        catch (ObjectRepeatedServiceException)
         {
-            throw new ObjectRepeatedServiceException();
+            throw;
         }
-        
+        catch (ObjectErrorServiceException)
+        {
+            throw;
+        }
+
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
@@ -86,12 +90,20 @@ public class ConstructionCompanyService : IConstructionCompanyService
     private void CheckIfNameIsUsedAndUserCreatedACompanyBefore(ConstructionCompany constructionCompanyToCreate)
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();
-        
-        if (constructionCompaniesInDb.Any(constructionCompany =>
-                constructionCompany.Name.Equals(constructionCompanyToCreate.Name) ||
-                constructionCompany.UserCreator.Equals(constructionCompanyToCreate.UserCreator)))
+
+        bool nameExists =
+            constructionCompaniesInDb.Any(company => company.Name.Equals(constructionCompanyToCreate.Name));
+        if (nameExists)
         {
             throw new ObjectRepeatedServiceException();
+        }
+
+        bool userCreatedCompanyBefore = constructionCompaniesInDb.Any(company =>
+            company.UserCreatorId.Equals(constructionCompanyToCreate.UserCreatorId));
+        
+        if (userCreatedCompanyBefore)
+        {
+            throw new ObjectErrorServiceException("User has already created a company");
         }
     }
 

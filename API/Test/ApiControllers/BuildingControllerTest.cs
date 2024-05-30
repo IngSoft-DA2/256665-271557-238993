@@ -225,7 +225,7 @@ public class BuildingControllerTest
 
         UpdateBuildingRequest updateBuildingRequest = new UpdateBuildingRequest
         {
-            ConstructionCompanyId = Guid.NewGuid(),
+            ManagerId = Guid.NewGuid(),
             CommonExpenses = 1000
         };
         

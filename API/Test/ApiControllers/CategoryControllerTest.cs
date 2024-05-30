@@ -98,26 +98,28 @@ public class CategoryControllerTest
     [TestMethod]
     public void CreateCategoryRequest_OkIsReturned()
     {
-        CreateCategoryResponse expectedControllerValue = new CreateCategoryResponse
+        CreateCategoryResponse expectedResponse = new CreateCategoryResponse
         {
             Id = Guid.NewGuid(),
         };
-
-        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedControllerValue);
-
+        
+        CreatedAtActionResult expectedControllerResponse =
+            new CreatedAtActionResult("CreateConstructionCompanyAdmin", "CreateConstructionCompanyAdmin"
+                , expectedResponse.Id, expectedResponse);
+        
         _categoryAdapter.Setup(adapter => adapter.CreateCategory(It.IsAny<CreateCategoryRequest>()))
-            .Returns(expectedControllerValue);
+            .Returns(expectedResponse);
 
         IActionResult controllerResponse = _categoryController.CreateCategory(It.IsAny<CreateCategoryRequest>());
 
-        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
         Assert.IsNotNull(controllerResponseCasted);
 
         CreateCategoryResponse? controllerValueResponse = controllerResponseCasted.Value as CreateCategoryResponse;
         Assert.IsNotNull(controllerValueResponse);
 
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerValue.Id, controllerValueResponse.Id);
+        Assert.AreEqual(expectedControllerResponse.Value, controllerValueResponse);
     }
     
     #endregion

@@ -1,4 +1,6 @@
-﻿namespace Domain;
+﻿using Domain.CustomExceptions;
+
+namespace Domain;
 
 public class Administrator : SystemUser
 {
@@ -24,12 +26,16 @@ public class Administrator : SystemUser
         try
         {
             PersonValidator();
+            PasswordValidator();
         }
         catch (InvalidPersonException exceptionCaught)
         {
             throw new InvalidAdministratorException(exceptionCaught.Message);
         }
-        PasswordValidator();
+        catch (InvalidSystemUserException exceptionCaught)
+        {
+            throw new InvalidAdministratorException(exceptionCaught.Message);
+        }
         LastnameValidator();
     }
 
@@ -38,14 +44,6 @@ public class Administrator : SystemUser
         if (string.IsNullOrEmpty(LastName))
         {
             throw new InvalidAdministratorException("Last name is required");
-        }
-    }
-
-    private void PasswordValidator()
-    {
-        if (string.IsNullOrEmpty(Password) || Password.Length < 8)
-        {
-            throw new InvalidAdministratorException("Password must have at least 8 characters");
         }
     }
     

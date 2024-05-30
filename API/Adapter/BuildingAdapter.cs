@@ -18,13 +18,15 @@ public class BuildingAdapter : IBuildingAdapter
     private readonly IBuildingService _buildingService;
     private readonly IConstructionCompanyService _constructionCompanyService;
     private readonly IOwnerService _ownerService;
+    private readonly IManagerService _managerService;
 
     public BuildingAdapter(IBuildingService buildingService, IConstructionCompanyService constructionCompanyService,
-        IOwnerService ownerService)
+        IOwnerService ownerService, IManagerService managerService)
     {
         _buildingService = buildingService;
         _constructionCompanyService = constructionCompanyService;
         _ownerService = ownerService;
+        _managerService = managerService;
     }
 
     #endregion
@@ -156,9 +158,10 @@ public class BuildingAdapter : IBuildingAdapter
                     Latitude = createBuildingRequest.Location.Latitude,
                     Longitude = createBuildingRequest.Location.Longitude
                 },
-                ConstructionCompany = _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
+                ConstructionCompany =
+                    _constructionCompanyService.GetConstructionCompanyById(createBuildingRequest.ConstructionCompanyId),
                 CommonExpenses = createBuildingRequest.CommonExpenses,
-                
+
                 Flats = createBuildingRequest.Flats.Select(flat => new Flat
                 {
                     Id = Guid.NewGuid(),
@@ -207,13 +210,17 @@ public class BuildingAdapter : IBuildingAdapter
 
     public void UpdateBuildingById(Guid buildingIdToUpd, UpdateBuildingRequest updateBuildingRequest)
     {
+
+        Manager managerFound = _managerService.GetManagerById(updateBuildingRequest.ManagerId);
+        
         try
         {
             Building buildingToUpd = new Building
             {
                 Id = buildingIdToUpd,
                 CommonExpenses = updateBuildingRequest.CommonExpenses,
-                ConstructionCompanyId = updateBuildingRequest.ConstructionCompanyId
+                Manager = managerFound,
+                ManagerId = managerFound.Id
             };
             _buildingService.UpdateBuilding(buildingToUpd);
         }

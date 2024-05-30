@@ -25,7 +25,7 @@ public class ConstructionCompanyControllerTest
     
     #endregion
 
-    #region GetConstructionCompanies
+    #region Get Construction Companies
     
     [TestMethod]
     public void GetConstructionCompanies_OkIsReturned()
@@ -35,7 +35,7 @@ public class ConstructionCompanyControllerTest
             new GetConstructionCompanyResponse()
             {
                 Id = Guid.NewGuid(),
-                Name = "Construction Company 1"
+                Name = "Construction Company 1",
             }
         };
 
@@ -60,7 +60,7 @@ public class ConstructionCompanyControllerTest
    
     #endregion
 
-    #region CreaterConstructionCompany
+    #region Create Construction Company
     
     [TestMethod]
     public void CreateConstructionCompany_CreatedAtActionIsReturned()

@@ -48,6 +48,9 @@ public static class ServiceExtension
         services.AddScoped<IRequestHandlerRepository, RequestHandlerRepository>();
         services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<ISessionRepository, SessionRepository>();
+        services.AddScoped<IConstructionCompanyAdminAdapter, ConstructionCompanyAdminAdapter>();
+        services.AddScoped<IConstructionCompanyAdminService, ConstructionCompanyAdminService>();
+        services.AddScoped<IConstructionCompanyAdminRepository, ConstructionCompanyAdminRepository>();
     }
 
     public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)
