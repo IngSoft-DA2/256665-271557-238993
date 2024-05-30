@@ -82,6 +82,41 @@ public class ConstructionCompanyAdminServiceTest
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
+    
+    [TestMethod]
+    public void CreateConstructionCompanyAdminByInvitation_UnknownServiceExceptionIsThrown()
+    {
+        Invitation dummyInvitation = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "Firstname",
+            Lastname = "Lastname",
+            Email = "email@gmail.com",
+            Status = StatusEnum.Pending,
+            ExpirationDate = DateTime.MaxValue,
+            Role = SystemUserRoleEnum.ConstructionCompanyAdmin,
+        };
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
+
+        _invitationService.Setup(invitationService => invitationService.GetInvitationById(It.IsAny<Guid>()))
+            .Returns(dummyInvitation);
+
+        _invitationService.Setup(invitationService =>
+            invitationService.UpdateInvitation(It.IsAny<Guid>(), It.IsAny<Invitation>()));
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
+            .Throws<Exception>();
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(_constructionCompanyAdminExample,
+                It.IsAny<Guid>()));
+
+        _constructionCompanyAdminRepository.VerifyAll();
+    }
 
     #region Create Construction Company Admin By Invitation, Invitation service Validations
 
@@ -192,19 +227,6 @@ public class ConstructionCompanyAdminServiceTest
                 It.IsAny<Guid>()));
     }
 
-    [TestMethod]
-    public void CreateConstructionCompanyAdmin_ConstructionCompanyRepositoryThrowsUnexpectedException()
-    {
-        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
-                constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
-            .Throws<Exception>();
-
-        Assert.ThrowsException<UnknownServiceException>(() =>
-            _constructionCompanyAdminService.CreateConstructionCompanyAdminByInvitation(
-                _constructionCompanyAdminExample,
-                It.IsAny<Guid>()));
-    }
-
     #endregion
 
     #endregion
@@ -243,10 +265,10 @@ public class ConstructionCompanyAdminServiceTest
         _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
                 constructionCompanyAdminRepository.CreateConstructionCompanyAdmin(It.IsAny<ConstructionCompanyAdmin>()))
             .Throws<Exception>();
-        
+
         Assert.ThrowsException<UnknownServiceException>(() =>
             _constructionCompanyAdminService.CreateConstructionCompanyAdminForAdmins(_constructionCompanyAdminExample));
-        
+
         _constructionCompanyAdminRepository.Verify(constructionCompanyAdminRepository =>
             constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins(), Times.Once);
     }
