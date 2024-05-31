@@ -6,7 +6,7 @@ public class Category : CategoryComponent
     {
     }
 
-    public override List<CategoryComponent> GetChilds()
+    public override List<CategoryComponent>? GetChilds()
     {
         return null;
     }

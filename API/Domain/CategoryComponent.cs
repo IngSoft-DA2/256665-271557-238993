@@ -16,7 +16,7 @@ public abstract class CategoryComponent
 
     public abstract void AddChild(CategoryComponent childToAdd);
 
-    public abstract List<CategoryComponent> GetChilds();
+    public abstract List<CategoryComponent>? GetChilds();
 
     public override bool Equals(object? obj)
     {

@@ -78,7 +78,7 @@ public class CategoryRepository : ICategoryRepository
         {
             _dbContext.Entry(categoryComponentInDb).CurrentValues.SetValues(categoryComponentWithChanges);
 
-            List<CategoryComponent> childs = categoryComponentWithChanges.GetChilds();
+            List<CategoryComponent>? childs = categoryComponentWithChanges.GetChilds();
             
             if (childs is not null)
             {

@@ -16,8 +16,8 @@ public class CategoryAdapterTest
 
     private Mock<ICategoryService> _categoryServiceLogic;
     private CategoryAdapter _categoryAdapter;
-    private Category genericCategory1;
-    private Category genericCategory2;
+    private CategoryComponent genericCategory1;
+    private CategoryComponent genericCategory2;
     private CreateCategoryRequest genericCreateCategoryRequest;
 
     [TestInitialize]
@@ -25,15 +25,35 @@ public class CategoryAdapterTest
     {
         _categoryServiceLogic = new Mock<ICategoryService>(MockBehavior.Strict);
         _categoryAdapter = new CategoryAdapter(_categoryServiceLogic.Object);
+        
         genericCategory1 = new Category
         {
             Id = Guid.NewGuid(),
-            Name = "Electrician"
+            Name = "Electrician",
+            CategoryFatherId = null,
         };
-        genericCategory2 = new Category
+        
+        Guid genericCategory2Id = Guid.NewGuid();
+        genericCategory2 = new CategoryComposite()
         {
-            Id = Guid.NewGuid(),
-            Name = "Plumber"
+            Id = genericCategory2Id,
+            Name = "Plumber",
+            CategoryFatherId = null,
+            SubCategories = new List<CategoryComponent>
+            {
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Pipe Fitter",
+                    CategoryFatherId = genericCategory2Id
+                },
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Pipe Welder",
+                    CategoryFatherId = genericCategory2Id
+                }
+            }
         };
 
         genericCreateCategoryRequest = new CreateCategoryRequest
@@ -49,19 +69,35 @@ public class CategoryAdapterTest
     [TestMethod]
     public void GetAllCategories_ShouldConvertFromDomainToResponse()
     {
-        IEnumerable<Category> expectedServiceResponse = new List<Category> { genericCategory1, genericCategory2 };
+        IEnumerable<CategoryComponent> expectedServiceResponse = new List<CategoryComponent> { genericCategory1, genericCategory2 };
 
         IEnumerable<GetCategoryResponse> expectedAdapterResponse = new List<GetCategoryResponse>
         {
             new GetCategoryResponse
             {
                 Id = expectedServiceResponse.First().Id,
-                Name = expectedServiceResponse.First().Name
+                Name = expectedServiceResponse.First().Name,
+                SubCategories = null
             },
             new GetCategoryResponse
             {
                 Id = expectedServiceResponse.Last().Id,
-                Name = expectedServiceResponse.Last().Name
+                Name = expectedServiceResponse.Last().Name,
+                SubCategories = new List<GetCategoryResponse>
+                {
+                    new GetCategoryResponse
+                    {
+                        Id = expectedServiceResponse.Last().GetChilds().First().Id,
+                        Name = expectedServiceResponse.Last().GetChilds().First().Name,
+                        SubCategories = null
+                    },
+                    new GetCategoryResponse
+                    {
+                        Id = expectedServiceResponse.Last().GetChilds().Last().Id,
+                        Name = expectedServiceResponse.Last().GetChilds().Last().Name,
+                        SubCategories = null
+                    }
+                }
             }
         };
 
@@ -91,12 +127,13 @@ public class CategoryAdapterTest
     [TestMethod]
     public void GetCategoryById_ShouldConvertFromDomainToResponse()
     {
-        Category expectedServiceResponse = genericCategory1;
+        CategoryComponent expectedServiceResponse = genericCategory1;
 
         GetCategoryResponse expectedAdapterResponse = new GetCategoryResponse
         {
             Id = expectedServiceResponse.Id,
-            Name = expectedServiceResponse.Name
+            Name = expectedServiceResponse.Name,
+            SubCategories = new List<GetCategoryResponse>()
         };
 
         _categoryServiceLogic.Setup(service => service.GetCategoryById(It.IsAny<Guid>()))

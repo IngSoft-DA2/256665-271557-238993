@@ -28,10 +28,18 @@ public class CategoryAdapter : ICategoryAdapter
         try
         {
             IEnumerable<CategoryComponent> categories = _categoryServiceLogic.GetAllCategories();
+            
             IEnumerable<GetCategoryResponse> categoriesResponses = categories.Select(category => new GetCategoryResponse
             {
                 Id = category.Id,
-                Name = category.Name
+                Name = category.Name,
+                SubCategories = category.GetChilds() != null ?
+                    category.GetChilds().Where(subCategory => subCategory != null)
+                        .Select(subCategory => new GetCategoryResponse
+                        {
+                            Id = subCategory.Id,
+                            Name = subCategory.Name
+                        }).ToList() : null
             });
 
             return categoriesResponses;
