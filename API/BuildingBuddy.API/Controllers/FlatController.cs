@@ -10,7 +10,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
     [AuthenticationFilter(SystemUserRoleEnum.Manager)]
-    [Route("api/v1/flats")]
+    [Route("api/v2/flats")]
     [ApiController]
     public class FlatController : ControllerBase
     {

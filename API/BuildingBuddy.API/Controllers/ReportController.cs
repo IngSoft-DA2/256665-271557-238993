@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v1/")]
+    [Route("api/v2/")]
     [ApiController]
     public class ReportController : ControllerBase
     {

@@ -8,7 +8,7 @@ using WebModel.Responses.CategoryResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v1/categories")]
+    [Route("api/v2/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
     {

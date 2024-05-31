@@ -9,7 +9,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
     [AuthenticationFilter(SystemUserRoleEnum.Admin)]
-    [Route("api/v1/administrators")]
+    [Route("api/v2/administrators")]
     [ApiController]
     public class AdministratorController : ControllerBase
     {
