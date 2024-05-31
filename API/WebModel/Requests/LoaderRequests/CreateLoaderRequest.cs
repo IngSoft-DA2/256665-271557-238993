@@ -1,6 +1,6 @@
 ﻿namespace WebModel.Requests.LoaderRequests;
 
-public class LoaderRequest
+public class CreateLoaderRequest
 {
     
 }
