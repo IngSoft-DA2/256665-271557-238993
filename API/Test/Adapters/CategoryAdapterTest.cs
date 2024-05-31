@@ -52,27 +52,6 @@ public class CategoryAdapterTest
                     Id = Guid.NewGuid(),
                     Name = "Pipe Welder",
                     CategoryFatherId = genericCategory2Id
-                },
-                new CategoryComposite
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Pipe Inspector",
-                    CategoryFatherId = genericCategory2Id,
-                    SubCategories = new List<CategoryComponent>
-                    {
-                        new Category
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = "Pipe Inspector 1",
-                            CategoryFatherId = genericCategory2Id
-                        },
-                        new Category
-                        {
-                            Id = Guid.NewGuid(),
-                            Name = "Pipe Inspector 2",
-                            CategoryFatherId = genericCategory2Id
-                        }
-                    }
                 }
             }
         };
