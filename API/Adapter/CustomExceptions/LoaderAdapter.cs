@@ -18,7 +18,9 @@ public class LoaderAdapter : ILoaderAdapter
     }
     public List<string> GetAllLoaders()
     {
-        throw new NotImplementedException();
+        return _loaderService.GetAllImporters()
+            .Select(importer => importer.LoaderName())
+            .ToList();
     }
 
     public List<CreateBuildingFromLoadResponse> CreateAllBuildingsFromLoad(CreateLoaderRequest createLoaderRequestWithSettings)

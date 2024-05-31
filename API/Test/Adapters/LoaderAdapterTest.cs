@@ -59,4 +59,22 @@ public class LoaderAdapterTest
         Assert.AreEqual(createBuildingFromLoadResponse.idOfBuildingCreated, result[0].idOfBuildingCreated);
         Assert.AreEqual(createBuildingFromLoadResponse.Details, result[0].Details);
     }
+    
+    [TestMethod]
+    public void GetAllLoaders_ReturnsListOfString()
+    {
+        string loaderName = "testLoader";
+        
+        _mockLoader.Setup(loader => loader.LoaderName()).Returns(loaderName);
+
+        List<ILoader> loaders = new List<ILoader> { _mockLoader.Object };
+
+        _mockService.Setup(service => service.GetAllImporters()).Returns(loaders);
+
+        List<string> result = _loaderAdapter.GetAllLoaders();
+
+        Assert.IsInstanceOfType(result, typeof(List<string>));
+        Assert.AreEqual(loaders.Count, result.Count);
+        Assert.AreEqual(loaderName, result[0]);
+    }
 }
