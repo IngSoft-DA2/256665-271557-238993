@@ -48,7 +48,7 @@ public class CategoryServiceTest
 
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetAllCategories()).Returns(categoriesInDb);
 
-        IEnumerable<Category> categories = _categoryService.GetAllCategories();
+        IEnumerable<CategoryComponent> categories = _categoryService.GetAllCategories();
 
         Assert.AreEqual(categoriesInDb.Count(), categories.Count());
         Assert.IsTrue(categories.SequenceEqual(categoriesInDb));

@@ -27,7 +27,7 @@ public class CategoryAdapter : ICategoryAdapter
     {
         try
         {
-            IEnumerable<Category> categories = _categoryServiceLogic.GetAllCategories();
+            IEnumerable<CategoryComponent> categories = _categoryServiceLogic.GetAllCategories();
             IEnumerable<GetCategoryResponse> categoriesResponses = categories.Select(category => new GetCategoryResponse
             {
                 Id = category.Id,

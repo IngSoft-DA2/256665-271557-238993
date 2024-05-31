@@ -21,12 +21,12 @@ public class CategoryService : ICategoryService
 
     #region Get all categories
 
-    public IEnumerable<Category> GetAllCategories()
+    public IEnumerable<CategoryComponent> GetAllCategories()
     {
         try
         {
-            IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
-            return categories;
+            IEnumerable<CategoryComponent> categoryComponents = _categoryRepository.GetAllCategories();
+            return categoryComponents;
         }
         catch (Exception exceptionCaught)
         {
@@ -40,19 +40,19 @@ public class CategoryService : ICategoryService
 
     public CategoryComponent GetCategoryById(Guid categoryToGetId)
     {
-        CategoryComponent category;
+        CategoryComponent categoryComponent;
         try
         {
-            category = _categoryRepository.GetCategoryById(categoryToGetId);
+            categoryComponent = _categoryRepository.GetCategoryById(categoryToGetId);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
 
-        if (category is null) throw new ObjectNotFoundServiceException();
+        if (categoryComponent is null) throw new ObjectNotFoundServiceException();
 
-        return category;
+        return categoryComponent;
     }
 
     #endregion
