@@ -27,29 +27,48 @@ public class CategoryAdapter : ICategoryAdapter
     {
         try
         {
-            IEnumerable<Category> categories = _categoryServiceLogic.GetAllCategories();
-            IEnumerable<GetCategoryResponse> categoriesResponses = categories.Select(category => new GetCategoryResponse
+            IEnumerable<CategoryComponent> categories = _categoryServiceLogic.GetAllCategories();
+    
+            if (categories is null)
             {
-                Id = category.Id,
-                Name = category.Name
-            });
+                return Enumerable.Empty<GetCategoryResponse>();
+            }
 
-            return categoriesResponses;
+            return categories.Select(category => CreateCategoryResponse(category)).ToList();
         }
         catch (Exception exceptionCaught)
         {
             throw new Exception(exceptionCaught.Message);
         }
     }
+    
+    private GetCategoryResponse CreateCategoryResponse(CategoryComponent category)
+    {
+        GetCategoryResponse response = new GetCategoryResponse
+        {
+            Id = category.Id,
+            Name = category.Name
+        };
+        
+        if (category is CategoryComposite composite)
+        {
+            response.SubCategories = composite.GetChilds()
+                .Select(subCategory => CreateCategoryResponse(subCategory))
+                .ToList();
+        }
+
+        return response;
+    }
 
     #endregion
 
     #region Get Category By Id
+
     public GetCategoryResponse GetCategoryById(Guid idOfCategoryToFind)
     {
         try
         {
-            Category category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
+            CategoryComponent category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
             GetCategoryResponse categoryResponse = new GetCategoryResponse { Id = category.Id, Name = category.Name };
             return categoryResponse;
         }
@@ -62,19 +81,20 @@ public class CategoryAdapter : ICategoryAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
-    
+
     #region Create Category
 
     public CreateCategoryResponse CreateCategory(CreateCategoryRequest categoryToCreate)
     {
         try
         {
-            Category category = new Category
+            CategoryComponent category = new Category
             {
                 Id = Guid.NewGuid(),
-                Name = categoryToCreate.Name
+                Name = categoryToCreate.Name,
+                CategoryFatherId = categoryToCreate.CategoryFatherId
             };
 
             _categoryServiceLogic.CreateCategory(category);
@@ -96,6 +116,6 @@ public class CategoryAdapter : ICategoryAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 }

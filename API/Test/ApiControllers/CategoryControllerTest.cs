@@ -38,7 +38,22 @@ public class CategoryControllerTest
             new GetCategoryResponse()
             {
                 Id = Guid.NewGuid(),
-                Name = "Plumber"
+                Name = "Plumber",
+                SubCategories = null
+            },
+            new GetCategoryResponse()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Electrician",
+                SubCategories = new List<GetCategoryResponse>
+                {
+                    new GetCategoryResponse
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Electrician 1",
+                        SubCategories = null
+                    }
+                }
             }
         };
 

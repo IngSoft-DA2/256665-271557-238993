@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using Moq;
 using Repositories.CustomExceptions;
@@ -30,24 +31,26 @@ public class CategoryServiceTest
     //Happy path
     public void GetAllCategories_CategoriesAreReturned()
     {
-        IEnumerable<Category> categoriesInDb = new List<Category>
+        IEnumerable<CategoryComponent> categoriesInDb = new List<CategoryComponent>
         {
             new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Category1"
+                Name = "Category1",
+                CategoryFatherId = null
             },
             new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Category2"
+                Name = "Category2",
+                CategoryFatherId = null
             }
         };
 
 
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetAllCategories()).Returns(categoriesInDb);
 
-        IEnumerable<Category> categories = _categoryService.GetAllCategories();
+        IEnumerable<CategoryComponent> categories = _categoryService.GetAllCategories();
 
         Assert.AreEqual(categoriesInDb.Count(), categories.Count());
         Assert.IsTrue(categories.SequenceEqual(categoriesInDb));
@@ -82,7 +85,7 @@ public class CategoryServiceTest
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
             .Returns(categoryInDb);
 
-        Category categoryFound = _categoryService.GetCategoryById(It.IsAny<Guid>());
+        CategoryComponent categoryFound = _categoryService.GetCategoryById(It.IsAny<Guid>());
 
         Assert.AreEqual(categoryFound, categoryInDb);
     }
@@ -117,23 +120,48 @@ public class CategoryServiceTest
     [TestMethod]
     public void CreateCategory_CategoryIsCreated()
     {
-        Category categoryToCreateWithValidData = new Category
+        CategoryComponent categoryToCreateWithValidData = new Category
         {
             Id = Guid.NewGuid(),
             Name = "Category1"
         };
 
-        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<Category>()));
+        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<CategoryComponent>()));
+        _categoryService.CreateCategory(categoryToCreateWithValidData);
+        _categoryRepository.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void CreateSubCategory_CategoryIsCreated()
+    {
+        CategoryComponent categoryToBeFather = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+        
+        CategoryComponent categoryToCreateWithValidData = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1",
+            CategoryFatherId = Guid.NewGuid()
+        };
+        
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>())).Returns(categoryToBeFather);
+        _categoryRepository.Setup(categoryRepository => categoryRepository.DeleteCategory(It.IsAny<CategoryComponent>()));
+        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<CategoryComponent>()));
+        _categoryRepository.Setup(categoryRepository => categoryRepository.UpdateCategory(It.IsAny<CategoryComponent>()));
+        
         _categoryService.CreateCategory(categoryToCreateWithValidData);
         _categoryRepository.VerifyAll();
     }
 
-    #region Create Category, Domain Validations
+    #region Create Category, Domain Validations 
 
     [TestMethod]
     public void CreateCategoryWithEmptyName_ThrowsObjectErrorException()
     {
-        Category categoryExample = new Category()
+        CategoryComponent categoryExample = new Category()
         {
             Id = Guid.NewGuid(),
             Name = ""
@@ -150,7 +178,7 @@ public class CategoryServiceTest
     [TestMethod]
     public void CreateCategory_ThrowsUnknownServiceException()
     {
-        Category categoryToAdd = new Category
+        CategoryComponent categoryToAdd = new Category
         {
             Id = Guid.NewGuid(),
             Name = "category1"

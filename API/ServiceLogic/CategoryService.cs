@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -20,12 +21,12 @@ public class CategoryService : ICategoryService
 
     #region Get all categories
 
-    public IEnumerable<Category> GetAllCategories()
+    public IEnumerable<CategoryComponent> GetAllCategories()
     {
         try
         {
-            IEnumerable<Category> categories = _categoryRepository.GetAllCategories();
-            return categories;
+            IEnumerable<CategoryComponent> categoryComponents = _categoryRepository.GetAllCategories();
+            return categoryComponents;
         }
         catch (Exception exceptionCaught)
         {
@@ -37,33 +38,57 @@ public class CategoryService : ICategoryService
 
     #region Get Category By Id
 
-    public Category GetCategoryById(Guid categoryToGetId)
+    public CategoryComponent GetCategoryById(Guid categoryToGetId)
     {
-        Category category;
+        CategoryComponent categoryComponent;
         try
         {
-            category = _categoryRepository.GetCategoryById(categoryToGetId);
+            categoryComponent = _categoryRepository.GetCategoryById(categoryToGetId);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
 
-        if (category is null) throw new ObjectNotFoundServiceException();
+        if (categoryComponent is null) throw new ObjectNotFoundServiceException();
 
-        return category;
+        return categoryComponent;
     }
 
     #endregion
 
     #region Create Category
 
-    public void CreateCategory(Category categoryToCreate)
+    public void CreateCategory(CategoryComponent categoryToCreate)
     {
         try
         {
             categoryToCreate.CategoryValidator();
-            _categoryRepository.CreateCategory(categoryToCreate);
+            //Implicates that the category to create is a subCategory of another category
+            if(categoryToCreate.CategoryFatherId is not null)
+            {
+                Guid categoryFatherId = categoryToCreate.CategoryFatherId.Value;
+                CategoryComponent categoryFather = GetCategoryById(categoryFatherId);
+
+                if (categoryFather is Category)
+                {
+                    // Delete it because now it will be a category composite
+                    _categoryRepository.DeleteCategory(categoryFather);
+                    
+                    categoryFather = new CategoryComposite()
+                    {
+                        Id = categoryFather.Id,
+                        Name = categoryFather.Name
+                    };
+                    _categoryRepository.CreateCategory(categoryFather);
+                }
+                categoryFather.AddChild(categoryToCreate);
+                _categoryRepository.UpdateCategory(categoryFather);
+            }
+            else
+            {
+                _categoryRepository.CreateCategory(categoryToCreate);
+            }
         }
         catch (InvalidCategoryException exceptionCaught)
         {

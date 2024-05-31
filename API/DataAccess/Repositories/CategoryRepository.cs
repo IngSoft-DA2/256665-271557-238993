@@ -1,5 +1,6 @@
 using DataAccess.DbContexts;
 using Domain;
+using IDataAccess;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
@@ -16,11 +17,11 @@ public class CategoryRepository : ICategoryRepository
     }
 
 
-    public IEnumerable<Category> GetAllCategories()
+    public IEnumerable<CategoryComponent> GetAllCategories()
     {
         try
         {
-            return _dbContext.Set<Category>().ToList();
+            return _dbContext.Set<CategoryComponent>().ToList();
         }
         catch (Exception exceptionCaught)
         {
@@ -28,11 +29,11 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public Category GetCategoryById(Guid categoryId)
+    public CategoryComponent GetCategoryById(Guid categoryId)
     {
         try
         {
-            Category categoryFound = _dbContext.Set<Category>().Find(categoryId);
+            CategoryComponent categoryFound = _dbContext.Set<CategoryComponent>().Find(categoryId);
             return categoryFound;
         }
         catch (Exception exceptionCaught)
@@ -41,16 +42,54 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public void CreateCategory(Category categoryToAdd)
+    public void CreateCategory(CategoryComponent categoryToAdd)
     {
         try
         {
-            _dbContext.Set<Category>().Add(categoryToAdd);
+            _dbContext.Set<CategoryComponent>().Add(categoryToAdd);
             _dbContext.SaveChanges();
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+    }
+
+    public void DeleteCategory(CategoryComponent categoryComponent)
+    {
+        try
+        {
+            _dbContext.Set<CategoryComponent>().Remove(categoryComponent);
+            _dbContext.Entry(categoryComponent).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+    }
+
+    public void UpdateCategory(CategoryComponent categoryComponentWithChanges)
+    {
+        CategoryComponent categoryComponentInDb =
+            _dbContext.Set<CategoryComponent>().Find(categoryComponentWithChanges.Id);
+
+        if (categoryComponentInDb is not null)
+        {
+            _dbContext.Entry(categoryComponentInDb).CurrentValues.SetValues(categoryComponentWithChanges);
+
+            List<CategoryComponent>? childs = categoryComponentWithChanges.GetChilds();
+            
+            if (childs is not null)
+            {   
+                int childsCount = categoryComponentInDb.GetChilds().Count;
+                for (int i = 0; i < childsCount; i++)
+                {
+                    categoryComponentInDb.AddChild(childs[i]);
+                }
+            }
+
+            _dbContext.SaveChanges();
         }
     }
 }
