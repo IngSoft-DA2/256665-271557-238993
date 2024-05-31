@@ -192,6 +192,30 @@ public class CategoryRepositoryTest
         Assert.IsTrue(categoryComponentWithUpdates.Equals(categoryInDb));
     }
     
+    [TestMethod]
+    public void UpdateCategoryComponent_CategoryIsUpdated()
+    {
+        CategoryComponent categoryComponentWithoutUpdate = new Category()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1",
+        };
+        
+        _dbContext.Set<CategoryComponent>().Add(categoryComponentWithoutUpdate);
+        _dbContext.SaveChanges();
+        
+        CategoryComponent categoryComponentWithUpdates = new Category()
+        {
+            Id = categoryComponentWithoutUpdate.Id,
+            Name = "New name",
+        };
+        
+        _categoryRepository.UpdateCategory(categoryComponentWithUpdates);
+        CategoryComponent categoryInDb = _dbContext.Set<CategoryComponent>().Find(categoryComponentWithUpdates.Id);
+
+        Assert.IsTrue(categoryComponentWithUpdates.Equals(categoryInDb));
+    }
+    
     #endregion
     [TestCleanup]
     public void TestCleanup()

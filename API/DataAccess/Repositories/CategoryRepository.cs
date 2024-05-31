@@ -79,13 +79,14 @@ public class CategoryRepository : ICategoryRepository
             _dbContext.Entry(categoryComponentInDb).CurrentValues.SetValues(categoryComponentWithChanges);
 
             List<CategoryComponent> childs = categoryComponentWithChanges.GetChilds();
-
-
-            for (int i = 0; i < childs.Count; i++)
+            
+            if (childs is not null)
             {
-                categoryComponentInDb.AddChild(childs[i]);
+                for (int i = 0; i < childs.Count; i++)
+                {
+                    categoryComponentInDb.AddChild(childs[i]);
+                }
             }
-
 
             _dbContext.SaveChanges();
         }
