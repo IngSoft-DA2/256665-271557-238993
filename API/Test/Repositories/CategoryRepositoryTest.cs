@@ -92,6 +92,8 @@ public class CategoryRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
+    #region Create Category
+
     [TestMethod]
     public void CreateCategoryLeaf_CategoryIsAdded()
     {
@@ -106,7 +108,7 @@ public class CategoryRepositoryTest
 
         Assert.AreEqual(categoryToAdd, categoryInDb);
     }
-    
+
     [TestMethod]
     public void CreateCategory_ThrowsUnknownException()
     {
@@ -118,10 +120,35 @@ public class CategoryRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
+    #endregion
+
+    #region Delete Category
+
+    
+    [TestMethod]
+    public void DeleteCategory_CategoryIsDeleted()
+    {
+        CategoryComponent categoryToDelete = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+
+        _dbContext.Set<CategoryComponent>().Add(categoryToDelete);
+        _dbContext.SaveChanges();
+
+        _categoryRepository.DeleteCategory(categoryToDelete);
+        CategoryComponent categoryInDb = _dbContext.Set<CategoryComponent>().Find(categoryToDelete.Id);
+
+        Assert.IsNull(categoryInDb);
+    }
+    
+
+    #endregion
+
     [TestCleanup]
     public void TestCleanup()
     {
         _dbContext.Database.EnsureDeleted();
     }
-
 }

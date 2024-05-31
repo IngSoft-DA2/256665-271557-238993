@@ -55,9 +55,11 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public void DeleteCategory(CategoryComponent categoryFather)
+    public void DeleteCategory(CategoryComponent category)
     {
-        throw new NotImplementedException();
+        _dbContext.Set<CategoryComponent>().Remove(category);
+        _dbContext.Entry(category).State = EntityState.Deleted;
+        _dbContext.SaveChanges();
     }
 
     public void UpdateCategory(CategoryComponent categoryFatherComposite)
