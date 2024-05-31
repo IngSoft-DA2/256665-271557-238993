@@ -14,6 +14,8 @@ namespace BuildingBuddy.API.Controllers;
 [ApiController]
 public class LoaderController : ControllerBase
 {
+    #region Constructor and attributes
+    
     private readonly IBuildingAdapter _buildingAdapter;
     private readonly ILoaderAdapter _loaderAdapter;
     private readonly ISessionService _sessionService;
@@ -25,6 +27,10 @@ public class LoaderController : ControllerBase
         _buildingAdapter = buildingAdapter;
     }
     
+    #endregion
+    
+    #region Create All Buildings From Load
+    
     [HttpPost]
     [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
     public IActionResult CreateAllBuildingsFromLoad([FromBody] CreateLoaderRequest createLoaderRequest)
@@ -32,16 +38,17 @@ public class LoaderController : ControllerBase
         List<CreateBuildingResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);
         return Ok(response);
     }
+    
+    #endregion
 
+    #region Get All Loaders
+    
     [HttpGet]
     public IActionResult GetAllLoaders()
     {
         List<string> response = _loaderAdapter.GetAllLoaders();
         return Ok(response);
     }
-
-
-
-
-
+    
+    #endregion
 }

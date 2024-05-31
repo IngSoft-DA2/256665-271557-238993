@@ -6,8 +6,6 @@ namespace IAdapter;
 
 public interface ILoaderAdapter
 {
-    public void ValidateInterfaceIsBeingImplemented();
-    
     public List<string> GetAllLoaders();
     public List<CreateBuildingResponse> CreateAllBuildingsFromLoad(CreateLoaderRequest createLoaderRequest);
 
