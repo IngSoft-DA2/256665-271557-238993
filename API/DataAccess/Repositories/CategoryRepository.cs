@@ -17,11 +17,11 @@ public class CategoryRepository : ICategoryRepository
     }
 
 
-    public IEnumerable<Category> GetAllCategories()
+    public IEnumerable<CategoryComponent> GetAllCategories()
     {
         try
         {
-            return _dbContext.Set<Category>().ToList();
+            return _dbContext.Set<CategoryComponent>().ToList();
         }
         catch (Exception exceptionCaught)
         {

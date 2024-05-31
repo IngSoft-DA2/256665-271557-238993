@@ -31,17 +31,19 @@ public class CategoryServiceTest
     //Happy path
     public void GetAllCategories_CategoriesAreReturned()
     {
-        IEnumerable<Category> categoriesInDb = new List<Category>
+        IEnumerable<CategoryComponent> categoriesInDb = new List<CategoryComponent>
         {
             new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Category1"
+                Name = "Category1",
+                CategoryFatherId = null
             },
             new Category()
             {
                 Id = Guid.NewGuid(),
-                Name = "Category2"
+                Name = "Category2",
+                CategoryFatherId = null
             }
         };
 

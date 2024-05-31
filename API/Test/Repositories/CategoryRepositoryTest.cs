@@ -11,6 +11,8 @@ namespace Test.Repositories;
 [TestClass]
 public class CategoryRepositoryTest
 {
+    #region Initialize
+
     private DbContext _dbContext;
     private CategoryRepository _categoryRepository;
 
@@ -28,6 +30,10 @@ public class CategoryRepositoryTest
         return new ApplicationDbContext(options);
     }
 
+    #endregion
+
+    #region Get all categories
+
     [TestMethod]
     public void GetAllCategories_CategoriesAreReturn()
     {
@@ -42,13 +48,30 @@ public class CategoryRepositoryTest
             Name = "Category2"
         };
 
-        IEnumerable<CategoryComponent> expectedCategories = new List<CategoryComponent> { categoryInDb, categoryInDb2 };
+        Guid categoryCompositeId = categoryInDb.Id;
+       
+        CategoryComponent subCategory = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "SubCategory",
+            CategoryFatherId = categoryCompositeId
+        };
+        
+        CategoryComponent categoryComposite = new CategoryComposite
+        {
+            Id = Guid.NewGuid(),
+            Name = "CategoryComposite",
+            SubCategories = new List<CategoryComponent> {subCategory}
+        };
+
+        IEnumerable<CategoryComponent> expectedCategories = new List<CategoryComponent> { categoryInDb, categoryInDb2,subCategory, categoryComposite };
 
         _dbContext.Set<CategoryComponent>().Add(categoryInDb);
         _dbContext.Set<CategoryComponent>().Add(categoryInDb2);
+        _dbContext.Set<CategoryComponent>().Add(categoryComposite);
         _dbContext.SaveChanges();
 
-        IEnumerable<Category> categoriesResponse = _categoryRepository.GetAllCategories();
+        IEnumerable<CategoryComponent> categoriesResponse = _categoryRepository.GetAllCategories();
 
         Assert.IsTrue(expectedCategories.SequenceEqual(categoriesResponse));
     }
@@ -63,6 +86,8 @@ public class CategoryRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.GetAllCategories());
         _mockDbContext.VerifyAll();
     }
+
+    #endregion
 
     [TestMethod]
     public void GetCategoryById_CategoryIsReturn()
@@ -97,10 +122,20 @@ public class CategoryRepositoryTest
     [TestMethod]
     public void CreateCategoryLeaf_CategoryIsAdded()
     {
-        CategoryComponent categoryToAdd = new Category
+        Guid categoryFatherId = Guid.NewGuid();
+        CategoryComponent categoryToAdd = new CategoryComposite()
         {
-            Id = Guid.NewGuid(),
-            Name = "Category1"
+            Id = categoryFatherId,
+            Name = "Category1",
+            SubCategories = new List<CategoryComponent>
+            {
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "SubCategory",
+                    CategoryFatherId = categoryFatherId
+                }
+            }
         };
 
         _categoryRepository.CreateCategory(categoryToAdd);
@@ -158,6 +193,7 @@ public class CategoryRepositoryTest
 
 
     #region Update Category
+
     [TestMethod]
     public void UpdateCategoryComponent_CategoryCompositeIsUpdated()
     {
@@ -165,12 +201,12 @@ public class CategoryRepositoryTest
         {
             Id = Guid.NewGuid(),
             Name = "Category1",
-            SubCategories = new List<CategoryComponent>{}
+            SubCategories = new List<CategoryComponent> { }
         };
-        
+
         _dbContext.Set<CategoryComponent>().Add(categoryComponentWithoutUpdate);
         _dbContext.SaveChanges();
-        
+
         CategoryComponent categoryComponentWithUpdates = new CategoryComposite()
         {
             Id = categoryComponentWithoutUpdate.Id,
@@ -185,13 +221,13 @@ public class CategoryRepositoryTest
                 }
             }
         };
-        
+
         _categoryRepository.UpdateCategory(categoryComponentWithUpdates);
         CategoryComponent categoryInDb = _dbContext.Set<CategoryComponent>().Find(categoryComponentWithUpdates.Id);
 
         Assert.IsTrue(categoryComponentWithUpdates.Equals(categoryInDb));
     }
-    
+
     [TestMethod]
     public void UpdateCategoryComponent_CategoryIsUpdated()
     {
@@ -200,23 +236,24 @@ public class CategoryRepositoryTest
             Id = Guid.NewGuid(),
             Name = "Category1",
         };
-        
+
         _dbContext.Set<CategoryComponent>().Add(categoryComponentWithoutUpdate);
         _dbContext.SaveChanges();
-        
+
         CategoryComponent categoryComponentWithUpdates = new Category()
         {
             Id = categoryComponentWithoutUpdate.Id,
             Name = "New name",
         };
-        
+
         _categoryRepository.UpdateCategory(categoryComponentWithUpdates);
         CategoryComponent categoryInDb = _dbContext.Set<CategoryComponent>().Find(categoryComponentWithUpdates.Id);
 
         Assert.IsTrue(categoryComponentWithUpdates.Equals(categoryInDb));
     }
-    
+
     #endregion
+
     [TestCleanup]
     public void TestCleanup()
     {
