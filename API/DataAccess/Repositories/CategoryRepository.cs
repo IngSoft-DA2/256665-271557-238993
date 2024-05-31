@@ -57,9 +57,16 @@ public class CategoryRepository : ICategoryRepository
 
     public void DeleteCategory(CategoryComponent category)
     {
-        _dbContext.Set<CategoryComponent>().Remove(category);
-        _dbContext.Entry(category).State = EntityState.Deleted;
-        _dbContext.SaveChanges();
+        try
+        {
+            _dbContext.Set<CategoryComponent>().Remove(category);
+            _dbContext.Entry(category).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 
     public void UpdateCategory(CategoryComponent categoryFatherComposite)

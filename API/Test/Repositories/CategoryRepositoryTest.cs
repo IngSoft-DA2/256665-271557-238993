@@ -124,7 +124,6 @@ public class CategoryRepositoryTest
 
     #region Delete Category
 
-    
     [TestMethod]
     public void DeleteCategory_CategoryIsDeleted()
     {
@@ -142,7 +141,18 @@ public class CategoryRepositoryTest
 
         Assert.IsNull(categoryInDb);
     }
-    
+
+    [TestMethod]
+    public void DeleteCategory_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<CategoryComponent>()).Throws(new Exception());
+
+        _categoryRepository = new CategoryRepository(_mockDbContext.Object);
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            _categoryRepository.DeleteCategory(It.IsAny<CategoryComponent>()));
+        _mockDbContext.VerifyAll();
+    }
 
     #endregion
 
