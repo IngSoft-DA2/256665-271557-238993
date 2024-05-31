@@ -134,7 +134,7 @@ public class CategoryAdapterTest
         {
             Id = expectedServiceResponse.Id,
             Name = expectedServiceResponse.Name,
-            SubCategories = new List<GetCategoryResponse>()
+            SubCategories = null
         };
 
         _categoryServiceLogic.Setup(service => service.GetCategoryById(It.IsAny<Guid>()))

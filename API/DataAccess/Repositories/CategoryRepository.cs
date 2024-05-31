@@ -33,7 +33,13 @@ public class CategoryRepository : ICategoryRepository
     {
         try
         {
-            CategoryComponent categoryFound = _dbContext.Set<CategoryComponent>().Find(categoryId);
+            var categoryFound = _dbContext.Set<CategoryComponent>().FirstOrDefault(x => x.Id == categoryId);
+            
+            if (categoryFound is CategoryComposite composite)
+            {
+                _dbContext.Entry(composite).Collection(c => c.SubCategories).Load();
+            }
+
             return categoryFound;
         }
         catch (Exception exceptionCaught)
