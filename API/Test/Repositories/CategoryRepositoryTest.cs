@@ -93,7 +93,7 @@ public class CategoryRepositoryTest
     }
 
     [TestMethod]
-    public void CreateCategory_CategoryIsAdded()
+    public void CreateCategoryLeaf_CategoryIsAdded()
     {
         CategoryComponent categoryToAdd = new Category
         {
@@ -106,7 +106,7 @@ public class CategoryRepositoryTest
 
         Assert.AreEqual(categoryToAdd, categoryInDb);
     }
-
+    
     [TestMethod]
     public void CreateCategory_ThrowsUnknownException()
     {
