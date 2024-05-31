@@ -6,6 +6,7 @@ using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.LoaderRequests;
 using WebModel.Responses.BuildingResponses;
+using WebModel.Responses.LoaderReponses;
 
 namespace BuildingBuddy.API.Controllers;
 
@@ -35,7 +36,7 @@ public class LoaderController : ControllerBase
     [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
     public IActionResult CreateAllBuildingsFromLoad([FromBody] CreateLoaderRequest createLoaderRequest)
     {
-        List<CreateBuildingResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);
+        List<CreateBuildingFromLoadResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);
         return Ok(response);
     }
     

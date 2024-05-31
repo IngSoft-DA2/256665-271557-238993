@@ -7,6 +7,7 @@ using Moq;
 using WebModel.Requests.BuildingRequests;
 using WebModel.Requests.LoaderRequests;
 using WebModel.Responses.BuildingResponses;
+using WebModel.Responses.LoaderReponses;
 
 namespace Test.ApiControllers;
 
@@ -39,7 +40,7 @@ public class LoaderControllerTest
     public void CreateAllBuildingsFromLoad_ReturnsOkResponse()
     {
         CreateLoaderRequest createLoaderRequest = new CreateLoaderRequest();
-        List<CreateBuildingResponse> createBuildingRequestList = new List<CreateBuildingResponse>();
+        List<CreateBuildingFromLoadResponse> createBuildingRequestList = new List<CreateBuildingFromLoadResponse>();
 
         _loaderAdapter.Setup(adapter => adapter.CreateAllBuildingsFromLoad(createLoaderRequest))
             .Returns(createBuildingRequestList);
