@@ -8,7 +8,6 @@ using WebModel.Responses.CategoryResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(SystemUserRoleEnum.Admin)]
     [Route("api/v1/categories")]
     [ApiController]
     public class CategoryController : ControllerBase

@@ -82,7 +82,7 @@ public class CategoryRepository : ICategoryRepository
             
             if (childs is not null)
             {   
-                int childsCount = categoryComponentInDb.GetChilds().Count;
+                int childsCount = categoryComponentWithChanges.GetChilds().Count;
                 for (int i = 0; i < childsCount; i++)
                 {
                     categoryComponentInDb.AddChild(childs[i]);
