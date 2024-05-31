@@ -75,15 +75,14 @@ public class CategoryService : ICategoryService
                     // Delete it because now it will be a category composite
                     _categoryRepository.DeleteCategory(categoryFather);
                     
-                    CategoryComponent categoryFatherComposite = new CategoryComposite()
+                    categoryFather = new CategoryComposite()
                     {
                         Id = categoryFather.Id,
-                        Name = categoryFather.Name,
-                        SubCategories = new List<CategoryComponent> {categoryFather}
+                        Name = categoryFather.Name
                     };
-                    categoryFather.AddChild(categoryToCreate);
-                    _categoryRepository.UpdateCategory(categoryFatherComposite);
                 }
+                categoryFather.AddChild(categoryToCreate);
+                _categoryRepository.UpdateCategory(categoryFather);
             }
             else
             {

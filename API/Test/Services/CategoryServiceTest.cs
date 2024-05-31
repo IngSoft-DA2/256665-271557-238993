@@ -128,8 +128,32 @@ public class CategoryServiceTest
         _categoryService.CreateCategory(categoryToCreateWithValidData);
         _categoryRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void CreateSubCategory_CategoryIsCreated()
+    {
+        CategoryComponent categoryToBeFather = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1"
+        };
+        
+        CategoryComponent categoryToCreateWithValidData = new Category
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1",
+            CategoryFatherId = Guid.NewGuid()
+        };
+        
+        _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>())).Returns(categoryToBeFather);
+        _categoryRepository.Setup(categoryRepository => categoryRepository.DeleteCategory(It.IsAny<CategoryComponent>()));
+        _categoryRepository.Setup(categoryRepository => categoryRepository.UpdateCategory(It.IsAny<CategoryComponent>()));
+        
+        _categoryService.CreateCategory(categoryToCreateWithValidData);
+        _categoryRepository.VerifyAll();
+    }
 
-    #region Create Category, Domain Validations
+    #region Create Category, Domain Validations 
 
     [TestMethod]
     public void CreateCategoryWithEmptyName_ThrowsObjectErrorException()
