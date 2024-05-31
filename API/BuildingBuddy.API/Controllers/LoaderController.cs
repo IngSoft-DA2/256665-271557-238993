@@ -29,7 +29,7 @@ public class LoaderController : ControllerBase
     public IActionResult CreateAllBuildingsFromLoad([FromBody] CreateLoaderRequest createLoaderRequest)
     {
         List<CreateBuildingResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);
-        return Ok(_loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest));
+        return Ok(response);
     }
 
     [HttpGet]
