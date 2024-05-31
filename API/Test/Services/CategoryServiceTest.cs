@@ -118,13 +118,13 @@ public class CategoryServiceTest
     [TestMethod]
     public void CreateCategory_CategoryIsCreated()
     {
-        Category categoryToCreateWithValidData = new Category
+        CategoryComponent categoryToCreateWithValidData = new Category
         {
             Id = Guid.NewGuid(),
             Name = "Category1"
         };
 
-        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<Category>()));
+        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<CategoryComponent>()));
         _categoryService.CreateCategory(categoryToCreateWithValidData);
         _categoryRepository.VerifyAll();
     }
@@ -134,7 +134,7 @@ public class CategoryServiceTest
     [TestMethod]
     public void CreateCategoryWithEmptyName_ThrowsObjectErrorException()
     {
-        Category categoryExample = new Category()
+        CategoryComponent categoryExample = new Category()
         {
             Id = Guid.NewGuid(),
             Name = ""
@@ -151,7 +151,7 @@ public class CategoryServiceTest
     [TestMethod]
     public void CreateCategory_ThrowsUnknownServiceException()
     {
-        Category categoryToAdd = new Category
+        CategoryComponent categoryToAdd = new Category
         {
             Id = Guid.NewGuid(),
             Name = "category1"
