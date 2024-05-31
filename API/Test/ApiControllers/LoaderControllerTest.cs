@@ -45,6 +45,11 @@ public class LoaderControllerTest
             .Returns(createBuildingRequestList);
 
         IActionResult controllerResponse = _loaderController.CreateAllBuildingsFromLoad(createLoaderRequest);
+        
+        OkObjectResult okObjectResult = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(okObjectResult);
+        
+        Assert.AreEqual(createBuildingRequestList, okObjectResult.Value);
 
         Assert.IsNotNull(controllerResponse);
         Assert.IsInstanceOfType(controllerResponse, typeof(OkObjectResult));
