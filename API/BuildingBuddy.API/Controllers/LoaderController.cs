@@ -1,6 +1,7 @@
 ﻿using BuildingBuddy.API.Filters;
 using Domain.Enums;
 using IAdapter;
+using ILoaders;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.LoaderRequests;
@@ -35,7 +36,8 @@ public class LoaderController : ControllerBase
     [HttpGet]
     public IActionResult GetAllLoaders()
     {
-        return Ok(_loaderAdapter.GetAllLoaders());
+        List<string> response = _loaderAdapter.GetAllLoaders();
+        return Ok(response);
     }
 
 

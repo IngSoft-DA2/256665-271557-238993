@@ -33,5 +33,25 @@ public class LoaderControllerTest
         
         loaderAdapter.VerifyAll();
     }
+    
+    [TestMethod]
+public void GetAllLoaders_ReturnsOkResponse()
+    {
+        Mock<ILoaderAdapter> loaderAdapter = new Mock<ILoaderAdapter>(MockBehavior.Strict);
+        Mock<ISessionService> sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        Mock<IBuildingAdapter> buildingAdapter = new Mock<IBuildingAdapter>(MockBehavior.Strict);
+
+        List<string> loaderList = new List<string>();
+        
+        loaderAdapter.Setup(adapter => adapter.GetAllLoaders()).Returns(loaderList);
+        LoaderController loaderController = new LoaderController(loaderAdapter.Object, sessionService.Object, buildingAdapter.Object);
+        
+        IActionResult controllerResponse = loaderController.GetAllLoaders();
+        
+        Assert.IsNotNull(controllerResponse);
+        Assert.IsInstanceOfType(controllerResponse, typeof(OkObjectResult));
+        
+        loaderAdapter.VerifyAll();
+    }
 
 }

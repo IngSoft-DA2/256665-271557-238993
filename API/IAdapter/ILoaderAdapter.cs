@@ -8,7 +8,7 @@ public interface ILoaderAdapter
 {
     public void ValidateInterfaceIsBeingImplemented();
     
-    public List<ILoader> GetAllLoaders();
+    public List<string> GetAllLoaders();
     public List<CreateBuildingResponse> CreateAllBuildingsFromLoad(CreateLoaderRequest createLoaderRequest);
 
 }
