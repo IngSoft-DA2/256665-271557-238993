@@ -48,23 +48,24 @@ public class CategoryRepositoryTest
             Name = "Category2"
         };
 
-        Guid categoryCompositeId = categoryInDb.Id;
-       
+        Guid categoryCompositeId = Guid.NewGuid();
+
         CategoryComponent subCategory = new Category
         {
             Id = Guid.NewGuid(),
             Name = "SubCategory",
             CategoryFatherId = categoryCompositeId
         };
-        
+
         CategoryComponent categoryComposite = new CategoryComposite
         {
-            Id = Guid.NewGuid(),
+            Id = categoryCompositeId,
             Name = "CategoryComposite",
-            SubCategories = new List<CategoryComponent> {subCategory}
+            SubCategories = new List<CategoryComponent> { subCategory }
         };
 
-        IEnumerable<CategoryComponent> expectedCategories = new List<CategoryComponent> { categoryInDb, categoryInDb2,subCategory, categoryComposite };
+        IEnumerable<CategoryComponent> expectedCategories = new List<CategoryComponent>
+            { categoryInDb, categoryInDb2, subCategory, categoryComposite };
 
         _dbContext.Set<CategoryComponent>().Add(categoryInDb);
         _dbContext.Set<CategoryComponent>().Add(categoryInDb2);
@@ -89,21 +90,33 @@ public class CategoryRepositoryTest
 
     #endregion
 
+    #region Get category component by id
+
     [TestMethod]
     public void GetCategoryById_CategoryIsReturn()
     {
-        Category categoryInDb = new Category
+        Guid categoryCompositeId = Guid.NewGuid();
+
+        CategoryComponent subCategory = new Category
         {
             Id = Guid.NewGuid(),
-            Name = "Category1"
+            Name = "SubCategory",
+            CategoryFatherId = categoryCompositeId
         };
 
-        _dbContext.Set<CategoryComponent>().Add(categoryInDb);
+        CategoryComponent categoryComposite = new CategoryComposite
+        {
+            Id = categoryCompositeId,
+            Name = "CategoryComposite",
+            SubCategories = new List<CategoryComponent> { subCategory }
+        };
+
+        _dbContext.Set<CategoryComponent>().Add(categoryComposite);
         _dbContext.SaveChanges();
 
-        CategoryComponent categoryResponse = _categoryRepository.GetCategoryById(categoryInDb.Id);
+        CategoryComponent categoryResponse = _categoryRepository.GetCategoryById(subCategory.Id);
 
-        Assert.AreEqual(categoryInDb, categoryResponse);
+        Assert.AreEqual(subCategory, categoryResponse);
     }
 
     [TestMethod]
@@ -116,6 +129,8 @@ public class CategoryRepositoryTest
         Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.GetCategoryById(Guid.NewGuid()));
         _mockDbContext.VerifyAll();
     }
+
+    #endregion
 
     #region Create Category
 
