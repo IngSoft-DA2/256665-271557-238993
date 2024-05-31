@@ -10,7 +10,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
     [AuthenticationFilter(SystemUserRoleEnum.Admin)]
-    [Route("api/v1/invitations")]
+    [Route("api/v2/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
     {

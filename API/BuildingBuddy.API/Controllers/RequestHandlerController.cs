@@ -9,7 +9,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
     [AuthenticationFilter(SystemUserRoleEnum.Manager)]
-    [Route("api/v1/request-handlers")]
+    [Route("api/v2/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase
     {

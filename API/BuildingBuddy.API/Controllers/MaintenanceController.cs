@@ -8,7 +8,7 @@ using WebModel.Responses.MaintenanceResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v1/maintenance")]
+    [Route("api/v2/maintenance")]
     [ApiController]
     public class MaintenanceController : ControllerBase
     {

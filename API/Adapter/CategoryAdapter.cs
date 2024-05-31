@@ -69,7 +69,14 @@ public class CategoryAdapter : ICategoryAdapter
         try
         {
             CategoryComponent category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
-            GetCategoryResponse categoryResponse = new GetCategoryResponse { Id = category.Id, Name = category.Name };
+            GetCategoryResponse categoryResponse = new GetCategoryResponse
+            {
+                Id = category.Id,
+                Name = category.Name,
+                SubCategories = category is CategoryComposite composite
+                    ? composite.GetChilds().Select(subCategory => CreateCategoryResponse(subCategory)).ToList()
+                    : null
+            };
             return categoryResponse;
         }
         catch (ObjectNotFoundServiceException)

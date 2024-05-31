@@ -25,8 +25,20 @@ public class CategoryService : ICategoryService
     {
         try
         {
-            IEnumerable<CategoryComponent> categoryComponents = _categoryRepository.GetAllCategories();
-            return categoryComponents;
+            List<CategoryComponent> categoryComponents = _categoryRepository.GetAllCategories().ToList();
+
+            List<CategoryComponent> response = new List<CategoryComponent>();
+            
+            foreach (var categoryComponent in categoryComponents)
+            {
+                if (categoryComponent is Category && categoryComponent.CategoryFatherId != null)
+                {
+                    continue;
+                }
+                response.Add(categoryComponent);
+            }
+            
+            return response;
         }
         catch (Exception exceptionCaught)
         {

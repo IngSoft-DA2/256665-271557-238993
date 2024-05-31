@@ -114,9 +114,9 @@ public class CategoryRepositoryTest
         _dbContext.Set<CategoryComponent>().Add(categoryComposite);
         _dbContext.SaveChanges();
 
-        CategoryComponent categoryResponse = _categoryRepository.GetCategoryById(subCategory.Id);
+        CategoryComponent categoryResponse = _categoryRepository.GetCategoryById(categoryComposite.Id);
 
-        Assert.AreEqual(subCategory, categoryResponse);
+        Assert.AreEqual(categoryComposite, categoryResponse);
     }
 
     [TestMethod]

@@ -9,7 +9,7 @@ namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
     [AuthenticationFilter(SystemUserRoleEnum.Manager)] 
-    [Route("api/v1/owners")]
+    [Route("api/v2/owners")]
     [ApiController]
     public class OwnerController : ControllerBase
     {

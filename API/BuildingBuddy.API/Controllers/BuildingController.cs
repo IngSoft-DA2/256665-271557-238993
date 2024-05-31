@@ -9,7 +9,7 @@ using WebModel.Responses.BuildingResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v1/buildings")]
+    [Route("api/v2/buildings")]
     [ApiController]
     public class BuildingController : ControllerBase
     {

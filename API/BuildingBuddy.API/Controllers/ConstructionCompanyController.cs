@@ -10,7 +10,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v1/construction-companies")]
+    [Route("api/v2/construction-companies")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
     {
