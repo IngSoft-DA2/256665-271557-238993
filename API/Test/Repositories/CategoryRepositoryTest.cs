@@ -156,6 +156,43 @@ public class CategoryRepositoryTest
 
     #endregion
 
+
+    #region Update Category
+    [TestMethod]
+    public void UpdateCategoryComponent_CategoryCompositeIsUpdated()
+    {
+        CategoryComponent categoryComponentWithoutUpdate = new CategoryComposite()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Category1",
+            SubCategories = new List<CategoryComponent>{}
+        };
+        
+        _dbContext.Set<CategoryComponent>().Add(categoryComponentWithoutUpdate);
+        _dbContext.SaveChanges();
+        
+        CategoryComponent categoryComponentWithUpdates = new CategoryComposite()
+        {
+            Id = categoryComponentWithoutUpdate.Id,
+            Name = categoryComponentWithoutUpdate.Name,
+            SubCategories = new List<CategoryComponent>
+            {
+                new Category
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Category1",
+                    CategoryFatherId = categoryComponentWithoutUpdate.Id
+                }
+            }
+        };
+        
+        _categoryRepository.UpdateCategory(categoryComponentWithUpdates);
+        CategoryComponent categoryInDb = _dbContext.Set<CategoryComponent>().Find(categoryComponentWithUpdates.Id);
+
+        Assert.IsTrue(categoryComponentWithUpdates.Equals(categoryInDb));
+    }
+    
+    #endregion
     [TestCleanup]
     public void TestCleanup()
     {

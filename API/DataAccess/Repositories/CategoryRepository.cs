@@ -55,12 +55,12 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public void DeleteCategory(CategoryComponent category)
+    public void DeleteCategory(CategoryComponent categoryComponent)
     {
         try
         {
-            _dbContext.Set<CategoryComponent>().Remove(category);
-            _dbContext.Entry(category).State = EntityState.Deleted;
+            _dbContext.Set<CategoryComponent>().Remove(categoryComponent);
+            _dbContext.Entry(categoryComponent).State = EntityState.Deleted;
             _dbContext.SaveChanges();
         }
         catch (Exception exceptionCaught)
@@ -69,8 +69,25 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public void UpdateCategory(CategoryComponent categoryFatherComposite)
+    public void UpdateCategory(CategoryComponent categoryComponentWithChanges)
     {
-        throw new NotImplementedException();
+        CategoryComponent categoryComponentInDb =
+            _dbContext.Set<CategoryComponent>().Find(categoryComponentWithChanges.Id);
+
+        if (categoryComponentInDb is not null)
+        {
+            _dbContext.Entry(categoryComponentInDb).CurrentValues.SetValues(categoryComponentWithChanges);
+
+            List<CategoryComponent> childs = categoryComponentWithChanges.GetChilds();
+
+
+            for (int i = 0; i < childs.Count; i++)
+            {
+                categoryComponentInDb.AddChild(childs[i]);
+            }
+
+
+            _dbContext.SaveChanges();
+        }
     }
 }

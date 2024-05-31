@@ -147,6 +147,7 @@ public class CategoryServiceTest
         
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>())).Returns(categoryToBeFather);
         _categoryRepository.Setup(categoryRepository => categoryRepository.DeleteCategory(It.IsAny<CategoryComponent>()));
+        _categoryRepository.Setup(categoryRepository => categoryRepository.CreateCategory(It.IsAny<CategoryComponent>()));
         _categoryRepository.Setup(categoryRepository => categoryRepository.UpdateCategory(It.IsAny<CategoryComponent>()));
         
         _categoryService.CreateCategory(categoryToCreateWithValidData);

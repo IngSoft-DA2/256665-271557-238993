@@ -80,6 +80,7 @@ public class CategoryService : ICategoryService
                         Id = categoryFather.Id,
                         Name = categoryFather.Name
                     };
+                    _categoryRepository.CreateCategory(categoryFather);
                 }
                 categoryFather.AddChild(categoryToCreate);
                 _categoryRepository.UpdateCategory(categoryFather);
