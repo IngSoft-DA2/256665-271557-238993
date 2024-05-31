@@ -13,51 +13,63 @@ namespace Test.ApiControllers;
 [TestClass]
 public class LoaderControllerTest
 {
+    #region Initialzing aspects
+
     private Mock<ILoaderAdapter> _loaderAdapter;
     private Mock<ISessionService> _sessionService;
     private Mock<IBuildingAdapter> _buildingAdapter;
     private LoaderController _loaderController;
-    
+
     [TestInitialize]
     public void Initialize()
     {
         _loaderAdapter = new Mock<ILoaderAdapter>(MockBehavior.Strict);
         _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
         _buildingAdapter = new Mock<IBuildingAdapter>(MockBehavior.Strict);
-        
-        _loaderController = new LoaderController(_loaderAdapter.Object, _sessionService.Object, _buildingAdapter.Object);
-        
+
+        _loaderController =
+            new LoaderController(_loaderAdapter.Object, _sessionService.Object, _buildingAdapter.Object);
     }
-    
+
+    #endregion
+
+    #region Create All Buildings From Load
+
     [TestMethod]
     public void CreateAllBuildingsFromLoad_ReturnsOkResponse()
     {
         CreateLoaderRequest createLoaderRequest = new CreateLoaderRequest();
         List<CreateBuildingResponse> createBuildingRequestList = new List<CreateBuildingResponse>();
-        
-        _loaderAdapter.Setup(adapter => adapter.CreateAllBuildingsFromLoad(createLoaderRequest)).Returns(createBuildingRequestList);
-        
+
+        _loaderAdapter.Setup(adapter => adapter.CreateAllBuildingsFromLoad(createLoaderRequest))
+            .Returns(createBuildingRequestList);
+
         IActionResult controllerResponse = _loaderController.CreateAllBuildingsFromLoad(createLoaderRequest);
-        
+
         Assert.IsNotNull(controllerResponse);
         Assert.IsInstanceOfType(controllerResponse, typeof(OkObjectResult));
-        
-        _loaderAdapter.VerifyAll();
-    }
-    
-    [TestMethod]
-public void GetAllLoaders_ReturnsOkResponse()
-    {
-        List<string> loaderList = new List<string>();
-        
-        _loaderAdapter.Setup(adapter => adapter.GetAllLoaders()).Returns(loaderList);
-        
-        IActionResult controllerResponse = _loaderController.GetAllLoaders();
-        
-        Assert.IsNotNull(controllerResponse);
-        Assert.IsInstanceOfType(controllerResponse, typeof(OkObjectResult));
-        
+
         _loaderAdapter.VerifyAll();
     }
 
+    #endregion
+
+    #region Get All Loaders
+
+    [TestMethod]
+    public void GetAllLoaders_ReturnsOkResponse()
+    {
+        List<string> loaderList = new List<string>();
+
+        _loaderAdapter.Setup(adapter => adapter.GetAllLoaders()).Returns(loaderList);
+
+        IActionResult controllerResponse = _loaderController.GetAllLoaders();
+
+        Assert.IsNotNull(controllerResponse);
+        Assert.IsInstanceOfType(controllerResponse, typeof(OkObjectResult));
+
+        _loaderAdapter.VerifyAll();
+    }
+    
+    #endregion
 }
