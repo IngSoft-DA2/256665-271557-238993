@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<CategoryComponent> Categories { get; set; }
     public DbSet<Owner> Owners { get; set; }
     public DbSet<ConstructionCompany> ConstructionCompany { get; set; }
     public DbSet<Invitation> Invitations { get; set; }
@@ -30,5 +30,17 @@ public class ApplicationDbContext : DbContext
             .WithMany(m => m.Requests)
             .HasForeignKey(mr => mr.ManagerId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<CategoryComponent>()
+            .HasDiscriminator<string>("CategoryType")
+            .HasValue<Category>("Leaf")
+            .HasValue<CategoryComposite>("Composite");
+        
+        modelBuilder.Entity<CategoryComposite>()
+            .HasMany(c => c.SubCategories)
+            .WithOne()
+            .HasForeignKey(c => c.CategoryFatherId)
+            .OnDelete(DeleteBehavior.Restrict);
+      
     }
 }

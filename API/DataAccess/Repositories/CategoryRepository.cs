@@ -1,5 +1,6 @@
 using DataAccess.DbContexts;
 using Domain;
+using IDataAccess;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
@@ -28,11 +29,11 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public Category GetCategoryById(Guid categoryId)
+    public CategoryComponent GetCategoryById(Guid categoryId)
     {
         try
         {
-            Category categoryFound = _dbContext.Set<Category>().Find(categoryId);
+            CategoryComponent categoryFound = _dbContext.Set<CategoryComponent>().Find(categoryId);
             return categoryFound;
         }
         catch (Exception exceptionCaught)
@@ -41,16 +42,26 @@ public class CategoryRepository : ICategoryRepository
         }
     }
 
-    public void CreateCategory(Category categoryToAdd)
+    public void CreateCategory(CategoryComponent categoryToAdd)
     {
         try
         {
-            _dbContext.Set<Category>().Add(categoryToAdd);
+            _dbContext.Set<CategoryComponent>().Add(categoryToAdd);
             _dbContext.SaveChanges();
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
+    }
+
+    public void DeleteCategory(CategoryComponent categoryFather)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateCategory(CategoryComponent categoryFatherComposite)
+    {
+        throw new NotImplementedException();
     }
 }

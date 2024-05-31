@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -37,9 +38,9 @@ public class CategoryService : ICategoryService
 
     #region Get Category By Id
 
-    public Category GetCategoryById(Guid categoryToGetId)
+    public CategoryComponent GetCategoryById(Guid categoryToGetId)
     {
-        Category category;
+        CategoryComponent category;
         try
         {
             category = _categoryRepository.GetCategoryById(categoryToGetId);
@@ -58,12 +59,36 @@ public class CategoryService : ICategoryService
 
     #region Create Category
 
-    public void CreateCategory(Category categoryToCreate)
+    public void CreateCategory(CategoryComponent categoryToCreate)
     {
         try
         {
             categoryToCreate.CategoryValidator();
-            _categoryRepository.CreateCategory(categoryToCreate);
+            //Implicates that the category to create is a subCategory of another category
+            if(categoryToCreate.CategoryFatherId is not null)
+            {
+                Guid categoryFatherId = categoryToCreate.CategoryFatherId.Value;
+                CategoryComponent categoryFather = GetCategoryById(categoryFatherId);
+
+                if (categoryFather is Category)
+                {
+                    // Delete it because now it will be a category composite
+                    _categoryRepository.DeleteCategory(categoryFather);
+                    
+                    CategoryComponent categoryFatherComposite = new CategoryComposite()
+                    {
+                        Id = categoryFather.Id,
+                        Name = categoryFather.Name,
+                        SubCategories = new List<CategoryComponent> {categoryFather}
+                    };
+                    categoryFather.AddChild(categoryToCreate);
+                    _categoryRepository.UpdateCategory(categoryFatherComposite);
+                }
+            }
+            else
+            {
+                _categoryRepository.CreateCategory(categoryToCreate);
+            }
         }
         catch (InvalidCategoryException exceptionCaught)
         {

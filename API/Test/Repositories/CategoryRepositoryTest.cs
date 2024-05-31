@@ -18,7 +18,7 @@ public class CategoryRepositoryTest
     public void TestInitialize()
     {
         _dbContext = CreateDbContext("CategoryRepositoryTest");
-        _dbContext.Set<Category>();
+        _dbContext.Set<CategoryComponent>();
         _categoryRepository = new CategoryRepository(_dbContext);
     }
 
@@ -31,21 +31,21 @@ public class CategoryRepositoryTest
     [TestMethod]
     public void GetAllCategories_CategoriesAreReturn()
     {
-        Category categoryInDb = new Category
+        CategoryComponent categoryInDb = new Category
         {
             Id = Guid.NewGuid(),
             Name = "Category1"
         };
-        Category categoryInDb2 = new Category
+        CategoryComponent categoryInDb2 = new Category
         {
             Id = Guid.NewGuid(),
             Name = "Category2"
         };
 
-        IEnumerable<Category> expectedCategories = new List<Category> { categoryInDb, categoryInDb2 };
+        IEnumerable<CategoryComponent> expectedCategories = new List<CategoryComponent> { categoryInDb, categoryInDb2 };
 
-        _dbContext.Set<Category>().Add(categoryInDb);
-        _dbContext.Set<Category>().Add(categoryInDb2);
+        _dbContext.Set<CategoryComponent>().Add(categoryInDb);
+        _dbContext.Set<CategoryComponent>().Add(categoryInDb2);
         _dbContext.SaveChanges();
 
         IEnumerable<Category> categoriesResponse = _categoryRepository.GetAllCategories();
@@ -57,7 +57,7 @@ public class CategoryRepositoryTest
     public void GetAllCategories_ThrowsUnknownException()
     {
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
-        _mockDbContext.Setup(m => m.Set<Category>()).Throws(new Exception());
+        _mockDbContext.Setup(m => m.Set<CategoryComponent>()).Throws(new Exception());
 
         _categoryRepository = new CategoryRepository(_mockDbContext.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.GetAllCategories());
@@ -73,10 +73,10 @@ public class CategoryRepositoryTest
             Name = "Category1"
         };
 
-        _dbContext.Set<Category>().Add(categoryInDb);
+        _dbContext.Set<CategoryComponent>().Add(categoryInDb);
         _dbContext.SaveChanges();
 
-        Category categoryResponse = _categoryRepository.GetCategoryById(categoryInDb.Id);
+        CategoryComponent categoryResponse = _categoryRepository.GetCategoryById(categoryInDb.Id);
 
         Assert.AreEqual(categoryInDb, categoryResponse);
     }
@@ -85,7 +85,7 @@ public class CategoryRepositoryTest
     public void GetCategoryById_ThrowsUnknownException()
     {
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
-        _mockDbContext.Setup(m => m.Set<Category>()).Throws(new Exception());
+        _mockDbContext.Setup(m => m.Set<CategoryComponent>()).Throws(new Exception());
 
         _categoryRepository = new CategoryRepository(_mockDbContext.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.GetCategoryById(Guid.NewGuid()));
@@ -95,14 +95,14 @@ public class CategoryRepositoryTest
     [TestMethod]
     public void CreateCategory_CategoryIsAdded()
     {
-        Category categoryToAdd = new Category
+        CategoryComponent categoryToAdd = new Category
         {
             Id = Guid.NewGuid(),
             Name = "Category1"
         };
 
         _categoryRepository.CreateCategory(categoryToAdd);
-        Category categoryInDb = _dbContext.Set<Category>().Find(categoryToAdd.Id);
+        CategoryComponent categoryInDb = _dbContext.Set<CategoryComponent>().Find(categoryToAdd.Id);
 
         Assert.AreEqual(categoryToAdd, categoryInDb);
     }
@@ -111,7 +111,7 @@ public class CategoryRepositoryTest
     public void CreateCategory_ThrowsUnknownException()
     {
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
-        _mockDbContext.Setup(m => m.Set<Category>()).Throws(new Exception());
+        _mockDbContext.Setup(m => m.Set<CategoryComponent>()).Throws(new Exception());
 
         _categoryRepository = new CategoryRepository(_mockDbContext.Object);
         Assert.ThrowsException<UnknownRepositoryException>(() => _categoryRepository.CreateCategory(new Category()));

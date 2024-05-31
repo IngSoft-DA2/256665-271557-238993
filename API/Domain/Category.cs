@@ -1,24 +1,17 @@
 ﻿namespace Domain;
 
-public class Category
+public class Category : CategoryComponent
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-
-
-    public void CategoryValidator()
+    public override void AddChild(CategoryComponent childToAdd)
     {
-        if (string.IsNullOrEmpty(Name))
-        {
-            throw new InvalidCategoryException("Category name is required");
-        }
+        throw new NotImplementedException();
     }
-
-
+    
     public override bool Equals(object? obj)
     {
-        Category? objectToCompareWith = obj as Category;
+        CategoryComponent? objectToCompareWith = obj as Category;
         
         return Id == objectToCompareWith.Id && Name == objectToCompareWith.Name;
     }
+
 }

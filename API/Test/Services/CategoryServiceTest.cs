@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using Moq;
 using Repositories.CustomExceptions;
@@ -82,7 +83,7 @@ public class CategoryServiceTest
         _categoryRepository.Setup(categoryRepository => categoryRepository.GetCategoryById(It.IsAny<Guid>()))
             .Returns(categoryInDb);
 
-        Category categoryFound = _categoryService.GetCategoryById(It.IsAny<Guid>());
+        CategoryComponent categoryFound = _categoryService.GetCategoryById(It.IsAny<Guid>());
 
         Assert.AreEqual(categoryFound, categoryInDb);
     }

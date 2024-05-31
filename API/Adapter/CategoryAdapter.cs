@@ -49,7 +49,7 @@ public class CategoryAdapter : ICategoryAdapter
     {
         try
         {
-            Category category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
+            CategoryComponent category = _categoryServiceLogic.GetCategoryById(idOfCategoryToFind);
             GetCategoryResponse categoryResponse = new GetCategoryResponse { Id = category.Id, Name = category.Name };
             return categoryResponse;
         }
@@ -71,10 +71,11 @@ public class CategoryAdapter : ICategoryAdapter
     {
         try
         {
-            Category category = new Category
+            CategoryComponent category = new Category
             {
                 Id = Guid.NewGuid(),
-                Name = categoryToCreate.Name
+                Name = categoryToCreate.Name,
+                CategoryFatherId = categoryToCreate.CategoryFatherId
             };
 
             _categoryServiceLogic.CreateCategory(category);
