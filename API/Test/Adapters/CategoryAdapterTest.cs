@@ -25,14 +25,14 @@ public class CategoryAdapterTest
     {
         _categoryServiceLogic = new Mock<ICategoryService>(MockBehavior.Strict);
         _categoryAdapter = new CategoryAdapter(_categoryServiceLogic.Object);
-        
+
         genericCategory1 = new Category
         {
             Id = Guid.NewGuid(),
             Name = "Electrician",
             CategoryFatherId = null,
         };
-        
+
         Guid genericCategory2Id = Guid.NewGuid();
         genericCategory2 = new CategoryComposite()
         {
@@ -52,6 +52,27 @@ public class CategoryAdapterTest
                     Id = Guid.NewGuid(),
                     Name = "Pipe Welder",
                     CategoryFatherId = genericCategory2Id
+                },
+                new CategoryComposite
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Pipe Inspector",
+                    CategoryFatherId = genericCategory2Id,
+                    SubCategories = new List<CategoryComponent>
+                    {
+                        new Category
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = "Pipe Inspector 1",
+                            CategoryFatherId = genericCategory2Id
+                        },
+                        new Category
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = "Pipe Inspector 2",
+                            CategoryFatherId = genericCategory2Id
+                        }
+                    }
                 }
             }
         };
@@ -69,7 +90,8 @@ public class CategoryAdapterTest
     [TestMethod]
     public void GetAllCategories_ShouldConvertFromDomainToResponse()
     {
-        IEnumerable<CategoryComponent> expectedServiceResponse = new List<CategoryComponent> { genericCategory1, genericCategory2 };
+        IEnumerable<CategoryComponent> expectedServiceResponse = new List<CategoryComponent>
+            { genericCategory1, genericCategory2 };
 
         IEnumerable<GetCategoryResponse> expectedAdapterResponse = new List<GetCategoryResponse>
         {
@@ -176,7 +198,7 @@ public class CategoryAdapterTest
         {
             Name = "Electrician",
         };
-        
+
         _categoryServiceLogic.Setup(service => service.CreateCategory(It.IsAny<CategoryComponent>()));
 
         CreateCategoryResponse adapterResponse = _categoryAdapter.CreateCategory(createCategoryRequest);
