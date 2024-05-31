@@ -81,8 +81,9 @@ public class CategoryRepository : ICategoryRepository
             List<CategoryComponent>? childs = categoryComponentWithChanges.GetChilds();
             
             if (childs is not null)
-            {
-                for (int i = 0; i < childs.Count; i++)
+            {   
+                int childsCount = categoryComponentInDb.GetChilds().Count;
+                for (int i = 0; i < childsCount; i++)
                 {
                     categoryComponentInDb.AddChild(childs[i]);
                 }
