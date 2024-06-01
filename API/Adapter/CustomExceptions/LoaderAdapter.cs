@@ -34,22 +34,30 @@ public class LoaderAdapter : ILoaderAdapter
 
     public List<CreateBuildingFromLoadResponse> CreateAllBuildingsFromLoad(CreateLoaderRequest createLoaderRequestWithSettings)
     {
-        List<CreateBuildingFromLoadResponse> buildings = new List<CreateBuildingFromLoadResponse>();
-
-        List<ILoader> loaders = _loaderService.GetAllImporters();
-        
-        ILoader loaderNeeded = loaders.Where(loader => loader.LoaderName().ToLower().Contains(createLoaderRequestWithSettings.LoaderName.ToLower())).First();
-        
-        if (loaderNeeded != null)
+        try
         {
-            buildings = loaderNeeded.LoadAllBuildings(createLoaderRequestWithSettings.Filepath).ToList();
-        }
-        
-        foreach (var building in buildings)
-        {
-            _loaderService.CreateBuildingFromLoad(createLoaderRequestWithSettings);
-        }
+            List<CreateBuildingFromLoadResponse> buildings = new List<CreateBuildingFromLoadResponse>();
 
-        return buildings;
+            List<ILoader> loaders = _loaderService.GetAllImporters();
+
+            ILoader loaderNeeded = loaders.Where(loader =>
+                loader.LoaderName().ToUpper().Contains(createLoaderRequestWithSettings.LoaderName.ToUpper())).First();
+
+            if (loaderNeeded != null)
+            {
+                buildings = loaderNeeded.LoadAllBuildings(createLoaderRequestWithSettings.Filepath).ToList();
+            }
+
+            foreach (var building in buildings)
+            {
+                _loaderService.CreateBuildingFromLoad(createLoaderRequestWithSettings);
+            }
+
+            return buildings;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException("Error creating buildings from load");
+        }
     }
 }

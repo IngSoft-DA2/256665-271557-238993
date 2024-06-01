@@ -61,6 +61,27 @@ public class LoaderAdapterTest
     }
     
     [TestMethod]
+    public void CreateAllBuildingsFromLoad_ThrowsUnknownAdapterException()
+    {
+        string filePath = "test";
+        string loaderName = "testLoader";
+        
+        CreateLoaderRequest createLoaderRequest = new CreateLoaderRequest
+        {
+            Filepath = filePath,
+            LoaderName = loaderName
+        };
+
+        List<ILoader> loaders = new List<ILoader>();
+
+        _mockService.Setup(service => service.GetAllImporters()).Throws(new Exception("Error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() => _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest));
+        
+        _mockService.Verify(service => service.GetAllImporters(), Times.Once);
+    }
+    
+    [TestMethod]
     public void GetAllLoaders_ReturnsListOfString()
     {
         string loaderName = "testLoader";
@@ -79,7 +100,7 @@ public class LoaderAdapterTest
     }
     
     [TestMethod]
-    public void CreateAllBuildingsFromLoad_ThrowsUnknownAdapterException()
+    public void GetAllLoaders_ThrowsUnknownAdapterException()
     {
         string filePath = "test";
         string loaderName = "testLoader";
