@@ -1,4 +1,5 @@
-﻿using Adapter.CustomExceptions;
+﻿using Adapter;
+using Adapter.CustomExceptions;
 using ILoaders;
 using IServiceLogic;
 using Moq;

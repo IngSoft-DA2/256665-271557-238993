@@ -1,12 +1,11 @@
-﻿using IAdapter;
+﻿using Adapter.CustomExceptions;
+using IAdapter;
 using ILoaders;
 using IServiceLogic;
-using WebModel.Requests.BuildingRequests;
 using WebModel.Requests.LoaderRequests;
-using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.LoaderReponses;
 
-namespace Adapter.CustomExceptions;
+namespace Adapter;
 
 public class LoaderAdapter : ILoaderAdapter
 {
