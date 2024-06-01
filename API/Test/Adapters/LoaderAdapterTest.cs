@@ -71,10 +71,31 @@ public class LoaderAdapterTest
 
         _mockService.Setup(service => service.GetAllImporters()).Returns(loaders);
 
-        List<string> result = _loaderAdapter.GetAllLoaders();
+        List<string> result = _loaderAdapter.GetAllLoaders();   
 
         Assert.IsInstanceOfType(result, typeof(List<string>));
         Assert.AreEqual(loaders.Count, result.Count);
         Assert.AreEqual(loaderName, result[0]);
+    }
+    
+    [TestMethod]
+    public void CreateAllBuildingsFromLoad_ThrowsUnknownAdapterException()
+    {
+        string filePath = "test";
+        string loaderName = "testLoader";
+        
+        CreateLoaderRequest createLoaderRequest = new CreateLoaderRequest
+        {
+            Filepath = filePath,
+            LoaderName = loaderName
+        };
+
+        List<ILoader> loaders = new List<ILoader>();
+
+        _mockService.Setup(service => service.GetAllImporters()).Throws(new Exception("Error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() => _loaderAdapter.GetAllLoaders());
+        
+        _mockService.Verify(service => service.GetAllImporters(), Times.Once);
     }
 }

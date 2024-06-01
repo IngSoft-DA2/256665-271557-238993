@@ -18,9 +18,18 @@ public class LoaderAdapter : ILoaderAdapter
     }
     public List<string> GetAllLoaders()
     {
-        return _loaderService.GetAllImporters()
-            .Select(importer => importer.LoaderName())
-            .ToList();
+        try
+        {
+            List<string> loadersResponse = _loaderService.GetAllImporters()
+                .Select(importer => importer.LoaderName())
+                .ToList();
+            
+            return loadersResponse;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException("Error getting all loaders");
+        }
     }
 
     public List<CreateBuildingFromLoadResponse> CreateAllBuildingsFromLoad(CreateLoaderRequest createLoaderRequestWithSettings)
