@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ILoaders\ILoaders.csproj" />
       <ProjectReference Include="..\WebModel\WebModel.csproj" />
     </ItemGroup>
 
