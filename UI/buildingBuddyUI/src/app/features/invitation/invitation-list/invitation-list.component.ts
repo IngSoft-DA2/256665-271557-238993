@@ -1,17 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscribable, Subscription } from 'rxjs';
 import { InvitationService } from '../services/invitation.service';
+import { Invitation } from '../interfaces/invitation';
 
 @Component({
   selector: 'app-invitation-list',
   templateUrl: './invitation-list.component.html',
   styleUrl: './invitation-list.component.css'
 })
-export class InvitationListComponent  implements OnInit,OnDestroy
+export class InvitationListComponent  implements OnInit
 {
-  
-  subscription : Subscription;
-  
+    
   invitations? : Invitation[];
   
   constructor(private invitationService : InvitationService)
@@ -21,7 +20,7 @@ export class InvitationListComponent  implements OnInit,OnDestroy
   
   ngOnInit(): void 
   {
-    this.subscription = this.invitationService.getAllInvitations()
+    this.invitationService.getAllInvitations()
     .subscribe({
       next: (Response) => {
         this.invitations = Response;
@@ -29,12 +28,4 @@ export class InvitationListComponent  implements OnInit,OnDestroy
     })
   }
   
-  
-  
-  
-  ngOnDestroy(): void 
-  {
-   this.subscription.unsubscribe;
-  }
-
 }
