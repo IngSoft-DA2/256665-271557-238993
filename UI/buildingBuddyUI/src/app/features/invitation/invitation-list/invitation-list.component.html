@@ -1,11 +1,9 @@
-<h1>Here you can see all type of invitations and its status</h1>
+<h1>Invitation Section</h1>
 <br />
 <br />
 
 <div class="form-outline mb-4">
-
-    <button class="btn btn-success btn btn-primary fa-lg gradient-custom-4 mb-3" type="button">Create + </button>
-
+    <button class="btn btn-success mb-3" type="button">Create + </button>
 </div>
 
 <head>
@@ -35,8 +33,8 @@
                     <td>{{invitation.email}}</td>
                     <td>{{invitation.firstname}}</td>
                     <td>{{invitation.lastname}}</td>
-                    <td>@category.status</td>
-                    <td>@category.expirationDate</td>
+                    <td>{{invitation.expirationDate}}</td>
+                    <td>{{invitation.status}}</td>
                     <td>
 
                         <button class="btn btn-success btn-sm button"> Edit </button>
@@ -55,6 +53,6 @@
 
 <ng-template #noInvitations>
     <div class="alert alert-warning" role="alert">
-        There are no invitations.
+        <h4 style="text-align: center;">There are no invitations.</h4>
     </div>
 </ng-template>

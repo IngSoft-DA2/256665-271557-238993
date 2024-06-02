@@ -8,7 +8,7 @@ export interface Invitation
     lastname : string;
     email : string;
     expirationDate : Date;
-    Status : StatusEnum;
-    Role: SystemUserRoleEnum;
+    status : StatusEnum;
+    role: SystemUserRoleEnum;
 }
 
