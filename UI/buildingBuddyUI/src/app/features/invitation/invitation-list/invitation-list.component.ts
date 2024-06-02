@@ -3,6 +3,7 @@ import { Observable, Subscribable, Subscription } from 'rxjs';
 import { InvitationService } from '../services/invitation.service';
 import { Invitation } from '../interfaces/invitation';
 import { StatusEnum } from '../interfaces/enums/status-enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invitation-list',
@@ -14,7 +15,7 @@ export class InvitationListComponent  implements OnInit
     
   invitations? : Invitation[];
   
-  constructor(private invitationService : InvitationService)
+  constructor(private invitationService : InvitationService, private router : Router)
   {
     
   }
@@ -40,7 +41,19 @@ export class InvitationListComponent  implements OnInit
       default:
         return 'Unknown';
     }
-  
+  }
+
+  deleteInvitation(id : string) : void 
+  {
+    this.invitationService.deleteInvitation(id)
+    .subscribe({
+      next: (Response) => {
+        if(this.invitations)
+          {
+          this.invitations = this.invitations.filter(invitation => invitation.id !== id);
+          }
+      }
+    })
   }
 
 }
