@@ -33,9 +33,9 @@ export class InvitationListComponent  implements OnInit
   getStatusString(status: number): string {
     switch (status) {
       case StatusEnum.Accepted:
-        return 'Pending';
-      case StatusEnum.Pending:
         return 'Accepted';
+      case StatusEnum.Pending:
+        return 'Pending';
       case StatusEnum.Rejected:
         return 'Rejected';
       default:
@@ -52,6 +52,9 @@ export class InvitationListComponent  implements OnInit
           {
           this.invitations = this.invitations.filter(invitation => invitation.id !== id);
           }
+      },
+      error: (errorMessage) => {
+        alert(errorMessage.error)
       }
     })
   }
