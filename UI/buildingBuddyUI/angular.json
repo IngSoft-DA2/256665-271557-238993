@@ -3,9 +3,19 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "BuildingBuddyUI": {
+    "buildingBuddyUI": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -57,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "BuildingBuddyUI:build:production"
+              "buildTarget": "buildingBuddyUI:build:production"
             },
             "development": {
-              "buildTarget": "BuildingBuddyUI:build:development"
+              "buildTarget": "buildingBuddyUI:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -68,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "BuildingBuddyUI:build"
+            "buildTarget": "buildingBuddyUI:build"
           }
         },
         "test": {
