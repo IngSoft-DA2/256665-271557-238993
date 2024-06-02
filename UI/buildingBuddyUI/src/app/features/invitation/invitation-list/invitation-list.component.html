@@ -1,0 +1,60 @@
+<h1>Here you can see all type of invitations and its status</h1>
+<br />
+<br />
+
+<div class="form-outline mb-4">
+
+    <button class="btn btn-success btn btn-primary fa-lg gradient-custom-4 mb-3" type="button">Create + </button>
+
+</div>
+
+<head>
+    <h4>
+        <label style="text-decoration:underline">Invitation List</label>
+        <br />
+    </h4>
+</head>
+
+<main>
+
+    <ng-container *ngIf="invitations; else noInvitations">
+
+        <table class="table table-striped table-bordered claseTabla">
+            <thead>
+                <br />
+                <tr>
+                    <th>Email</th>
+                    <th>Firstname/th>
+                    <th>Lastname</th>
+                    <th>Status</th>
+                    <th>ExpirationDate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let invitation of invitations">
+                    <td>{{invitation.email}}</td>
+                    <td>{{invitation.firstname}}</td>
+                    <td>{{invitation.lastname}}</td>
+                    <td>@category.status</td>
+                    <td>@category.expirationDate</td>
+                    <td>
+
+                        <button class="btn btn-success btn-sm button"> Edit </button>
+                        <button class="btn btn-danger btn-sm button"> Delete </button>
+                    </td>
+                </tr>
+            </tbody>
+            <br />
+
+        </table>ß
+
+    </ng-container>
+
+</main>
+
+
+<ng-template #noInvitations>
+    <div class="alert alert-warning" role="alert">
+        There are no invitations.
+    </div>
+</ng-template>
