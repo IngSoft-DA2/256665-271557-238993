@@ -2,8 +2,13 @@
 
     <h1 class="mt-3">Report of Maintenance Requests By Building</h1>
 
-    <div class="d-flex justify-content-end mt-3">
-        <a [routerLink]="['/admin/categories/add']" class="btn btn-primary">Add Category</a>
+    <div class="d-flex justify-content-start mt-3">
+        <label for="buildingFilter" class="me-2">Filter by Building:</label>
+        <select id="buildingFilter" class="form-select me-2" [(ngModel)]="SelectedBuilding">
+            <option value="">All Buildings</option>
+            <option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</option>
+        </select>
+        <button class="btn btn-primary" (click)="filterReports()">Apply Filter</button>
     </div>
 
     <ng-container *ngIf="reportOfMaintenanceRequestsByBuilding">

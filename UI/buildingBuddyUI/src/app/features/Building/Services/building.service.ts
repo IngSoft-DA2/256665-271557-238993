@@ -10,6 +10,11 @@ export class BuildingService {
   constructor(private http: HttpClient) { }
 
   getBuildingById(buildingId: string) : Building{
-    return this.http.get<void>(`${environment.apiBaseUrl}/buildings`);
+    return this.http.get<Building>(`${environment.apiBaseUrl}/buildings`);
+  }
+
+  getAllBuildings(userId?: string) : Building[]{
+    return this.http.get<Building[]>(`${environment.apiBaseUrl}/buildings/${userId}`);
+
   }
 }

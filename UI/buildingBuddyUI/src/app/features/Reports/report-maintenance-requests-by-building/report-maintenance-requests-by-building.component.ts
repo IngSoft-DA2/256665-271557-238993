@@ -3,6 +3,7 @@ import { NodeReportMaintenanceRequestsByBuilding } from './interfaces/node-repor
 import { ReportService } from '../services/report.service';
 import { Router } from '@angular/router';
 import { BuildingService } from '../../Building/Services/building.service';
+import { Building } from '../../Building/Interfaces/Building.model';
 
 @Component({
   selector: 'app-report-maintenance-requests-by-building',
@@ -13,10 +14,12 @@ export class ReportMaintenanceRequestsByBuildingComponent {
   reportOfMaintenanceRequestsByBuilding?: NodeReportMaintenanceRequestsByBuilding[];
   buildingName?: string;
   buildingIdSelected?: string;
-
+  buildings?: Building[];
+  userId?: string
 
   constructor(private reportMaintenanceRequestByBuildingService: ReportService, private buildingService: BuildingService, private router: Router){
     this.getMaintenanceRequestsByBuilding(this.buildingIdSelected);
+    this.buildings = this.buildingService.getAllBuildings(this.userId);
   }
 
   getMaintenanceRequestsByBuilding(buildingIdSelected?: string){
