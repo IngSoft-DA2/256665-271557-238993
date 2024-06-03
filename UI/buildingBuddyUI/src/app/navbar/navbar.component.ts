@@ -9,7 +9,7 @@ import { Route, Router } from '@angular/router';
 export class NavbarComponent 
 {
 
-  userRole : string
+  userRole : string | undefined
 
   constructor(private router : Router)
   {

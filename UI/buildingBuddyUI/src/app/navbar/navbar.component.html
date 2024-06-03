@@ -47,13 +47,16 @@
                 </ng-container>
             </ul>
 
-        </div>
-
+        </div>     
     </div>
 
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <button class="btn btn-outline-danger me-3" (click)="logout()">Logout</button>
-        </li>
-    </ul>
+    <div class="d-flex me-3">
+        <ng-container *ngIf="userRole === undefined; else showLogout">
+          <a [routerLink]="['/login']" class="btn btn-primary">Login</a>
+        </ng-container>
+    </div>
 </nav>
+
+<ng-template #showLogout>
+<button class="btn btn-outline-danger ms-3 " (click)="logout()"> Logout </button>
+</ng-template>
