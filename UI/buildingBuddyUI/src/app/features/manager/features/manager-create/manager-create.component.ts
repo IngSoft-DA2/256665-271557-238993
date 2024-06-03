@@ -4,8 +4,6 @@ import { ManagerService } from '../../services/manager.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Invitation } from '../../../invitation/interfaces/invitation';
 import { ManagerCreateRequest } from '../../interfaces/manager-create-request';
-import { invitationUpdateRequest } from '../../../invitation/interfaces/invitation-update';
-import { StatusEnum } from '../../../invitation/interfaces/enums/status-enum';
 import { HttpParams } from '@angular/common/http';
 
 @Component({
@@ -57,8 +55,7 @@ export class ManagerCreateComponent
   createManager() : void
   {
     if(this.invitationToOperate)
-    { const queryParams = new HttpParams().set('idOfInvitationAccepted', this.invitationToOperate.id);
-
+    { 
       this.managerService.createManager(this.managerToCreate, this.invitationId)
       .subscribe({
         next: () => {

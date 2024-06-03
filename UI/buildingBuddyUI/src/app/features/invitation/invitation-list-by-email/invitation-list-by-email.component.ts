@@ -22,6 +22,8 @@ export class InvitationListByEmailComponent {
 
   constructor(private invitationService: InvitationService,
     private router: Router, private route: ActivatedRoute) {
+
+      
     this.route.queryParams.subscribe(params => {
       this.email = params['email'];
     });
@@ -47,7 +49,7 @@ export class InvitationListByEmailComponent {
       this.router.navigateByUrl(`managers/create?${queryParams}`)
     }
     else if (invitation.role == SystemUserRoleEnum.ConstructionCompanyAdmin) {
-      this.router.navigateByUrl('/constructionCompanyAdmin/create')
+      this.router.navigateByUrl(`/constructionCompanyAdmin/create?${queryParams}`)
     }
     else {
       alert("The only roles that can have at the moment a invitation are Manager role and Construction Company Admin Role")

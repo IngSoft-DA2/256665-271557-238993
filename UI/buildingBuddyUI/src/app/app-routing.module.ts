@@ -5,6 +5,7 @@ import { InvitationUpdateComponent } from './features/invitation/invitation-upda
 import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
 import { InvitationListByEmailComponent } from './features/invitation/invitation-list-by-email/invitation-list-by-email.component';
 import { ManagerCreateComponent } from './features/manager/features/manager-create/manager-create.component';
+import { ConstructionCompanyAdminCreateComponent } from './features/constructionCompanyAdmin/construction-company-admin-create/construction-company-admin-create.component';
 
 const routes: Routes =
 [
@@ -30,6 +31,10 @@ const routes: Routes =
     path: 'managers/create',
     component : ManagerCreateComponent
   },
+  {
+    path: 'constructionCompanyAdmin/create',
+    component : ConstructionCompanyAdminCreateComponent
+  }
 
 ];
 
