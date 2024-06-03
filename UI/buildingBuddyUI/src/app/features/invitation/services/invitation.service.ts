@@ -18,6 +18,11 @@ export class InvitationService {
     return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/invitations`);
   }
 
+  getInvitationByEmail(email : string) : Observable<Invitation[]>
+  {
+    return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/guest/invitations`)
+  }
+
   deleteInvitation(id: string) : Observable<void>
   {
     return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`)
