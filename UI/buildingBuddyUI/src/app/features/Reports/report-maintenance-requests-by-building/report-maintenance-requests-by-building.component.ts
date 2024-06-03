@@ -12,11 +12,18 @@ import { BuildingService } from '../../Building/Services/building.service';
 export class ReportMaintenanceRequestsByBuildingComponent {
   reportOfMaintenanceRequestsByBuilding?: NodeReportMaintenanceRequestsByBuilding[];
   buildingName?: string;
+  buildingIdSelected?: string;
 
-  constructor(private reportMaintenanceRequestByBuildingService: ReportService, private buildingService: BuildingService, private router: Router){}
+
+  constructor(private reportMaintenanceRequestByBuildingService: ReportService, private buildingService: BuildingService, private router: Router){
+    this.getMaintenanceRequestsByBuilding(this.buildingIdSelected);
+  }
+
+  getMaintenanceRequestsByBuilding(buildingIdSelected?: string){
+    this.reportOfMaintenanceRequestsByBuilding = this.reportMaintenanceRequestByBuildingService.getReportMaintenanceRequestsByBuilding(buildingIdSelected);
+  }
 
   getBuildingInfo(buildingId: string){
-    this.buildingService.
-
+    this.buildingName = this.buildingService.getBuildingById(buildingId).name;
   }
 }

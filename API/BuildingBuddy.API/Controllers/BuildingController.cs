@@ -1,4 +1,4 @@
-using Adapter.CustomExceptions;
+ using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using Domain.Enums;
 using IAdapter;
