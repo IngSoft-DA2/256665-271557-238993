@@ -7,6 +7,7 @@ import { SystemUserRoleEnum } from '../interfaces/enums/system-user-role-enum';
 import { invitationUpdateRequest } from '../interfaces/invitation-update';
 import { ManagerCreateRequest } from '../../manager/interfaces/manager-create-request';
 import { ManagerService } from '../../manager/services/manager.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-invitation-list-by-email',
@@ -40,8 +41,10 @@ export class InvitationListByEmailComponent {
 
   acceptInvitation(invitation: Invitation): void {
 
+    const queryParams = new HttpParams().set('idOfInvitationAccepted', invitation.id);
+
     if (invitation.role == SystemUserRoleEnum.Manager) {
-      this.router.navigateByUrl('managers/create')
+      this.router.navigateByUrl(`managers/create?${queryParams}`)
     }
     else if (invitation.role == SystemUserRoleEnum.ConstructionCompanyAdmin) {
       this.router.navigateByUrl('/constructionCompanyAdmin/create')

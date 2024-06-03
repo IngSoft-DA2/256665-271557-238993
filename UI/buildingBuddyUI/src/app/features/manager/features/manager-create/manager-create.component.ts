@@ -6,6 +6,7 @@ import { Invitation } from '../../../invitation/interfaces/invitation';
 import { ManagerCreateRequest } from '../../interfaces/manager-create-request';
 import { invitationUpdateRequest } from '../../../invitation/interfaces/invitation-update';
 import { StatusEnum } from '../../../invitation/interfaces/enums/status-enum';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-manager-create',
@@ -17,13 +18,18 @@ export class ManagerCreateComponent
   invitationToOperate? : Invitation;
   passwordSelected : string = '';
   invitationId : string = '';
-  wantsToCreate : boolean = false;
+  executeCreation : boolean = false;
+  managerToCreate : ManagerCreateRequest = 
+  {
+    email : '',
+    password : ''
+  };
 
   constructor(private invitationService : InvitationService, private managerService : ManagerService, private route : ActivatedRoute, private router : Router)
   {
     this.route.queryParams.subscribe({
       next: (queryParams) => {
-        this.invitationId = queryParams['id']
+        this.invitationId = queryParams['idOfInvitationAccepted']
       } 
     });
     
@@ -43,22 +49,27 @@ export class ManagerCreateComponent
     }
   }
 
+  wantsToCreate() : void
+  {
+    this.executeCreation = true;
+  }
+
   createManager() : void
   {
     if(this.invitationToOperate)
-    {
-      const managerToCreate : ManagerCreateRequest = 
-      {
-        email : this.invitationToOperate.email,
-        password : this.passwordSelected
-      }
-      this.managerService.createManager(managerToCreate)
+    { const queryParams = new HttpParams().set('idOfInvitationAccepted', this.invitationToOperate.id);
+
+      this.managerService.createManager(this.managerToCreate, this.invitationId)
       .subscribe({
-        next: (Response) => {
+        next: () => {
           alert("You are now a manager");
           this.router.navigateByUrl('invitations/list');
+        },
+        error(errorMessage)
+        {
+          alert(errorMessage.error);
         }
-      })
+      });
     }
     else
     {
