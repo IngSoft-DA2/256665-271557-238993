@@ -47,16 +47,21 @@ export class InvitationListComponent  implements OnInit
   {
     this.invitationService.deleteInvitation(id)
     .subscribe({
-      next: (Response) => {
+      next: () => {
         if(this.invitations)
           {
           this.invitations = this.invitations.filter(invitation => invitation.id !== id);
           }
-      },
+        },
       error: (errorMessage) => {
         alert(errorMessage.error)
       }
     })
+  }
+
+  updateInvitation(id : string) : void
+  {
+    this.router.navigateByUrl(`invitations/update/${id}`);
   }
 
 }

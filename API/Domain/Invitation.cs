@@ -85,7 +85,7 @@ public class Invitation
 
     private void RoleValidator()
     {
-        if (Role != SystemUserRoleEnum.Manager && Role != SystemUserRoleEnum.ConstructionCompanyAdmin)
+        if (Role != SystemUserRoleEnum.Admin && Role != SystemUserRoleEnum.ConstructionCompanyAdmin)
         {
             throw new InvalidInvitationException("Role must be Manager or Construction Company Administrator");
         }

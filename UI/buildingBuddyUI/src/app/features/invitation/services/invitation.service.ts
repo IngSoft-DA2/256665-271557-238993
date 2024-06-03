@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { Invitation } from '../interfaces/invitation';
+import { invitationUpdateRequest } from '../interfaces/invitation-update';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvitationService {
-  
 
   constructor(private http : HttpClient) { }
 
@@ -21,6 +21,18 @@ export class InvitationService {
   {
     return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`)
   }
+
+  getInvitationById(id:string) : Observable<Invitation>
+  {
+    return this.http.get<Invitation>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`)
+  }
+
+  updateInvitation(id:string, request : invitationUpdateRequest) : Observable<void>
+  {
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`,request)
+  }
+  
+  
 
   
 }
