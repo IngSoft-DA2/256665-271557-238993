@@ -19,7 +19,6 @@ export class InvitationUpdateComponent
 
   constructor(private invitationService : InvitationService , private router : Router, private route : ActivatedRoute) 
   {
-    
     this.getInvitationById();
   }
 

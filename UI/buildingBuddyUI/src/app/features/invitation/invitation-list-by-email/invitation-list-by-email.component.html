@@ -27,18 +27,18 @@
             </thead>
             <tbody>
                 <tr *ngFor="let invitation of invitationsOfEmail">
-                    <td>{{getSystemuserRolString(invitation.role)}}</td>
-                    <td>{{getStatusString(invitation.status)}}</td>
-                    <td>{{invitation.expirationDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td> {{getSystemUserRoleString(invitation.role)}} </td>
+                    <td> {{getStatusString(invitation.status)}} </td>
+                    <td> {{invitation.expirationDate | date:'yyyy-MM-dd HH:mm:ss'}} </td>
                     <td>
-                        <button class="btn btn-success btn-sm button" (click)="acceptInvitation(invitation.id)"> Accept </button>
+                        <button class="btn btn-success btn-sm button" (click)="acceptInvitation(invitation)"> Accept </button>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-sm button" (click)="rejectInvitation(invitation.id)"> Reject </button>
-                    </td>
+                        <button class="btn btn-danger btn-sm button" (click)="rejectInvitation(invitation)"> Reject </button>
+                    </td> 
                 </tr>
             </tbody>
-            <br />
+            <br/>
 
         </table>
 

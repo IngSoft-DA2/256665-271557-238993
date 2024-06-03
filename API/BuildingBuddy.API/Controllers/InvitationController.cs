@@ -33,8 +33,8 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        [Route("api/v2/guest/invitations")]
+        //[AllowAnonymous]
+        [Route("guest")]
         public IActionResult GetInvitationsByEmail([FromQuery] string email)
         {
             return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));

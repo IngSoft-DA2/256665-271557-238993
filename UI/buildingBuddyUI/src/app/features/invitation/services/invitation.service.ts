@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
@@ -18,9 +18,10 @@ export class InvitationService {
     return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/invitations`);
   }
 
-  getInvitationByEmail(email : string) : Observable<Invitation[]>
+  getInvitationsByEmail(email : string) : Observable<Invitation[]>
   {
-    return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/guest/invitations`)
+    const params = new HttpParams().set('email', email);
+    return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/invitations/guest`, {params});
   }
 
   deleteInvitation(id: string) : Observable<void>

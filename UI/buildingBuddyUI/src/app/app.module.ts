@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InvitationUpdateComponent } from './features/invitation/invitation-update/invitation-update.component';
 import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
 import { InvitationListByEmailComponent } from './features/invitation/invitation-list-by-email/invitation-list-by-email.component';
+import { ManagerCreateComponent } from './features/manager/features/manager-create/manager-create.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { InvitationListByEmailComponent } from './features/invitation/invitation
     InvitationListComponent,
     InvitationUpdateComponent,
     InvitationCreateComponent,
-    InvitationListByEmailComponent
+    InvitationListByEmailComponent,
+    ManagerCreateComponent
   ],
   imports: [
     BrowserModule,
