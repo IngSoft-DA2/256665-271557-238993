@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NodeReportMaintenanceRequestsByBuilding } from './interfaces/node-report-maintenance-requests-by-building';
 import { ReportService } from '../services/report.service';
 import { Router } from '@angular/router';
+import { BuildingService } from '../../Building/Services/building.service';
 
 @Component({
   selector: 'app-report-maintenance-requests-by-building',
@@ -12,10 +13,10 @@ export class ReportMaintenanceRequestsByBuildingComponent {
   reportOfMaintenanceRequestsByBuilding?: NodeReportMaintenanceRequestsByBuilding[];
   buildingName?: string;
 
-  constructor(private reportMaintenanceRequestByBuildingService: ReportService, , private buildingService: BuildingService, private router: Router){}
+  constructor(private reportMaintenanceRequestByBuildingService: ReportService, private buildingService: BuildingService, private router: Router){}
 
   getBuildingInfo(buildingId: string){
-    this.
+    this.buildingService.
 
   }
 }
