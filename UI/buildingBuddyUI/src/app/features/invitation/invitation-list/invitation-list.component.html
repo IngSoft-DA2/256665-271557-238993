@@ -4,7 +4,7 @@
 <br />
 
 <div class="d-flex justify-content-end mb-4 me-3">
-    <button class="btn btn-success" type="button">Create +</button>
+    <button class="btn btn-success" type="button" (click)="createInvitation()">Create +</button>
 </div>
 
 <head>
@@ -35,7 +35,7 @@
                 <tr *ngFor="let invitation of invitations">
                     <td>{{invitation.email}}</td>
                     <td>{{invitation.firstname}}</td>
-                    <td>{{invitation.lastname}}</td>
+                    <td>{{checkIfItHasLastname(invitation.lastname)}}</td>
                     <td>{{getStatusString(invitation.status)}}</td>
                     <td>{{invitation.expirationDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>

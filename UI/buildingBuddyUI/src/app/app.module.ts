@@ -8,6 +8,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { InvitationListComponent } from './features/invitation/invitation-list/invitation-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InvitationUpdateComponent } from './features/invitation/invitation-update/invitation-update.component';
+import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { InvitationUpdateComponent } from './features/invitation/invitation-upda
     AppComponent,
     NavbarComponent,
     InvitationListComponent,
-    InvitationUpdateComponent
+    InvitationUpdateComponent,
+    InvitationCreateComponent
   ],
   imports: [
     BrowserModule,

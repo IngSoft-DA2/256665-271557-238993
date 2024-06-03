@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscribable, Subscription } from 'rxjs';
+import { Observable, Subscribable, Subscription, last } from 'rxjs';
 import { InvitationService } from '../services/invitation.service';
 import { Invitation } from '../interfaces/invitation';
 import { StatusEnum } from '../interfaces/enums/status-enum';
@@ -43,6 +43,11 @@ export class InvitationListComponent  implements OnInit
     }
   }
 
+  createInvitation () : void 
+  {
+    this.router.navigateByUrl('invitations/create')
+  }
+  
   deleteInvitation(id : string) : void 
   {
     this.invitationService.deleteInvitation(id)
@@ -62,6 +67,15 @@ export class InvitationListComponent  implements OnInit
   updateInvitation(id : string) : void
   {
     this.router.navigateByUrl(`invitations/update/${id}`);
+  }
+
+  checkIfItHasLastname(lastname : string) : string 
+  {
+    if(lastname == '')
+    {
+      return "-";
+    }
+    return lastname;
   }
 
 }

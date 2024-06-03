@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { Invitation } from '../interfaces/invitation';
 import { invitationUpdateRequest } from '../interfaces/invitation-update';
+import { invitationCreateRequest } from '../interfaces/invitation-create';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,11 @@ export class InvitationService {
   updateInvitation(id:string, request : invitationUpdateRequest) : Observable<void>
   {
     return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`,request)
+  }
+
+  createInvitation(request : invitationCreateRequest) : Observable<string>
+  {
+    return this.http.post<string>(`${environment.apiBaseUrl}/api/v2/invitations`, request)
   }
   
   
