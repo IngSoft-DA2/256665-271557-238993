@@ -9,6 +9,7 @@ import { InvitationListComponent } from './features/invitation/invitation-list/i
 import { HttpClientModule } from '@angular/common/http';
 import { InvitationUpdateComponent } from './features/invitation/invitation-update/invitation-update.component';
 import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
+import { InvitationListByEmailComponent } from './features/invitation/invitation-list-by-email/invitation-list-by-email.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { InvitationCreateComponent } from './features/invitation/invitation-crea
     NavbarComponent,
     InvitationListComponent,
     InvitationUpdateComponent,
-    InvitationCreateComponent
+    InvitationCreateComponent,
+    InvitationListByEmailComponent
   ],
   imports: [
     BrowserModule,
