@@ -114,6 +114,11 @@ public class BuildingService : IBuildingService
         {
             Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
 
+            if (buildingNotUpdated is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+            
             MapProperties(buildingWithUpdates, buildingNotUpdated);
 
             buildingWithUpdates.BuildingValidator();

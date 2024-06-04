@@ -117,12 +117,20 @@ public class ConstructionCompanyService : IConstructionCompanyService
     {
         try
         {
-            CheckIfNameIsUsedAndUserCreatedACompanyBefore(constructionCompanyWithUpdates);
+            CheckIfNameIsAlreadyUsed(constructionCompanyWithUpdates);
+            
             ConstructionCompany constructionCompanyWithoutUpdates =
                 _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
+            
+            if (constructionCompanyWithoutUpdates is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+            
             MapProperties(constructionCompanyWithUpdates, constructionCompanyWithoutUpdates);
             
             constructionCompanyWithUpdates.ConstructionCompanyValidator();
+           
             
             _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
         }
@@ -131,6 +139,19 @@ public class ConstructionCompanyService : IConstructionCompanyService
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
      
+    }
+    
+    
+    private void CheckIfNameIsAlreadyUsed(ConstructionCompany constructionCompanyToCreate)
+    {
+        IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();
+
+        bool nameExists =
+            constructionCompaniesInDb.Any(company => company.Name.Equals(constructionCompanyToCreate.Name));
+        if (nameExists)
+        {
+            throw new ObjectErrorServiceException("Name already exists.");
+        }
     }
 
 
