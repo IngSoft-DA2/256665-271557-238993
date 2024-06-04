@@ -21,11 +21,11 @@ public class BuildingService : IBuildingService
     
     #region Get All Buildings
 
-    public IEnumerable<Building> GetAllBuildings(Guid managerId)
+    public IEnumerable<Building> GetAllBuildings(Guid userId)
     {
         try
         {
-            return _buildingRepository.GetAllBuildings(managerId);
+            return _buildingRepository.GetAllBuildings(userId);
         }
         catch (Exception exceptionCaught)
         {
