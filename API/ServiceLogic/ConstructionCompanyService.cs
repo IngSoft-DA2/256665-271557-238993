@@ -115,12 +115,20 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates)
     {
-        ConstructionCompany constructionCompanyWithoutUpdates =
-            _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
-
-        MapProperties(constructionCompanyWithUpdates, constructionCompanyWithoutUpdates);
-
-        _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
+        try
+        {
+            ConstructionCompany constructionCompanyWithoutUpdates =
+                _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
+            MapProperties(constructionCompanyWithUpdates, constructionCompanyWithoutUpdates);
+            
+            constructionCompanyWithUpdates.ConstructionCompanyValidator();
+            _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
+        }
+        catch (InvalidConstructionCompanyException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+     
     }
 
 

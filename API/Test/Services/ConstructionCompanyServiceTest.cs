@@ -305,5 +305,23 @@ public class ConstructionCompanyServiceTest
         _constructionCompanyRepository.VerifyAll();
     }
 
+
+    #region Update Construction Company, Domain Validations
+
+    [TestMethod]
+    public void UpdateConstructionCompanyWithWrongFormatName_ThrowsObjectErrorServiceException()
+    {
+        ConstructionCompany constructionCompanyWithError = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "",
+            UserCreatorId = Guid.NewGuid()
+        };
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _constructionCompanyService.UpdateConstructionCompany(constructionCompanyWithError));
+    }
+    
+    #endregion
+    
     #endregion
 }
