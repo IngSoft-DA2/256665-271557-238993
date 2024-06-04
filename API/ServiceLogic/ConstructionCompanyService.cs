@@ -117,11 +117,13 @@ public class ConstructionCompanyService : IConstructionCompanyService
     {
         try
         {
+            CheckIfNameIsUsedAndUserCreatedACompanyBefore(constructionCompanyWithUpdates);
             ConstructionCompany constructionCompanyWithoutUpdates =
                 _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
             MapProperties(constructionCompanyWithUpdates, constructionCompanyWithoutUpdates);
             
             constructionCompanyWithUpdates.ConstructionCompanyValidator();
+            
             _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
         }
         catch (InvalidConstructionCompanyException exceptionCaught)

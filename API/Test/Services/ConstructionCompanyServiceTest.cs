@@ -322,6 +322,43 @@ public class ConstructionCompanyServiceTest
     }
     
     #endregion
+
+    #region Update Construction Company, Repository Validations
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyWithUsedName_ThrowsRepeatedObjectRepeatedServiceException()
+    {
+        IEnumerable<ConstructionCompany> constructionCompaniesInDb = new List<ConstructionCompany>
+        {
+            new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Company 1"
+            },
+            new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Company 2"
+            }
+        };
+        
+        ConstructionCompany constructionCompanyWithUpdates = new ConstructionCompany
+        {
+            Id = constructionCompaniesInDb.First().Id,
+            Name = "Company 1"
+        };
+        
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+            constructionCompanyRepository.GetAllConstructionCompanies()).Returns(constructionCompaniesInDb);
+
+        Assert.ThrowsException<ObjectRepeatedServiceException>(() =>
+            _constructionCompanyService.UpdateConstructionCompany(constructionCompanyWithUpdates));
+        
+        _constructionCompanyRepository.VerifyAll();
+    }
+    
+
+    #endregion
     
     #endregion
 }
