@@ -75,7 +75,7 @@ public class ManagerService : IManagerService
             CheckIfEmailIsAlreadyRegistered(manager);
             CheckIfEmailIsTheSameAsInvitationEmail(manager, invitationToAccept);
             Invitation invitationAccepted = AcceptInvitation(manager, invitationToAccept);
-            
+
             _invitationService.UpdateInvitation(invitationAccepted.Id, invitationAccepted);
             _managerRepository.CreateManager(manager);
         }
@@ -84,6 +84,10 @@ public class ManagerService : IManagerService
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
         catch (InvalidPersonException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
