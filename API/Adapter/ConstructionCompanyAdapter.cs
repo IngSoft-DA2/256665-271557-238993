@@ -122,6 +122,10 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
             };
             _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
         }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
         catch (ObjectNotFoundServiceException)
         {
             throw new ObjectNotFoundAdapterException();

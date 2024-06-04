@@ -246,6 +246,26 @@ public class ConstructionCompanyAdapterTest
         
         _constructionCompanyService.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyById_ThrowsObjectErrorAdapterException()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = ""
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new ObjectErrorServiceException("Specific construction company error"));
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+                updateConstructionCompanyRequestDummy));
+        
+        _constructionCompanyService.VerifyAll();
+    }
 
     #endregion
 }
