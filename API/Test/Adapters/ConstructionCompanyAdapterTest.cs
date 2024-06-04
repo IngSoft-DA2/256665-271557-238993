@@ -206,6 +206,26 @@ public class ConstructionCompanyAdapterTest
         _constructionCompanyService.Verify(constructionCompanyService => constructionCompanyService
             .UpdateConstructionCompany(It.IsAny<ConstructionCompany>()), Times.Once);
     }
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyById_ThrowsUnknownAdapterException()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new Exception("Internal server error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+                updateConstructionCompanyRequestDummy));
+        
+        _constructionCompanyService.VerifyAll();
+    }
 
     #endregion
 }

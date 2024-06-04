@@ -113,12 +113,19 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
 
     public void UpdateConstructionCompany(Guid id, UpdateConstructionCompanyRequest request)
     {
-        ConstructionCompany constructionCompanyToUpdate = new ConstructionCompany
+        try
         {
-            Id = id,
-            Name = request.Name
-        };
-        _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
+            ConstructionCompany constructionCompanyToUpdate = new ConstructionCompany
+            {
+                Id = id,
+                Name = request.Name
+            };
+            _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
 
     #endregion
