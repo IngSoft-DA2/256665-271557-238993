@@ -6,7 +6,17 @@
 
 <div class="mt-3" style="text-align: center;">
 
-    <button class="btn btn-success">Click here to look out any invitation that you have</button>
+    <div class="mt-2">
+        <label for="userEmail">Insert your email so we can look up any invitations</label>
+        <input type="text" id="userEmail" class="form-control my-3" [(ngModel)]="emailToSearch" placeholder="example@gmail.com">
+    </div>
+   
+    <br>
+
+    <div class="mt-1">
+        <button class="btn btn-success" (click)="showUpInvitations()">Click here to look out any invitation that you have</button>
+    </div>
+   
 
 </div>
 

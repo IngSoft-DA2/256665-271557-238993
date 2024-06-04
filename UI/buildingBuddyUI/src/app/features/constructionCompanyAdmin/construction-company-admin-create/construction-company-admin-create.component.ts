@@ -30,7 +30,6 @@ export class ConstructionCompanyAdminCreateComponent {
     this.route.queryParams.subscribe({
       next: (queryParams) => {
         this.invitationId = queryParams['idOfInvitationAccepted']
-        alert(this.invitationId);
       }
     });
 
