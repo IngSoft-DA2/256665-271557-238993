@@ -21,11 +21,11 @@ public class BuildingService : IBuildingService
     
     #region Get All Buildings
 
-    public IEnumerable<Building> GetAllBuildings(Guid managerId)
+    public IEnumerable<Building> GetAllBuildings(Guid userId)
     {
         try
         {
-            return _buildingRepository.GetAllBuildings(managerId);
+            return _buildingRepository.GetAllBuildings(userId);
         }
         catch (Exception exceptionCaught)
         {
@@ -114,6 +114,11 @@ public class BuildingService : IBuildingService
         {
             Building buildingNotUpdated = _buildingRepository.GetBuildingById(buildingWithUpdates.Id);
 
+            if (buildingNotUpdated is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+            
             MapProperties(buildingWithUpdates, buildingNotUpdated);
 
             buildingWithUpdates.BuildingValidator();

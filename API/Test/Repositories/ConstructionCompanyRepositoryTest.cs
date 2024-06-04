@@ -41,13 +41,15 @@ public class ConstructionCompanyRepositoryTest
             Name = "ConstructionCompany2"
         };
 
-        IEnumerable<ConstructionCompany> expectedConstructionCompanies = new List<ConstructionCompany> { constructionCompanyInDb, constructionCompanyInDb2 };
+        IEnumerable<ConstructionCompany> expectedConstructionCompanies = new List<ConstructionCompany>
+            { constructionCompanyInDb, constructionCompanyInDb2 };
 
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb2);
         _dbContext.SaveChanges();
 
-        IEnumerable<ConstructionCompany> constructionCompaniesResponse = _constructionCompanyRepository.GetAllConstructionCompanies();
+        IEnumerable<ConstructionCompany> constructionCompaniesResponse =
+            _constructionCompanyRepository.GetAllConstructionCompanies();
 
         Assert.IsTrue(expectedConstructionCompanies.SequenceEqual(constructionCompaniesResponse));
     }
@@ -58,9 +60,11 @@ public class ConstructionCompanyRepositoryTest
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
 
-        ConstructionCompanyRepository constructionCompanyRepository = new ConstructionCompanyRepository(_mockDbContext.Object);
+        ConstructionCompanyRepository constructionCompanyRepository =
+            new ConstructionCompanyRepository(_mockDbContext.Object);
 
-        Assert.ThrowsException<UnknownRepositoryException>(() => constructionCompanyRepository.GetAllConstructionCompanies());
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyRepository.GetAllConstructionCompanies());
     }
 
     [TestMethod]
@@ -75,7 +79,8 @@ public class ConstructionCompanyRepositoryTest
         _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
         _dbContext.SaveChanges();
 
-        ConstructionCompany constructionCompanyResponse = _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyInDb.Id);
+        ConstructionCompany constructionCompanyResponse =
+            _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyInDb.Id);
 
         Assert.AreEqual(constructionCompanyInDb, constructionCompanyResponse);
     }
@@ -86,9 +91,11 @@ public class ConstructionCompanyRepositoryTest
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
 
-        ConstructionCompanyRepository constructionCompanyRepository = new ConstructionCompanyRepository(_mockDbContext.Object);
+        ConstructionCompanyRepository constructionCompanyRepository =
+            new ConstructionCompanyRepository(_mockDbContext.Object);
 
-        Assert.ThrowsException<UnknownRepositoryException>(() => constructionCompanyRepository.GetConstructionCompanyById(Guid.NewGuid()));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyRepository.GetConstructionCompanyById(Guid.NewGuid()));
     }
 
     [TestMethod]
@@ -102,7 +109,8 @@ public class ConstructionCompanyRepositoryTest
 
         _constructionCompanyRepository.CreateConstructionCompany(constructionCompanyToAdd);
 
-        ConstructionCompany constructionCompanyResponse = _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyToAdd.Id);
+        ConstructionCompany constructionCompanyResponse =
+            _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyToAdd.Id);
 
         Assert.AreEqual(constructionCompanyToAdd, constructionCompanyResponse);
     }
@@ -113,15 +121,83 @@ public class ConstructionCompanyRepositoryTest
         var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
         _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
 
-        ConstructionCompanyRepository constructionCompanyRepository = new ConstructionCompanyRepository(_mockDbContext.Object);
+        ConstructionCompanyRepository constructionCompanyRepository =
+            new ConstructionCompanyRepository(_mockDbContext.Object);
 
-        Assert.ThrowsException<UnknownRepositoryException>(() => constructionCompanyRepository.CreateConstructionCompany(new ConstructionCompany()));
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyRepository.CreateConstructionCompany(new ConstructionCompany()));
     }
+
+
+    [TestMethod]
+    public void UpdateConstructionCompany_ConstructionCompanyIsUpdated()
+    {
+        ConstructionCompany constructionCompanyWithoutUpdates = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company name without update",
+            Buildings = new List<Building>(),
+            UserCreatorId = Guid.NewGuid()
+        };
+
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyWithoutUpdates);
+        _dbContext.SaveChanges();
+
+        ConstructionCompany constructionCompanyWithUpdates = new ConstructionCompany
+        {
+            Id = constructionCompanyWithoutUpdates.Id,
+            Name = "Construction Company name with update",
+            Buildings = new List<Building>(),
+            UserCreatorId = constructionCompanyWithoutUpdates.UserCreatorId
+        };
+
+        _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
+
+        ConstructionCompany constructionCompanyInDbUpdated =
+            _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithoutUpdates.Id);
+
+        Assert.AreEqual(constructionCompanyWithUpdates, constructionCompanyInDbUpdated);
+    }
+
+    [TestMethod]
+    public void UpdateConstructionCompany_UnknownExceptionisThrown()
+    {
+        ConstructionCompany constructionCompanyWithoutUpdates = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company name without update",
+            Buildings = new List<Building>(),
+            UserCreatorId = Guid.NewGuid()
+        };
+
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyWithoutUpdates);
+        _dbContext.SaveChanges();
+        
+        ConstructionCompany constructionCompanyWithUpdates = new ConstructionCompany
+        {
+            Id = constructionCompanyWithoutUpdates.Id,
+            Name = "Construction Company name with update",
+            Buildings = new List<Building>(),
+            UserCreatorId = constructionCompanyWithoutUpdates.UserCreatorId
+        };
+        
+        
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
+
+        ConstructionCompanyRepository constructionCompanyRepository =
+            new ConstructionCompanyRepository(_mockDbContext.Object);
+
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates));
+        
+        _mockDbContext.VerifyAll();
+    }
+
 
     [TestCleanup]
     public void TestCleanup()
     {
         _dbContext.Database.EnsureDeleted();
     }
-
 }

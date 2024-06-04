@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
@@ -50,6 +51,20 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-      
+    }
+
+    public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates)
+    {
+        try
+        {
+            ConstructionCompany constructionCompanyInDb = GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
+
+            _dbContext.Entry(constructionCompanyInDb).CurrentValues.SetValues(constructionCompanyWithUpdates);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 }

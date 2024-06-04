@@ -111,5 +111,30 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
     }
 
+    public void UpdateConstructionCompany(Guid id, UpdateConstructionCompanyRequest request)
+    {
+        try
+        {
+            ConstructionCompany constructionCompanyToUpdate = new ConstructionCompany
+            {
+                Id = id,
+                Name = request.Name
+            };
+            _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
+
     #endregion
 }

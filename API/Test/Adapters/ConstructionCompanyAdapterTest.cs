@@ -185,4 +185,87 @@ public class ConstructionCompanyAdapterTest
     }
 
     #endregion
+
+    #region Update Construction Company
+
+    [TestMethod]
+    public void UpdateConstructionCompanyById_UpdatesSuccessfully()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()));
+
+        _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+            updateConstructionCompanyRequestDummy);
+
+        _constructionCompanyService.Verify(constructionCompanyService => constructionCompanyService
+            .UpdateConstructionCompany(It.IsAny<ConstructionCompany>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyById_ThrowsUnknownAdapterException()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new Exception("Internal server error"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+                updateConstructionCompanyRequestDummy));
+        
+        _constructionCompanyService.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyById_ThrowsObjectNotFoundAdapterException()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+                updateConstructionCompanyRequestDummy));
+        
+        _constructionCompanyService.VerifyAll();
+    }
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyById_ThrowsObjectErrorAdapterException()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = ""
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new ObjectErrorServiceException("Specific construction company error"));
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
+            _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+                updateConstructionCompanyRequestDummy));
+        
+        _constructionCompanyService.VerifyAll();
+    }
+
+    #endregion
 }
