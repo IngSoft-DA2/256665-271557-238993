@@ -14,10 +14,13 @@ export class ManagerListComponent
 {
   managers : Manager[] = [];
 
-  constructor(private managerService : ManagerService, private router : Router){}
+  constructor(private managerService : ManagerService, private router : Router)
+  {
+    this.getAllManagers();
+  }
 
 
-  getAllManagers() : void 
+  private getAllManagers() : void 
   {
     this.managerService.getAllManagers()
     .subscribe({
