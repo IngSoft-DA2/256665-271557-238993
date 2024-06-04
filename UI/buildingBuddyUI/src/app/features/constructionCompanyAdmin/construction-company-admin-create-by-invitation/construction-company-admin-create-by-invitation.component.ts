@@ -3,15 +3,14 @@ import { InvitationService } from '../../invitation/services/invitation.service'
 import { Invitation } from '../../invitation/interfaces/invitation';
 import { ActivatedRoute, Router } from '@angular/router';
 import { constructionCompanyAdminCreateRequest } from '../interfaces/construction-company-admin-create-request';
-import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 import { ConstructionCompanyAdminService } from '../services/construction-company-admin.service';
 
 @Component({
-  selector: 'app-construction-company-admin-create',
-  templateUrl: './construction-company-admin-create.component.html',
-  styleUrl: './construction-company-admin-create.component.css'
+  selector: 'app-construction-company-admin-create-by-invitation', 
+  templateUrl: './construction-company-admin-create-by-invitation.component.html', 
+  styleUrls: ['./construction-company-admin-create-by-invitation.component.css']
 })
-export class ConstructionCompanyAdminCreateComponent {
+export class ConstructionCompanyAdminCreateByInvitationComponent {
 
   invitationOfUser?: Invitation
   invitationId: string = '';
@@ -49,7 +48,7 @@ export class ConstructionCompanyAdminCreateComponent {
 
         },
         error: (errorMessage) => {
-          alert(errorMessage.error);
+          alert("Invitation was not found, redirecting...");
           this.router.navigateByUrl('/');
         }
       })
