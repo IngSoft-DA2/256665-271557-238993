@@ -9,7 +9,6 @@ using WebModel.Responses.InvitationResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(SystemUserRoleEnum.Admin)]
     [Route("api/v2/invitations")]
     [ApiController]
     public class InvitationController : ControllerBase
@@ -34,8 +33,8 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        [Route("api/v1/guest/invitations")]
+        //[AllowAnonymous]
+        [Route("guest")]
         public IActionResult GetInvitationsByEmail([FromQuery] string email)
         {
             return Ok(_invitationAdapter.GetAllInvitationsByEmail(email));
