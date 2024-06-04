@@ -185,4 +185,27 @@ public class ConstructionCompanyAdapterTest
     }
 
     #endregion
+
+    #region Update Construction Company
+
+    [TestMethod]
+    public void UpdateConstructionCompanyById_UpdatesSuccessfully()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()));
+
+        _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+            updateConstructionCompanyRequestDummy);
+
+        _constructionCompanyService.Verify(constructionCompanyService => constructionCompanyService
+            .UpdateConstructionCompany(It.IsAny<ConstructionCompany>()), Times.Once);
+    }
+
+    #endregion
 }

@@ -113,7 +113,12 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
 
     public void UpdateConstructionCompany(Guid id, UpdateConstructionCompanyRequest request)
     {
-        throw new NotImplementedException();
+        ConstructionCompany constructionCompanyToUpdate = new ConstructionCompany
+        {
+            Id = id,
+            Name = request.Name
+        };
+        _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
     }
 
     #endregion

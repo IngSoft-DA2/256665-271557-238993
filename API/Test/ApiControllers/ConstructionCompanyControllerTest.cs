@@ -101,15 +101,14 @@ public class ConstructionCompanyControllerTest
     {
         UpdateConstructionCompanyRequest request = new UpdateConstructionCompanyRequest()
         {
-            Id = Guid.NewGuid(),
             Name = "Construction Company 1"
         };
 
         NoContentResult expectedControllerResponse = new NoContentResult();
         
-        _constructionCompanyAdapter.Setup(adapter => adapter.UpdateConstructionCompany(request.Id,request));
+        _constructionCompanyAdapter.Setup(adapter => adapter.UpdateConstructionCompany(It.IsAny<Guid>(),request));
         
-        IActionResult controllerResponse = _constructionCompanyController.UpdateConstructionCompany(request.Id,request);
+        IActionResult controllerResponse = _constructionCompanyController.UpdateConstructionCompany(It.IsAny<Guid>(),request);
 
         _constructionCompanyAdapter.VerifyAll();
 

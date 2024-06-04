@@ -100,11 +100,20 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
         bool userCreatedCompanyBefore = constructionCompaniesInDb.Any(company =>
             company.UserCreatorId.Equals(constructionCompanyToCreate.UserCreatorId));
-        
+
         if (userCreatedCompanyBefore)
         {
             throw new ObjectErrorServiceException("User has already created a company");
         }
+    }
+
+    #endregion
+
+    #region Update Construction Company
+
+    public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion
