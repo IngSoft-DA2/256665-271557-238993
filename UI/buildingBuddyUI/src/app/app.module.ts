@@ -13,6 +13,7 @@ import { InvitationListByEmailComponent } from './features/invitation/invitation
 import { ManagerCreateComponent } from './features/manager/features/manager-create/manager-create.component';
 import { ConstructionCompanyAdminCreateComponent } from './features/constructionCompanyAdmin/construction-company-admin-create/construction-company-admin-create.component';
 import { LandingPageComponent } from './features/landingPage/landing-page/landing-page.component';
+import { AdminCreateComponent } from './features/administrator/admin-create/admin-create.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { LandingPageComponent } from './features/landingPage/landing-page/landin
     InvitationListByEmailComponent,
     ManagerCreateComponent,
     ConstructionCompanyAdminCreateComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    AdminCreateComponent
   ],
   imports: [
     BrowserModule,

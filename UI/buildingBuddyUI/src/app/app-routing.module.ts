@@ -7,6 +7,7 @@ import { InvitationListByEmailComponent } from './features/invitation/invitation
 import { ManagerCreateComponent } from './features/manager/features/manager-create/manager-create.component';
 import { ConstructionCompanyAdminCreateComponent } from './features/constructionCompanyAdmin/construction-company-admin-create/construction-company-admin-create.component';
 import { LandingPageComponent } from './features/landingPage/landing-page/landing-page.component';
+import { AdminCreateComponent } from './features/administrator/admin-create/admin-create.component';
 
 const routes: Routes =
 [
@@ -39,6 +40,10 @@ const routes: Routes =
   {
     path: '',
     component : LandingPageComponent
+  },
+  {
+    path: 'admins/create',
+    component : AdminCreateComponent
   },
 
 ];
