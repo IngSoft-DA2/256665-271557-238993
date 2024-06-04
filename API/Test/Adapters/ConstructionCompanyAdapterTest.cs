@@ -226,6 +226,26 @@ public class ConstructionCompanyAdapterTest
         
         _constructionCompanyService.VerifyAll();
     }
+    
+    [TestMethod]
+    public void UpdateConstructionCompanyById_ThrowsObjectNotFoundAdapterException()
+    {
+        Guid constructionCompanyIdDummy = Guid.NewGuid();
+        UpdateConstructionCompanyRequest updateConstructionCompanyRequestDummy = new UpdateConstructionCompanyRequest
+        {
+            Name = "Construction Company 1"
+        };
+        
+        _constructionCompanyService.Setup(constructionCompanyService =>
+            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
+                updateConstructionCompanyRequestDummy));
+        
+        _constructionCompanyService.VerifyAll();
+    }
 
     #endregion
 }
