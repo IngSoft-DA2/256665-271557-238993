@@ -1,4 +1,6 @@
+using System.Reflection;
 using Domain;
+using IDataAccess;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -113,8 +115,43 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates)
     {
-        throw new NotImplementedException();
+        ConstructionCompany constructionCompanyWithoutUpdates =
+            _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
+
+        MapProperties(constructionCompanyWithUpdates, constructionCompanyWithoutUpdates);
+
+        _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
     }
+
+
+    private static void MapProperties(ConstructionCompany constructionCompanyWithUpdates,
+        ConstructionCompany constructionCompanyWithoutUpdates)
+    {
+        if (constructionCompanyWithUpdates.Equals(constructionCompanyWithoutUpdates))
+        {
+            throw new ObjectRepeatedServiceException();
+        }
+
+        foreach (PropertyInfo property in typeof(ConstructionCompany).GetProperties())
+        {
+            object? originalValue = property.GetValue(constructionCompanyWithoutUpdates);
+            object? updatedValue = property.GetValue(constructionCompanyWithUpdates);
+
+            if (Guid.TryParse(updatedValue?.ToString(), out Guid id))
+            {
+                if (id == Guid.Empty)
+                {
+                    property.SetValue(constructionCompanyWithUpdates, originalValue);
+                }
+            }
+
+            if (updatedValue == null && originalValue != null)
+            {
+                property.SetValue(constructionCompanyWithUpdates, originalValue);
+            }
+        }
+    }
+    
 
     #endregion
 }

@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using Moq;
 using ServiceLogic;
@@ -270,6 +271,39 @@ public class ConstructionCompanyServiceTest
     }
     
     #endregion
+
+    #endregion
+
+
+    #region Update Construction Company
+
+    //happy path
+    [TestMethod]
+    public void UpdateConstructionCompany_ConstructionCompanyIsUpdated()
+    {
+        ConstructionCompany constructionCompanyToUpdate = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "CompanyToUpdate",
+        };
+        
+        ConstructionCompany constructionCompanyWithoutUpdates = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "CompanyNotUpdated",
+            UserCreatorId = Guid.NewGuid()
+        };
+        
+        _constructionCompanyRepository.Setup(constructionCompany =>
+            constructionCompany.GetConstructionCompanyById(It.IsAny<Guid>())).Returns(constructionCompanyWithoutUpdates);
+
+        _constructionCompanyRepository.Setup(constructionCompany =>
+            constructionCompany.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()));
+        
+        _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
+
+        _constructionCompanyRepository.VerifyAll();
+    }
 
     #endregion
 }

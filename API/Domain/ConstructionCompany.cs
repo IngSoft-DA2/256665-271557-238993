@@ -6,10 +6,9 @@ public class ConstructionCompany
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    
+    [ForeignKey("UserCreatorId")] 
     public Guid UserCreatorId { get; set; }
-
-    [ForeignKey("ConstructionCompanyAdmin")] 
-    public Guid? ConstructionCompanyAdminId { get; set; }
     
     public IEnumerable<Building> Buildings { get; set; } = new List<Building>();
 

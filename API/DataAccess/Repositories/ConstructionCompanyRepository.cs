@@ -1,4 +1,5 @@
 using Domain;
+using IDataAccess;
 using IRepository;
 using Microsoft.EntityFrameworkCore;
 using Repositories.CustomExceptions;
@@ -51,5 +52,10 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
       
+    }
+
+    public void UpdateConstructionCompany(ConstructionCompany constructionCompanyToUpdate)
+    {
+        throw new NotImplementedException();
     }
 }
