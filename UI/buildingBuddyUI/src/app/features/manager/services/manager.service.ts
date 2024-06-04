@@ -19,9 +19,14 @@ export class ManagerService {
     return this.http.post<ManagerCreateResponse>(`${environment.apiBaseUrl}/api/v2/managers`,managerToCreate, {params});
   }
 
-  getAllManagers() 
+  getAllManagers() : Observable<Manager[]>
   {
     return this.http.get<Manager[]>(`${environment.apiBaseUrl}/api/v2/managers`);
+  }
+
+  deleteManager(managerId: string)  : Observable<void>
+  {
+    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/managers/${managerId}`)
   }
 
 

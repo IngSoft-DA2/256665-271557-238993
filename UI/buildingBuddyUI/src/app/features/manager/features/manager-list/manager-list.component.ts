@@ -41,12 +41,17 @@ export class ManagerListComponent
     alert("To implement");
   }
 
-  deleteManager(id : string) : void
+  deleteManager(managerIdToDelete : string) : void
   {
-    alert("Test");
+    this.managerService.deleteManager(managerIdToDelete)
+    .subscribe({
+      next: () =>{
+        alert("Manager deleted with success");
+        this.managers = this.managers.filter(manager => manager.id !== managerIdToDelete)
+      },
+      error : (errorMessage) => {
+        alert(errorMessage.error);
+      }
+    })
   }
-
-
-
-
 }
