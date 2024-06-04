@@ -35,6 +35,12 @@ export class ManagerListComponent
     })
   }
 
+  getBuildingsWhereManagerIsWorking(managerId : string) : void
+  {
+    this.router.navigateByUrl(`managers/${managerId}/buildings`);
+    alert("To implement");
+  }
+
   deleteManager(id : string) : void
   {
     alert("Test");

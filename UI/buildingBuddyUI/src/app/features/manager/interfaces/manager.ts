@@ -9,6 +9,6 @@ export interface Manager
     email: string,
     password : string,
     role : SystemUserRoleEnum.Manager,
-    buildings : Building[],
-    requests : MaintenanceRequest[]
+    buildings : string[],
+    requests : string[]
 };

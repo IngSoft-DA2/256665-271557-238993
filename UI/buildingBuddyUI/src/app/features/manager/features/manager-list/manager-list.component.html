@@ -15,15 +15,19 @@
                 <tr>
                     <th>Email</th>
                     <th>Firstname </th>
+                    <th>Buildings where manager is working for</th>
                     <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let manager of managers">
                     <td>{{manager.email}}</td>
-                    <td>{{manager.firstname}}</td>
+                    <td>{{manager.name}}</td>
                     <td>
-                        <button class="btn btn-danger btn-sm button" (click)="deleteManager(manager.id)"> Delete </button>
+                        <button class="btn btn-primary" (click)="getBuildingsWhereManagerIsWorking(manager.id)"> See his buildings </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm button" (click)="deleteManager(manager.id)"> Delete Manager </button>
                     </td>
                 </tr>
             </tbody>
