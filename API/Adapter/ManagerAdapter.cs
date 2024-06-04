@@ -6,6 +6,9 @@ using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.ManagerRequests;
+using WebModel.Responses.BuildingResponses;
+using WebModel.Responses.ConstructionCompanyResponses;
+using WebModel.Responses.FlatResponses;
 using WebModel.Responses.ManagerResponses;
 
 namespace Adapter;
@@ -39,76 +42,80 @@ public class ManagerAdapter : IManagerAdapter
                     Id = manager.Id,
                     Email = manager.Email,
                     Name = manager.Firstname,
-                });
-
+                    Buildings = manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequests = manager.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+                }
+            ).ToList();
             return adapterResponse;
         }
         catch (Exception exceptionCaught)
         {
-            throw new Exception(exceptionCaught.Message);
+        throw new Exception(exceptionCaught.Message);
         }
+    
     }
 
-    #endregion
+#endregion
 
-    #region Delete Manager By Id
+#region Delete Manager By Id
 
-    public void DeleteManagerById(Guid id)
+public void DeleteManagerById(Guid id)
+{
+    try
     {
-        try
-        {
-            _managerServiceLogic.DeleteManagerById(id);
-        }
-        catch (ObjectNotFoundServiceException)
-        {
-            throw new ObjectNotFoundAdapterException();
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new Exception(exceptionCaught.Message);
-        }
+        _managerServiceLogic.DeleteManagerById(id);
     }
-
-    #endregion
-
-    #region Create Manager
-
-    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
+    catch (ObjectNotFoundServiceException)
     {
-        try
-        {
-            Manager manager = new Manager
-            {
-                Id = Guid.NewGuid(),
-                Email = createRequest.Email,
-                Password = createRequest.Password
-            };
-            
-            Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
-            
-            _managerServiceLogic.CreateManager(manager, invitationToAccept);
-
-            CreateManagerResponse adapterResponse = new CreateManagerResponse
-            {
-                Id = manager.Id,
-                Firstname = invitationToAccept.Firstname
-            };
-
-            return adapterResponse;
-        }
-        catch (ObjectNotFoundServiceException)
-        {
-            throw new ObjectNotFoundAdapterException();
-        }
-        catch (ObjectErrorServiceException exceptionCaught)
-        {
-            throw new ObjectErrorAdapterException(exceptionCaught.Message);
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new UnknownAdapterException(exceptionCaught.Message);
-        }
+        throw new ObjectNotFoundAdapterException();
     }
+    catch (Exception exceptionCaught)
+    {
+        throw new Exception(exceptionCaught.Message);
+    }
+}
 
-    #endregion
+#endregion
+
+#region Create Manager
+
+public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
+{
+    try
+    {
+        Manager manager = new Manager
+        {
+            Id = Guid.NewGuid(),
+            Email = createRequest.Email,
+            Password = createRequest.Password
+        };
+
+        Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
+
+        _managerServiceLogic.CreateManager(manager, invitationToAccept);
+
+        CreateManagerResponse adapterResponse = new CreateManagerResponse
+        {
+            Id = manager.Id,
+            Firstname = invitationToAccept.Firstname
+        };
+
+        return adapterResponse;
+    }
+    catch (ObjectNotFoundServiceException)
+    {
+        throw new ObjectNotFoundAdapterException();
+    }
+    catch (ObjectErrorServiceException exceptionCaught)
+    {
+        throw new ObjectErrorAdapterException(exceptionCaught.Message);
+    }
+    catch (Exception exceptionCaught)
+    {
+        throw new UnknownAdapterException(exceptionCaught.Message);
+    }
+}
+
+#endregion
+
 }

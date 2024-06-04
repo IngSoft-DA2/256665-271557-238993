@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ManagerService } from '../../services/manager.service';
 import { Router } from '@angular/router';
+import { Manager } from '../../interfaces/manager';
 
 @Component({
   selector: 'app-manager-list',
@@ -26,10 +27,20 @@ export class ManagerListComponent
     .subscribe({
       next : (Response) => {
         this.managers = Response;
+        console.log(this.managers[0])
       },
       error : (errorMessage) => {
         alert(errorMessage.error);
       }
     })
   }
+
+  deleteManager(id : string) : void
+  {
+    alert("Test");
+  }
+
+
+
+
 }

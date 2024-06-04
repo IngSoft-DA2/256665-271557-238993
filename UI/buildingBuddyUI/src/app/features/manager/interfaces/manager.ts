@@ -5,7 +5,7 @@ import { MaintenanceRequest } from "../../maintenanceRequest/interfaces/maintena
 export interface Manager
 {
     id : string,
-    firstname : string,
+    name : string,
     email: string,
     password : string,
     role : SystemUserRoleEnum.Manager,
