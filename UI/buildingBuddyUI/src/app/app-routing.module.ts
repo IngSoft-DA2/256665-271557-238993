@@ -4,7 +4,7 @@ import { ReportMaintenanceRequestsByBuildingComponent } from './features/Reports
 
 const routes: Routes = [
 {
-  path: '/buildings/maintenance-requests/reports',
+  path: 'reports',
   component: ReportMaintenanceRequestsByBuildingComponent
 }
 
