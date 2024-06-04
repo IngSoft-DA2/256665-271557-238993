@@ -51,11 +51,13 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-      
     }
 
-    public void UpdateConstructionCompany(ConstructionCompany constructionCompanyToUpdate)
+    public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates)
     {
-        throw new NotImplementedException();
+        ConstructionCompany constructionCompanyInDb = GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
+
+        _dbContext.Entry(constructionCompanyInDb).CurrentValues.SetValues(constructionCompanyWithUpdates);
+        _dbContext.SaveChanges();
     }
 }
