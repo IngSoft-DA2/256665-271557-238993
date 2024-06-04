@@ -111,5 +111,10 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
     }
 
+    public void UpdateConstructionCompany(Guid id, UpdateConstructionCompanyRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

@@ -93,4 +93,31 @@ public class ConstructionCompanyControllerTest
     }
     
     #endregion
+    
+    #region Update Construction Company
+    
+    [TestMethod]
+    public void UpdateConstructionCompany_NoContentResultIsReturned()
+    {
+        UpdateConstructionCompanyRequest request = new UpdateConstructionCompanyRequest()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company 1"
+        };
+
+        NoContentResult expectedControllerResponse = new NoContentResult();
+        
+        _constructionCompanyAdapter.Setup(adapter => adapter.UpdateConstructionCompany(request.Id,request));
+        
+        IActionResult controllerResponse = _constructionCompanyController.UpdateConstructionCompany(request.Id,request);
+
+        _constructionCompanyAdapter.VerifyAll();
+
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+    
+    #endregion
 }

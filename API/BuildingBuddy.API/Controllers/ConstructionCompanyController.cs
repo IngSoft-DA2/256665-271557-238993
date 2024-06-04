@@ -49,7 +49,19 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-        
-        
+
+
+        #region Update Construction Company
+
+        [HttpPut]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [Route("{id:Guid}")]
+        public IActionResult UpdateConstructionCompany([FromRoute] Guid id,[FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
+        {
+            _constructionCompanyAdapter.UpdateConstructionCompany(id,updateConstructionCompanyRequest);
+            return NoContent();
+        }
+
+        #endregion
     }
 }

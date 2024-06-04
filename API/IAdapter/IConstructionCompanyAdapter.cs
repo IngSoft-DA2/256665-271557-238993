@@ -7,4 +7,5 @@ public interface IConstructionCompanyAdapter
 {
     public IEnumerable<GetConstructionCompanyResponse> GetAllConstructionCompanies();
     public CreateConstructionCompanyResponse CreateConstructionCompany(CreateConstructionCompanyRequest request);
+    public void UpdateConstructionCompany (Guid id,UpdateConstructionCompanyRequest request);
 }
