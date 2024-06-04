@@ -19,7 +19,7 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   hasValidRole : boolean = true;
   
   invitationId: string = '';
-  userRole?: SystemUserRoleEnum; //To do: We need to implement how to get the user role.
+  userRole?: SystemUserRoleEnum = SystemUserRoleEnum.ConstructionCompanyAdmin; //To do: We need to implement how to get the user role.
 
   constructionCompanyAdminToCreate: constructionCompanyAdminCreateRequest =
     {
@@ -38,7 +38,9 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
 
     this.route.queryParams.subscribe({
       next: (queryParams) => {
-        this.invitationId = queryParams['idOfInvitationAccepted']      }
+        this.invitationId = queryParams['idOfInvitationAccepted']    
+        alert(this.invitationId)
+      }
     });
 
     if (this.invitationId !== undefined) {

@@ -55,9 +55,16 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
 
     public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates)
     {
-        ConstructionCompany constructionCompanyInDb = GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
+        try
+        {
+            ConstructionCompany constructionCompanyInDb = GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
 
-        _dbContext.Entry(constructionCompanyInDb).CurrentValues.SetValues(constructionCompanyWithUpdates);
-        _dbContext.SaveChanges();
+            _dbContext.Entry(constructionCompanyInDb).CurrentValues.SetValues(constructionCompanyWithUpdates);
+            _dbContext.SaveChanges();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 }

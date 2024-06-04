@@ -159,6 +159,41 @@ public class ConstructionCompanyRepositoryTest
         Assert.AreEqual(constructionCompanyWithUpdates, constructionCompanyInDbUpdated);
     }
 
+    [TestMethod]
+    public void UpdateConstructionCompany_UnknownExceptionisThrown()
+    {
+        ConstructionCompany constructionCompanyWithoutUpdates = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company name without update",
+            Buildings = new List<Building>(),
+            UserCreatorId = Guid.NewGuid()
+        };
+
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyWithoutUpdates);
+        _dbContext.SaveChanges();
+        
+        ConstructionCompany constructionCompanyWithUpdates = new ConstructionCompany
+        {
+            Id = constructionCompanyWithoutUpdates.Id,
+            Name = "Construction Company name with update",
+            Buildings = new List<Building>(),
+            UserCreatorId = constructionCompanyWithoutUpdates.UserCreatorId
+        };
+        
+        
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
+
+        ConstructionCompanyRepository constructionCompanyRepository =
+            new ConstructionCompanyRepository(_mockDbContext.Object);
+
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates));
+        
+        _mockDbContext.VerifyAll();
+    }
+
 
     [TestCleanup]
     public void TestCleanup()
