@@ -118,27 +118,43 @@ public class ConstructionCompanyService : IConstructionCompanyService
         try
         {
             CheckIfNameIsAlreadyUsed(constructionCompanyWithUpdates);
-            
+
             ConstructionCompany constructionCompanyWithoutUpdates =
                 _constructionCompanyRepository.GetConstructionCompanyById(constructionCompanyWithUpdates.Id);
-            
+
             if (constructionCompanyWithoutUpdates is null)
             {
                 throw new ObjectNotFoundServiceException();
             }
-            
+
             MapProperties(constructionCompanyWithUpdates, constructionCompanyWithoutUpdates);
-            
+
             constructionCompanyWithUpdates.ConstructionCompanyValidator();
-           
-            
+
             _constructionCompanyRepository.UpdateConstructionCompany(constructionCompanyWithUpdates);
         }
         catch (InvalidConstructionCompanyException exceptionCaught)
         {
             throw new ObjectErrorServiceException(exceptionCaught.Message);
         }
-     
+        catch (ObjectRepeatedServiceException)
+        {
+            throw;
+        }
+        catch (ObjectErrorServiceException)
+        {
+            throw;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+
+
     }
     
     
