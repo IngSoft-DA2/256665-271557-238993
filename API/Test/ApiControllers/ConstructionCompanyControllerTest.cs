@@ -139,7 +139,7 @@ public class ConstructionCompanyControllerTest
         
         _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanyById(It.IsAny<Guid>())).Returns(expectedConstructionCompany);
         
-        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>());
+        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanyById(It.IsAny<Guid>());
 
         _constructionCompanyAdapter.VerifyAll();
 

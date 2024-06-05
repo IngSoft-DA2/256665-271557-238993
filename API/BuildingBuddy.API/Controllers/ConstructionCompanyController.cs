@@ -39,7 +39,8 @@ namespace BuildingBuddy.API.Controllers
         #region Get Construction Company By User Creator Id
 
         [HttpGet]
-        public IActionResult GetConstructionCompanyByUserCreatorId([FromQuery] Guid userCreatorId)
+        [Route("{userCreatorId:Guid}")]
+        public IActionResult GetConstructionCompanyById([FromRoute] Guid userCreatorId)
         {
             return Ok(_constructionCompanyAdapter.GetConstructionCompanyById(userCreatorId));
         }
