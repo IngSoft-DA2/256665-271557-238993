@@ -9,6 +9,7 @@ import { ManagerCreateComponent } from './features/manager/features/manager-crea
 import { ConstructionCompanyAdminCreateComponent } from './features/constructionCompanyAdmin/construction-company-admin-create/construction-company-admin-create.component';
 import { LandingPageComponent } from './features/landingPage/landing-page/landing-page.component';
 import { AdminCreateComponent } from './features/administrator/admin-create/admin-create.component';
+import { ReportsListComponent } from './features/Reports/reports-list/reports-list.component';
 
 const routes: Routes =
 [
@@ -47,7 +48,11 @@ const routes: Routes =
     component : AdminCreateComponent
   },
   {
-  path: 'reports',
+  path: 'reports/list',
+  component: ReportsListComponent
+  },
+  {
+  path: 'reports/requests-by-building',
   component: ReportMaintenanceRequestsByBuildingComponent
   }
 

@@ -12,10 +12,10 @@ export class BuildingService {
   constructor(private http: HttpClient) { }
 
   getBuildingById(buildingId: string) : Observable<Building>{
-    return this.http.get<Building>(`${environment.apiBaseUrl}/buildings`);
+    return this.http.get<Building>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`);
   }
 
-  getAllBuildings(userId?: string) : Observable<Building[]>{
-    return this.http.get<Building[]>(`${environment.apiBaseUrl}/buildings/${userId}`);
-  }
+  // getAllBuildings(userId?: string) : Observable<Building[]>{
+  //   //return this.http.get<Building[]>(`${environment.apiBaseUrl}/buildings`);
+  // }
 }

@@ -9,6 +9,7 @@ public class Manager : SystemUser
     public void ManagerValidator()
     {
         PersonValidator();
+        
         PasswordValidator();
     }
 

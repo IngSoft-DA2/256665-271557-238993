@@ -13,14 +13,12 @@ export class ReportService {
   constructor(private http: HttpClient) { }
 
   getReportMaintenanceRequestsByBuilding(userId: string, buildingIdSelected: string): Observable<NodeReportMaintenanceRequestsByBuilding[]> {
-    if (userId && buildingIdSelected) {
+
       const params = new HttpParams()
         .set('managerId', userId)
         .set('buildingId', buildingIdSelected);
 
-      return this.http.get<NodeReportMaintenanceRequestsByBuilding[]>(`${environment.apiBaseUrl}/buildings/maintenance-requests/reports`, { params });
-    } else {
-      return of([]);
-    }
+      return this.http.get<NodeReportMaintenanceRequestsByBuilding[]>(`${environment.apiBaseUrl}/api/v2/buildings/maintenance-requests/reports`, {params});
+
   }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NodeReportMaintenanceRequestsByBuilding } from './interfaces/node-report-maintenance-requests-by-building';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,32 +12,40 @@ import { HttpParams } from '@angular/common/http';
   templateUrl: './report-maintenance-requests-by-building.component.html',
   styleUrl: './report-maintenance-requests-by-building.component.css'
 })
-export class ReportMaintenanceRequestsByBuildingComponent {
+export class ReportMaintenanceRequestsByBuildingComponent{
   reportOfMaintenanceRequestsByBuilding?: NodeReportMaintenanceRequestsByBuilding[];
-  buildingName?: string;
-  buildingIdSelected?: string;
-  buildings?: Building[];
-  userId?: string;
+  buildingIdSelected: string = "00000000-0000-0000-0000-000000000000";
+  buildings: Building[] = [];
+  managerId: string = "";
+  buildingName: string = "";
 
   constructor(private reportMaintenanceRequestByBuildingService: ReportService, private buildingService: BuildingService, private router: Router, private route: ActivatedRoute){
-    this.getMaintenanceRequestsByBuilding(this.buildingIdSelected);
-    this.buildingService.getAllBuildings(this.userId);
+    this.route.queryParams.subscribe(params => {
+      this.managerId = params['managerId'];
+      this.buildingIdSelected = params['buildingId'];
+    });
+
+    alert(this.managerId);
+
+    this.reportMaintenanceRequestByBuildingService.getReportMaintenanceRequestsByBuilding(this.managerId, this.buildingIdSelected).
+    subscribe({
+      next: (Response) => {
+        this.reportOfMaintenanceRequestsByBuilding = Response;
+      },
+    });
+    //this.buildingService.getAllBuildings(this.managerId);
   }
 
-  getMaintenanceRequestsByBuildings(userId:string, buildingIdSelected: string){
-      this.reportMaintenanceRequestByBuildingService.getReportMaintenanceRequestsByBuilding(userId, buildingIdSelected);
-  }
 
-  getBuildingInfo(buildingId: string){
+  getBuildingInfo(buildingId: string) : string {
     this.buildingService.getBuildingById(buildingId).
     subscribe({
-      next: (response) => {
-        this.buildingName = response.name;
-      },
-      error: (errorMessage) => {
-        alert(errorMessage.error);
+      next: (Response) => {
+        this.buildingName = Response.name;
       }
     });
+    
+    return this.buildingName;
   }
 
 

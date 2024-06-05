@@ -37,7 +37,12 @@ public class ReportRepository : IReportRepository
             }
             else
             {
-                return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.ManagerId == personId).ToList();
+                return _dbContext.Set<MaintenanceRequest>()
+                    .Where(mr => mr.ManagerId == personId)
+                    .Include(mr => mr.Category)
+                    .Include(mr => mr.Flat)
+                    .Include(mr => mr.Manager)
+                    .Include(mr => mr.RequestHandler).ToList();
             }
         }
         catch (Exception exceptionCaught)
@@ -115,8 +120,9 @@ public class ReportRepository : IReportRepository
     }
 
     #endregion
-    
+
     #region Get Flat Requests Report By Building
+
     public IEnumerable<MaintenanceRequest> GetFlatRequestsReportByBuilding(Guid buildingId)
     {
         try
@@ -141,6 +147,6 @@ public class ReportRepository : IReportRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 }

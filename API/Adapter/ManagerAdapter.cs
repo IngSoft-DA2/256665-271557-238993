@@ -86,6 +86,8 @@ public class ManagerAdapter : IManagerAdapter
             
             Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
             
+            manager.Role = invitationToAccept.Role;
+            
             _managerServiceLogic.CreateManager(manager, invitationToAccept);
 
             CreateManagerResponse adapterResponse = new CreateManagerResponse
