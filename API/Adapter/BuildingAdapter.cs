@@ -51,7 +51,9 @@ public class BuildingAdapter : IBuildingAdapter
                 ConstructionCompany = new GetConstructionCompanyResponse
                 {
                     Id = building.ConstructionCompany.Id,
-                    Name = building.ConstructionCompany.Name
+                    Name = building.ConstructionCompany.Name,
+                    UserCreatorId = building.ConstructionCompany.UserCreatorId,
+                    BuildingsId = building.ConstructionCompany.Buildings.Select(building => building.Id).ToList()
                 },
                 CommonExpenses = building.CommonExpenses,
                 Flats = building.Flats.Select(flat => new GetFlatResponse
@@ -104,7 +106,9 @@ public class BuildingAdapter : IBuildingAdapter
                 ConstructionCompany = new GetConstructionCompanyResponse
                 {
                     Id = buildingInDb.ConstructionCompany.Id,
-                    Name = buildingInDb.ConstructionCompany.Name
+                    Name = buildingInDb.ConstructionCompany.Name,
+                    UserCreatorId = buildingInDb.ConstructionCompany.UserCreatorId,
+                    BuildingsId = buildingInDb.ConstructionCompany.Buildings.Select(building => building.Id).ToList()
                 },
                 CommonExpenses = buildingInDb.CommonExpenses,
                 Flats = buildingInDb.Flats.Select(flat => new GetFlatResponse

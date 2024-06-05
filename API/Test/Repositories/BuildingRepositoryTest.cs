@@ -48,6 +48,7 @@ public class BuildingRepositoryTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Construction Company 1",
+                UserCreatorId = Guid.NewGuid()
             },
             Manager = new Manager
             {
@@ -83,7 +84,7 @@ public class BuildingRepositoryTest
         _dbContext.Set<Building>().Add(buildingInDb);
         _dbContext.SaveChanges();
 
-        IEnumerable<Building> buildingsReturn = _buildingRepository.GetAllBuildings(buildingInDb.ManagerId);
+        IEnumerable<Building> buildingsReturn = _buildingRepository.GetAllBuildings(buildingInDb.ConstructionCompany.UserCreatorId);
         Assert.IsTrue(buildingsReturn.SequenceEqual(buildingsInDb));
     }
 
