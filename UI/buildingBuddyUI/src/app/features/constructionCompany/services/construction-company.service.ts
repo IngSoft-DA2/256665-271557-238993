@@ -4,6 +4,8 @@ import { ConstructionCompanyCreateRequest } from '../interfaces/construction-com
 import { environment } from '../../../../environments/environment.development';
 import { ConstructionCompanyCreateResponse } from '../interfaces/construction-company-create-response';
 import { Observable } from 'rxjs';
+import { ConstructionCompany } from '../interfaces/construction-company';
+import { ConstructionCompanyUpdateRequest } from '../interfaces/construction-company-update-request';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +19,12 @@ export class ConstructionCompanyService {
     return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies`,constructionCompanyToCreate)
   }
 
-  updateConstructionCompany(constructionCompanyToUpd: import("../interfaces/construction-company").ConstructionCompany | undefined) {
-    throw new Error('Method not implemented.');
+  updateConstructionCompany(id:string,constructionCompanyToUpd: ConstructionCompanyUpdateRequest) : Observable<void>
+   {
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/construction-companies/${id}`,constructionCompanyToUpd);
   }
-  getConstructionCompanyById(idOfConstructionCompany: string) {
-    throw new Error('Method not implemented.');
+  getConstructionCompanyById(idOfConstructionCompany: string) : Observable<ConstructionCompany>
+   {
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies`);
   }
 }
