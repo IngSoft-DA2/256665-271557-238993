@@ -1,0 +1,14 @@
+
+<div class="container" *ngIf="invitationToOperate; else invitationNotFound">
+
+    <h1 class="mt-3">Create Construction Company</h1>
+        <div class="mt-2">
+            
+            <div class="mt-3">
+                <label class="form-label" for="constructionName">Construction Company Name</label>
+                <br>
+                <input type="text" id="constructionName" class="form-control" name="constructionName" disabled [(ngModel)]="constructionCompanyToCreate.name">
+            </div>
+        </div>
+</div>
+
