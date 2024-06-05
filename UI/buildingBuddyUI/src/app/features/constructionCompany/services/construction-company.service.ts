@@ -16,4 +16,11 @@ export class ConstructionCompanyService {
   {
     return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies`,constructionCompanyToCreate)
   }
+
+  updateConstructionCompany(constructionCompanyToUpd: import("../interfaces/construction-company").ConstructionCompany | undefined) {
+    throw new Error('Method not implemented.');
+  }
+  getConstructionCompanyById(idOfConstructionCompany: string) {
+    throw new Error('Method not implemented.');
+  }
 }
