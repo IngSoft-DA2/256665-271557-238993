@@ -17,6 +17,7 @@ import { ManagerListComponent } from './features/manager/features/manager-list/m
 import { ConstructionCompanyCreateComponent } from './features/constructionCompany/construction-company-create/construction-company-create.component';
 import { ConstructionCompanyListComponent } from './features/constructionCompany/construction-company-list/construction-company-list.component';
 import { BuildingListComponent } from './features/building/building-list/building-list.component';
+import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { BuildingListComponent } from './features/building/building-list/buildin
     ManagerListComponent,
     ConstructionCompanyCreateComponent,
     ConstructionCompanyListComponent,
-    BuildingListComponent
+    BuildingListComponent,
+    ConstructionCompanyUpdateComponent
   ],
   imports: [
     BrowserModule,

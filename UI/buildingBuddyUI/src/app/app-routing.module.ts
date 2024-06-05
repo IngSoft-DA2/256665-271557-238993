@@ -62,6 +62,9 @@ const routes: Routes =
     component : ConstructionCompanyListComponent
   },
   {
+    path: 'constructionCompany/:id/update'
+  },
+  {
     path : 'buildings/list',
     component : BuildingListComponent
   },
