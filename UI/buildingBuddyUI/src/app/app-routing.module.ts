@@ -54,15 +54,15 @@ const routes: Routes =
     component : ManagerListComponent
   },
   {
-    path : 'constructionCompany/create',
+    path : 'construction-company/create',
     component : ConstructionCompanyCreateComponent
   },
   {
-    path: 'constructionCompanies/list',
+    path: 'construction-companies/list',
     component : ConstructionCompanyListComponent
   },
   {
-    path: 'constructionCompany/:id/update'
+    path: 'construction-companies/:id/update'
   },
   {
     path : 'buildings/list',

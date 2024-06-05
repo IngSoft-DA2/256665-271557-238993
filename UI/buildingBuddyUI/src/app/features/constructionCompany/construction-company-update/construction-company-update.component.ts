@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ConstructionCompany } from '../interfaces/construction-company';
 import { ConstructionCompanyService } from '../services/construction-company.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-construction-company-update',
@@ -12,9 +12,9 @@ export class ConstructionCompanyUpdateComponent {
 
   constructionCompanyToUpd?: ConstructionCompany;
   idOfConstructionCompany?: string;
-  constructionCompanyFound : boolean = false;
+  constructionCompanyFound: boolean = false;
 
-  constructor(private constructionCompanyService: ConstructionCompanyService, private route: ActivatedRoute) {
+  constructor(private constructionCompanyService: ConstructionCompanyService, private route: ActivatedRoute, private router : Router) {
 
     route.queryParams
       .subscribe({
@@ -24,28 +24,33 @@ export class ConstructionCompanyUpdateComponent {
       })
     if (this.idOfConstructionCompany !== undefined) {
       constructionCompanyService.getConstructionCompanyById(this.idOfConstructionCompany)
-      .subscribe({
-        next: (Response) => {
-          this.constructionCompanyToUpd = Response;
-          this.constructionCompanyFound = true;
-        },
-      })
+        .subscribe({
+          next: (Response) => {
+            this.constructionCompanyToUpd = Response;
+            this.constructionCompanyFound = true;
+          },
+        })
     }
-    
+
   }
 
-  updateChanges() : void 
-  {
-    this.constructionCompanyService.updateConstructionCompany(this.constructionCompanyToUpd)
-    .subscribe({
-      next : (Response) => {
-        alert("Updated with sucess!");
-        this.router.navigateByUrl('/construction-companies/list')
-      },
-      error : (errorMessage) => {
-        alert(errorMessage.error);
-      }
-    });
+  updateChanges(): void {
+    if (this.idOfConstructionCompany !== undefined && this.constructionCompanyToUpd) {
+      this.constructionCompanyService.updateConstructionCompany(this.idOfConstructionCompany, this.constructionCompanyToUpd)
+        .subscribe({
+          next: (Response) => {
+            alert("Updated with sucess!");
+            this.router.navigateByUrl('/construction-companies/list')
+          },
+          error: (errorMessage) => {
+            alert(errorMessage.error);
+          }
+        });
+    }
+    else{
+      alert("Imposible to update, it is the failing the getter of the construction company");
+    }
+
   }
 
 }

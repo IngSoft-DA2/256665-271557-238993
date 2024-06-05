@@ -1,8 +1,6 @@
 
 <div class="container">
 
-<input type="text" class="form-control" [(ngModel)]="constructionCompany.name">
-
 <table class="table table-striped table-bordered tableClass">
     <thead>
         <br />
@@ -11,12 +9,11 @@
             <th>Construction Company Name </th>
             <th>Update Construction Company</th>
             <th>View Construction Company Buildings</th>
-            
         </tr>
     </thead>
     <tbody>
-            <td>{{constructionCompany.id}}</td>
-            <td>{{constructionCompany.name}}</td>
+            <td>{{constructionCompanyOfUser.id}}</td>
+            <td>{{constructionCompanyOfUser.name}}</td>
             <td>
                 <a class="btn btn-info btn-sm button" [routerLink]="[`/construction-company/${constructionCompany.id/update}]"> Update Company </a>
             </td>

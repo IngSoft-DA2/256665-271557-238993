@@ -119,4 +119,37 @@ public class ConstructionCompanyControllerTest
     }
     
     #endregion
+
+    #region Get Construction Company By Id
+    
+    [TestMethod]
+    public void GetConstructionCompanyById_OkIsReturned()
+    {
+        GetConstructionCompanyResponse expectedConstructionCompany = new GetConstructionCompanyResponse()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company 1"
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompany);
+        
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanyById(It.IsAny<Guid>())).Returns(expectedConstructionCompany);
+        
+        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>());
+
+        _constructionCompanyAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        GetConstructionCompanyResponse? controllerResponseValueCasted =
+            controllerResponseCasted.Value as GetConstructionCompanyResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedConstructionCompany.Equals(controllerResponseValueCasted));
+    }
+    
+
+    #endregion
 }
