@@ -12,6 +12,7 @@ import { ManagerListComponent } from './features/manager/features/manager-list/m
 import { ConstructionCompanyCreateComponent } from './features/constructionCompany/construction-company-create/construction-company-create.component';
 import { ConstructionCompanyListComponent } from './features/constructionCompany/construction-company-list/construction-company-list.component';
 import { BuildingListComponent } from './features/building/building-list/building-list.component';
+import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 
 const routes: Routes =
 [
@@ -62,7 +63,8 @@ const routes: Routes =
     component : ConstructionCompanyListComponent
   },
   {
-    path: 'construction-companies/:id/update'
+    path: 'construction-companies/:id/update',
+    component : ConstructionCompanyUpdateComponent
   },
   {
     path : 'buildings/list',

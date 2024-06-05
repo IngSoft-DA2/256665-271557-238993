@@ -18,7 +18,7 @@ export class ConstructionCompanyService {
   {
     return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies`,constructionCompanyToCreate)
   }
-
+  
   updateConstructionCompany(id:string,constructionCompanyToUpd: ConstructionCompanyUpdateRequest) : Observable<void>
    {
     return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/construction-companies/${id}`,constructionCompanyToUpd);

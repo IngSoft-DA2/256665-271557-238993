@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { ConstructionCompany } from '../interfaces/construction-company';
 import { Router } from '@angular/router';
 import { ConstructionCompanyService } from '../services/construction-company.service';
-import { ConstructionCompanyAdminService } from '../../constructionCompanyAdmin/services/construction-company-admin.service';
 import { ConstructionCompanyAdmin } from '../../constructionCompanyAdmin/interfaces/construction-company-admin';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 
@@ -14,35 +13,43 @@ import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-use
 export class ConstructionCompanyListComponent {
   // I declared it with values because this is a temporal variable, it is only to test if this works.
   // We need to pass the logged user between components.
-  
+
   private constructionCompanyTest: ConstructionCompany = {
     id: '123123adawsfsfs',
     name: 'Construction Company 1',
     userCreatorId: 'ad23213da123dassacfrsgth',
     buildingsId: []
   };
-  
-  constructionCompanyAdminObtainedFromLogin : ConstructionCompanyAdmin = {
-    id : 'ad23213da123dassacfrsgth',
-    firstname : 'testFirstname',
-    lastname : 'testLastname',
-    email : 'test@gmail.com',
-    password : 'test2003!',
-    role : SystemUserRoleEnum.ConstructionCompanyAdmin,
-    constructionCompany : this.constructionCompanyTest
+
+  constructionCompanyAdminObtainedFromLogin: ConstructionCompanyAdmin = {
+    id: 'ad23213da123dassacfrsgth',
+    firstname: 'testFirstname',
+    lastname: 'testLastname',
+    email: 'test@gmail.com',
+    password: 'test2003!',
+    role: SystemUserRoleEnum.ConstructionCompanyAdmin,
+    constructionCompany: this.constructionCompanyTest
   };
   // <-------- Removed things from above when we have the user passed down to here... --------->
 
-  constructionCompanyOfUser? : ConstructionCompany;
+  constructionCompanyOfUser?: ConstructionCompany;
+  hasCompany : boolean = true;
 
-  constructor(private constructionCompanyService: ConstructionCompanyService, private router: Router) {
+  constructor(private router: Router) {
     this.setProperties();
+
+    if(this.constructionCompanyOfUser === undefined)
+      {
+        this.hasCompany = false;
+      }
   }
 
-  checkIfItHasBuildings(): void {
-    if (this.constructionCompanyOfUser?.buildingsId && this.constructionCompanyOfUser.buildingsId.length > 0) {
+  checkIfItHasBuildings(constructionCompany : ConstructionCompany): void {
+    if (constructionCompany !== undefined
+      && constructionCompany.buildingsId.length > 0) {
       this.router.navigateByUrl('buildings/list');
-    } else {
+    }
+    else {
       alert('No buildings at the moment');
     }
   }
@@ -55,6 +62,9 @@ export class ConstructionCompanyListComponent {
         userCreatorId: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.userCreatorId,
         buildingsId: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.buildingsId,
       };
+    }
+    else{
+      this.hasCompany = false;
     }
   }
 }

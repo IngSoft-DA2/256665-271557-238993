@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container" *ngIf="hasCompany; else noCompany">
 
 <table class="table table-striped table-bordered tableClass">
     <thead>
@@ -12,13 +12,13 @@
         </tr>
     </thead>
     <tbody>
-            <td>{{constructionCompanyOfUser.id}}</td>
-            <td>{{constructionCompanyOfUser.name}}</td>
+            <!-- <td>{{constructionCompanyOfUser.id}}</td> -->
+            <!-- <td>{{constructionCompanyOfUser.name}}</td> -->
             <td>
-                <a class="btn btn-info btn-sm button" [routerLink]="[`/construction-company/${constructionCompany.id/update}]"> Update Company </a>
+                <!-- <a class="btn btn-info btn-sm button" [routerLink]="[construction-company/{constructionCompanyOfUser.id/update}]"> Update Company </a> -->
             </td>
             <td>
-                <button class="btn btn-info btn-sm button" (click)="checkIfItHasBuildings(constructionCompany.buildings)"></button>
+                <!-- <button class="btn btn-info btn-sm button" (click)="checkIfItHasBuildings(constructionCompanyOfUser)"></button> -->
             </td>
            
     </tbody>
@@ -27,3 +27,16 @@
 </table>
 
 </div>
+
+
+<ng-template #noCompany>
+    <div class="container mt-3">
+
+    </div>
+
+    <div class="alert alert-warning mt-2">
+        <h4>No construction company registered</h4>
+        <button type="button" class="btn btn-success">Create +</button>
+    </div>
+
+</ng-template>

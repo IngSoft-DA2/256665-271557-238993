@@ -9,12 +9,17 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './construction-company-update.component.css'
 })
 export class ConstructionCompanyUpdateComponent {
+  constructionCompanyToUpd: ConstructionCompany = {
+    id: '',
+    name: '',
+    userCreatorId: '',
+    buildingsId: []
+  };
 
-  constructionCompanyToUpd?: ConstructionCompany;
-  idOfConstructionCompany?: string;
+  idOfConstructionCompany: string = '';
   constructionCompanyFound: boolean = false;
 
-  constructor(private constructionCompanyService: ConstructionCompanyService, private route: ActivatedRoute, private router : Router) {
+  constructor(private constructionCompanyService: ConstructionCompanyService, private route: ActivatedRoute, private router: Router) {
 
     route.queryParams
       .subscribe({
@@ -47,7 +52,7 @@ export class ConstructionCompanyUpdateComponent {
           }
         });
     }
-    else{
+    else {
       alert("Imposible to update, it is the failing the getter of the construction company");
     }
 
