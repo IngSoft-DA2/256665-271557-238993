@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ConstructionCompany } from '../interfaces/construction-company';
 import { Router } from '@angular/router';
-import { ConstructionCompanyService } from '../services/construction-company.service';
 import { ConstructionCompanyAdmin } from '../../constructionCompanyAdmin/interfaces/construction-company-admin';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 
@@ -14,6 +13,13 @@ export class ConstructionCompanyListComponent {
   // I declared it with values because this is a temporal variable, it is only to test if this works.
   // We need to pass the logged user between components.
 
+
+  //This is the correct way to work with, but these will be obtain in a diferent way (which is not done yet). 
+  userId : string | undefined = undefined;
+  userRole : SystemUserRoleEnum | undefined = undefined;
+  //getUser
+  //constructionCompanyOfUser = getUser(userId).constructionCompany
+
   private constructionCompanyTest: ConstructionCompany = {
     id: '123123adawsfsfs',
     name: 'Construction Company 1',
@@ -21,7 +27,7 @@ export class ConstructionCompanyListComponent {
     buildingsId: []
   };
 
-  constructionCompanyAdminObtainedFromLogin: ConstructionCompanyAdmin = {
+  private constructionCompanyAdminObtainedFromLogin: ConstructionCompanyAdmin = {
     id: 'ad23213da123dassacfrsgth',
     firstname: 'testFirstname',
     lastname: 'testLastname',
@@ -33,18 +39,12 @@ export class ConstructionCompanyListComponent {
   // <-------- Removed things from above when we have the user passed down to here... --------->
 
   constructionCompanyOfUser?: ConstructionCompany;
-  hasCompany : boolean = true;
 
   constructor(private router: Router) {
     this.setProperties();
-
-    if(this.constructionCompanyOfUser === undefined)
-      {
-        this.hasCompany = false;
-      }
   }
 
-  checkIfItHasBuildings(constructionCompany : ConstructionCompany): void {
+  checkIfItHasBuildings(constructionCompany: ConstructionCompany): void {
     if (constructionCompany !== undefined
       && constructionCompany.buildingsId.length > 0) {
       this.router.navigateByUrl('buildings/list');
@@ -56,15 +56,13 @@ export class ConstructionCompanyListComponent {
 
   private setProperties() {
     if (this.constructionCompanyAdminObtainedFromLogin.constructionCompany !== undefined) {
+
       this.constructionCompanyOfUser = {
         id: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.id,
         name: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.name,
         userCreatorId: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.userCreatorId,
         buildingsId: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.buildingsId,
       };
-    }
-    else{
-      this.hasCompany = false;
     }
   }
 }
