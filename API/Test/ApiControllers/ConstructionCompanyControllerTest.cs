@@ -36,6 +36,8 @@ public class ConstructionCompanyControllerTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Construction Company 1",
+                UserCreatorId = Guid.NewGuid(),
+                BuildingsId = new List<Guid>()
             }
         };
 
@@ -128,7 +130,9 @@ public class ConstructionCompanyControllerTest
         GetConstructionCompanyResponse expectedConstructionCompany = new GetConstructionCompanyResponse()
         {
             Id = Guid.NewGuid(),
-            Name = "Construction Company 1"
+            Name = "Construction Company 1",
+            UserCreatorId = Guid.NewGuid(),
+            BuildingsId = new List<Guid>()
         };
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompany);

@@ -112,7 +112,9 @@ public class BuildingControllerTest
             ConstructionCompany = new GetConstructionCompanyResponse
             {
                 Id = Guid.NewGuid(),
-                Name = "Construction company 1"
+                Name = "Construction company 1",
+                UserCreatorId = Guid.NewGuid(),
+                BuildingsId = new List<Guid> {Guid.NewGuid()}
             },
             CommonExpenses = 1000,
             Flats = new[]

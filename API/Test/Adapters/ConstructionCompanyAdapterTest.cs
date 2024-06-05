@@ -46,7 +46,9 @@ public class ConstructionCompanyAdapterTest
             new ConstructionCompany
             {
                 Id = Guid.NewGuid(),
-                Name = "Test Company 1"
+                Name = "Test Company 1",
+                UserCreatorId = Guid.NewGuid(),
+                Buildings = new List<Building>()
             }
         };
 
@@ -56,7 +58,9 @@ public class ConstructionCompanyAdapterTest
                 new GetConstructionCompanyResponse
                 {
                     Id = expectedServiceResponse.First().Id,
-                    Name = expectedServiceResponse.First().Name
+                    Name = expectedServiceResponse.First().Name,
+                    UserCreatorId = expectedServiceResponse.First().UserCreatorId,
+                    BuildingsId = expectedServiceResponse.First().Buildings.Select(building => building.Id).ToList(),
                 }
             };
 
@@ -92,13 +96,17 @@ public class ConstructionCompanyAdapterTest
         ConstructionCompany expectedServiceResponse = new ConstructionCompany
         {
             Id = Guid.NewGuid(),
-            Name = "Test Company 1"
+            Name = "Test Company 1",
+            UserCreatorId = Guid.NewGuid(),
+            Buildings = new List<Building>()
         };
 
         GetConstructionCompanyResponse expectedAdapterResponse = new GetConstructionCompanyResponse
         {
             Id = expectedServiceResponse.Id,
-            Name = expectedServiceResponse.Name
+            Name = expectedServiceResponse.Name,
+            UserCreatorId = expectedServiceResponse.UserCreatorId,
+            BuildingsId = expectedServiceResponse.Buildings.Select(building => building.Id).ToList()
         };
 
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyById(It.IsAny<Guid>()))
