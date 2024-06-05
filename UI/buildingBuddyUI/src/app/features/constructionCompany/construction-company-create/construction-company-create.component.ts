@@ -11,7 +11,7 @@ import { ConstructionCompanyService } from '../services/construction-company.ser
 export class ConstructionCompanyCreateComponent 
 {
 
-  constructor(private constructionCompanyServices : ConstructionCompanyService ,private router : Router)
+  constructor(private constructionCompanyService : ConstructionCompanyService, private router : Router)
   {
 
   }
@@ -20,5 +20,18 @@ export class ConstructionCompanyCreateComponent
     name: '',
     userCreatorId : ''
   };
+
+  createConstructionCompany() : void
+  {
+    this.constructionCompanyService.createConstructionCompany(this.constructionCompanyToCreate)
+    .subscribe({
+      next: () => {
+        this.router.navigateByUrl('/')
+      },
+      error : (errorMessage) => {
+        alert(errorMessage.error)
+      }
+    })
+  }
 
 }

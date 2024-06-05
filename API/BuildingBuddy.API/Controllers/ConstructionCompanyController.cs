@@ -39,7 +39,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Construction Company
 
         [HttpPost]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany(
             [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
@@ -54,7 +54,7 @@ namespace BuildingBuddy.API.Controllers
         #region Update Construction Company
 
         [HttpPut]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         [Route("{id:Guid}")]
         public IActionResult UpdateConstructionCompany([FromRoute] Guid id,[FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
         {
