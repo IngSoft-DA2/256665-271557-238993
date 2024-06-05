@@ -12,14 +12,6 @@ import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-use
 export class ConstructionCompanyListComponent {
   // I declared it with values because this is a temporal variable, it is only to test if this works.
   // We need to pass the logged user between components.
-
-
-  //This is the correct way to work with, but these will be obtain in a diferent way (which is not done yet). 
-  userId : string | undefined = undefined;
-  userRole : SystemUserRoleEnum | undefined = undefined;
-  //getUser
-  //constructionCompanyOfUser = getUser(userId).constructionCompany
-
   private constructionCompanyTest: ConstructionCompany = {
     id: '123123adawsfsfs',
     name: 'Construction Company 1',
@@ -37,6 +29,12 @@ export class ConstructionCompanyListComponent {
     constructionCompany: this.constructionCompanyTest
   };
   // <-------- Removed things from above when we have the user passed down to here... --------->
+
+    //This is the correct way to work with, but these will be obtain in a diferent way (which is not done yet). 
+    userId : string | undefined = undefined;
+    userRole : SystemUserRoleEnum | undefined = undefined;
+    //getUser
+    //constructionCompanyOfUser = getUser(userId).constructionCompany
 
   constructionCompanyOfUser?: ConstructionCompany;
 

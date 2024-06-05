@@ -28,7 +28,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get all Construction Companies
 
         [HttpGet]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllConstructionCompanies()
         {
             return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());

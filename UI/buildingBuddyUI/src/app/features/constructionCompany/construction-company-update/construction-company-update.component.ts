@@ -8,25 +8,21 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './construction-company-update.component.html',
   styleUrl: './construction-company-update.component.css'
 })
-export class ConstructionCompanyUpdateComponent {
-  constructionCompanyToUpd: ConstructionCompany = {
-    id: '',
-    name: '',
-    userCreatorId: '',
-    buildingsId: []
-  };
+export class ConstructionCompanyUpdateComponent{
+  constructionCompanyToUpd?: ConstructionCompany;
 
   idOfConstructionCompany: string = '';
   constructionCompanyFound: boolean = false;
 
   constructor(private constructionCompanyService: ConstructionCompanyService, private route: ActivatedRoute, private router: Router) {
 
-    route.queryParams
-      .subscribe({
-        next: (queryParams) => {
-          this.idOfConstructionCompany = queryParams['id'];
-        }
-      })
+    route.paramMap
+    .subscribe({
+      next: (params) =>{
+        this.idOfConstructionCompany = params.get("id")!;
+      }
+    })
+
     if (this.idOfConstructionCompany !== undefined) {
       constructionCompanyService.getConstructionCompanyById(this.idOfConstructionCompany)
         .subscribe({
@@ -34,11 +30,14 @@ export class ConstructionCompanyUpdateComponent {
             this.constructionCompanyToUpd = Response;
             this.constructionCompanyFound = true;
           },
+          error: () => {
+            alert("Construction company was not found");
+            this.router.navigateByUrl('/construction-companies/list')
+          }
         })
     }
 
   }
-
   updateChanges(): void {
     if (this.idOfConstructionCompany !== undefined && this.constructionCompanyToUpd) {
       this.constructionCompanyService.updateConstructionCompany(this.idOfConstructionCompany, this.constructionCompanyToUpd)

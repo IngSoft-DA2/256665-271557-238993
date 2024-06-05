@@ -25,6 +25,6 @@ export class ConstructionCompanyService {
   }
   getConstructionCompanyById(idOfConstructionCompany: string) : Observable<ConstructionCompany>
    {
-    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies`);
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies/${idOfConstructionCompany}`);
   }
 }
