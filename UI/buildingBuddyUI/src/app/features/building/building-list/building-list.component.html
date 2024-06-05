@@ -1,0 +1,32 @@
+<p>BUILDINGS!</p>
+
+<ng-template #showBuildings>
+
+    <div class="container">
+
+        <table class="table table-striped table-bordered tableClass">
+            <thead>
+                <br />
+                <tr>
+                    <th>Building Name </th>
+                    <th>Building Address</th>
+                    <th>Manager of Building</th>
+                    <th>Update Building</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <td>{{constructionCompany.id}}</td>
+                    <td>{{constructionCompany.name}}</td>
+                    <td>{{checkIfItHasManager(constructionCompany.buildings)}}</td>
+                    <td *ngIf="hasManager">
+                        <a class="btn btn-info btn-sm button" [routerLink]="[`/construction-company/${constructionCompany.id/update}]"> Update </a>
+                    </td>
+            </tbody>
+            <br />
+        
+        </table>
+
+
+    </div>
+
+</ng-template>

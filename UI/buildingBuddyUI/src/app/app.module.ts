@@ -15,6 +15,8 @@ import { AdminCreateComponent } from './features/administrator/admin-create/admi
 import { ConstructionCompanyAdminCreateByInvitationComponent } from './features/constructionCompanyAdmin/construction-company-admin-create-by-invitation/construction-company-admin-create-by-invitation.component';
 import { ManagerListComponent } from './features/manager/features/manager-list/manager-list.component';
 import { ConstructionCompanyCreateComponent } from './features/constructionCompany/construction-company-create/construction-company-create.component';
+import { ConstructionCompanyListComponent } from './features/constructionCompany/construction-company-list/construction-company-list.component';
+import { BuildingListComponent } from './features/building/building-list/building-list.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { ConstructionCompanyCreateComponent } from './features/constructionCompa
     LandingPageComponent,
     AdminCreateComponent,
     ManagerListComponent,
-    ConstructionCompanyCreateComponent
+    ConstructionCompanyCreateComponent,
+    ConstructionCompanyListComponent,
+    BuildingListComponent
   ],
   imports: [
     BrowserModule,

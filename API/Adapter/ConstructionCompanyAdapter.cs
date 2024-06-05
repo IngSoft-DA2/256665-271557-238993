@@ -35,6 +35,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
                 {
                     Id = constructionCompany.Id,
                     Name = constructionCompany.Name,
+                    BuildingsId = constructionCompany.Buildings.Select(building => building.Id).ToList()
                 });
             return constructionCompaniesToReturn;
         }
@@ -59,6 +60,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
             {
                 Id = constructionCompanyInDb.Id,
                 Name = constructionCompanyInDb.Name,
+                BuildingsId = constructionCompanyInDb.Buildings.Select(building => building.Id).ToList()
             };
 
             return constructionCompanyToReturn;

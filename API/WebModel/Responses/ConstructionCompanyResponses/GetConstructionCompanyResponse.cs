@@ -1,9 +1,13 @@
-﻿namespace WebModel.Responses.ConstructionCompanyResponses;
+﻿using System.Collections;
+
+namespace WebModel.Responses.ConstructionCompanyResponses;
 
 public class GetConstructionCompanyResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    
+    public IEnumerable<Guid> BuildingsId { get; set; }
     
     public override bool Equals(object? obj)
     {
