@@ -22,6 +22,7 @@ import { CategoryCreateComponent } from './features/category/category-create/cat
 import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
 import { LoginComponent } from './features/login/login.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './core/interceptors/forbidden-handler.interceptor';
 
 
 @NgModule({
@@ -55,6 +56,11 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true
     }
   ],

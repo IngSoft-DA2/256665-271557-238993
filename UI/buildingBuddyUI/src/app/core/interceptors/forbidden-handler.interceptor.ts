@@ -13,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 403) {
-          this.router.navigate(['/access-denied']);
+          this.router.navigate(['/']);
         }
         return throwError(error);
       })

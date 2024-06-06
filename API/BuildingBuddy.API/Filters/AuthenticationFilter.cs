@@ -21,7 +21,9 @@ public class AuthenticationFilter : Attribute, IActionFilter
 
         if (authHeader is null)
         {
-            context.Result = new UnauthorizedObjectResult("Authorization header is required");
+            ObjectResult objectResult =  new ObjectResult("Authorization header is required");
+            objectResult.StatusCode = 401;
+            context.Result = objectResult;
         }
         else
         {
@@ -34,7 +36,10 @@ public class AuthenticationFilter : Attribute, IActionFilter
                 
                 if(sessionService.IsSessionValid(sessionStringOfUser) == false) 
                 {
-                    context.Result = new UnauthorizedObjectResult("Session is not valid");
+                    
+                    ObjectResult objectResult =  new ObjectResult("Session is not valid");
+                    objectResult.StatusCode = 401;
+                    context.Result = objectResult;
                 }
                 //Here ends Authorization, now we check if the user has the required roles (Authentication)
                 
@@ -42,13 +47,17 @@ public class AuthenticationFilter : Attribute, IActionFilter
                 
                 if (!_roles.Contains(userRole))
                 {
-                    context.Result = new ForbidResult("Access denied");
+                    ObjectResult objectResult =  new ObjectResult("Access denied");
+                    objectResult.StatusCode = 403;
+                    context.Result = objectResult;
                 }
                 context.HttpContext.Items.Add("UserRole", userRole);
             }
             catch (Exception)
             {
-                context.Result = new UnauthorizedObjectResult("Invalid authorization token");
+                ObjectResult objectResult =  new ObjectResult("Invalid authorization token");
+                objectResult.StatusCode = 401;
+                context.Result = objectResult;
             }
         }
     }
