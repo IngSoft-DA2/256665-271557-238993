@@ -121,18 +121,25 @@ public class ManagerAdapter : IManagerAdapter
 
     public GetManagerResponse GetManagerById(Guid managerId)
     {
-        Manager managerFound = _managerServiceLogic.GetManagerById(managerId);
-
-        GetManagerResponse adapterResponse = new GetManagerResponse
+        try
         {
-            Id = managerFound.Id,
-            Email = managerFound.Email,
-            Name = managerFound.Firstname,
-            Buildings = managerFound.Buildings.Select(building => building.Id).ToList(),
-            MaintenanceRequests = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
-        };
+            Manager managerFound = _managerServiceLogic.GetManagerById(managerId);
 
-        return adapterResponse;
+            GetManagerResponse adapterResponse = new GetManagerResponse
+            {
+                Id = managerFound.Id,
+                Email = managerFound.Email,
+                Name = managerFound.Firstname,
+                Buildings = managerFound.Buildings.Select(building => building.Id).ToList(),
+                MaintenanceRequests = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
     }
 
     #endregion

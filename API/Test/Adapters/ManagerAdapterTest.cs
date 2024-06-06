@@ -224,6 +224,17 @@ public class ManagerAdapterTest
         _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
     }
     
+    [TestMethod]
+    public void GetManagerById_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _managerService.Setup(service => service.GetManagerById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.GetManagerById(It.IsAny<Guid>()));
+
+        _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
     #endregion
 
 }
