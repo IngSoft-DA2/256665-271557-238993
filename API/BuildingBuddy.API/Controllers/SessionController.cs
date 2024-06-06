@@ -2,6 +2,7 @@ using BuildingBuddy.API.Filters;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.SessionRequests;
+using WebModel.Responses.LoginResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -21,8 +22,15 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
             Guid sessionString = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
+            string userRole = _sessionService.GetUserRoleBySessionString(sessionString).ToString();
             
-            return Ok(sessionString);
+            LoginResponse loginResponse = new LoginResponse
+            {
+                SessionString = sessionString,
+                UserRole = userRole
+            };
+            
+            return Ok(loginResponse);
         }
         
         [HttpDelete]

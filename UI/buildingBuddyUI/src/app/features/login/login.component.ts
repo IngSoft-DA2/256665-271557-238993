@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { LoginService } from './services/login.service';
+import { Router } from '@angular/router';
+import { LoginRequest } from './interfaces/login-request';
 
 @Component({
   selector: 'app-login',
@@ -8,10 +11,27 @@ import { Component } from '@angular/core';
 export class LoginComponent
 {
 
+  loginRequest : LoginRequest = {
+    email : '',
+    password : ''
+  };
 
-  constructor(private loginService : LoginService)
+  constructor(private loginService : LoginService, private router : Router)
   {
-    
+  }
+
+  login() : void
+  {
+    this.loginService.login(this.loginRequest)
+    .subscribe({
+      next: (Response) =>{
+        this.loginService.storageUserValues(this.loginRequest,Response);
+      },
+      error: () => {
+        alert("Imposible to login, try again later.")
+        this.router.navigateByUrl("/")
+      }
+    })
   }
 
 }
