@@ -33,7 +33,6 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     return next.handle(authRequest);
   }
-  alert("ESTE ES EL SESSION STRING PUESTO: " + this.sessionString);
    return next.handle(request);
   }
 
