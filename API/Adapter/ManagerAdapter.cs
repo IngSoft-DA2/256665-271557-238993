@@ -50,72 +50,71 @@ public class ManagerAdapter : IManagerAdapter
         }
         catch (Exception exceptionCaught)
         {
-        throw new Exception(exceptionCaught.Message);
+            throw new Exception(exceptionCaught.Message);
         }
-    
     }
 
-#endregion
+    #endregion
 
-#region Delete Manager By Id
+    #region Delete Manager By Id
 
-public void DeleteManagerById(Guid id)
-{
-    try
+    public void DeleteManagerById(Guid id)
     {
-        _managerServiceLogic.DeleteManagerById(id);
-    }
-    catch (ObjectNotFoundServiceException)
-    {
-        throw new ObjectNotFoundAdapterException();
-    }
-    catch (Exception exceptionCaught)
-    {
-        throw new Exception(exceptionCaught.Message);
-    }
-}
-
-#endregion
-
-#region Create Manager
-
-public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
-{
-    try
-    {
-        Manager manager = new Manager
+        try
         {
-            Id = Guid.NewGuid(),
-            Email = createRequest.Email,
-            Password = createRequest.Password
-        };
-
-        Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
-
-        _managerServiceLogic.CreateManager(manager, invitationToAccept);
-
-        CreateManagerResponse adapterResponse = new CreateManagerResponse
+            _managerServiceLogic.DeleteManagerById(id);
+        }
+        catch (ObjectNotFoundServiceException)
         {
-            Id = manager.Id,
-            Firstname = invitationToAccept.Firstname
-        };
+            throw new ObjectNotFoundAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
+    }
 
-        return adapterResponse;
-    }
-    catch (ObjectNotFoundServiceException)
-    {
-        throw new ObjectNotFoundAdapterException();
-    }
-    catch (ObjectErrorServiceException exceptionCaught)
-    {
-        throw new ObjectErrorAdapterException(exceptionCaught.Message);
-    }
-    catch (Exception exceptionCaught)
-    {
-        throw new UnknownAdapterException(exceptionCaught.Message);
-    }
-}
+    #endregion
 
-#endregion
+    #region Create Manager
 
+    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
+    {
+        try
+        {
+            Manager manager = new Manager
+            {
+                Id = Guid.NewGuid(),
+                Email = createRequest.Email,
+                Password = createRequest.Password,
+                Role = SystemUserRoleEnum.Manager
+            };
+
+            Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
+
+            _managerServiceLogic.CreateManager(manager, invitationToAccept);
+
+            CreateManagerResponse adapterResponse = new CreateManagerResponse
+            {
+                Id = manager.Id,
+                Firstname = invitationToAccept.Firstname
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
+
+    #endregion
 }

@@ -1,7 +1,10 @@
 using BuildingBuddy.API.Filters;
+using Domain;
+using Domain.Enums;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.SessionRequests;
+using WebModel.Responses.LoginResponses;
 
 namespace BuildingBuddy.API.Controllers
 {
@@ -20,13 +23,21 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
-            Guid sessionString = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
+            Session sessionForUser = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
             
-            return Ok(sessionString);
+            LoginResponse loginResponse = new LoginResponse
+            {
+                UserId = sessionForUser.UserId,
+                SessionString = sessionForUser.SessionString,
+                UserRole = sessionForUser.UserRole
+            };
+            
+            return Ok(loginResponse);
         }
         
         [HttpDelete]
-        public IActionResult Logout([FromHeader] Guid sessionId)
+        [AuthenticationFilter(SystemUserRoleEnum.Admin,SystemUserRoleEnum.Manager,SystemUserRoleEnum.RequestHandler,SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        public IActionResult Logout([FromHeader(Name = "Authorization")] Guid sessionId)
         {
             _sessionService.Logout(sessionId);
             return NoContent();

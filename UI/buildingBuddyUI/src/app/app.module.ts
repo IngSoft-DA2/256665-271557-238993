@@ -3,9 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './core/navbar/navbar.component';
 import { InvitationListComponent } from './features/invitation/invitation-list/invitation-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InvitationUpdateComponent } from './features/invitation/invitation-update/invitation-update.component';
 import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
 import { InvitationListByEmailComponent } from './features/invitation/invitation-list-by-email/invitation-list-by-email.component';
@@ -20,6 +20,9 @@ import { BuildingListComponent } from './features/building/building-list/buildin
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
+import { LoginComponent } from './features/login/login.component';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './core/interceptors/forbidden-handler.interceptor';
 
 
 @NgModule({
@@ -40,7 +43,8 @@ import { CategoryTreeComponent } from './features/category/category-tree/categor
     BuildingListComponent,
     ConstructionCompanyUpdateComponent,
     CategoryCreateComponent,
-    CategoryTreeComponent
+    CategoryTreeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +52,18 @@ import { CategoryTreeComponent } from './features/category/category-tree/categor
     FormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -18,6 +18,7 @@ public class SessionServiceTest
     private Mock<IAdministratorRepository> _administratorRepository;
     private Mock<IManagerRepository> _managerRepository;
     private Mock<IRequestHandlerRepository> _requestHandlerRepository;
+    private Mock<IConstructionCompanyAdminRepository> _constructionCompanyAdminRepository;
     private SessionService _sessionService;
     private Guid _sampleUserGuid;
 
@@ -28,9 +29,10 @@ public class SessionServiceTest
         _managerRepository = new Mock<IManagerRepository>(MockBehavior.Strict);
         _requestHandlerRepository = new Mock<IRequestHandlerRepository>(MockBehavior.Strict);
         _sessionRepository = new Mock<ISessionRepository>(MockBehavior.Strict);
+        _constructionCompanyAdminRepository = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
 
         _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object,
-            _administratorRepository.Object, _requestHandlerRepository.Object);
+            _administratorRepository.Object, _requestHandlerRepository.Object,_constructionCompanyAdminRepository.Object);
     }
 
     #endregion
@@ -153,17 +155,21 @@ public class SessionServiceTest
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
             .Returns(new List<RequestHandler>{requestHandler});
+        
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository => constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.CreateSession(It.IsAny<Session>()));
 
 
-        Guid sessionStringObtained = _sessionService.Authenticate(user.Email, user.Password);
+        Session sessionForUserObtained = _sessionService.Authenticate(user.Email, user.Password);
         _administratorRepository.VerifyAll();
         _managerRepository.VerifyAll();
         _requestHandlerRepository.VerifyAll();
+        _constructionCompanyAdminRepository.VerifyAll();
         _sessionRepository.VerifyAll();
 
-        Assert.IsNotNull(sessionStringObtained);
+        Assert.IsNotNull(sessionForUserObtained);
     }
 
     [TestMethod]
@@ -179,6 +185,9 @@ public class SessionServiceTest
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
             .Returns(new List<RequestHandler>());
+        
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository => constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
             .Returns(dummySession);
@@ -189,6 +198,7 @@ public class SessionServiceTest
         _administratorRepository.VerifyAll();
         _managerRepository.VerifyAll();
         _requestHandlerRepository.VerifyAll();
+        _constructionCompanyAdminRepository.VerifyAll();
     }
 
     [TestMethod]

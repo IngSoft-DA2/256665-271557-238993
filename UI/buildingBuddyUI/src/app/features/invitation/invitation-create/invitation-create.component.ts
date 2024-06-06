@@ -62,9 +62,6 @@ export class InvitationCreateComponent {
       default:
         return 'Unknown';
     }
-
-
-
   }
 
 
