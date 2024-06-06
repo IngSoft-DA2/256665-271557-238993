@@ -28,5 +28,11 @@ namespace BuildingBuddy.API.Controllers
             return CreatedAtAction(nameof(CreateRequestHandler),
                 new { id = response.Id }, response);
         }
+        
+        // [HttpGet]
+        // public IActionResult GetAllRequestHandlers()
+        // {
+        //     return Ok(_requestHandlerAdapter.GetAllRequestHandlers());
+        // }
     }
 }

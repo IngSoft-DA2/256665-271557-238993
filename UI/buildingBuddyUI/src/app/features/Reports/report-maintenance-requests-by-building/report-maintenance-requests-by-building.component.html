@@ -1,15 +1,12 @@
 <div class="container">
-
-    <!-- <h1 class="mt-3">Report of Maintenance Requests By Building</h1>
-
-    <div class="d-flex justify-content-start mt-3">
-        <label for="buildingFilter" class="me-2">Filter by Building:</label>
-        <select id="buildingFilter" class="form-select me-2" [(ngModel)]="SelectedBuilding">
-            <option value="">All Buildings</option>
+    <div class="mt-3">
+        <label class="form-label">Select a building to filter by</label>
+        <br>
+        <select name="buildingSelected" (change)="onChange($event)">
+            <option value="default" selected disabled>Select a building</option>   
             <option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</option>
         </select>
-        <button class="btn btn-primary" (click)="filterReports()">Apply Filter</button>
-    </div> -->
+    </div>
 
     <ng-container *ngIf="reportOfMaintenanceRequestsByBuilding; else NoData">    
         <table class="table table-bordered mt-3">
@@ -22,8 +19,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let nodeOfReport of reportOfMaintenanceRequestsByBuilding;">
-                    <td>{{ getBuildingInfo(nodeOfReport.buildingId)}}</td>
+                <tr *ngFor="let nodeOfReport of reportOfMaintenanceRequestsByBuilding">
+                    <td>{{ getBuildingName(nodeOfReport.buildingId) }}</td>
                     <td>{{ nodeOfReport.openRequests }}</td>
                     <td>{{ nodeOfReport.closedRequests }}</td>
                     <td>{{ nodeOfReport.onAttendanceRequests }}</td>
@@ -31,17 +28,10 @@
             </tbody>
         </table>
     </ng-container>
-
-
-
 </div>
-
-
 
 <ng-template #NoData>
     <div class="alert alert-warning">
         <h4>There is no data</h4>
     </div>
 </ng-template>
-
-

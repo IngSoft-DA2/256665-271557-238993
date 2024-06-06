@@ -15,6 +15,7 @@ import { ConstructionCompanyAdminCreateComponent } from './features/construction
 import { LandingPageComponent } from './features/landingPage/landing-page/landing-page.component';
 import { AdminCreateComponent } from './features/administrator/admin-create/admin-create.component';
 import { ReportsListComponent } from './features/Reports/reports-list/reports-list.component';
+import { ReportMaintenanceRequestsByReqHandlerComponent } from './features/Reports/report-maintenance-requests-by-req-handler/report-maintenance-requests-by-req-handler.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ReportsListComponent } from './features/Reports/reports-list/reports-li
     ConstructionCompanyAdminCreateComponent,
     LandingPageComponent,
     AdminCreateComponent,
-    ReportsListComponent
+    ReportsListComponent,
+    ReportMaintenanceRequestsByReqHandlerComponent
   ],
   imports: [
     BrowserModule,
