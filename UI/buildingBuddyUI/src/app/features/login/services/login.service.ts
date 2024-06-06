@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { LoginResponse } from '../interfaces/login-response';
 import { User } from '../interfaces/user';
-import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +23,6 @@ export class LoginService {
   }
 
   storageUserValues(loginRequestValues: LoginRequest, responseOfApi: LoginResponse) {
-    alert(responseOfApi.userRole);
     this.userConnected = {
       userId : responseOfApi.userId,
       email: loginRequestValues.email,
