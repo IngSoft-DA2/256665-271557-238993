@@ -9,14 +9,12 @@ import { SystemUserRoleEnum } from '../../features/invitation/interfaces/enums/s
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent
-{
-  InLoginPage : boolean = false;
-  userConnected? : User = undefined;
+export class NavbarComponent {
+  InLoginPage: boolean = false;
+  userConnected?: User = undefined;
   SystemUserRoleEnumValues = SystemUserRoleEnum;
-  
-  constructor(private loginService : LoginService, private router : Router)
-  {
+
+  constructor(private loginService: LoginService, private router: Router) {
     // We need to get the user role. Now I hardcoded it, so it can be show up. But is wrong.
 
     loginService.getUser().subscribe({
@@ -28,22 +26,18 @@ export class NavbarComponent
         this.userConnected = undefined;
       }
     })
-    
+
 
   }
 
-  goToLoginPage() : void
-  {
+  goToLoginPage(): void {
     this.InLoginPage = true;
     this.router.navigateByUrl('/login');
   }
 
-  logout() : void 
-  {
-    // We need to logout the user when the button is clicked. Need to call service function here.
-    
-    this.router.navigateByUrl("/")
+  logout(): void {
+    this.loginService.removeUserConnected()
+    this.router.navigateByUrl('/');
+    this.InLoginPage = false;
   }
-
-
 }

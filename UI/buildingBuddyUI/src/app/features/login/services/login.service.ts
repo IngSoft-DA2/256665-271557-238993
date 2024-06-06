@@ -19,12 +19,12 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/v2/sessions`, loginRequest);
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/v2/sessions?addAuth=true`, loginRequest);
   }
 
   storageUserValues(loginRequestValues: LoginRequest, responseOfApi: LoginResponse) {
     this.userConnected = {
-      userId : responseOfApi.userId,
+      userId: responseOfApi.userId,
       email: loginRequestValues.email,
       password: loginRequestValues.password,
       sessionString: responseOfApi.sessionString,
@@ -40,9 +40,19 @@ export class LoginService {
     return this.user$;
   }
 
+  logout(): Observable<void> {
+    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/sessions?addAuth=true`);
+  }
+
   removeUserConnected(): void {
-    this.userConnected = undefined;
-    this.userSubject.next(this.userConnected);
+    this.logout()
+      .subscribe({
+        next: () => {
+          this.userConnected = undefined;
+          this.userSubject.next(this.userConnected);
+        }
+      })
+
   }
 
 

@@ -31,10 +31,9 @@ export class AuthInterceptor implements HttpInterceptor {
           'Authorization': this.sessionString
         }
       });
-      console.log(authRequest);
     return next.handle(authRequest);
   }
-   console.log(request);
+  alert("ESTE ES EL SESSION STRING PUESTO: " + this.sessionString);
    return next.handle(request);
   }
 
