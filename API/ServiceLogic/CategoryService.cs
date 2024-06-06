@@ -28,16 +28,17 @@ public class CategoryService : ICategoryService
             List<CategoryComponent> categoryComponents = _categoryRepository.GetAllCategories().ToList();
 
             List<CategoryComponent> response = new List<CategoryComponent>();
-            
+
             foreach (var categoryComponent in categoryComponents)
             {
                 if (categoryComponent is Category && categoryComponent.CategoryFatherId != null)
                 {
                     continue;
                 }
+
                 response.Add(categoryComponent);
             }
-            
+
             return response;
         }
         catch (Exception exceptionCaught)
@@ -77,7 +78,7 @@ public class CategoryService : ICategoryService
         {
             categoryToCreate.CategoryValidator();
             //Implicates that the category to create is a subCategory of another category
-            if(categoryToCreate.CategoryFatherId is not null)
+            if (categoryToCreate.CategoryFatherId is not null)
             {
                 Guid categoryFatherId = categoryToCreate.CategoryFatherId.Value;
                 CategoryComponent categoryFather = GetCategoryById(categoryFatherId);
@@ -86,14 +87,16 @@ public class CategoryService : ICategoryService
                 {
                     // Delete it because now it will be a category composite
                     _categoryRepository.DeleteCategory(categoryFather);
-                    
+
                     categoryFather = new CategoryComposite()
                     {
                         Id = categoryFather.Id,
-                        Name = categoryFather.Name
+                        Name = categoryFather.Name,
+                        CategoryFatherId = categoryFather.CategoryFatherId
                     };
                     _categoryRepository.CreateCategory(categoryFather);
                 }
+
                 categoryFather.AddChild(categoryToCreate);
                 _categoryRepository.UpdateCategory(categoryFather);
             }

@@ -13,6 +13,7 @@ import { ConstructionCompanyCreateComponent } from './features/constructionCompa
 import { ConstructionCompanyListComponent } from './features/constructionCompany/construction-company-list/construction-company-list.component';
 import { BuildingListComponent } from './features/building/building-list/building-list.component';
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
+import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 
 const routes: Routes =
 [
@@ -69,6 +70,10 @@ const routes: Routes =
   {
     path : 'buildings/list',
     component : BuildingListComponent
+  },
+  {
+    path: 'categories/create',
+    component : CategoryCreateComponent
   },
 
 

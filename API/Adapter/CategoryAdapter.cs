@@ -47,7 +47,8 @@ public class CategoryAdapter : ICategoryAdapter
         GetCategoryResponse response = new GetCategoryResponse
         {
             Id = category.Id,
-            Name = category.Name
+            Name = category.Name,
+            CategoryFatherId = category.CategoryFatherId
         };
         
         if (category is CategoryComposite composite)
@@ -73,6 +74,7 @@ public class CategoryAdapter : ICategoryAdapter
             {
                 Id = category.Id,
                 Name = category.Name,
+                CategoryFatherId = category.CategoryFatherId,
                 SubCategories = category is CategoryComposite composite
                     ? composite.GetChilds().Select(subCategory => CreateCategoryResponse(subCategory)).ToList()
                     : null
