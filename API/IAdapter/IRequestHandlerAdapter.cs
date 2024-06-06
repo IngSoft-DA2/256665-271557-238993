@@ -7,5 +7,5 @@ namespace IAdapter;
 public interface IRequestHandlerAdapter
 {
     public CreateRequestHandlerResponse CreateRequestHandler(CreateRequestHandlerRequest request);
-    public List<GetRequestHandlerResponse> GetAllRequestHandlers();
+    public IEnumerable<GetRequestHandlerResponse> GetAllRequestHandlers();
 }

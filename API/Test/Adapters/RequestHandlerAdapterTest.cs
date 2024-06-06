@@ -1,3 +1,4 @@
+using System.Collections;
 using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
@@ -102,12 +103,11 @@ public class RequestHandlerAdapterTest
         _requestHandlerService.Setup(service => service.GetAllRequestHandlers())
             .Returns(dummyRequestHandlers);
 
-        List<GetRequestHandlerResponse> adapterResponse = _requestHandlerAdapter.GetAllRequestHandlers();
+        IEnumerable<GetRequestHandlerResponse> adapterResponse = _requestHandlerAdapter.GetAllRequestHandlers();
         
         _requestHandlerService.VerifyAll();
 
         Assert.IsTrue(adapterResponse.SequenceEqual(expectedAdapterResponse));
-        Assert.AreEqual(dummyRequestHandlers.Count, adapterResponse.Count);
     }
     
     [TestMethod]

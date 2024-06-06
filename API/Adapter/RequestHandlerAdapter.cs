@@ -48,11 +48,11 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
         }
     }
 
-    public List<GetRequestHandlerResponse> GetAllRequestHandlers()
+    public IEnumerable<GetRequestHandlerResponse> GetAllRequestHandlers()
     {
         try
         {
-            List<RequestHandler> requestHandlers = _requestHandlerService.GetAllRequestHandlers();
+            IEnumerable<RequestHandler> requestHandlers = _requestHandlerService.GetAllRequestHandlers();
             List<GetRequestHandlerResponse> getRequestHandlerResponses = new List<GetRequestHandlerResponse>();
             foreach (RequestHandler requestHandler in requestHandlers)
             {

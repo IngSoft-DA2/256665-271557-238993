@@ -53,9 +53,9 @@ public class RequestHandlerService : IRequestHandlerService
         
     }
 
-    public List<RequestHandler> GetAllRequestHandlers()
+    public IEnumerable<RequestHandler> GetAllRequestHandlers()
     {
-        throw new NotImplementedException();
+        return _requestHandlerRepository.GetAllRequestHandlers();
     }
 
     private void CheckIfEmailIsAlreadyRegistered(RequestHandler requestHandler)
