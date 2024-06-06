@@ -26,7 +26,7 @@ export class LoginComponent
     .subscribe({
       next: (Response) =>{
         this.loginService.storageUserValues(this.loginRequest,Response);
-        this.router.navigateByUrl("/");
+        this.router.navigateByUrl("home");
       },
       error: () => {
         alert("Imposible to login, try again later.")
