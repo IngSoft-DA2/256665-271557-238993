@@ -1,4 +1,6 @@
 using BuildingBuddy.API.Filters;
+using Domain;
+using Domain.Enums;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.SessionRequests;
@@ -21,13 +23,14 @@ namespace BuildingBuddy.API.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
-            Guid sessionString = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
-            string userRole = _sessionService.GetUserRoleBySessionString(sessionString).ToString();
+            Session sessionForUser = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
+            // SystemUserRoleEnum userRole = _sessionService.GetUserRoleBySessionString(sessionForUser.SessionString);
             
             LoginResponse loginResponse = new LoginResponse
             {
-                SessionString = sessionString,
-                UserRole = userRole
+                UserId = sessionForUser.UserId,
+                SessionString = sessionForUser.SessionString,
+                UserRole = sessionForUser.UserRole
             };
             
             return Ok(loginResponse);

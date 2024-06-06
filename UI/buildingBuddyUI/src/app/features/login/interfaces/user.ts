@@ -2,6 +2,7 @@ import { SystemUserRoleEnum } from "../../invitation/interfaces/enums/system-use
 
 export interface User
 {
+    userId : string,
     email : string,
     password : string,
     sessionString : string,

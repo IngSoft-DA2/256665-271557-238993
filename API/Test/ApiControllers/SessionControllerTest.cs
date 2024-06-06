@@ -1,8 +1,10 @@
 using BuildingBuddy.API.Controllers;
+using Domain;
 using IServiceLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests.SessionRequests;
+using WebModel.Responses.LoginResponses;
 
 namespace Test.ApiControllers;
 
@@ -28,26 +30,40 @@ public class SessionControllerTest
     [TestMethod]
     public void CreateSession()
     {
-        Guid sessionString = Guid.NewGuid();
+        
+        Session sessionForUser = new Session
+        {
+            UserId = Guid.NewGuid(),
+            SessionString = Guid.NewGuid(),
+            UserRole = Domain.Enums.SystemUserRoleEnum.Admin
+        };
+        
+        LoginResponse expectedResponseValue = new LoginResponse
+        {
+            UserId = sessionForUser.UserId,
+            SessionString = sessionForUser.SessionString,
+            UserRole = sessionForUser.UserRole
+        };
+        
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedResponseValue);
+        
         SystemUserLoginRequest userLoginModel = new SystemUserLoginRequest()
         {
             Email = "email",
             Password = "password"
         };
-
+        
         _sessionService.Setup(x => x.Authenticate(userLoginModel.Email, userLoginModel.Password))
-            .Returns(sessionString);
-
-        OkObjectResult expected = new OkObjectResult(sessionString);
-
+            .Returns(sessionForUser);
+        
         IActionResult result = _sessionController.Login(userLoginModel);
-        _sessionService.VerifyAll();
 
         OkObjectResult? resultCasted = result as OkObjectResult;
         Assert.IsNotNull(resultCasted);
-
-        Assert.AreEqual(expected.StatusCode, resultCasted.StatusCode);
-        Assert.AreEqual(expected.Value, resultCasted.Value);
+        
+        Assert.AreEqual(expectedControllerResponse.StatusCode, resultCasted.StatusCode);
+        Assert.IsTrue(expectedControllerResponse.Value.Equals(resultCasted.Value));
+        _sessionService.VerifyAll();
     }
 
     #endregion

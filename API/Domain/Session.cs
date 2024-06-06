@@ -14,4 +14,11 @@ public class Session
     {
         SessionString = Guid.NewGuid();
     }
+
+    public override bool Equals(object? obj)
+    {
+        Session objToCompareWith = obj as Session;
+     
+        return SessionString == objToCompareWith.SessionString && UserId == objToCompareWith.UserId && UserRole == objToCompareWith.UserRole;
+    }
 }

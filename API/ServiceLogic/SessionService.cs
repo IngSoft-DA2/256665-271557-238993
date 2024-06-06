@@ -35,7 +35,7 @@ public class SessionService : ISessionService
 
     #region Authenticate
 
-    public Guid Authenticate(string email, string password)
+    public Session Authenticate(string email, string password)
     {
         try
         {
@@ -61,9 +61,9 @@ public class SessionService : ISessionService
             {
                 users.Add(administrator);
             }  
-            foreach (var constructioCompanyAdmins in constructionCompanyAdmins)
+            foreach (var constructionCompanyAdmin in constructionCompanyAdmins)
             {
-                users.Add(constructioCompanyAdmins);
+                users.Add(constructionCompanyAdmin);
             }
             //find user with matching email and password
             SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
@@ -78,7 +78,7 @@ public class SessionService : ISessionService
             };
             _sessionRepository.CreateSession(session);
 
-            return session.SessionString;
+            return session;
         }
         catch (InvalidCredentialException exceptionCaught)
         {
