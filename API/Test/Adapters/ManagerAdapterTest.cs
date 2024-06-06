@@ -235,6 +235,17 @@ public class ManagerAdapterTest
         _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
     }
     
+    [TestMethod]
+    public void GetManagerById_ShouldThrowException()
+    {
+        _managerService.Setup(service => service.GetManagerById(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<Exception>(() => _managerAdapter.GetManagerById(It.IsAny<Guid>()));
+
+        _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
     #endregion
 
 }

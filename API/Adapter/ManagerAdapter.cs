@@ -140,6 +140,10 @@ public class ManagerAdapter : IManagerAdapter
         {
             throw new ObjectNotFoundAdapterException();
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 
     #endregion
