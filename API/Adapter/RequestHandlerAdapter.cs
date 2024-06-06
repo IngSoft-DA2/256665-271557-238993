@@ -46,4 +46,9 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
             throw new Exception(exceptionCaught.Message);
         }
     }
+
+    public List<GetRequestHandlerResponse> GetAllRequestHandlers()
+    {
+        throw new NotImplementedException();
+    }
 }

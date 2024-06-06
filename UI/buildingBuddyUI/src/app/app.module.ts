@@ -22,6 +22,7 @@ import { BuildingListComponent } from './features/Building/building-list/buildin
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
+import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { CategoryTreeComponent } from './features/category/category-tree/categor
     BuildingListComponent,
     ConstructionCompanyUpdateComponent,
     CategoryCreateComponent,
-    CategoryTreeComponent
+    CategoryTreeComponent,
+    ReportMaintenanceReqByReqHandlerComponent
   ],
   imports: [
     BrowserModule,

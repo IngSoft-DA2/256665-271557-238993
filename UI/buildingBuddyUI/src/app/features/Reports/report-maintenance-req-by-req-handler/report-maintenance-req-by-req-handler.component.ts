@@ -1,20 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
-import { ReportService } from '../services/report.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BuildingService } from '../../Building/Services/building.service';
-import { Building } from '../../Building/Interfaces/Building.model';
-import { ManagerService } from '../../manager/services/manager.service';
+import { Component } from '@angular/core';
+import { NodeReportMaintenanceRequestsByRequestHandler } from '../interfaces/node-report-maintenance-req-by-req-handler';
 
 @Component({
-  selector: 'app-report-maintenance-requests-by-building',
-  templateUrl: './report-maintenance-requests-by-building.component.html',
-  styleUrls: ['./report-maintenance-requests-by-building.component.css']
+  selector: 'app-report-maintenance-req-by-req-handler',
+  templateUrl: './report-maintenance-req-by-req-handler.component.html',
+  styleUrl: './report-maintenance-req-by-req-handler.component.css'
 })
-export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
-  reportOfMaintenanceRequestsByBuilding?: NodeReportMaintenanceRequestsByBuilding[];
+export class ReportMaintenanceReqByReqHandlerComponent {
+  reportOfMaintenanceRequestsByReqHandler?: NodeReportMaintenanceRequestsByRequestHandler[];
   buildingIdSelected: string = "default";
-  buildings: Building[] = [];
+  buildings: RequestHandler[] = [];
   buildingsIdList: string[] = [];
   managerId: string = "";
 
@@ -105,4 +100,7 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
     this.buildingIdSelected = target.value;
     this.loadReport();
   }
+}
+
+
 }

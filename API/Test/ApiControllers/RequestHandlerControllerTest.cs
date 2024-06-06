@@ -56,4 +56,31 @@ public class RequestHandlerControllerTest
     }
     
     #endregion
+    
+    #region Get All Request Handlers
+    
+    [TestMethod]
+    public void GetAllRequestHandlers_OkIsReturned()
+    {
+        List<GetRequestHandlerResponse> expectedValue = new List<GetRequestHandlerResponse>();
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedValue);
+
+        _requestHandlerAdapter.Setup(x => x.GetAllRequestHandlers()).Returns(expectedValue);
+
+        IActionResult controllerResponse = _requestHandlerController.GetAllRequestHandlers();
+        _requestHandlerAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        List<GetRequestHandlerResponse>? value = controllerResponseCasted.Value as List<GetRequestHandlerResponse>;
+        Assert.IsNotNull(value);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.AreEqual(expectedValue, value);
+    }
+    
+    #endregion
+    
 }

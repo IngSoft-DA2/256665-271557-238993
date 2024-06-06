@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MaintenanceRequest } from '../../MaintenanceRequest/Interfaces/maintenanceRequest.model';
-import { NodeReportMaintenanceRequestsByBuilding } from '../report-maintenance-requests-by-building/interfaces/node-report-maintenance-requests-by-building';
+import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
