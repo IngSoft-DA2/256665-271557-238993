@@ -11,7 +11,8 @@ import { Category } from '../interfaces/category';
 })
 export class CategoryCreateComponent implements OnInit {
   categories: Category[] = [];
-  allCategories: Category[] = []; // Array to store all categories and subcategories
+  allCategories: Category[] = [];
+  mainCategories: Category[] = []; // Array para almacenar categorías principales
 
   categoryToCreate: CategoryCreateRequest = {
     name: '',
@@ -28,10 +29,12 @@ export class CategoryCreateComponent implements OnInit {
     this.categoryService.getAllCategories()
       .subscribe({
         next: (response) => {
-          this.categories = response;
-          this.addSubCategories(response);
-          console.log('Categories:', this.categories);
+          this.allCategories = response;
+          this.mainCategories = this.allCategories.filter(category => !category.categoryFatherId); // Filtrar categorías principales
+          this.addSubCategories(this.allCategories);
+          
           console.log('All Categories:', this.allCategories);
+          console.log('Categories sin duplicar:', this.mainCategories);
         },
         error: (errorMessage) => {
           alert(errorMessage.error);
@@ -46,30 +49,17 @@ export class CategoryCreateComponent implements OnInit {
           alert("Category Created With Success");
           this.loadCategories();
           this.resetCategoryForm();
+        },
+        error: (errorMessage) => {
+          alert(errorMessage.error);
         }
       });
   }
 
-
-  private addSubCategories(categories: Category[]): void
-  {
-    this.addSubCategoriesRec(categories);
-  }
-
-  private addSubCategoriesRec(categoryList: Category[]) {
-    this.allCategories = []; // Reset the array for the next iteration
-    categoryList.forEach(category => {
-      this.allCategories.push(category);
-      if (category.subCategories && category.subCategories.length > 0) {
-        this.addSubCategoriesRec(category.subCategories);
-      }
-    });
-  };
-
   onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    const value = target.value;
-    this.categoryToCreate.categoryFatherId = value === 'null' ? undefined : value;
+    const value = target?.value || '';
+    this.categoryToCreate.categoryFatherId = value === '' ? undefined : value;
   }
 
   private resetCategoryForm(): void {
@@ -78,4 +68,22 @@ export class CategoryCreateComponent implements OnInit {
       categoryFatherId: undefined
     };
   }
+
+
+  private addSubCategories(categories: Category[]): void {
+    this.allCategories = []; // Reiniciar el array para la próxima iteración
+    this.addSubCategoriesRec(categories);
+  }
+  
+  private addSubCategoriesRec(categoryList: Category[]): void {
+    categoryList.forEach(category => {
+      this.allCategories.push(category);
+      if (category.subCategories && category.subCategories.length > 0) {
+        this.addSubCategoriesRec(category.subCategories);
+      }
+    });
+  }
+
+
+
 }

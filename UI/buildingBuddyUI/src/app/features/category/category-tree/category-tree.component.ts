@@ -6,13 +6,16 @@ import { Category } from '../interfaces/category';
   template: `
     <ul class="category-list">
       <li *ngFor="let category of categories" class="category-item">
-        <ng-container *ngIf="category.subCategories?.length; else individualCategory">
-          <strong class="category-parent">Categoría Padre: {{ category.name }}</strong>
-          <div>
-            <em>Subcategorías de {{ category.name }}:</em>
+        <!-- Mostrar la categoría principal -->
+        <strong class="category-parent">Categoría Padre: {{ category.name }}</strong>
+        <!-- Mostrar subcategorías si existen -->
+        <div *ngIf="category.subCategories && category.subCategories.length > 0">
+          <em>Subcategorías de {{ category.name }}:</em>
+          <ul>
             <app-category-tree [categories]="category.subCategories"></app-category-tree>
-          </div>
-        </ng-container>
+          </ul>
+        </div>
+        <!-- Mostrar categorías individuales -->
         <ng-template #individualCategory>
           <strong class="category-individual">Categoría Individual: {{ category.name }}</strong>
         </ng-template>
@@ -27,6 +30,7 @@ export class CategoryTreeComponent {
   @Input()
   set categories(value: Category[] | undefined) {
     this._categories = value || [];
+    console.log('Categories Input:', this._categories); // Verificar los datos de entrada
   }
 
   get categories(): Category[] {
