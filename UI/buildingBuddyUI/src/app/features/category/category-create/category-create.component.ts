@@ -12,7 +12,7 @@ import { Category } from '../interfaces/category';
 export class CategoryCreateComponent implements OnInit {
   categories: Category[] = [];
   allCategories: Category[] = [];
-  mainCategories: Category[] = []; // Array para almacenar categorías principales
+  mainCategories: Category[] = []; 
 
   categoryToCreate: CategoryCreateRequest = {
     name: '',
@@ -32,9 +32,6 @@ export class CategoryCreateComponent implements OnInit {
           this.allCategories = response;
           this.mainCategories = this.allCategories.filter(category => !category.categoryFatherId); // Filter category without parents (At top chain level)
           this.addSubCategories(this.allCategories);
-          
-          console.log('All Categories:', this.allCategories);
-          console.log('Categories sin duplicar:', this.mainCategories);
         },
         error: (errorMessage) => {
           alert(errorMessage.error);
@@ -71,14 +68,14 @@ export class CategoryCreateComponent implements OnInit {
 
 
   private addSubCategories(categories: Category[]): void {
-    this.allCategories = []; // Reiniciar el array para la próxima iteración
-    const categorySet = new Set<string>(); // Crear un conjunto para rastrear categorías únicas
+    this.allCategories = []; 
+    const categorySet = new Set<string>(); 
     this.addSubCategoriesRec(categories, categorySet);
   }
 
   private addSubCategoriesRec(categoryList: Category[], categorySet: Set<string>): void {
     categoryList.forEach(category => {
-      if (!categorySet.has(category.id)) { // Evitar duplicados
+      if (!categorySet.has(category.id)) {
         this.allCategories.push(category);
         categorySet.add(category.id);
       }
