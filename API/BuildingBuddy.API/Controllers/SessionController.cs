@@ -36,7 +36,7 @@ namespace BuildingBuddy.API.Controllers
         }
         
         [HttpDelete]
-        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin,SystemUserRoleEnum.Manager,SystemUserRoleEnum.RequestHandler,SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult Logout([FromHeader(Name = "Authorization")] Guid sessionId)
         {
             _sessionService.Logout(sessionId);
