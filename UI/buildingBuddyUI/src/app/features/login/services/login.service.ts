@@ -26,10 +26,11 @@ export class LoginService {
   storageUserValues(loginRequestValues: LoginRequest, responseOfApi: LoginResponse) {
     alert(responseOfApi.userRole);
     this.userConnected = {
+      userId : responseOfApi.userId,
       email: loginRequestValues.email,
       password: loginRequestValues.password,
       sessionString: responseOfApi.sessionString,
-      userRole: this.getSystemUserRole(responseOfApi.userRole)
+      userRole: responseOfApi.userRole
     };
 
 
@@ -46,20 +47,5 @@ export class LoginService {
     this.userSubject.next(this.userConnected);
   }
 
-  getSystemUserRole(role: string): SystemUserRoleEnum {
-    alert(role);
-    switch (role.toLowerCase()) {
-      case 'admin':
-        return SystemUserRoleEnum.Admin;
-      case 'manager':
-        return SystemUserRoleEnum.Manager;
-      case 'requestHandler':
-        return SystemUserRoleEnum.RequestHandler;
-      case 'constructioncompanyadmin':
-        return SystemUserRoleEnum.ConstructionCompanyAdmin;
 
-      default:
-        return SystemUserRoleEnum.Unknown;
-    }
-  }
 }

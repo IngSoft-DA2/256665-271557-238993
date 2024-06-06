@@ -24,7 +24,6 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult Login([FromBody] SystemUserLoginRequest userLoginModel)
         {
             Session sessionForUser = _sessionService.Authenticate(userLoginModel.Email, userLoginModel.Password);
-            // SystemUserRoleEnum userRole = _sessionService.GetUserRoleBySessionString(sessionForUser.SessionString);
             
             LoginResponse loginResponse = new LoginResponse
             {
