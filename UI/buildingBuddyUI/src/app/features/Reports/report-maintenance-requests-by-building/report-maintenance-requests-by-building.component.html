@@ -20,7 +20,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let nodeOfReport of reportOfMaintenanceRequestsByBuilding">
-                    <td>{{ getBuildingName(nodeOfReport.buildingId) }}</td>
+                    <td>{{ getBuildingName(nodeOfReport.idOfResource) }}</td>
                     <td>{{ nodeOfReport.openRequests }}</td>
                     <td>{{ nodeOfReport.closedRequests }}</td>
                     <td>{{ nodeOfReport.onAttendanceRequests }}</td>

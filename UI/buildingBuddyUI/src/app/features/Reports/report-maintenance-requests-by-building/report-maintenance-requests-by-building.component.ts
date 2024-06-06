@@ -15,7 +15,6 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
   buildingIdSelected: string = "default";
   buildings: Building[] = [];
   managerId: string = "";
-  textFrom: string = "Select a building from list";
 
   constructor(
     private reportService: ReportService,
@@ -31,6 +30,7 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
         this.buildingIdSelected = params['buildingId'];
       }
       this.loadBuildings();
+      console.log(this.buildings);
     });
   }
 
@@ -54,7 +54,7 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
         next: (response) => {
           this.buildings = response;
           if (this.buildingIdSelected === "default" && this.buildings.length > 0) {
-            this.buildingIdSelected = "default"; // Set to default to match the default option
+            this.buildingIdSelected = "default";
           }
           this.loadReport();
         },
@@ -66,12 +66,17 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
 
   getBuildingName(buildingId: string): string {
     const building = this.buildings.find(b => b.id === buildingId);
-    return building?.name ? building.name : '';
+    if(building){
+    return building.name;
+    }
+    else{
+      return "";
+    }
   }
 
   onChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     this.buildingIdSelected = target.value;
-    this.loadReport(); // Recargar el reporte al cambiar la selección del edificio
+    this.loadReport();
   }
 }

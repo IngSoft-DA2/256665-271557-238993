@@ -116,6 +116,11 @@ public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, G
     }
 }
 
+public GetManagerResponse GetManagerById(Guid managerId)
+{
+    throw new NotImplementedException();
+}
+
 #endregion
 
 }
