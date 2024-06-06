@@ -50,77 +50,90 @@ public class ManagerAdapter : IManagerAdapter
         }
         catch (Exception exceptionCaught)
         {
-        throw new Exception(exceptionCaught.Message);
+            throw new Exception(exceptionCaught.Message);
         }
+    }
+
+    #endregion
+
+    #region Delete Manager By Id
+
+    public void DeleteManagerById(Guid id)
+    {
+        try
+        {
+            _managerServiceLogic.DeleteManagerById(id);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
+    }
+
+    #endregion
+
+    #region Create Manager
+
+    public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
+    {
+        try
+        {
+            Manager manager = new Manager
+            {
+                Id = Guid.NewGuid(),
+                Email = createRequest.Email,
+                Password = createRequest.Password
+            };
+
+            Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
+
+            _managerServiceLogic.CreateManager(manager, invitationToAccept);
+
+            CreateManagerResponse adapterResponse = new CreateManagerResponse
+            {
+                Id = manager.Id,
+                Firstname = invitationToAccept.Firstname
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
     
-    }
+    #endregion
+    
+    #region Get Manager By Id
 
-#endregion
-
-#region Delete Manager By Id
-
-public void DeleteManagerById(Guid id)
-{
-    try
+    public GetManagerResponse GetManagerById(Guid managerId)
     {
-        _managerServiceLogic.DeleteManagerById(id);
-    }
-    catch (ObjectNotFoundServiceException)
-    {
-        throw new ObjectNotFoundAdapterException();
-    }
-    catch (Exception exceptionCaught)
-    {
-        throw new Exception(exceptionCaught.Message);
-    }
-}
+        Manager managerFound = _managerServiceLogic.GetManagerById(managerId);
 
-#endregion
-
-#region Create Manager
-
-public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept)
-{
-    try
-    {
-        Manager manager = new Manager
+        GetManagerResponse adapterResponse = new GetManagerResponse
         {
-            Id = Guid.NewGuid(),
-            Email = createRequest.Email,
-            Password = createRequest.Password
-        };
-
-        Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
-
-        _managerServiceLogic.CreateManager(manager, invitationToAccept);
-
-        CreateManagerResponse adapterResponse = new CreateManagerResponse
-        {
-            Id = manager.Id,
-            Firstname = invitationToAccept.Firstname
+            Id = managerFound.Id,
+            Email = managerFound.Email,
+            Name = managerFound.Firstname,
+            Buildings = managerFound.Buildings.Select(building => building.Id).ToList(),
+            MaintenanceRequests = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
         };
 
         return adapterResponse;
     }
-    catch (ObjectNotFoundServiceException)
-    {
-        throw new ObjectNotFoundAdapterException();
-    }
-    catch (ObjectErrorServiceException exceptionCaught)
-    {
-        throw new ObjectErrorAdapterException(exceptionCaught.Message);
-    }
-    catch (Exception exceptionCaught)
-    {
-        throw new UnknownAdapterException(exceptionCaught.Message);
-    }
-}
 
-public GetManagerResponse GetManagerById(Guid managerId)
-{
-    throw new NotImplementedException();
-}
-
-#endregion
-
+    #endregion
 }

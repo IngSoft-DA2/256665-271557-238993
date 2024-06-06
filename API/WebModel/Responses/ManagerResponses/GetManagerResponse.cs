@@ -15,6 +15,8 @@ public class GetManagerResponse
     {
         GetManagerResponse? objectToCompare = obj as GetManagerResponse;
         
-        return Id == objectToCompare.Id && Name == objectToCompare.Name && Email == objectToCompare.Email;
+        return Id == objectToCompare.Id && Name == objectToCompare.Name && Email == objectToCompare.Email &&
+               Buildings.SequenceEqual(objectToCompare.Buildings) &&
+               MaintenanceRequests.SequenceEqual(objectToCompare.MaintenanceRequests);
     }
 }

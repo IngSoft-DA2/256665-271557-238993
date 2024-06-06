@@ -37,7 +37,9 @@ public class ManagerControllerTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Michael Kent",
-                Email = "michael@gmail.com"
+                Email = "michael@gmail.com",
+                Buildings = new List<Guid>(),
+                MaintenanceRequests = new List<Guid>()
             }
         };
 
@@ -117,7 +119,14 @@ public class ManagerControllerTest
     [TestMethod]
     public void GetManagerById_OkIsReturned()
     {
-        GetManagerResponse dummyResponse = new GetManagerResponse();
+        GetManagerResponse dummyResponse = new GetManagerResponse()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Michael Kent",
+            Email = "michael@gmail.com!",
+            Buildings = new List<Guid>(),
+            MaintenanceRequests = new List<Guid>()
+        };
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(dummyResponse);
 
