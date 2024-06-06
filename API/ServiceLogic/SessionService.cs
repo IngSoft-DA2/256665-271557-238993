@@ -17,15 +17,18 @@ public class SessionService : ISessionService
     private readonly IAdministratorRepository _administratorRepository;
     private readonly IManagerRepository _managerRepository;
     private readonly IRequestHandlerRepository _requestHandlerRepository;
+    private readonly IConstructionCompanyAdminRepository _constructionCompanyAdminRepository;
 
 
     public SessionService(ISessionRepository sessionRepository, IManagerRepository managerRepository,
-        IAdministratorRepository administratorRepository, IRequestHandlerRepository requestHandlerRepository)
+        IAdministratorRepository administratorRepository, IRequestHandlerRepository requestHandlerRepository,
+        IConstructionCompanyAdminRepository constructionCompanyAdminRepository)
     {
         _sessionRepository = sessionRepository;
         _managerRepository = managerRepository;
         _administratorRepository = administratorRepository;
         _requestHandlerRepository = requestHandlerRepository;
+        _constructionCompanyAdminRepository = constructionCompanyAdminRepository;
     }
 
     #endregion
@@ -39,6 +42,8 @@ public class SessionService : ISessionService
             IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
             IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
             IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
+            IEnumerable<ConstructionCompanyAdmin> constructionCompanyAdmins = _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+            
 
             //cast entities to system user type
             List<SystemUser> users = new List<SystemUser>();
@@ -55,8 +60,11 @@ public class SessionService : ISessionService
             foreach (var administrator in administrators)
             {
                 users.Add(administrator);
+            }  
+            foreach (var constructioCompanyAdmins in constructionCompanyAdmins)
+            {
+                users.Add(constructioCompanyAdmins);
             }
-
             //find user with matching email and password
             SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
 

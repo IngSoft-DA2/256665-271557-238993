@@ -1,5 +1,6 @@
 using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -27,7 +28,8 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
                 Firstname = createRequest.Firstname,
                 LastName = createRequest.Lastname,
                 Email = createRequest.Email,
-                Password = createRequest.Password
+                Password = createRequest.Password,
+                Role = SystemUserRoleEnum.RequestHandler
             };
             _requestHandlerService.CreateRequestHandler(requestHandlerToCreate);
 
