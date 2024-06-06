@@ -18,7 +18,10 @@ public class ManagerRepository : IManagerRepository
     {
         try
         {
-            return _dbContext.Set<Manager>().Include(manager => manager.Buildings).ToList();
+            return _dbContext.Set<Manager>()
+                .Include(manager => manager.Buildings)
+                .Include(manager => manager.Requests)
+                .ToList();
         }
         catch (Exception exceptionCaught)
         {
