@@ -13,7 +13,7 @@ export class AdminService {
 
   createAdministrator(adminToCreate: AdminCreateRequest)
   {
-    return this.http.post<AdminCreateResponse>(`${environment.apiBaseUrl}/api/v2/administrators`,adminToCreate)
+    return this.http.post<AdminCreateResponse>(`${environment.apiBaseUrl}/api/v2/administrators?addAuth=true`,adminToCreate)
   }
 
 

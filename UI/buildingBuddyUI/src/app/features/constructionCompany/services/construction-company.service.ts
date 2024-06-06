@@ -16,15 +16,15 @@ export class ConstructionCompanyService {
 
   createConstructionCompany(constructionCompanyToCreate : ConstructionCompanyCreateRequest) : Observable<ConstructionCompanyCreateResponse> 
   {
-    return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies`,constructionCompanyToCreate)
+    return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true`,constructionCompanyToCreate)
   }
   
   updateConstructionCompany(id:string,constructionCompanyToUpd: ConstructionCompanyUpdateRequest) : Observable<void>
    {
-    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/construction-companies/${id}`,constructionCompanyToUpd);
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${id}`,constructionCompanyToUpd);
   }
   getConstructionCompanyById(idOfConstructionCompany: string) : Observable<ConstructionCompany>
    {
-    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies/${idOfConstructionCompany}`);
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${idOfConstructionCompany}`);
   }
 }
