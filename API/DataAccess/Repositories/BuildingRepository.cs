@@ -14,7 +14,7 @@ public class BuildingRepository : IBuildingRepository
         _dbContext = dbContext;
     }
 
-    public IEnumerable<Building> GetAllBuildings(Guid managerId)
+    public IEnumerable<Building> GetAllBuildings(Guid userId)
     {
         try
         {
@@ -23,7 +23,7 @@ public class BuildingRepository : IBuildingRepository
                 .Include(building => building.ConstructionCompany)
                 .Include(building => building.Manager)
                 .Include(building => building.Location)
-                .Where(building => building.ManagerId == managerId).ToList();
+                .Where(building => building.ConstructionCompany.UserCreatorId == userId).ToList();
         }
         catch (Exception exceptionCaught)
         {

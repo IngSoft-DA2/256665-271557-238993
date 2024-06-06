@@ -119,9 +119,6 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ConstructionCompanyAdminId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -131,10 +128,6 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConstructionCompanyAdminId")
-                        .IsUnique()
-                        .HasFilter("[ConstructionCompanyAdminId] IS NOT NULL");
-
                     b.ToTable("ConstructionCompany");
                 });
 
@@ -142,6 +135,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ConstructionCompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -164,6 +160,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConstructionCompanyId");
 
                     b.ToTable("ConstructionCompanyAdmins");
                 });
@@ -445,11 +443,13 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+            modelBuilder.Entity("Domain.ConstructionCompanyAdmin", b =>
                 {
-                    b.HasOne("Domain.ConstructionCompanyAdmin", null)
-                        .WithOne("ConstructionCompany")
-                        .HasForeignKey("Domain.ConstructionCompany", "ConstructionCompanyAdminId");
+                    b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
+                        .WithMany()
+                        .HasForeignKey("ConstructionCompanyId");
+
+                    b.Navigation("ConstructionCompany");
                 });
 
             modelBuilder.Entity("Domain.Flat", b =>
@@ -534,11 +534,6 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.ConstructionCompany", b =>
                 {
                     b.Navigation("Buildings");
-                });
-
-            modelBuilder.Entity("Domain.ConstructionCompanyAdmin", b =>
-                {
-                    b.Navigation("ConstructionCompany");
                 });
 
             modelBuilder.Entity("Domain.Manager", b =>

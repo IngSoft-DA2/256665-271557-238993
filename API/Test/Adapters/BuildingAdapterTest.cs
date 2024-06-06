@@ -62,7 +62,9 @@ public class BuildingAdapterTest
                 ConstructionCompany = new ConstructionCompany
                 {
                     Id = Guid.NewGuid(),
-                    Name = "constructionCompany"
+                    Name = "constructionCompany",
+                    UserCreatorId = Guid.NewGuid(),
+                    Buildings = new List<Building>()
                 },
                 CommonExpenses = 1000,
                 Flats = new List<Flat>
@@ -103,6 +105,9 @@ public class BuildingAdapterTest
                 {
                     Id = expectedServiceResponse.First().ConstructionCompany.Id,
                     Name = expectedServiceResponse.First().ConstructionCompany.Name,
+                    UserCreatorId = expectedServiceResponse.First().ConstructionCompany.UserCreatorId,
+                    BuildingsId = expectedServiceResponse.First().ConstructionCompany.Buildings
+                        .Select(building => building.Id).ToList()
                 },
                 CommonExpenses = 1000,
                 Flats = new List<GetFlatResponse>
@@ -165,7 +170,9 @@ public class BuildingAdapterTest
             ConstructionCompany = new ConstructionCompany
             {
                 Id = Guid.NewGuid(),
-                Name = "constructionCompany"
+                Name = "constructionCompany",
+                UserCreatorId = Guid.NewGuid(),
+                Buildings = new List<Building>()
             },
             CommonExpenses = 1000,
             Flats = new List<Flat>
@@ -203,6 +210,9 @@ public class BuildingAdapterTest
             {
                 Id = expectedServiceResponse.ConstructionCompany.Id,
                 Name = expectedServiceResponse.ConstructionCompany.Name,
+                UserCreatorId = expectedServiceResponse.ConstructionCompany.UserCreatorId,
+                BuildingsId = expectedServiceResponse.ConstructionCompany.Buildings.Select(building => building.Id)
+                    .ToList()
             },
             CommonExpenses = 1000,
             Flats = new List<GetFlatResponse>
@@ -453,7 +463,7 @@ public class BuildingAdapterTest
 
         Assert.ThrowsException<UnknownAdapterException>(() =>
             _buildingAdapter.UpdateBuildingById(Guid.NewGuid(), dummyUpdateRequest));
-        
+
         _buildingService.VerifyAll();
         _managerService.VerifyAll();
     }

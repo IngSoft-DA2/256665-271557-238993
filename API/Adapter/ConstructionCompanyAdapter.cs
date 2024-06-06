@@ -35,6 +35,8 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
                 {
                     Id = constructionCompany.Id,
                     Name = constructionCompany.Name,
+                    UserCreatorId = constructionCompany.UserCreatorId,
+                    BuildingsId = constructionCompany.Buildings.Select(building => building.Id).ToList()
                 });
             return constructionCompaniesToReturn;
         }
@@ -59,6 +61,8 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
             {
                 Id = constructionCompanyInDb.Id,
                 Name = constructionCompanyInDb.Name,
+                UserCreatorId = constructionCompanyInDb.UserCreatorId,
+                BuildingsId = constructionCompanyInDb.Buildings.Select(building => building.Id).ToList()
             };
 
             return constructionCompanyToReturn;
@@ -104,6 +108,31 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         catch (ObjectRepeatedServiceException exceptionCaught)
         {
             throw new ObjectRepeatedAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
+
+    public void UpdateConstructionCompany(Guid id, UpdateConstructionCompanyRequest request)
+    {
+        try
+        {
+            ConstructionCompany constructionCompanyToUpdate = new ConstructionCompany
+            {
+                Id = id,
+                Name = request.Name
+            };
+            _constructionCompanyService.UpdateConstructionCompany(constructionCompanyToUpdate);
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
         }
         catch (Exception exceptionCaught)
         {

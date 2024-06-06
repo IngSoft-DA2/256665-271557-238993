@@ -1,0 +1,48 @@
+<head>
+    <h4>
+        <label style="text-decoration:underline">Manager List</label>
+        <br />
+    </h4>
+</head>
+
+<main>
+
+    <ng-container *ngIf="managers; else noManagers">
+
+        <table class="table table-striped table-bordered tableClass">
+            <thead>
+                <br />
+                <tr>
+                    <th> Manager Email</th>
+                    <th> Manager Firstname </th>
+                    <th> Buildings where manager is working for</th>
+                    <th> Delete Manager</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let manager of managers">
+                    <td>{{manager.email}}</td>
+                    <td>{{manager.name}}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="getBuildingsWhereManagerIsWorking(manager.id)"> See his buildings </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm button" (click)="deleteManager(manager.id)"> Delete Manager </button>
+                    </td>
+                </tr>
+            </tbody>
+            <br />
+
+        </table>
+
+    </ng-container>
+
+</main>
+
+
+
+<ng-template #noManagers>
+    <div class="alert alert-warning">
+        <h4>There are no managers at the moment</h4>
+    </div>
+</ng-template>

@@ -11,11 +11,17 @@ import { InvitationUpdateComponent } from './features/invitation/invitation-upda
 import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
 import { InvitationListByEmailComponent } from './features/invitation/invitation-list-by-email/invitation-list-by-email.component';
 import { ManagerCreateComponent } from './features/manager/features/manager-create/manager-create.component';
-import { ConstructionCompanyAdminCreateComponent } from './features/constructionCompanyAdmin/construction-company-admin-create/construction-company-admin-create.component';
 import { LandingPageComponent } from './features/landingPage/landing-page/landing-page.component';
 import { AdminCreateComponent } from './features/administrator/admin-create/admin-create.component';
 import { ReportsListComponent } from './features/Reports/reports-list/reports-list.component';
-import { ReportMaintenanceRequestsByReqHandlerComponent } from './features/Reports/report-maintenance-requests-by-req-handler/report-maintenance-requests-by-req-handler.component';
+import { ConstructionCompanyAdminCreateByInvitationComponent } from './features/constructionCompanyAdmin/construction-company-admin-create-by-invitation/construction-company-admin-create-by-invitation.component';
+import { ManagerListComponent } from './features/manager/features/manager-list/manager-list.component';
+import { ConstructionCompanyCreateComponent } from './features/constructionCompany/construction-company-create/construction-company-create.component';
+import { ConstructionCompanyListComponent } from './features/constructionCompany/construction-company-list/construction-company-list.component';
+import { BuildingListComponent } from './features/Building/building-list/building-list.component';
+import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
+import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
+import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
 
 @NgModule({
   declarations: [
@@ -27,11 +33,17 @@ import { ReportMaintenanceRequestsByReqHandlerComponent } from './features/Repor
     InvitationCreateComponent,
     InvitationListByEmailComponent,
     ManagerCreateComponent,
-    ConstructionCompanyAdminCreateComponent,
+    ConstructionCompanyAdminCreateByInvitationComponent,
     LandingPageComponent,
     AdminCreateComponent,
     ReportsListComponent,
-    ReportMaintenanceRequestsByReqHandlerComponent
+    ManagerListComponent,
+    ConstructionCompanyCreateComponent,
+    ConstructionCompanyListComponent,
+    BuildingListComponent,
+    ConstructionCompanyUpdateComponent,
+    CategoryCreateComponent,
+    CategoryTreeComponent
   ],
   imports: [
     BrowserModule,

@@ -25,13 +25,24 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region Get Construction Companies
+        #region Get all Construction Companies
 
         [HttpGet]
         //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllConstructionCompanies()
         {
             return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
+        }
+
+        #endregion
+
+        #region Get Construction Company By User Creator Id
+
+        [HttpGet]
+        [Route("{constructionCompanyId:Guid}")]
+        public IActionResult GetConstructionCompanyById([FromRoute] Guid constructionCompanyId)
+        {
+            return Ok(_constructionCompanyAdapter.GetConstructionCompanyById(constructionCompanyId));
         }
 
         #endregion
@@ -50,6 +61,17 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
         
-        
+        #region Update Construction Company
+
+        [HttpPut]
+        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [Route("{id:Guid}")]
+        public IActionResult UpdateConstructionCompany([FromRoute] Guid id,[FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
+        {
+            _constructionCompanyAdapter.UpdateConstructionCompany(id,updateConstructionCompanyRequest);
+            return NoContent();
+        }
+
+        #endregion
     }
 }

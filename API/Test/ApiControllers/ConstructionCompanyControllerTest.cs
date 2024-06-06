@@ -36,6 +36,8 @@ public class ConstructionCompanyControllerTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Construction Company 1",
+                UserCreatorId = Guid.NewGuid(),
+                BuildingsId = new List<Guid>()
             }
         };
 
@@ -92,5 +94,66 @@ public class ConstructionCompanyControllerTest
         Assert.IsTrue(expectedConstructionCompany.Equals(controllerResponseValueCasted));
     }
     
+    #endregion
+    
+    #region Update Construction Company
+    
+    [TestMethod]
+    public void UpdateConstructionCompany_NoContentResultIsReturned()
+    {
+        UpdateConstructionCompanyRequest request = new UpdateConstructionCompanyRequest()
+        {
+            Name = "Construction Company 1"
+        };
+
+        NoContentResult expectedControllerResponse = new NoContentResult();
+        
+        _constructionCompanyAdapter.Setup(adapter => adapter.UpdateConstructionCompany(It.IsAny<Guid>(),request));
+        
+        IActionResult controllerResponse = _constructionCompanyController.UpdateConstructionCompany(It.IsAny<Guid>(),request);
+
+        _constructionCompanyAdapter.VerifyAll();
+
+        NoContentResult? controllerResponseCasted = controllerResponse as NoContentResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
+    
+    #endregion
+
+    #region Get Construction Company By Id
+    
+    [TestMethod]
+    public void GetConstructionCompanyById_OkIsReturned()
+    {
+        GetConstructionCompanyResponse expectedConstructionCompany = new GetConstructionCompanyResponse()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Construction Company 1",
+            UserCreatorId = Guid.NewGuid(),
+            BuildingsId = new List<Guid>()
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompany);
+        
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanyById(It.IsAny<Guid>())).Returns(expectedConstructionCompany);
+        
+        IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanyById(It.IsAny<Guid>());
+
+        _constructionCompanyAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        GetConstructionCompanyResponse? controllerResponseValueCasted =
+            controllerResponseCasted.Value as GetConstructionCompanyResponse;
+        Assert.IsNotNull(controllerResponseValueCasted);
+
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+        Assert.IsTrue(expectedConstructionCompany.Equals(controllerResponseValueCasted));
+    }
+    
+
     #endregion
 }

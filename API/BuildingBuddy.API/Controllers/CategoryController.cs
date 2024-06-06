@@ -1,5 +1,4 @@
 using BuildingBuddy.API.Filters;
-using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.CategoryRequests;
@@ -36,6 +35,7 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult CreateCategory([FromBody] CreateCategoryRequest categoryToCreate)
         {
             CreateCategoryResponse response = _categoryAdapter.CreateCategory(categoryToCreate);
+
             return CreatedAtAction(nameof(CreateCategory), new { id = response.Id }, response);
         }
     }

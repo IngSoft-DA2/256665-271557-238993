@@ -11,7 +11,7 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                 </li>
 
-                <ng-container *ngIf="userRole === 'Admin'">
+                <ng-container *ngIf="userRole === 'Admin' ">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -24,7 +24,7 @@
                                 <hr class="dropdown-divider">
                             </li>
 
-                            <li><a class="dropdown-item" [routerLink]="['categories']">Categories Section</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['categories/create']">Categories Section</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">
@@ -35,7 +35,7 @@
                                 <hr class="dropdown-divider">
                             </li>
 
-                            <li><a class="dropdown-item" [routerLink]="['managers']">Manager Section</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['managers/list']">Manager Section</a></li>
 
                             <li>
                                 <hr class="dropdown-divider">
@@ -44,6 +44,38 @@
                             <li><a class="dropdown-item" [routerLink]="['reports/list']">Reports Section</a></li>
                         </ul>
                     </li>
+                </ng-container>
+
+                <ng-container *ngIf="userRole === 'ConstructionCompanyAdmin' || userRole === 'Admin'  ">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Construction Company Admin Features
+                        </a>
+                        <ul class="dropdown-menu">
+                            
+                            <li><a class="dropdown-item" [routerLink]="['construction-companies/list']">Construction Company Section</a></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li><a class="dropdown-item" [routerLink]="['buildings/list']">Building Section</a></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li><a class="dropdown-item" [routerLink]="['constructionCompanyAdmin/create']">Construction Company Admin Section</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" [routerLink]="['reports']">Reports Section</a></li>
+                        </ul>
+                    </li>
+
+
                 </ng-container>
             </ul>
 
