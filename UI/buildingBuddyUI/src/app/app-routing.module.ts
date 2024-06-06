@@ -14,6 +14,7 @@ import { ConstructionCompanyListComponent } from './features/constructionCompany
 import { BuildingListComponent } from './features/building/building-list/building-list.component';
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
+import { LoginComponent } from './features/login/login.component';
 
 const routes: Routes =
 [
@@ -75,6 +76,10 @@ const routes: Routes =
     path: 'categories/create',
     component : CategoryCreateComponent
   },
+  {
+    path: 'login',
+    component : LoginComponent
+  }
 
 
 ];
