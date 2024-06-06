@@ -19,6 +19,7 @@ import { ConstructionCompanyListComponent } from './features/constructionCompany
 import { BuildingListComponent } from './features/building/building-list/building-list.component';
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
+import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { CategoryCreateComponent } from './features/category/category-create/cat
     ConstructionCompanyListComponent,
     BuildingListComponent,
     ConstructionCompanyUpdateComponent,
-    CategoryCreateComponent
+    CategoryCreateComponent,
+    CategoryTreeComponent
   ],
   imports: [
     BrowserModule,

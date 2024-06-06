@@ -18,9 +18,9 @@ export class CategoryService {
     return this.http.get<Category[]>(`${environment.apiBaseUrl}/api/v2/categories`)
   }
 
-  createCategory(categoryToCreate : CategoryCreateRequest)
+  createCategory(categoryToCreate : CategoryCreateRequest) : Observable<CategoryCreateResponse>
   {
-    return this.http.post<CategoryCreateResponse>(`${environment}/api/v2/categories`,categoryToCreate)
+    return this.http.post<CategoryCreateResponse>(`${environment.apiBaseUrl}/api/v2/categories`,categoryToCreate)
   }
 
 }
