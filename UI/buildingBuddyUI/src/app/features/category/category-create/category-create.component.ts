@@ -30,7 +30,7 @@ export class CategoryCreateComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.allCategories = response;
-          this.mainCategories = this.allCategories.filter(category => !category.categoryFatherId); // Filtrar categorías principales
+          this.mainCategories = this.allCategories.filter(category => !category.categoryFatherId); // Filter category without parents (At top chain level)
           this.addSubCategories(this.allCategories);
           
           console.log('All Categories:', this.allCategories);
@@ -72,14 +72,18 @@ export class CategoryCreateComponent implements OnInit {
 
   private addSubCategories(categories: Category[]): void {
     this.allCategories = []; // Reiniciar el array para la próxima iteración
-    this.addSubCategoriesRec(categories);
+    const categorySet = new Set<string>(); // Crear un conjunto para rastrear categorías únicas
+    this.addSubCategoriesRec(categories, categorySet);
   }
-  
-  private addSubCategoriesRec(categoryList: Category[]): void {
+
+  private addSubCategoriesRec(categoryList: Category[], categorySet: Set<string>): void {
     categoryList.forEach(category => {
-      this.allCategories.push(category);
+      if (!categorySet.has(category.id)) { // Evitar duplicados
+        this.allCategories.push(category);
+        categorySet.add(category.id);
+      }
       if (category.subCategories && category.subCategories.length > 0) {
-        this.addSubCategoriesRec(category.subCategories);
+        this.addSubCategoriesRec(category.subCategories, categorySet);
       }
     });
   }
