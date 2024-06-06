@@ -109,6 +109,16 @@ public class RequestHandlerAdapterTest
         Assert.IsTrue(adapterResponse.SequenceEqual(expectedAdapterResponse));
         Assert.AreEqual(dummyRequestHandlers.Count, adapterResponse.Count);
     }
+    
+    [TestMethod]
+    public void GetAllRequestHandlers_ThrowsException()
+    {
+        _requestHandlerService.Setup(service => service.GetAllRequestHandlers())
+            .Throws(new Exception("Internal Server Error"));
+
+        Assert.ThrowsException<Exception>(() => _requestHandlerAdapter.GetAllRequestHandlers());
+        _requestHandlerService.VerifyAll();
+    }
 
     #endregion
 }

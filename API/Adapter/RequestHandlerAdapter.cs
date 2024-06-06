@@ -50,20 +50,27 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
 
     public List<GetRequestHandlerResponse> GetAllRequestHandlers()
     {
-        List<RequestHandler> requestHandlers = _requestHandlerService.GetAllRequestHandlers();
-        List<GetRequestHandlerResponse> getRequestHandlerResponses = new List<GetRequestHandlerResponse>();
-        foreach (RequestHandler requestHandler in requestHandlers)
+        try
         {
-            GetRequestHandlerResponse getRequestHandlerResponse = new GetRequestHandlerResponse
+            List<RequestHandler> requestHandlers = _requestHandlerService.GetAllRequestHandlers();
+            List<GetRequestHandlerResponse> getRequestHandlerResponses = new List<GetRequestHandlerResponse>();
+            foreach (RequestHandler requestHandler in requestHandlers)
             {
-                Id = requestHandler.Id,
-                Name = requestHandler.Firstname,
-                LastName = requestHandler.LastName,
-                Email = requestHandler.Email
-            };
-            getRequestHandlerResponses.Add(getRequestHandlerResponse);
-        }
+                GetRequestHandlerResponse getRequestHandlerResponse = new GetRequestHandlerResponse
+                {
+                    Id = requestHandler.Id,
+                    Name = requestHandler.Firstname,
+                    LastName = requestHandler.LastName,
+                    Email = requestHandler.Email
+                };
+                getRequestHandlerResponses.Add(getRequestHandlerResponse);
+            }
 
-        return getRequestHandlerResponses;
+            return getRequestHandlerResponses;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
     }
 }
