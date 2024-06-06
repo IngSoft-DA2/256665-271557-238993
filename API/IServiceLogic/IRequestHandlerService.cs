@@ -6,4 +6,5 @@ namespace IServiceLogic;
 public interface IRequestHandlerService
 {
     public void CreateRequestHandler(RequestHandler requestHandler);
+    public List<RequestHandler> GetAllRequestHandlers();
 }

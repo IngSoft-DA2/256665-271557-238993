@@ -11,6 +11,7 @@ namespace Adapter;
 public class RequestHandlerAdapter : IRequestHandlerAdapter
 {
     private readonly IRequestHandlerService _requestHandlerService;
+
     public RequestHandlerAdapter(IRequestHandlerService requestHandlerService)
     {
         _requestHandlerService = requestHandlerService;
@@ -49,6 +50,20 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
 
     public List<GetRequestHandlerResponse> GetAllRequestHandlers()
     {
-        throw new NotImplementedException();
+        List<RequestHandler> requestHandlers = _requestHandlerService.GetAllRequestHandlers();
+        List<GetRequestHandlerResponse> getRequestHandlerResponses = new List<GetRequestHandlerResponse>();
+        foreach (RequestHandler requestHandler in requestHandlers)
+        {
+            GetRequestHandlerResponse getRequestHandlerResponse = new GetRequestHandlerResponse
+            {
+                Id = requestHandler.Id,
+                Name = requestHandler.Firstname,
+                LastName = requestHandler.LastName,
+                Email = requestHandler.Email
+            };
+            getRequestHandlerResponses.Add(getRequestHandlerResponse);
+        }
+
+        return getRequestHandlerResponses;
     }
 }

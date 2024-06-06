@@ -1,6 +1,7 @@
 using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IServiceLogic;
 using Moq;
 using ServiceLogic.CustomExceptions;
@@ -16,7 +17,7 @@ public class RequestHandlerAdapterTest
 
     private Mock<IRequestHandlerService> _requestHandlerService;
     private RequestHandlerAdapter _requestHandlerAdapter;
-    
+
     [TestInitialize]
     public void Initialize()
     {
@@ -39,7 +40,7 @@ public class RequestHandlerAdapterTest
             Password = "Password"
         };
         _requestHandlerService.Setup(service => service.CreateRequestHandler(It.IsAny<RequestHandler>()));
-        
+
         CreateRequestHandlerResponse adapterResponse = _requestHandlerAdapter.CreateRequestHandler(dummyRequest);
         _requestHandlerService.VerifyAll();
         Assert.IsNotNull(adapterResponse.Id);
@@ -51,8 +52,8 @@ public class RequestHandlerAdapterTest
         CreateRequestHandlerRequest dummyRequest = new CreateRequestHandlerRequest();
         _requestHandlerService.Setup(service => service.CreateRequestHandler(It.IsAny<RequestHandler>()))
             .Throws(new ObjectErrorServiceException("Service Error"));
-        
-        Assert.ThrowsException<ObjectErrorAdapterException>(() => 
+
+        Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _requestHandlerAdapter.CreateRequestHandler(dummyRequest));
         _requestHandlerService.VerifyAll();
     }
@@ -63,9 +64,50 @@ public class RequestHandlerAdapterTest
         CreateRequestHandlerRequest dummyRequest = new CreateRequestHandlerRequest();
         _requestHandlerService.Setup(service => service.CreateRequestHandler(It.IsAny<RequestHandler>()))
             .Throws(new Exception("Internal Server Error"));
-        
+
         Assert.ThrowsException<Exception>(() => _requestHandlerAdapter.CreateRequestHandler(dummyRequest));
         _requestHandlerService.VerifyAll();
+    }
+
+    #endregion
+
+    #region Get All Request Handlers
+
+    [TestMethod]
+    public void GetAllRequestHandlers_ReturnsGetRequestHandlerResponseList()
+    {
+        List<RequestHandler> dummyRequestHandlers = new List<RequestHandler>
+        {
+            new RequestHandler
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "Firstname",
+                LastName = "Lastname",
+                Email = "someone@gmail.com",
+                Password = "Password"
+            }
+        };
+        
+        List<GetRequestHandlerResponse> expectedAdapterResponse = new List<GetRequestHandlerResponse>
+        {
+            new GetRequestHandlerResponse
+            {
+                Id = dummyRequestHandlers[0].Id,
+                Name = "Firstname",
+                LastName = "Lastname",
+                Email = "someone@gmail.com"
+            }
+        };
+        
+        _requestHandlerService.Setup(service => service.GetAllRequestHandlers())
+            .Returns(dummyRequestHandlers);
+
+        List<GetRequestHandlerResponse> adapterResponse = _requestHandlerAdapter.GetAllRequestHandlers();
+        
+        _requestHandlerService.VerifyAll();
+
+        Assert.IsTrue(adapterResponse.SequenceEqual(expectedAdapterResponse));
+        Assert.AreEqual(dummyRequestHandlers.Count, adapterResponse.Count);
     }
 
     #endregion
