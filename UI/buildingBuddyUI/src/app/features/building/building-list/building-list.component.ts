@@ -25,7 +25,7 @@ export class BuildingListComponent
     })
   }
 
-  checkIfItHasManager(manager? : Manager) : string
+  checkIfItHasManager(managerId? : string) : string
   {
     return manager ? manager.name : 'No manager at the moment';
   }

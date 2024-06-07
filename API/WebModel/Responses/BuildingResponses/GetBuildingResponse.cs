@@ -1,3 +1,4 @@
+using Domain;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
 using WebModel.Responses.ManagerResponses;
@@ -7,7 +8,7 @@ namespace WebModel.Responses.BuildingResponses;
 public class GetBuildingResponse
 {
     public Guid Id { get; set; }
-    public Guid ManagerId { get; set; }
+    public GetManagerResponse Manager { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public LocationResponse Location { get; set; }
@@ -21,7 +22,7 @@ public class GetBuildingResponse
 
         return Id == buildingToCompare.Id
                && Name == buildingToCompare.Name
-            && ManagerId.Equals(buildingToCompare.ManagerId)
+            && Manager.Equals(buildingToCompare.Manager)
             && Address == buildingToCompare.Address
             && Location.Equals(buildingToCompare.Location)
             && ConstructionCompany.Equals(buildingToCompare.ConstructionCompany)

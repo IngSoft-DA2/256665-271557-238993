@@ -2,6 +2,7 @@
 using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IServiceLogic;
 using Microsoft.VisualBasic.CompilerServices;
 using Moq;
@@ -12,6 +13,7 @@ using WebModel.Requests.FlatRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
+using WebModel.Responses.ManagerResponses;
 using WebModel.Responses.OwnerResponses;
 
 namespace Test.Adapters;
@@ -54,6 +56,16 @@ public class BuildingAdapterTest
             {
                 Id = Guid.NewGuid(),
                 ManagerId = managerId,
+                Manager = new Manager
+                {
+                    Id = managerId,
+                    Firstname = "ManagerFirstname",
+                    Email = "ManagerEmaiL@gmail.com",
+                    Password = "Password123",
+                    Buildings = new List<Building>(),
+                    Requests = new List<MaintenanceRequest>(),
+                    Role = SystemUserRoleEnum.Manager
+                },
                 Name = "Building 1",
                 Address = "Address 1",
                 Location = new Location
@@ -96,7 +108,16 @@ public class BuildingAdapterTest
             new GetBuildingResponse
             {
                 Id = expectedServiceResponse.First().Id,
-                ManagerId = expectedServiceResponse.First().ManagerId,
+                Manager = new GetManagerResponse
+                {
+                    Id = managerId,
+                    Name = expectedServiceResponse.First().Manager.Firstname,
+                    Email = expectedServiceResponse.First().Manager.Email,
+                    BuildingsId = expectedServiceResponse.First().Manager.Buildings
+                        .Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = expectedServiceResponse.First().Manager.Requests
+                        .Select(request => request.Id).ToList()
+                },
                 Name = expectedServiceResponse.First().Name,
                 Address = expectedServiceResponse.First().Address,
                 Location = new LocationResponse
@@ -188,7 +209,7 @@ public class BuildingAdapterTest
                 Buildings = new List<Building>(),
                 Requests = new List<MaintenanceRequest>()
             },
-     
+
             CommonExpenses = 1000,
             Flats = new List<Flat>
             {
@@ -214,7 +235,14 @@ public class BuildingAdapterTest
         GetBuildingResponse expectedAdapterResponse = new GetBuildingResponse
         {
             Id = expectedServiceResponse.Id,
-            ManagerId = expectedServiceResponse.ManagerId,
+            Manager = new GetManagerResponse
+            {
+                Id = managerId,
+                Name = expectedServiceResponse.Manager.Firstname,
+                Email = expectedServiceResponse.Manager.Email,
+                BuildingsId = expectedServiceResponse.Manager.Buildings.Select(building => building.Id).ToList(),
+                MaintenanceRequestsId = expectedServiceResponse.Manager.Requests.Select(request => request.Id).ToList()
+            },
             Name = expectedServiceResponse.Name,
             Address = expectedServiceResponse.Address,
             Location = new LocationResponse

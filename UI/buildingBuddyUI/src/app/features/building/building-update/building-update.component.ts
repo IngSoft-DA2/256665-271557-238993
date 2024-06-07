@@ -29,8 +29,9 @@ export class BuildingUpdateComponent {
         .subscribe({
           next: (Response) => {
             this.buildingToUpdate = Response;
+            console.log(this.buildingToUpdate);
             if (this.buildingToUpdate) {
-              this.managersAvailable = this.managersAvailable.filter(m => m.id !== this.buildingToUpdate?.manager.id)
+              this.managersAvailable = this.managersAvailable.filter(m => m.id !== this.buildingToUpdate?.managerId)
               if (this.managersAvailable.length > 0) {
                 this.areAvailableManagers = true;
                 this.availableManagerMessage = 'There are available managers to swap with!, press click in the select box.';
@@ -80,7 +81,7 @@ export class BuildingUpdateComponent {
 
       const buildingWithUpdates: BuildingUpdateRequest =
       {
-        managerId: this.buildingToUpdate.manager.id,
+        managerId: this.buildingToUpdate.managerId,
         commonExpenses: this.buildingToUpdate.commonExpenses
       };
 

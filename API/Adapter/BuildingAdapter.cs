@@ -42,7 +42,14 @@ public class BuildingAdapter : IBuildingAdapter
             List<GetBuildingResponse> buildingsToReturn = buildingsInDb.Select(building => new GetBuildingResponse
             {
                 Id = building.Id,
-                ManagerId = building.ManagerId,
+                Manager = new GetManagerResponse
+                {
+                    Id = building.Manager.Id,
+                    Name = building.Manager.Firstname,
+                    Email = building.Manager.Email,
+                    BuildingsId = building.Manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = building.Manager.Requests.Select(maintenance => maintenance.Id).ToList(),
+                },
                 Name = building.Name,
                 Address = building.Address,
                 Location = new LocationResponse()
@@ -55,7 +62,7 @@ public class BuildingAdapter : IBuildingAdapter
                     Id = building.ConstructionCompany.Id,
                     Name = building.ConstructionCompany.Name,
                     UserCreatorId = building.ConstructionCompany.UserCreatorId,
-                    BuildingsId = building.ConstructionCompany.Buildings.Select(building => building.Id)
+                    BuildingsId = building.ConstructionCompany.Buildings.Select(building => building.Id).ToList()
                 },
                 CommonExpenses = building.CommonExpenses,
                 Flats = building.Flats.Select(flat => new GetFlatResponse
@@ -75,7 +82,7 @@ public class BuildingAdapter : IBuildingAdapter
                     TotalRooms = flat.TotalRooms,
                     TotalBaths = flat.TotalBaths,
                     HasTerrace = flat.HasTerrace
-                })
+                }).ToList()
             }).ToList();
 
             return buildingsToReturn;
@@ -98,7 +105,14 @@ public class BuildingAdapter : IBuildingAdapter
             GetBuildingResponse buildingToReturn = new GetBuildingResponse
             {
                 Id = buildingInDb.Id,
-                ManagerId = buildingInDb.Manager.Id,
+                Manager = new GetManagerResponse
+                {
+                    Id = buildingInDb.Manager.Id,
+                    Name = buildingInDb.Manager.Firstname,
+                    Email = buildingInDb.Manager.Email,
+                    BuildingsId = buildingInDb.Manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = buildingInDb.Manager.Requests.Select(maintenance => maintenance.Id).ToList(),
+                },
                 Name = buildingInDb.Name,
                 Address = buildingInDb.Address,
                 Location = new LocationResponse()
@@ -217,9 +231,8 @@ public class BuildingAdapter : IBuildingAdapter
 
     public void UpdateBuildingById(Guid buildingIdToUpd, UpdateBuildingRequest updateBuildingRequest)
     {
-
         Manager managerFound = _managerService.GetManagerById(updateBuildingRequest.ManagerId);
-        
+
         try
         {
             Building buildingToUpd = new Building

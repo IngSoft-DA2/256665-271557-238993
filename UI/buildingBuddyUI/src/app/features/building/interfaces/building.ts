@@ -5,7 +5,7 @@ import { Manager } from "../../manager/interfaces/manager";
 export interface Building 
 {
     id : string,
-    manager : Manager,
+    managerId : string,
     name : string,
     address : string,
     location : Location,
