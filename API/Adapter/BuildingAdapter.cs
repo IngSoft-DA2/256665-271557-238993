@@ -34,22 +34,15 @@ public class BuildingAdapter : IBuildingAdapter
 
     #region Get all buildings
 
-    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid managerId)
+    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid constructionCompanyAdminId)
     {
         try
         {
-            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(managerId);
+            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(constructionCompanyAdminId);
             List<GetBuildingResponse> buildingsToReturn = buildingsInDb.Select(building => new GetBuildingResponse
             {
                 Id = building.Id,
-                Manager = new GetManagerResponse
-                {
-                    Id = building.Manager.Id,
-                    Name = building.Manager.Firstname,
-                    Email = building.Manager.Email,
-                    Buildings = building.Manager.Buildings.Select(building => building.Id).ToList(),
-                    MaintenanceRequests = building.Manager.Requests.Select(maintenance => maintenance.Id).ToList(),
-                },
+                ManagerId = building.ManagerId,
                 Name = building.Name,
                 Address = building.Address,
                 Location = new LocationResponse()
@@ -62,7 +55,7 @@ public class BuildingAdapter : IBuildingAdapter
                     Id = building.ConstructionCompany.Id,
                     Name = building.ConstructionCompany.Name,
                     UserCreatorId = building.ConstructionCompany.UserCreatorId,
-                    BuildingsId = building.ConstructionCompany.Buildings.Select(building => building.Id).ToList()
+                    BuildingsId = building.ConstructionCompany.Buildings.Select(building => building.Id)
                 },
                 CommonExpenses = building.CommonExpenses,
                 Flats = building.Flats.Select(flat => new GetFlatResponse
@@ -82,7 +75,7 @@ public class BuildingAdapter : IBuildingAdapter
                     TotalRooms = flat.TotalRooms,
                     TotalBaths = flat.TotalBaths,
                     HasTerrace = flat.HasTerrace
-                }).ToList()
+                })
             }).ToList();
 
             return buildingsToReturn;
@@ -105,6 +98,7 @@ public class BuildingAdapter : IBuildingAdapter
             GetBuildingResponse buildingToReturn = new GetBuildingResponse
             {
                 Id = buildingInDb.Id,
+                ManagerId = buildingInDb.Manager.Id,
                 Name = buildingInDb.Name,
                 Address = buildingInDb.Address,
                 Location = new LocationResponse()

@@ -16,6 +16,7 @@ import { ConstructionCompanyUpdateComponent } from './features/constructionCompa
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 import { LoginComponent } from './features/login/login.component';
 import { HomeComponent } from './core/home/home.component';
+import { BuildingUpdateComponent } from './features/building/building-update/building-update.component';
 
 
 const routes: Routes =
@@ -73,6 +74,10 @@ const routes: Routes =
   {
     path : 'buildings/list',
     component : BuildingListComponent
+  },
+  {
+    path : 'buildings/:buildingId/update',
+    component : BuildingUpdateComponent
   },
   {
     path: 'categories/create',

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Building } from '../interfaces/building';
-import { Router } from '@angular/router';
 import { BuildingService } from '../services/building.service';
 import { Manager } from '../../manager/interfaces/manager';
 
@@ -37,8 +36,7 @@ export class BuildingListComponent
     this.buildingService.deleteBuilding(buildingId)
     .subscribe({
       next: () => {
-        alert("Deleted with success");
-        this.buildings.filter(b => b.id !== buildingId);
+        this.buildings = this.buildings.filter(b => b.id !== buildingId);
       },
       error: (errorMessage) => {
         alert("Cannot delete this building, communicate with an admin")

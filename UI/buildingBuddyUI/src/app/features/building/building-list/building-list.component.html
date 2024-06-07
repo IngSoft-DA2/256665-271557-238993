@@ -20,7 +20,7 @@
                 <td>{{building.name}}</td>
                 <td>{{building.address}}</td>
                 <td>{{checkIfItHasManager(building.manager)}}</td>
-                <td><button class="btn btn-info" [routerLink]="['buildings/{building.id/update}']"> Update Building </button> </td>
+                <td><button class="btn btn-info" [routerLink]="['/buildings',building.id,'update']"> Update Building </button> </td>
                 <td><button class="btn btn-danger" (click)="deleteBuilding(building.id)"> Delete Building </button> </td>
             </tr>
         </tbody>

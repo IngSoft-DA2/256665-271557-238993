@@ -42,8 +42,8 @@ public class ManagerAdapter : IManagerAdapter
                     Id = manager.Id,
                     Email = manager.Email,
                     Name = manager.Firstname,
-                    Buildings = manager.Buildings.Select(building => building.Id).ToList(),
-                    MaintenanceRequests = manager.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+                    BuildingsId = manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = manager.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
                 }
             ).ToList();
             return adapterResponse;

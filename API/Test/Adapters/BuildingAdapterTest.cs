@@ -3,6 +3,7 @@ using Adapter;
 using Adapter.CustomExceptions;
 using Domain;
 using IServiceLogic;
+using Microsoft.VisualBasic.CompilerServices;
 using Moq;
 using ServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -46,12 +47,13 @@ public class BuildingAdapterTest
     [TestMethod]
     public void GetAllBuilding_ReturnsGetBuildingResponses()
     {
+        Guid managerId = Guid.NewGuid();
         IEnumerable<Building> expectedServiceResponse = new List<Building>
         {
             new Building
             {
                 Id = Guid.NewGuid(),
-                ManagerId = Guid.NewGuid(),
+                ManagerId = managerId,
                 Name = "Building 1",
                 Address = "Address 1",
                 Location = new Location
@@ -94,6 +96,7 @@ public class BuildingAdapterTest
             new GetBuildingResponse
             {
                 Id = expectedServiceResponse.First().Id,
+                ManagerId = expectedServiceResponse.First().ManagerId,
                 Name = expectedServiceResponse.First().Name,
                 Address = expectedServiceResponse.First().Address,
                 Location = new LocationResponse
@@ -157,9 +160,11 @@ public class BuildingAdapterTest
     [TestMethod]
     public void GetBuildingById_ReturnsBuildingResponse()
     {
+        Guid managerId = Guid.NewGuid();
         Building expectedServiceResponse = new Building
         {
             Id = Guid.NewGuid(),
+            ManagerId = managerId,
             Name = "Building 1",
             Address = "Address 1",
             Location = new Location
@@ -174,6 +179,16 @@ public class BuildingAdapterTest
                 UserCreatorId = Guid.NewGuid(),
                 Buildings = new List<Building>()
             },
+            Manager = new Manager
+            {
+                Id = managerId,
+                Firstname = "ManagerFirstname",
+                Email = "manager@gmail.com",
+                Password = "Password123",
+                Buildings = new List<Building>(),
+                Requests = new List<MaintenanceRequest>()
+            },
+     
             CommonExpenses = 1000,
             Flats = new List<Flat>
             {
@@ -199,6 +214,7 @@ public class BuildingAdapterTest
         GetBuildingResponse expectedAdapterResponse = new GetBuildingResponse
         {
             Id = expectedServiceResponse.Id,
+            ManagerId = expectedServiceResponse.ManagerId,
             Name = expectedServiceResponse.Name,
             Address = expectedServiceResponse.Address,
             Location = new LocationResponse
