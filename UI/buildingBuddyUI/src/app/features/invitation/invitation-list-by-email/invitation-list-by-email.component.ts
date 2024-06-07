@@ -18,12 +18,13 @@ export class InvitationListByEmailComponent {
 
   email?: string;
   invitationsOfEmail?: Invitation[]
+  hasInvitations: boolean = false;
   password: string = '';
 
   constructor(private invitationService: InvitationService,
     private router: Router, private route: ActivatedRoute) {
 
-      
+
     this.route.queryParams.subscribe(params => {
       this.email = params['email'];
     });
@@ -33,6 +34,10 @@ export class InvitationListByEmailComponent {
         .subscribe({
           next: (Response) => {
             this.invitationsOfEmail = Response;
+
+            if (this.invitationsOfEmail.length > 0) {
+              this.hasInvitations = true;
+            }
           },
           error: (errorMessage) => {
             alert(errorMessage.error);
@@ -68,20 +73,17 @@ export class InvitationListByEmailComponent {
       .subscribe({
         next: (Response) => {
           alert("Rejected invitation with success");
-          if (this.invitationsOfEmail) 
-          {
+          if (this.invitationsOfEmail) {
             const index = this.invitationsOfEmail.findIndex(inv => inv.id === invitation.id);
-            if (index !== -1) 
-            {
+            if (index !== -1) {
               this.invitationsOfEmail[index].status = StatusEnum.Rejected;
             }
           }
         },
-        error(errorMessage)
-        {
+        error(errorMessage) {
           alert(errorMessage.error);
         }
-        });
+      });
   }
 
   getSystemUserRoleString(role: number): string {

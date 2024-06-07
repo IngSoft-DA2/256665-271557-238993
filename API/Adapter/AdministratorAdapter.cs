@@ -1,5 +1,6 @@
 ﻿using Adapter.CustomExceptions;
 using Domain;
+using Domain.Enums;
 using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -33,7 +34,8 @@ public class AdministratorAdapter : IAdministratorAdapter
                 Firstname = request.Firstname,
                 LastName = request.Lastname,
                 Email = request.Email,
-                Password = request.Password
+                Password = request.Password,
+                Role = SystemUserRoleEnum.Admin
             };
 
             _administratorService.CreateAdministrator(administrator);

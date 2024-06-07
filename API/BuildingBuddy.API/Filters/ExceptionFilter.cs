@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using Adapter.CustomExceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -23,6 +24,10 @@ public class ExceptionFilter : ExceptionFilterAttribute
         else if (context.Exception is ObjectRepeatedAdapterException)
         {
             context.Result = new ObjectResult(new { Message = "Object already exists" }) { StatusCode = 304 };
+        }
+        else if (context.Exception is InvalidCredentialException)
+        {
+            context.Result = new ObjectResult(new { Message = "Invalid credentials" }) { StatusCode = 401 };
         }
         else
         {

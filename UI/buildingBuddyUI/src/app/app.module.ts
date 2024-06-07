@@ -3,10 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { ReportMaintenanceRequestsByBuildingComponent } from './features/Reports/report-maintenance-requests-by-building/report-maintenance-requests-by-building.component';
+import { NavbarComponent } from './core/navbar/navbar.component';
 import { InvitationListComponent } from './features/invitation/invitation-list/invitation-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { InvitationUpdateComponent } from './features/invitation/invitation-update/invitation-update.component';
 import { InvitationCreateComponent } from './features/invitation/invitation-create/invitation-create.component';
 import { InvitationListByEmailComponent } from './features/invitation/invitation-list-by-email/invitation-list-by-email.component';
@@ -25,6 +25,11 @@ import { CategoryTreeComponent } from './features/category/category-tree/categor
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
 import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
+import { LoginComponent } from './features/login/login.component';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './core/interceptors/forbidden-handler.interceptor';
+import { HomeComponent } from './core/home/home.component';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +54,9 @@ import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/rep
     CategoryTreeComponent,
     ReportMaintenanceReqByReqHandlerComponent,
     ReportMaintenanceReqByCategoryComponent,
-    ReportMaintenanceRequestsByFlatComponent
+    ReportMaintenanceRequestsByFlatComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +64,18 @@ import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/rep
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

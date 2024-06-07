@@ -55,6 +55,37 @@ public class ManagerAdapter : IManagerAdapter
     }
 
     #endregion
+    
+    #region Get Manager By Id
+
+    public GetManagerResponse GetManagerById(Guid managerId)
+    {
+        try
+        {
+            Manager managerFound = _managerServiceLogic.GetManagerById(managerId);
+
+            GetManagerResponse adapterResponse = new GetManagerResponse
+            {
+                Id = managerFound.Id,
+                Email = managerFound.Email,
+                Name = managerFound.Firstname,
+                Buildings = managerFound.Buildings.Select(building => building.Id).ToList(),
+                MaintenanceRequests = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
+    }
+
+    #endregion
 
     #region Delete Manager By Id
 
@@ -86,7 +117,8 @@ public class ManagerAdapter : IManagerAdapter
             {
                 Id = Guid.NewGuid(),
                 Email = createRequest.Email,
-                Password = createRequest.Password
+                Password = createRequest.Password,
+                Role = SystemUserRoleEnum.Manager
             };
 
             Invitation invitationToAccept = _invitationServiceLogic.GetInvitationById(idOfInvitationToAccept);
@@ -115,36 +147,5 @@ public class ManagerAdapter : IManagerAdapter
         }
     }
     
-    #endregion
-    
-    #region Get Manager By Id
-
-    public GetManagerResponse GetManagerById(Guid managerId)
-    {
-        try
-        {
-            Manager managerFound = _managerServiceLogic.GetManagerById(managerId);
-
-            GetManagerResponse adapterResponse = new GetManagerResponse
-            {
-                Id = managerFound.Id,
-                Email = managerFound.Email,
-                Name = managerFound.Firstname,
-                Buildings = managerFound.Buildings.Select(building => building.Id).ToList(),
-                MaintenanceRequests = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
-            };
-
-            return adapterResponse;
-        }
-        catch (ObjectNotFoundServiceException)
-        {
-            throw new ObjectNotFoundAdapterException();
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new Exception(exceptionCaught.Message);
-        }
-    }
-
     #endregion
 }

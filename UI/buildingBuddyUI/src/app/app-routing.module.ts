@@ -19,6 +19,9 @@ import { CategoryCreateComponent } from './features/category/category-create/cat
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
 import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
+import { LoginComponent } from './features/login/login.component';
+import { HomeComponent } from './core/home/home.component';
+
 
 const routes: Routes =
 [
@@ -99,7 +102,16 @@ const routes: Routes =
   {
     path: 'categories/create',
     component : CategoryCreateComponent
+  },
+  {
+    path: 'login',
+    component : LoginComponent
+  },
+  {
+    path: 'home',
+    component : HomeComponent
   }
+
 ];
 
 @NgModule({
