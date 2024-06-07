@@ -11,7 +11,7 @@ public class MaintenanceRequest
     public DateTime? OpenedDate { get; set; }
     public DateTime? ClosedDate { get; set; }
     public RequestHandler RequestHandler { get; set; }
-    public Guid? RequestHandlerId { get; set; }
+    public Guid RequestHandlerId { get; set; }
     public Manager Manager { get; set; }
     public Guid ManagerId { get; set; }
     public Category Category { get; set; }

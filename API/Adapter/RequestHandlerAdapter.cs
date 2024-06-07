@@ -12,6 +12,7 @@ namespace Adapter;
 public class RequestHandlerAdapter : IRequestHandlerAdapter
 {
     private readonly IRequestHandlerService _requestHandlerService;
+
     public RequestHandlerAdapter(IRequestHandlerService requestHandlerService)
     {
         _requestHandlerService = requestHandlerService;
@@ -42,6 +43,32 @@ public class RequestHandlerAdapter : IRequestHandlerAdapter
         catch (ObjectErrorServiceException exceptionCaught)
         {
             throw new ObjectErrorAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
+    }
+
+    public IEnumerable<GetRequestHandlerResponse> GetAllRequestHandlers()
+    {
+        try
+        {
+            IEnumerable<RequestHandler> requestHandlers = _requestHandlerService.GetAllRequestHandlers();
+            List<GetRequestHandlerResponse> getRequestHandlerResponses = new List<GetRequestHandlerResponse>();
+            foreach (RequestHandler requestHandler in requestHandlers)
+            {
+                GetRequestHandlerResponse getRequestHandlerResponse = new GetRequestHandlerResponse
+                {
+                    Id = requestHandler.Id,
+                    Name = requestHandler.Firstname,
+                    LastName = requestHandler.LastName,
+                    Email = requestHandler.Email
+                };
+                getRequestHandlerResponses.Add(getRequestHandlerResponse);
+            }
+
+            return getRequestHandlerResponses;
         }
         catch (Exception exceptionCaught)
         {

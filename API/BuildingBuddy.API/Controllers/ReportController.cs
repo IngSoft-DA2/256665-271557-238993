@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v2/")]
+    [Route("api/v2")]
     [ApiController]
     public class ReportController : ControllerBase
     {
@@ -23,8 +23,8 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByBuilding
 
-        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
-        [Route("/buildings/maintenance-requests/reports")]
+        //[AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [Route("buildings/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid managerId, [FromQuery] Guid buildingId)
         {
@@ -32,11 +32,11 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-
+    
         #region GetMaintenanceRequestsByRequestHandler
 
-        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
-        [Route("/request-handler/maintenance-requests/reports")]
+        //[AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [Route("request-handler/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId,
             [FromQuery] Guid buildingId, [FromQuery] Guid managerId)
@@ -48,8 +48,8 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByCategory
 
-        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
-        [Route("/categories/maintenance-requests/reports")]
+        //[AuthenticationFilter(SystemUserRoleEnum.Admin)]
+        [Route("categories/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildingId, [FromQuery] Guid categoryId)
         {
@@ -58,8 +58,8 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
-        [Route("/flats/maintenance-requests/reports")]
+        //[AuthenticationFilter(SystemUserRoleEnum.Admin)]
+        [Route("flats/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetFlatRequestsByBuildingReport([FromQuery] Guid buildingId)
         {

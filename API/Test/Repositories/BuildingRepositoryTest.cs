@@ -89,6 +89,49 @@ public class BuildingRepositoryTest
     }
 
     [TestMethod]
+    public void GivenEmptyGuid_ShouldReturnAllBuildings()
+    {
+        Building buildingInDb = new Building
+        {
+            Id = Guid.NewGuid(),
+            Name = "Building 1",
+            Address = "Address 1",
+            Location = new Location
+            {
+                Id = Guid.NewGuid(),
+                Latitude = 1.23,
+                Longitude = 6.56
+            },
+            CommonExpenses = 100,
+            ConstructionCompany = new ConstructionCompany
+            {
+                Id = Guid.NewGuid(),
+                Name = "Construction Company 1",
+                UserCreatorId = Guid.NewGuid()
+            },
+            Manager = new Manager
+            {
+                Id = Guid.NewGuid(),
+                Role = SystemUserRoleEnum.Manager,
+                Firstname = "Manager 1",
+                Email = "",
+                Password = "Password"
+
+            }
+        };
+        
+        IEnumerable<Building> buildingsInDb = new List<Building> { buildingInDb };
+        
+        _dbContext.Set<Building>().Add(buildingInDb);
+        
+        _dbContext.SaveChanges();
+        
+        IEnumerable<Building> buildingsReturn = _buildingRepository.GetAllBuildings(Guid.Empty);
+        
+        Assert.IsTrue(buildingsReturn.SequenceEqual(buildingsInDb));
+    }
+
+    [TestMethod]
     public void GetAllBuildings_UnknownExceptionThrown()
     {
         Mock<DbContext> dbContextMock = new Mock<DbContext>();

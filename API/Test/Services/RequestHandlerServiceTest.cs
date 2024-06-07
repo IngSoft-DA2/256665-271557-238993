@@ -122,4 +122,31 @@ public class RequestHandlerServiceTest
     }
 
     #endregion
+    
+    #region Get All Request Handlers
+    
+    [TestMethod]
+    public void GetAllRequestHandlers_ShouldReturnRequestHandlers()
+    {
+        List<RequestHandler> requestHandlers = new List<RequestHandler>
+        {
+            new RequestHandler
+            {
+                Id = Guid.NewGuid(),
+                Firstname = "John",
+                LastName = "Doe",
+                Email = "johndoe@gmail.com"
+            }
+        };
+
+        _requestHandlerRepository.Setup(x => x.GetAllRequestHandlers()).Returns(requestHandlers);
+
+        IEnumerable<RequestHandler> result = _requestHandlerService.GetAllRequestHandlers();
+
+        Assert.AreEqual(requestHandlers, result);
+
+        _requestHandlerRepository.VerifyAll();
+    }
+    
+    #endregion
 }

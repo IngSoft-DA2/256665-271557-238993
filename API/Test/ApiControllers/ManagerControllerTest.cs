@@ -37,7 +37,9 @@ public class ManagerControllerTest
             {
                 Id = Guid.NewGuid(),
                 Name = "Michael Kent",
-                Email = "michael@gmail.com"
+                Email = "michael@gmail.com",
+                Buildings = new List<Guid>(),
+                MaintenanceRequests = new List<Guid>()
             }
         };
 
@@ -109,6 +111,39 @@ public class ManagerControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
     }
     
+    
+    #endregion
+    
+    #region Get Manager By Id
+    
+    [TestMethod]
+    public void GetManagerById_OkIsReturned()
+    {
+        GetManagerResponse dummyResponse = new GetManagerResponse()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Michael Kent",
+            Email = "michael@gmail.com!",
+            Buildings = new List<Guid>(),
+            MaintenanceRequests = new List<Guid>()
+        };
+
+        OkObjectResult expectedControllerResponse = new OkObjectResult(dummyResponse);
+
+        _managerAdapter.Setup(adapter => adapter.GetManagerById(It.IsAny<Guid>())).Returns(dummyResponse);
+
+        IActionResult controllerResponse = _managerController.GetManagerById(It.IsAny<Guid>());
+        _managerAdapter.VerifyAll();
+
+        OkObjectResult? controllerResponseCasted = controllerResponse as OkObjectResult;
+        Assert.IsNotNull(controllerResponseCasted);
+
+        GetManagerResponse? controllerResponseValue = controllerResponseCasted.Value as GetManagerResponse;
+        Assert.IsNotNull(controllerResponseValue);
+
+        Assert.IsTrue(dummyResponse.Equals(controllerResponseValue));
+        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
+    }
     
     #endregion
 }

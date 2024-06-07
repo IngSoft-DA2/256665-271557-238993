@@ -56,5 +56,16 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
+
+        #region  Get Manager By Id
+        
+        [HttpGet]
+        [Route("{managerId:Guid}")]
+        public IActionResult GetManagerById([FromRoute] Guid managerId)
+        {
+            return Ok(_managerAdapter.GetManagerById(managerId));
+        }
+        
+        #endregion
     }
 }

@@ -10,4 +10,5 @@ public interface IManagerAdapter
     
     public void DeleteManagerById(Guid managerId);
     public CreateManagerResponse CreateManager(CreateManagerRequest createRequest, Guid idOfInvitationToAccept);
+    public GetManagerResponse GetManagerById(Guid managerId);
 }

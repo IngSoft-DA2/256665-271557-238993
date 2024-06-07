@@ -1,0 +1,19 @@
+.table-container {
+    max-width: 800px;
+    margin: 0 auto; 
+    padding: 20px; 
+}
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-top: 40px; /* Añade espacio en la parte superior */
+    margin-bottom: 20px; /* Añade espacio en la parte inferior */
+    color: #4a4a4a;
+}
+
+h4 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #5a5a5a;
+}

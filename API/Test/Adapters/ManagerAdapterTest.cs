@@ -41,7 +41,9 @@ public class ManagerAdapterTest
                 Id = Guid.NewGuid(),
                 Firstname = "Michael Kent",
                 Email = "michaelKent@gmail.com",
-                Password = "random238"
+                Password = "random238",
+                Buildings = new List<Building>(),
+                Requests = new List<MaintenanceRequest>()
             }
         };
 
@@ -51,7 +53,9 @@ public class ManagerAdapterTest
             {
                 Id = domainResponse.First().Id,
                 Name = domainResponse.First().Firstname,
-                Email = domainResponse.First().Email
+                Email = domainResponse.First().Email,
+                Buildings = new List<Guid>(),
+                MaintenanceRequests = new List<Guid>()
             }
         };
 
@@ -184,5 +188,63 @@ public class ManagerAdapterTest
         _invitationService.VerifyAll();
     }
 
+    #endregion
+
+    #region Get Manager By Id
+
+    [TestMethod]
+    public void GetManagerById_ShouldReturnManager()
+    {
+        Guid buildingId = Guid.NewGuid();
+        Guid requestId = Guid.NewGuid();
+        
+        GetManagerResponse expectedResponse = new GetManagerResponse
+        {
+            Id = Guid.NewGuid(),
+            Name = "Michael Kent",
+            Email = "michael@gmail.com",
+            Buildings = new List<Guid>(){buildingId},
+            MaintenanceRequests = new List<Guid>(){requestId}
+        };
+
+        _managerService.Setup(service => service.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager
+            {
+                Id = expectedResponse.Id,
+                Firstname = expectedResponse.Name,
+                Email = expectedResponse.Email,
+                Buildings = new List<Building>() {new Building() {Id = buildingId}},
+                Requests = new List<MaintenanceRequest>(){new MaintenanceRequest(){Id = requestId}}
+            });
+
+        GetManagerResponse adapterResponse = _managerAdapter.GetManagerById(It.IsAny<Guid>());
+
+        Assert.IsTrue(expectedResponse.Equals(adapterResponse));
+
+        _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void GetManagerById_ShouldThrowObjectNotFoundAdapterException()
+    {
+        _managerService.Setup(service => service.GetManagerById(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _managerAdapter.GetManagerById(It.IsAny<Guid>()));
+
+        _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    [TestMethod]
+    public void GetManagerById_ShouldThrowException()
+    {
+        _managerService.Setup(service => service.GetManagerById(It.IsAny<Guid>()))
+            .Throws(new Exception("Something went wrong"));
+
+        Assert.ThrowsException<Exception>(() => _managerAdapter.GetManagerById(It.IsAny<Guid>()));
+
+        _managerService.Verify(service => service.GetManagerById(It.IsAny<Guid>()), Times.Once);
+    }
+    
     #endregion
 }
