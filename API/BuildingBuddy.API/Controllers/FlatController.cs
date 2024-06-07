@@ -9,7 +9,7 @@ using WebModel.Requests.FlatRequests;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    //[AuthenticationFilter(SystemUserRoleEnum.Manager)]
+    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v2/flats")]
     [ApiController]
     public class FlatController : ControllerBase
