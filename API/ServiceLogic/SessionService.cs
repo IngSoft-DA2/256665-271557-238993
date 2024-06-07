@@ -102,6 +102,7 @@ public class SessionService : ISessionService
 
     public bool IsUserAuthenticated(string email)
     {
+        
         var users = LoadUsers();
         SystemUser user = users.FirstOrDefault(u => u.Email == email);
 

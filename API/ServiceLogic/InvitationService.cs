@@ -96,7 +96,7 @@ public class InvitationService : IInvitationService
                 {
                     throw new ObjectRepeatedServiceException();
                 }
-                else if(IsUserAuthenticated(invitation.Email))
+                if(IsUserAuthenticated(invitation.Email))
                 {
                     throw new InvalidInvitationException("User is already authenticated.");
                 }

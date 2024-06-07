@@ -24,6 +24,7 @@ public class InvitationServiceTest
     public void Initialize()
     {
         _invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
+        _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
         _invitationService = new InvitationService(_invitationRepository.Object,_sessionService.Object);
         _invitationExample = new Invitation
         {
@@ -360,7 +361,32 @@ public class InvitationServiceTest
         _invitationRepository.VerifyAll();
     }
     
-    
+    [TestMethod]
+    public void CreateInvitationForAnAuthenticatedUser_ThrowsObjectErrorServiceException()
+    {
+
+        Invitation invitationAccepted = new Invitation
+        {
+            Id = Guid.NewGuid(),
+            Firstname = "firstnameExample",
+            Lastname = "lastnameExample",
+            Email = "example@gmail.com",
+            ExpirationDate = DateTime.MaxValue,
+            Status = StatusEnum.Accepted,
+            Role = SystemUserRoleEnum.Manager
+        };
+        
+        _sessionService.Setup(sessionService => sessionService.IsUserAuthenticated(It.IsAny<string>()))
+            .Returns(true);
+
+        _invitationRepository.Setup(invitationRepository => invitationRepository.GetAllInvitations())
+            .Returns(new List<Invitation?> { invitationAccepted });
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _invitationService.CreateInvitation(_invitationExample));
+        
+        _sessionService.VerifyAll();
+    }
 
     [TestMethod]
     public void CreateInvitation_UnknownServiceExceptionIsThrown()
