@@ -239,7 +239,7 @@ public class SessionServiceTest
             .Returns(new List<Administrator>());
 
         _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
-            .Returns(new List<Manager>{ manager });
+            .Returns(new List<Manager> { manager });
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
             .Returns(new List<RequestHandler>());
@@ -254,6 +254,20 @@ public class SessionServiceTest
         _managerRepository.VerifyAll();
         _requestHandlerRepository.VerifyAll();
         _constructionCompanyAdminRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CheckIfUserIsAuthenticated_ReturnsUnknownServiceException()
+    {
+        Manager manager = new Manager();
+        manager.Email = "example@gmail.com";
+
+        _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
+            .Throws<Exception>();
+
+        Assert.ThrowsException<UnknownServiceException>(() => _sessionService.IsUserAuthenticated("example@gmail.com"));
+
+        _requestHandlerRepository.VerifyAll();
     }
 
     #region Logout user

@@ -102,11 +102,17 @@ public class SessionService : ISessionService
 
     public bool IsUserAuthenticated(string email)
     {
-        
-        var users = LoadUsers();
-        SystemUser user = users.FirstOrDefault(u => u.Email == email);
+        try
+        {
+            var users = LoadUsers();
+            SystemUser user = users.FirstOrDefault(u => u.Email == email);
 
-        return user != null;
+            return user != null;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     #endregion
