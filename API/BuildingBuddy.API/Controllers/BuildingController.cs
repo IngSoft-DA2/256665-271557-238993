@@ -27,7 +27,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Buildings
 
         [HttpGet]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)] // añadir al admin comun sino mal
         public IActionResult GetAllBuildings([FromQuery] Guid userId)
         {
             return Ok(_buildingAdapter.GetAllBuildings(userId));
