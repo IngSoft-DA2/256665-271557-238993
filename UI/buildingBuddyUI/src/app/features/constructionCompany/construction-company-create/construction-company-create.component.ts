@@ -26,7 +26,7 @@ export class ConstructionCompanyCreateComponent
     this.constructionCompanyService.createConstructionCompany(this.constructionCompanyToCreate)
     .subscribe({
       next: () => {
-        this.router.navigateByUrl('/')
+        this.router.navigateByUrl('construction-companies/list')
       },
       error : (errorMessage) => {
         alert(errorMessage.error)

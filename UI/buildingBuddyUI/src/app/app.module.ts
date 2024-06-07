@@ -23,6 +23,8 @@ import { CategoryTreeComponent } from './features/category/category-tree/categor
 import { LoginComponent } from './features/login/login.component';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/forbidden-handler.interceptor';
+import { HomeComponent } from './core/home/home.component';
+
 
 
 @NgModule({
@@ -44,7 +46,8 @@ import { ErrorInterceptor } from './core/interceptors/forbidden-handler.intercep
     ConstructionCompanyUpdateComponent,
     CategoryCreateComponent,
     CategoryTreeComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

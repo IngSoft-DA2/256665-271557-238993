@@ -27,7 +27,7 @@ export class AdminCreateComponent
     .subscribe({
       next: () => {
         alert("Admin created with success");
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('home');
       },
       error: (errorMessage) => {
         alert(errorMessage.error);

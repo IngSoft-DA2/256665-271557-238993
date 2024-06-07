@@ -15,6 +15,8 @@ import { BuildingListComponent } from './features/building/building-list/buildin
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 import { LoginComponent } from './features/login/login.component';
+import { HomeComponent } from './core/home/home.component';
+
 
 const routes: Routes =
 [
@@ -79,6 +81,10 @@ const routes: Routes =
   {
     path: 'login',
     component : LoginComponent
+  },
+  {
+    path: 'home',
+    component : HomeComponent
   }
 
 
