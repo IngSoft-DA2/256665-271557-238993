@@ -56,6 +56,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Invitation
 
         [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
             CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
@@ -67,6 +68,7 @@ namespace BuildingBuddy.API.Controllers
         #region Update Invitation
 
         [HttpPut]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("{id:Guid}")]
         public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
         {
@@ -77,8 +79,9 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region Delete Invitation
-
+        
         [HttpDelete]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("{id:Guid}")]
         public IActionResult DeleteInvitation([FromRoute] Guid id)
         {
