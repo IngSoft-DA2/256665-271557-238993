@@ -31,10 +31,11 @@ export class BuildingUpdateComponent {
             this.buildingToUpdate = Response;
             console.log(this.buildingToUpdate);
             if (this.buildingToUpdate) {
-              this.managersAvailable = this.managersAvailable.filter(m => m.id !== this.buildingToUpdate?.managerId)
+              this.managersAvailable = this.managersAvailable.filter(m => m.id !== this.buildingToUpdate?.manager.id)
               if (this.managersAvailable.length > 0) {
                 this.areAvailableManagers = true;
                 this.availableManagerMessage = 'There are available managers to swap with!, press click in the select box.';
+                console.log(this.managersAvailable);
               }
               else {
                 this.areAvailableManagers = false;
@@ -81,7 +82,7 @@ export class BuildingUpdateComponent {
 
       const buildingWithUpdates: BuildingUpdateRequest =
       {
-        managerId: this.buildingToUpdate.managerId,
+        managerId: this.buildingToUpdate.manager.id,
         commonExpenses: this.buildingToUpdate.commonExpenses
       };
 
