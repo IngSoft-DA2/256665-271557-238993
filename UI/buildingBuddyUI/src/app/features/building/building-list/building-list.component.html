@@ -1,17 +1,18 @@
 <div class="container" *ngIf="buildings.length > 0; else noBuildings">
 
-    <div>
-        <label> Building List</label>
+    <div class="mt-5">
+        <h1> Building List</h1>
     </div>
 
-    <table class="table table-striped table-bordered tableClass">
+    <table class="table table-striped table-bordered tableClass mt-4">
         <thead>
-            <br />
+           
             <tr>
                 <th>Building Name </th>
                 <th>Building Address</th>
                 <th>Manager of Building</th>
                 <th>Update Building</th>
+                <th>Delete Building</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +20,8 @@
                 <td>{{building.name}}</td>
                 <td>{{building.address}}</td>
                 <td>{{checkIfItHasManager(building.manager)}}</td>
-                <td><button class="btn btn-info" [routerLink]="['buidlings/{building.id/update}']"> Update </button> </td>
+                <td><button class="btn btn-info" [routerLink]="['buildings/{building.id/update}']"> Update Building </button> </td>
+                <td><button class="btn btn-danger" (click)="deleteBuilding(building.id)"> Delete Building </button> </td>
             </tr>
         </tbody>
         <br />

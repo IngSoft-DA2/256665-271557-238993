@@ -9,10 +9,16 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class BuildingService {
 
+
   constructor(private http : HttpClient) { }
 
   getAllBuildings() : Observable<Building[]>
   {
     return this.http.get<Building[]>(`${environment.apiBaseUrl}/api/v2/buildings`)
+  }
+
+  deleteBuilding(buildingId: string) : Observable<void>
+  {
+    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`)
   }
 }

@@ -30,4 +30,19 @@ export class BuildingListComponent
   {
     return manager ? manager.name : 'No manager at the moment';
   }
+
+
+  deleteBuilding(buildingId : string) : void 
+  {
+    this.buildingService.deleteBuilding(buildingId)
+    .subscribe({
+      next: () => {
+        alert("Deleted with success");
+        this.buildings.filter(b => b.id !== buildingId);
+      },
+      error: (errorMessage) => {
+        alert("Cannot delete this building, communicate with an admin")
+      }
+    })
+  }
 }
