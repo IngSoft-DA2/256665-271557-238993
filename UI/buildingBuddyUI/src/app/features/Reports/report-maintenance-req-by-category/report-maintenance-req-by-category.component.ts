@@ -1,33 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
-import { Building } from '../../Building/Interfaces/Building.model';
+import { Component } from '@angular/core';
 import { ReportService } from '../services/report.service';
-import { ManagerService } from '../../manager/services/manager.service';
+import { AdminService } from '../../administrator/services/admin.service';
+import { Building } from '../../Building/Interfaces/Building.model';
+import { Category } from '../../category/interfaces/category';
+import { NodeReportMaintenanceRequestsByCategory } from '../interfaces/node-report-maintenance-request-by-category';
 import { BuildingService } from '../../Building/Services/building.service';
+import { CategoryService } from '../../category/services/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NodeReportMaintenanceRequestsByRequestHandler } from '../interfaces/node-report-maintenance-req-by-req-handler';
-import { RequestHandler } from '../../requestHandler/interfaces/RequestHandler.model';
-import { RequestHandlerService } from '../../requestHandler/services/request-handler.service';
 
 @Component({
-  selector: 'app-report-maintenance-req-by-req-handler',
-  templateUrl: './report-maintenance-req-by-req-handler.component.html',
-  styleUrls: ['./report-maintenance-req-by-req-handler.component.css']
+  selector: 'app-report-maintenance-req-by-category',
+  templateUrl: './report-maintenance-req-by-category.component.html',
+  styleUrl: './report-maintenance-req-by-category.component.css'
 })
-export class ReportMaintenanceReqByReqHandlerComponent implements OnInit {
-  reportOfMaintenanceRequestsByRequestHandler?: NodeReportMaintenanceRequestsByRequestHandler[];
+export class ReportMaintenanceReqByCategoryComponent {
+  reportOfMaintenanceRequestsByRequestHandler?: NodeReportMaintenanceRequestsByCategory[];
   buildingIdSelected: string = "default";
   buildings: Building[] = [];
   buildingsIdList: string[] = [];
   managerId: string = "";
-  requestHandlerId: string = "default";
-  requestHandlers: RequestHandler[] = [];
+  categoryId: string = "default";
+  categories: Category[] = [];
 
   constructor(
     private reportService: ReportService,
-    private managerService: ManagerService,
+    private adminService: AdminService,
     private buildingService: BuildingService,
-    private requestHandlerService: RequestHandlerService,
+    private categoryService: CategoryService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
@@ -150,6 +149,5 @@ export class ReportMaintenanceReqByReqHandlerComponent implements OnInit {
 
     return formattedTime;
 }
-
 
 }

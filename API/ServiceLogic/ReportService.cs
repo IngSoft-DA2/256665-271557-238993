@@ -72,7 +72,7 @@ public class ReportService : IReportService
 
     #region Get maintenance report by request handler
 
-    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid? reportHandlerId,
+    public IEnumerable<RequestHandlerReport> GetMaintenanceReportByRequestHandler(Guid reportHandlerId,
         Guid buildingId, Guid personId)
     {
         try

@@ -16,6 +16,7 @@ import { ConstructionCompanyListComponent } from './features/constructionCompany
 import { BuildingListComponent } from './features/Building/building-list/building-list.component';
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
+import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 
 const routes: Routes =
 [
@@ -62,6 +63,10 @@ const routes: Routes =
   component: ReportMaintenanceRequestsByBuildingComponent
   },
   {
+    path: 'reports/requests-by-request-handler',
+    component: ReportMaintenanceReqByReqHandlerComponent
+  },
+  {
     path: 'managers/list',
     component : ManagerListComponent
   },
@@ -84,9 +89,7 @@ const routes: Routes =
   {
     path: 'categories/create',
     component : CategoryCreateComponent
-  },
-
-
+  }
 ];
 
 @NgModule({

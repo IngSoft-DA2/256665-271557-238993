@@ -291,7 +291,7 @@ public class ReportRepositoryTest
         _dbContext.SaveChanges();
 
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse =
-            _reportRepository.GetMaintenanceReportByRequestHandler(null, maintenanceRequestInDb2.Flat.BuildingId,
+            _reportRepository.GetMaintenanceReportByRequestHandler(It.IsAny<Guid>(), maintenanceRequestInDb2.Flat.BuildingId,
                 maintenanceRequestInDb2.ManagerId);
 
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));

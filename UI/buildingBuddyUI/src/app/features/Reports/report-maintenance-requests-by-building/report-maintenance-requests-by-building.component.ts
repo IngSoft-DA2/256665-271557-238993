@@ -67,7 +67,6 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
                   this.buildingIdSelected = this.buildings[0].id;
                 }
                 console.log("Edificios cargados: ");
-                console.log(this.buildingsIdList);
                 this.loadReport();
               },
               error: (error) => {
@@ -77,7 +76,6 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
           });
           console.log(this.buildings);
           this.loadReport();
-          console.log(this.reportOfMaintenanceRequestsByBuilding);
         },
         error: (error) => {
           console.error("Error al cargar los edificios:", error);
@@ -86,17 +84,12 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
   }
 
   getBuildingName(buildingId: string): string {
-    console.log("buildingId:  aa");
-    console.log(buildingId);
-    console.log("Buildings cargados en getBuildingName: ");
-    console.log(this.buildings);
     const buildingFound = this.buildings.find(b => b.id === buildingId);
-    console.log(buildingFound);
     if (buildingFound) {
       return buildingFound.name;
     }
     
-    return "pedo";
+    return "";
 
   }
 

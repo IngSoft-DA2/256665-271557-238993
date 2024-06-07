@@ -4,6 +4,7 @@ import { MaintenanceRequest } from '../../MaintenanceRequest/Interfaces/maintena
 import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { NodeReportMaintenanceRequestsByRequestHandler } from '../interfaces/node-report-maintenance-req-by-req-handler';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,15 @@ export class ReportService {
         .set('buildingId', buildingIdSelected);
 
       return this.http.get<NodeReportMaintenanceRequestsByBuilding[]>(`${environment.apiBaseUrl}/api/v2/buildings/maintenance-requests/reports`, {params});
+  }
 
+  getReportMaintenanceRequestsByRequestHandler(userId: string, buildingIdSelected: string, requestHandlerId: string): Observable<NodeReportMaintenanceRequestsByRequestHandler[]> {
+
+    const params = new HttpParams()
+    .set('requestHandlerId', requestHandlerId)
+    .set('buildingId', buildingIdSelected)
+    .set('managerId', userId);
+
+    return this.http.get<NodeReportMaintenanceRequestsByRequestHandler[]>(`${environment.apiBaseUrl}/api/v2/request-handler/maintenance-requests/reports`, {params});
   }
 }

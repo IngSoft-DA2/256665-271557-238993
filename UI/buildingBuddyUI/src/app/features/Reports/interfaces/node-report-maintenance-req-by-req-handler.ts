@@ -3,5 +3,5 @@ export interface NodeReportMaintenanceRequestsByRequestHandler {
     closedRequests: string;
     onAttendanceRequests: number; 
     requestHandlerId: string;
-    AverageTimeToCloseRequest: string;
+    averageTimeToCloseRequest: string;
 }

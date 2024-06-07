@@ -23,6 +23,7 @@ import { ConstructionCompanyUpdateComponent } from './features/constructionCompa
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
+import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/re
     ConstructionCompanyUpdateComponent,
     CategoryCreateComponent,
     CategoryTreeComponent,
-    ReportMaintenanceReqByReqHandlerComponent
+    ReportMaintenanceReqByReqHandlerComponent,
+    ReportMaintenanceReqByCategoryComponent
   ],
   imports: [
     BrowserModule,
