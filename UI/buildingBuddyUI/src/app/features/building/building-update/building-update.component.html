@@ -19,14 +19,15 @@
 
         <div class="form-control mt-2">
             <label for="newManagerToSelect">{{availableManagerMessage}}</label>
-            <select name="newManagerToSelect" id="newManagerToSelect"
+            <select class="form-select" name="newManagerToSelect" id="newManagerToSelect" (change)="onChange($event)"
                 [ngClass]="{'d-block': areAvailableManagers, 'd-none' : !areAvailableManagers}">
-                <option value="manager.id" *ngFor="let manager of managersAvailable"></option>
+                <option disabled selected> If wanted, select a new manager.</option>
+                <option [value] ="manager.id" *ngFor="let manager of availableManagers"> {{manager.name}}</option>
             </select>
         </div>
 
         <div class="mt-2">
-            <button type="submit" class="btn btn-success">Save changes</button>
+            <button type="submit" class="btn btn-success" (click)="updateBuilding()">Save changes</button>
         </div>
     </form>
 

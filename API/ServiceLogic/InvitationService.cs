@@ -13,10 +13,12 @@ public class InvitationService : IInvitationService
     #region Constructor and Dependency Injection
 
     private readonly IInvitationRepository _invitationRepository;
+    private readonly ISessionService _sessionService;
 
-    public InvitationService(IInvitationRepository invitationRepository)
+    public InvitationService(IInvitationRepository invitationRepository, ISessionService sessionService)
     {
         _invitationRepository = invitationRepository;
+        _sessionService = sessionService;
     }
 
     #endregion
@@ -65,7 +67,7 @@ public class InvitationService : IInvitationService
         try
         {
             invitationToAdd.InvitationValidator();
-            CheckIfEmailHasAlreadyAInvitation(invitationToAdd);
+            CheckIfUserCanBeInvited(invitationToAdd);
             _invitationRepository.CreateInvitation(invitationToAdd);
         }
         catch (InvalidInvitationException exceptionFromDomain)
@@ -82,17 +84,35 @@ public class InvitationService : IInvitationService
         }
     }
 
-    private void CheckIfEmailHasAlreadyAInvitation(Invitation invitationToAdd)
+    private void CheckIfUserCanBeInvited(Invitation invitationToAdd)
     {
         IEnumerable<Invitation> invitations = _invitationRepository.GetAllInvitations();
-
+        
         foreach (Invitation invitation in invitations)
         {
-            if (invitation.Email == invitationToAdd.Email && invitation.Status != StatusEnum.Rejected)
+            if (invitation.Email == invitationToAdd.Email)
             {
-                throw new ObjectRepeatedServiceException();
+                if (HasPendingValidInvitation(invitation))
+                {
+                    throw new ObjectRepeatedServiceException();
+                }
+                else if(IsUserAuthenticated(invitation.Email))
+                {
+                    throw new InvalidInvitationException("User is already authenticated.");
+                }
             }
         }
+    }
+
+    private bool IsUserAuthenticated(string email)
+    {
+        return _sessionService.IsUserAuthenticated(email);
+    }
+
+    private bool HasPendingValidInvitation(Invitation invitationToCheck)
+    {
+        return invitationToCheck.Status == StatusEnum.Pending &&
+               invitationToCheck.ExpirationDate.Date > DateTime.UtcNow.Date;
     }
 
     #endregion

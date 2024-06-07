@@ -2,6 +2,7 @@ using System.Collections;
 using Domain;
 using Domain.Enums;
 using IRepository;
+using IServiceLogic;
 using Moq;
 using Repositories.CustomExceptions;
 using ServiceLogic;
@@ -15,6 +16,7 @@ public class InvitationServiceTest
     #region Initialize
 
     private Mock<IInvitationRepository> _invitationRepository;
+    private Mock<ISessionService> _sessionService;
     private InvitationService _invitationService;
     private Invitation _invitationExample;
 
@@ -22,7 +24,7 @@ public class InvitationServiceTest
     public void Initialize()
     {
         _invitationRepository = new Mock<IInvitationRepository>(MockBehavior.Strict);
-        _invitationService = new InvitationService(_invitationRepository.Object);
+        _invitationService = new InvitationService(_invitationRepository.Object,_sessionService.Object);
         _invitationExample = new Invitation
         {
             Id = Guid.NewGuid(),
@@ -325,7 +327,7 @@ public class InvitationServiceTest
     #region Create Invitation, Repository Validations
 
     [TestMethod]
-    public void CreateInvitationThatTheEmailHasANonRejectedInvitation_ThrowsObjectRepeatedServiceException()
+    public void CreateInvitationThatTheEmailHasPendingValidInvitation_ThrowsObjectRepeatedServiceException()
     {
         IEnumerable<Invitation> invitationsFromDb = new List<Invitation>
         {
@@ -357,6 +359,8 @@ public class InvitationServiceTest
 
         _invitationRepository.VerifyAll();
     }
+    
+    
 
     [TestMethod]
     public void CreateInvitation_UnknownServiceExceptionIsThrown()
