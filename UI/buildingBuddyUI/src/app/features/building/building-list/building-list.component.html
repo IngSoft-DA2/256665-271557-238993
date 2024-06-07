@@ -16,13 +16,15 @@
             </tr>
         </thead>
         <tbody>
-            <td>{{constructionCompany.id}}</td>
-            <td>{{constructionCompany.name}}</td>
-            <td>{{checkIfItHasManager(constructionCompany.buildings)}}</td>
+            <tr *ngFor="let building of buildings">
+            <td>{{building.name}}</td>
+            <td>{{building.address}}</td>
+            <td>{{checkIfItHasManager(building.mana)}}</td>
             <td *ngIf="hasManager">
                 <a class="btn btn-info btn-sm button"
                     [routerLink]="[`/construction-company/${constructionCompany.id/update}]"> Update </a>
             </td>
+            </tr>
         </tbody>
         <br />
 
