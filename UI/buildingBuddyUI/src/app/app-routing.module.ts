@@ -17,6 +17,8 @@ import { BuildingListComponent } from './features/Building/building-list/buildin
 import { ConstructionCompanyUpdateComponent } from './features/constructionCompany/construction-company-update/construction-company-update.component';
 import { CategoryCreateComponent } from './features/category/category-create/category-create.component';
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
+import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
+import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
 
 const routes: Routes =
 [
@@ -65,6 +67,14 @@ const routes: Routes =
   {
     path: 'reports/requests-by-request-handler',
     component: ReportMaintenanceReqByReqHandlerComponent
+  },
+  {
+    path: 'reports/requests-by-category',
+    component: ReportMaintenanceReqByCategoryComponent
+  },
+  {
+    path: 'reports/requests-by-flat',
+    component: ReportMaintenanceRequestsByFlatComponent
   },
   {
     path: 'managers/list',

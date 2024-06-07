@@ -11,6 +11,7 @@ export class ReportsListComponent {
   managerId: string = "e7503a12-821a-45f3-93f3-525ed1a79efd";
   buildingId: string = "00000000-0000-0000-0000-000000000000";
   requestHandlerId : string = "00000000-0000-0000-0000-000000000000";
+  categoryId : string = "00000000-0000-0000-0000-000000000000";
 
   constructor(private router: Router, private route: ActivatedRoute){}
 
@@ -27,6 +28,19 @@ export class ReportsListComponent {
     .set('buildingId', this.buildingId)
     .set('managerId', this.managerId);
     this.router.navigateByUrl(`reports/requests-by-request-handler?${queryParams}`)
+  }
+
+  goToReportMaintenanceRequestByCategory(){
+    const queryParams = new HttpParams()
+    .set('buildingId', this.buildingId)
+    .set('categoryId', this.categoryId);
+    this.router.navigateByUrl(`reports/requests-by-category?${queryParams}`)
+  }
+
+  goToReportMaintenanceRequestByFlat(){
+    const queryParams = new HttpParams()
+    .set('buildingId', this.buildingId);
+    this.router.navigateByUrl(`reports/requests-by-flat?${queryParams}`)
   }
 
 

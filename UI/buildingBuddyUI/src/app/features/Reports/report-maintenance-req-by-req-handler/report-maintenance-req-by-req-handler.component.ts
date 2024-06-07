@@ -112,14 +112,10 @@ export class ReportMaintenanceReqByReqHandlerComponent implements OnInit {
     const target = event.target as HTMLSelectElement;
     if (type === 'building') {
       this.buildingIdSelected = target.value;
-      alert(this.buildingIdSelected);
-      this.loadReport();
     } else if (type === 'requestHandler') {
       this.requestHandlerId = target.value;
-      alert(this.requestHandlerId);
       this.loadReport();
     }
-    alert(this.buildingIdSelected + " AAAAAA " + this.requestHandlerId)
     this.loadReport();
   }
 

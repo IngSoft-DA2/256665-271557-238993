@@ -1,1 +1,48 @@
-<p>report-maintenance-req-by-category works!</p>
+<h1>Welcome to your Report by Category</h1>
+
+<div class="container">
+  <div class="mt-3">
+    <label class="form-label">Select a building</label>
+    <br>
+    <select class="form-select" name="buildingSelected" (change)="onChange($event, 'building')">
+      <option value="default" selected disabled>Select a building</option>
+      <option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</option>
+    </select>
+  </div>
+
+  <div class="mt-3" *ngIf="buildingIdSelected !== 'default'">
+    <label class="form-label">Select a request handler to filter by</label>
+    <br>
+    <select class="form-select" name="categorySelected" (change)="onChange($event, 'category')">
+      <option value="default" selected disabled>Select a request handler</option>
+      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+    </select>
+  </div>
+
+  <ng-container *ngIf="reportOfMaintenanceRequestsByCategory && reportOfMaintenanceRequestsByCategory.length > 0; else NoData">
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Opened Requests</th>
+          <th>Closed Requests</th>
+          <th>On Attendance Requests</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nodeOfReport of reportOfMaintenanceRequestsByCategory">
+          <td>{{ getCategoryName(nodeOfReport.categoryId) }}</td>
+          <td>{{ nodeOfReport.openRequests }}</td>
+          <td>{{ nodeOfReport.closedRequests }}</td>
+          <td>{{ nodeOfReport.onAttendanceRequests }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
+
+<ng-template #NoData>
+  <div class="alert alert-warning">
+    <h4>There is no data</h4>
+  </div>
+</ng-template>

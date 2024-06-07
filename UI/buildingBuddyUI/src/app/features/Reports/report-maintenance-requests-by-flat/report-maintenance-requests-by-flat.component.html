@@ -10,7 +10,7 @@
         </select>
     </div>
 
-    <ng-container *ngIf="reportOfMaintenanceRequestsByBuilding; else NoData">    
+    <ng-container *ngIf="reportOfMaintenanceRequestsByFlat; else NoData">    
         <table class="table table-bordered mt-3">
             <thead>
                 <tr>
@@ -21,8 +21,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let nodeOfReport of reportOfMaintenanceRequestsByBuilding">
-                    <td>{{ getBuildingName(nodeOfReport.buildingId)}}</td>
+                <tr *ngFor="let nodeOfReport of reportOfMaintenanceRequestsByFlat">
+                    <td>{{ nodeOfReport.flatNumber + " - " + nodeOfReport.ownerName}}</td>
                     <td>{{ nodeOfReport.openRequests }}</td>
                     <td>{{ nodeOfReport.closedRequests }}</td>
                     <td>{{ nodeOfReport.onAttendanceRequests }}</td>

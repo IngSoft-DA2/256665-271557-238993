@@ -14,13 +14,15 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './report-maintenance-req-by-category.component.css'
 })
 export class ReportMaintenanceReqByCategoryComponent {
-  reportOfMaintenanceRequestsByRequestHandler?: NodeReportMaintenanceRequestsByCategory[];
+  reportOfMaintenanceRequestsByCategory?: NodeReportMaintenanceRequestsByCategory[];
   buildingIdSelected: string = "default";
   buildings: Building[] = [];
   buildingsIdList: string[] = [];
   managerId: string = "";
   categoryId: string = "default";
   categories: Category[] = [];
+
+  emptyGuid: string = '00000000-0000-0000-0000-000000000000';
 
   constructor(
     private reportService: ReportService,
@@ -33,25 +35,24 @@ export class ReportMaintenanceReqByCategoryComponent {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.managerId = params['managerId'];
       if (params['buildingId']) {
         this.buildingIdSelected = params['buildingId'];
       }
-      if (params['requestHandlerId']) {
-        this.requestHandlerId = params['requestHandlerId'];
+      if (params['categoryId']) {
+        this.categoryId = params['categoryId'];
       }
       this.loadBuildings();
-      this.loadRequestHandlers();
+      this.loadCategories();
     });
   }
 
   loadReport(): void {
-    if (this.buildingIdSelected !== "default" && this.requestHandlerId !== "default") {
-      this.reportService.getReportMaintenanceRequestsByRequestHandler(this.managerId, this.buildingIdSelected, this.requestHandlerId)
+    if (this.buildingIdSelected !== "default" && this.categoryId !== "default") {
+      this.reportService.getReportMaintenanceRequestsByCategory(this.buildingIdSelected, this.categoryId)
         .subscribe({
           next: (response) => {
-            this.reportOfMaintenanceRequestsByRequestHandler = response;
-            console.log(this.reportOfMaintenanceRequestsByRequestHandler);
+            this.reportOfMaintenanceRequestsByCategory = response;
+            console.log(this.reportOfMaintenanceRequestsByCategory);
           },
           error: (error) => {
             console.error("Error al cargar el reporte:", error);
@@ -61,37 +62,25 @@ export class ReportMaintenanceReqByCategoryComponent {
   }
 
   loadBuildings(): void {
-    this.managerService.getManagerById(this.managerId)
+    this.buildingService.getAllBuildings(this.emptyGuid)
       .subscribe({
         next: (response) => {
-          this.buildingsIdList = response.buildings;
-          this.buildingsIdList.forEach(id => {
-            this.buildingService.getBuildingById(id).subscribe({
-              next: (building) => {
-                this.buildings.push(building);
-                if (this.buildingIdSelected === "default" && this.buildings.length > 0) {
-                  this.buildingIdSelected = this.buildings[0].id;
-                }
+          this.buildings = response;
                 this.loadReport();
-              },
+              }, 
               error: (error) => {
-                console.error("Error al cargar el edificio:", error);
+                console.error("Error al cargar los edificios:", error);
               }
             });
-          });
-        },
-        error: (error) => {
-          console.error("Error al cargar los edificios:", error);
-        }
-      });
+      
   }
 
-  loadRequestHandlers(): void {
-    this.requestHandlerService.getAllRequestHandlers()
+  loadCategories(): void {
+    this.categoryService.getAllCategories()
       .subscribe({
         next: (response) => {
-          this.requestHandlers = response;
-          console.log(this.requestHandlers);
+          this.categories = response;
+          console.log(this.categories);
         },
         error: (error) => {
           console.error("Error al cargar los request handlers:", error);
@@ -99,55 +88,23 @@ export class ReportMaintenanceReqByCategoryComponent {
       });
   }
 
-  getRequestHandlerName(requestHandlerId: string): string {
-    const requestHandlerFound = this.requestHandlers.find(r => r.id === requestHandlerId);
-    if (requestHandlerFound) {
-      return requestHandlerFound.name;
+  getCategoryName(categoryId: string): string {
+    const categoryFound = this.categories.find(r => r.id === categoryId);
+    if (categoryFound) {
+      return categoryFound.name;
     }
     return "";
   }
 
-  onChange(event: Event, type: 'building' | 'requestHandler') {
+  onChange(event: Event, type: 'building' | 'category') {
     const target = event.target as HTMLSelectElement;
     if (type === 'building') {
       this.buildingIdSelected = target.value;
-      alert(this.buildingIdSelected);
-      this.loadReport();
-    } else if (type === 'requestHandler') {
-      this.requestHandlerId = target.value;
-      alert(this.requestHandlerId);
-      this.loadReport();
+    } else if (type === 'category') {
+      this.categoryId = target.value;
     }
-    alert(this.buildingIdSelected + " AAAAAA " + this.requestHandlerId)
     this.loadReport();
   }
 
-  formatTimeSpan(timeSpanString: string): string {
-    if(timeSpanString === '00:00:00') {
-        return 'There is no time to show';
-    }
-    // Dividir la cadena del TimeSpan en partes
-    const parts = timeSpanString.split(':');
-
-    // Extraer los días (si existen)
-    let days = 0;
-    if (parts[0].includes('.')) {
-        const daysPart = parts[0].split('.')[0];
-        days = parseInt(daysPart, 10);
-        parts[0] = parts[0].split('.')[1];
-    }
-
-    // Convertir las partes a números
-    const hours = parseInt(parts[0], 10);
-    const minutes = parseInt(parts[1], 10);
-    const secondsWithMilliseconds = parts[2].split('.');
-    const seconds = parseInt(secondsWithMilliseconds[0], 10);
-    const milliseconds = parseInt(secondsWithMilliseconds[1] || '0', 10);
-
-    // Formatear el tiempo en un formato legible
-    const formattedTime = `${days ? days + 'd ' : ''}${hours}h ${minutes}m`;
-
-    return formattedTime;
-}
 
 }

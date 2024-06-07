@@ -132,7 +132,7 @@ public class ReportRepository : IReportRepository
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr => mr.Flat.BuildingId == buildingId)
                     .Include(mr => mr.Category)
-                    .Include(mr => mr.Flat)
+                    .Include(mr => mr.Flat).ThenInclude(mr => mr.OwnerAssigned)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler).ToList();
             }

@@ -24,6 +24,7 @@ import { CategoryCreateComponent } from './features/category/category-create/cat
 import { CategoryTreeComponent } from './features/category/category-tree/category-tree.component';
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
+import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/repo
     CategoryCreateComponent,
     CategoryTreeComponent,
     ReportMaintenanceReqByReqHandlerComponent,
-    ReportMaintenanceReqByCategoryComponent
+    ReportMaintenanceReqByCategoryComponent,
+    ReportMaintenanceRequestsByFlatComponent
   ],
   imports: [
     BrowserModule,
