@@ -23,7 +23,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByBuilding
 
-        //[AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [Route("buildings/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByBuilding([FromQuery] Guid managerId, [FromQuery] Guid buildingId)
@@ -35,7 +35,7 @@ namespace BuildingBuddy.API.Controllers
     
         #region GetMaintenanceRequestsByRequestHandler
 
-        //[AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [Route("request-handler/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByRequestHandler([FromQuery] Guid requestHandlerId,
@@ -48,7 +48,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByCategory
 
-        //[AuthenticationFilter(SystemUserRoleEnum.Admin)]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("categories/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildingId, [FromQuery] Guid categoryId)
@@ -58,7 +58,7 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        //[AuthenticationFilter(SystemUserRoleEnum.Admin)]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("flats/maintenance-requests/reports")]
         [HttpGet]
         public IActionResult GetFlatRequestsByBuildingReport([FromQuery] Guid buildingId)
