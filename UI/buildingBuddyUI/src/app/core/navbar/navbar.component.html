@@ -46,6 +46,8 @@
                     </li>
                 </ng-container>
 
+
+
                 <ng-container *ngIf="userConnected.userRole === SystemUserRoleEnumValues.ConstructionCompanyAdmin">
 
                     <li class="nav-item dropdown">
@@ -80,6 +82,32 @@
 
 
                 </ng-container>
+
+
+
+                <ng-container *ngIf="userConnected.userRole === SystemUserRoleEnumValues.Manager">
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Manager Features
+                        </a>
+                        <ul class="dropdown-menu">
+
+                            <li><a class="dropdown-item" [routerLink]="['buildings/list']">Building Section</a></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            
+                            <li><a class="dropdown-item" [routerLink]="['reports/list']">Reports Section</a></li>
+                        </ul>
+                    </li>
+
+
+                </ng-container>
+
+
 
             </ul>
 

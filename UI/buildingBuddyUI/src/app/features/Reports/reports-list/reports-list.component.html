@@ -10,22 +10,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr *ngIf="userConnected?.userRole === SystemUserRoleEnumValues.Manager">
                         <td>
                             <button class="btn btn-outline-primary btn-sm button" (click)="goToReportMaintenanceRequestByBuilding()"> Get Report of Maintenance Requests By Building </button>
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="userConnected?.userRole === SystemUserRoleEnumValues.Manager">
                         <td>
                             <button class="btn btn-outline-primary btn-sm button" (click)="goToReportMaintenanceRequestByRequestHandler()"> Get Report of Maintenance Requests By Request Handler </button>
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="userConnected?.userRole === SystemUserRoleEnumValues.Admin">
                         <td>
                             <button class="btn btn-outline-primary btn-sm button" (click)="goToReportMaintenanceRequestByCategory()"> Get Report of Maintenance Requests By Category </button>
                         </td>
                     </tr>
-                    <tr>
+                    <tr *ngIf="userConnected?.userRole === SystemUserRoleEnumValues.Manager">
                         <td>
                             <button class="btn btn-outline-primary btn-sm button" (click)="goToReportMaintenanceRequestByFlat()"> Get Report of Maintenance Requests By Flat</button>
                         </td>

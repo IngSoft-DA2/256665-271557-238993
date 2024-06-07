@@ -1,6 +1,9 @@
 import { HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../login/interfaces/user';
+import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
+import { LoginService } from '../../login/services/login.service';
 
 @Component({
   selector: 'app-reports-list',
@@ -8,12 +11,27 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './reports-list.component.css'
 })
 export class ReportsListComponent {
-  managerId: string = "e7503a12-821a-45f3-93f3-525ed1a79efd";
+  managerId: string = "";
   buildingId: string = "00000000-0000-0000-0000-000000000000";
   requestHandlerId : string = "00000000-0000-0000-0000-000000000000";
   categoryId : string = "00000000-0000-0000-0000-000000000000";
+  userConnected?: User = undefined;
+  SystemUserRoleEnumValues = SystemUserRoleEnum;
 
-  constructor(private router: Router, private route: ActivatedRoute){}
+  constructor(private router: Router, private route: ActivatedRoute, private loginService: LoginService){
+    loginService.getUser().subscribe({
+      next: (Response) => {
+        this.userConnected = Response
+        if(this.userConnected){
+          this.managerId = this.userConnected.userId;
+        }
+        console.log("Usuario encontrado, valores: " + this.userConnected)
+      },
+      error: () => {
+        this.userConnected = undefined;
+      }
+    })
+  }
 
   goToReportMaintenanceRequestByBuilding(){
     const queryParams = new HttpParams()
