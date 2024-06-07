@@ -1,4 +1,3 @@
-
 <div class="container" *ngIf="buildings.length > 0; else noBuildings">
 
     <div>
@@ -17,13 +16,10 @@
         </thead>
         <tbody>
             <tr *ngFor="let building of buildings">
-            <td>{{building.name}}</td>
-            <td>{{building.address}}</td>
-            <td>{{checkIfItHasManager(building.mana)}}</td>
-            <td *ngIf="hasManager">
-                <a class="btn btn-info btn-sm button"
-                    [routerLink]="[`/construction-company/${constructionCompany.id/update}]"> Update </a>
-            </td>
+                <td>{{building.name}}</td>
+                <td>{{building.address}}</td>
+                <td>{{checkIfItHasManager(building.manager)}}</td>
+                <td><button class="btn btn-info" [routerLink]="['buidlings/{building.id/update}']"> Update </button> </td>
             </tr>
         </tbody>
         <br />
@@ -35,7 +31,7 @@
 
 
 <ng-template #noBuildings>
-    <div class="alert alert-warning">
+    <div class="alert alert-warning mt-5" style="text-align: center;">
         <h4>There are no buildings at the moment</h4>
     </div>
 </ng-template>

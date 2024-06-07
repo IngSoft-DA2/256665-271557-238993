@@ -7,6 +7,7 @@ using WebModel.Requests.BuildingRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
+using WebModel.Responses.ManagerResponses;
 using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
@@ -41,6 +42,14 @@ public class BuildingAdapter : IBuildingAdapter
             List<GetBuildingResponse> buildingsToReturn = buildingsInDb.Select(building => new GetBuildingResponse
             {
                 Id = building.Id,
+                Manager = new GetManagerResponse
+                {
+                    Id = building.Manager.Id,
+                    Name = building.Manager.Firstname,
+                    Email = building.Manager.Email,
+                    Buildings = building.Manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequests = building.Manager.Requests.Select(maintenance => maintenance.Id).ToList(),
+                },
                 Name = building.Name,
                 Address = building.Address,
                 Location = new LocationResponse()

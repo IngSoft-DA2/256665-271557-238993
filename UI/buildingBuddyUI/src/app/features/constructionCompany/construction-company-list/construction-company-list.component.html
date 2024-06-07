@@ -18,7 +18,7 @@
                     <a class="btn btn-info btn-sm button" [routerLink]="['/construction-companies', constructionCompanyOfUser.id, 'update']"> Update Company </a>
                 </td>
                 <td>
-                    <button class="btn btn-info btn-sm button" (click)="checkIfItHasBuildings(constructionCompanyOfUser)">View Buildings</button>
+                    <a class="btn btn-info btn-sm button" style="text-align: center;" [routerLink]="['/buildings/list']" >View Buildings</a>
                 </td>
             </tr>
         </tbody>

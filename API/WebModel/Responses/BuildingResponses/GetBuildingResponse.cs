@@ -1,11 +1,13 @@
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
+using WebModel.Responses.ManagerResponses;
 
 namespace WebModel.Responses.BuildingResponses;
 
 public class GetBuildingResponse
 {
     public Guid Id { get; set; }
+    public GetManagerResponse Manager { get; set; }
     public string Name { get; set; }
     public string Address { get; set; }
     public LocationResponse Location { get; set; }
@@ -16,13 +18,14 @@ public class GetBuildingResponse
     public override bool Equals(object? toCompare)
     {
         GetBuildingResponse? buildingToCompare = toCompare as GetBuildingResponse;
-        
+
         return Id == buildingToCompare.Id
                && Name == buildingToCompare.Name
-               && Address == buildingToCompare.Address
-               && Location.Equals(buildingToCompare.Location)
-               && ConstructionCompany.Equals(buildingToCompare.ConstructionCompany)
-               && Math.Abs(CommonExpenses - buildingToCompare.CommonExpenses) < 0.02
-               && Flats.SequenceEqual(buildingToCompare.Flats);
+            && Manager.Equals(buildingToCompare.Manager)
+            && Address == buildingToCompare.Address
+            && Location.Equals(buildingToCompare.Location)
+            && ConstructionCompany.Equals(buildingToCompare.ConstructionCompany)
+            && Math.Abs(CommonExpenses - buildingToCompare.CommonExpenses) < 0.02
+            && Flats.SequenceEqual(buildingToCompare.Flats);
     }
 }
