@@ -145,7 +145,9 @@ public class SessionServiceTest
 
         Manager manager = new Manager();
         RequestHandler requestHandler = new RequestHandler();
+        ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin();
         Session dummySession = new Session();
+        
         dummySession.UserId = _sampleUserGuid;
 
         _administratorRepository.Setup(administratorRepository => administratorRepository.GetAllAdministrators())
@@ -159,7 +161,7 @@ public class SessionServiceTest
 
         _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
                 constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
-            .Returns(new List<ConstructionCompanyAdmin>());
+            .Returns(new List<ConstructionCompanyAdmin> {constructionCompanyAdmin});
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.CreateSession(It.IsAny<Session>()));
 
@@ -227,8 +229,6 @@ public class SessionServiceTest
         _sessionRepository.VerifyAll();
     }
 
-    #endregion
-
     [TestMethod]
     public void CheckIfUserIsAuthenticated_ReturnsTrue()
     {
@@ -269,7 +269,9 @@ public class SessionServiceTest
 
         _requestHandlerRepository.VerifyAll();
     }
-
+    
+    #endregion
+    
     #region Logout user
 
     [TestMethod]
