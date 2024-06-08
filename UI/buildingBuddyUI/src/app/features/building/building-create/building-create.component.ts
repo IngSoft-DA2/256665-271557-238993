@@ -49,6 +49,8 @@ export class BuildingCreateComponent {
 
   availableOwners: Owner[] = []
 
+  showOwnerCreation : boolean = false;
+
 
   constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private router: Router) {
     this.loadOwners();
@@ -94,6 +96,7 @@ export class BuildingCreateComponent {
       next: () => {
         alert('Owner create with sucess')
         this.loadOwners();
+        this.resetOwnerValues();
       }
     })
   }
@@ -141,6 +144,15 @@ export class BuildingCreateComponent {
       });
   }
 
+  deployOwnerPopUp()
+  {
+    this.showOwnerCreation = true;
+  }
+
+  undeployOwnerPopup()
+{
+  this.showOwnerCreation = false;
+}
 
   onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
