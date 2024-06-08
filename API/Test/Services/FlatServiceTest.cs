@@ -13,11 +13,13 @@ public class FlatServiceTest
     #region Initialize
 
     private FlatService _flatService;
+    private Mock<ISessionService> _sessionService;
 
     [TestInitialize]
     public void Initialize()
     {
-        _flatService = new FlatService();
+        _sessionService = new Mock<ISessionService>(MockBehavior.Strict);
+        _flatService = new FlatService(_sessionService.Object);
     }
 
     #endregion
@@ -38,7 +40,11 @@ public class FlatServiceTest
             TotalBaths = 1,
             HasTerrace = true
         };
+
+        _sessionService.Setup(sessionService => sessionService.IsUserAuthenticated(It.IsAny<string>())).Returns(true);
+        
         _flatService.CreateFlat(flatToAdd);
+        
     }
 
     #region Create Flat, Domain Validations

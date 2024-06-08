@@ -7,16 +7,18 @@ namespace ServiceLogic;
 
 public class FlatService : IFlatService
 {
-    public FlatService()
+    private readonly ISessionService _sessionService;
+    public FlatService(ISessionService sessionService)
     {
+        _sessionService = sessionService;
     }
 
     public void CreateFlat(Flat flatToAdd)
     {
         try
         {
-            ValidateOwnerAssigned(flatToAdd);
             flatToAdd.FlatValidator();
+            ValidateOwnerAssigned(flatToAdd);
         }
         catch (InvalidFlatException exceptionCaught)
         {
@@ -28,11 +30,11 @@ public class FlatService : IFlatService
         }
     }
 
-    private static void ValidateOwnerAssigned(Flat flatToAdd)
+    private void ValidateOwnerAssigned(Flat flatToAdd)
     {
-        if (flatToAdd.OwnerAssigned is null)
+        if (!_sessionService.IsUserAuthenticated(flatToAdd.OwnerAssigned.Email))
         {
-            throw new InvalidFlatException("Owner must be assigned");
+             throw new ObjectErrorServiceException("Owner is not authenticated to let him be assigned to the flat.");
         }
     }
 }

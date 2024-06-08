@@ -188,9 +188,7 @@ public class BuildingAdapter : IBuildingAdapter
                     Id = Guid.NewGuid(),
                     Floor = flat.Floor,
                     RoomNumber = flat.RoomNumber,
-                    OwnerAssigned = flat.OwnerAssignedId != null
-                        ? _ownerService.GetOwnerById(flat.OwnerAssignedId.Value)
-                        : null,
+                    OwnerAssigned =_ownerService.GetOwnerById(flat.OwnerAssignedId),
                     TotalRooms = flat.TotalRooms,
                     TotalBaths = flat.TotalBaths,
                     HasTerrace = flat.HasTerrace

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BuildingService } from '../services/building.service';
-import { CreateBuildingRequest } from '../interfaces/building-create-request';
 import { FlatService } from '../../flat/services/flat.service';
 import { OwnerService } from '../../owner/services/owner.service';
 import { Owner } from '../../owner/interfaces/owner';
-import { OwnerCreateRequest } from '../../owner/interfaces/owner-create-request';
 import { FlatCreateRequest } from '../../flat/interfaces/flat-create-request';
+import { BuildingCreateRequest } from '../interfaces/building-create-request';
 
 @Component({
   selector: 'app-building-create',
@@ -17,14 +16,14 @@ export class BuildingCreateComponent {
 
   showOwnerCreation: boolean = false;
 
-  buildingToCreate: CreateBuildingRequest = {
+  buildingToCreate: BuildingCreateRequest = {
     managerId: '',
     constructionCompanyId: '',
     name: '',
     address: '',
     location: {
       latitude: 0,
-      longitude: 0,
+      longitude: 0
     },
     commonExpenses: 0,
     flats: [],

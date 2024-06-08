@@ -11,10 +11,12 @@ public class BuildingService : IBuildingService
     #region Constructor and Atributtes
     
     private readonly IBuildingRepository _buildingRepository;
+    private readonly ISessionService _sessionService;
 
-    public BuildingService(IBuildingRepository buildingRepository)
+    public BuildingService(IBuildingRepository buildingRepository, ISessionService sessionService)
     {
         _buildingRepository = buildingRepository;
+        _sessionService = sessionService;
     }
     
     #endregion
@@ -69,6 +71,7 @@ public class BuildingService : IBuildingService
             IEnumerable<Building> buildings = GetAllBuildings(building.ManagerId);
             CheckIfNameAlreadyExists(building, buildings);
             CheckIfLocationAndAddressAlreadyExists(building, buildings);
+            CheckIfHasValidManager(building.Manager);
             _buildingRepository.CreateBuilding(building);
         }
         catch (InvalidBuildingException exception)
@@ -101,6 +104,19 @@ public class BuildingService : IBuildingService
         if (buildings.Any(b => b.Name == building.Name))
         {
             throw new ObjectRepeatedServiceException();
+        }
+    }
+    
+    private void CheckIfHasValidManager(Manager manager)
+    {
+        if (manager == null)
+        {
+            throw new ObjectErrorServiceException("Building must have a manager");
+        }
+
+        if(!_sessionService.IsUserAuthenticated(manager.Email))
+        {
+            throw new ObjectErrorServiceException("Manager must be a registered user");
         }
     }
     
