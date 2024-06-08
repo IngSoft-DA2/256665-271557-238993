@@ -20,18 +20,30 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     #region Get All Maintenance Requests
 
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId)
+    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
     {
         try
         {
             if (managerId != null)
             {
-                return _context.Set<MaintenanceRequest>()
-                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId)
-                    .Include(maintenanceRequest => maintenanceRequest.Category)
-                    .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
-                    .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
-                    .ToList();
+                if (!(categoryId == Guid.Empty))
+                {
+                    return _context.Set<MaintenanceRequest>()
+                        .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId && maintenanceRequest.CategoryId == categoryId)
+                        .Include(maintenanceRequest => maintenanceRequest.Category)
+                        .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
+                        .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                        .ToList();
+                }
+                else
+                {
+                    return _context.Set<MaintenanceRequest>()
+                        .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId)
+                        .Include(maintenanceRequest => maintenanceRequest.Category)
+                        .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
+                        .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                        .ToList();
+                }
             }
             else
             {

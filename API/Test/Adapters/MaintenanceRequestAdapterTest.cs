@@ -41,7 +41,12 @@ public class MaintenanceRequestAdapterTest
             RequestStatus = RequestStatusEnum.Open,
             OpenedDate = DateTime.Now,
             ClosedDate = DateTime.Now,
-            RequestHandlerId = Guid.NewGuid()
+            RequestHandlerId = Guid.NewGuid(),
+            Flat = new Flat() { OwnerAssigned = new Owner() },
+            RequestHandler = new RequestHandler(),
+            Category = new Category(),
+            ManagerId = Guid.NewGuid(),
+            Manager = new Manager()
         };
 
         genericMaintenanceRequestResponse = new GetMaintenanceRequestResponse
@@ -70,11 +75,11 @@ public class MaintenanceRequestAdapterTest
         IEnumerable<GetMaintenanceRequestResponse> expectedAdapterResponse =
             new List<GetMaintenanceRequestResponse> { genericMaintenanceRequestResponse };
 
-        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests(It.IsAny<Guid>()))
+        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Returns(expectedServiceResponse);
 
         IEnumerable<GetMaintenanceRequestResponse> adapterResponse =
-            _maintenanceRequestAdapter.GetAllMaintenanceRequests(It.IsAny<Guid>());
+            _maintenanceRequestAdapter.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>());
         _maintenanceRequestService.VerifyAll();
 
         Assert.IsTrue(expectedAdapterResponse.SequenceEqual(adapterResponse));
@@ -83,15 +88,15 @@ public class MaintenanceRequestAdapterTest
     [TestMethod]
     public void GetAllMaintenanceRequests_ThrowsException_ReturnsExceptionMessage()
     {
-        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests(It.IsAny<Guid>()))
+        _maintenanceRequestService.Setup(service => service.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Throws(new Exception("Something went wrong"));
 
         Exception exceptionCaught = Assert.ThrowsException<Exception>(() =>
-            _maintenanceRequestAdapter.GetAllMaintenanceRequests(It.IsAny<Guid>()));
+            _maintenanceRequestAdapter.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>()));
 
         Assert.AreEqual("Something went wrong", exceptionCaught.Message);
 
-        _maintenanceRequestService.Verify(service => service.GetAllMaintenanceRequests(It.IsAny<Guid>()), Times.Once);
+        _maintenanceRequestService.Verify(service => service.GetAllMaintenanceRequests(It.IsAny<Guid>(),It.IsAny<Guid>()), Times.Once);
     }
 
     #endregion

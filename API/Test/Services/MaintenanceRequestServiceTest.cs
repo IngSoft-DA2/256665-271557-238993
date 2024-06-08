@@ -65,11 +65,11 @@ public class MaintenanceRequestServiceTest
         };
 
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
-                maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>()))
+                maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .Returns(expectedRepositoryResponse);
 
         IEnumerable<MaintenanceRequest> actualResponse =
-            _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>());
+            _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         Assert.AreEqual(expectedRepositoryResponse, actualResponse);
         Assert.IsTrue(expectedRepositoryResponse.SequenceEqual(actualResponse));
@@ -79,10 +79,10 @@ public class MaintenanceRequestServiceTest
     public void GetAllMaintenanceRequests_RepositoryThrowsException_UnknownServiceExceptionIsThrown()
     {
         _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
-            maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>())).Throws(new Exception());
+            maintenanceRequestRepository.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception());
 
         Assert.ThrowsException<UnknownServiceException>(() =>
-            _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>()));
+            _maintenanceRequestService.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>()));
     }
 
     #endregion
@@ -340,8 +340,7 @@ public class MaintenanceRequestServiceTest
     }
 
     #endregion
-
-
+    
     #region Get Maintenance Request By Id
 
     [TestMethod]
