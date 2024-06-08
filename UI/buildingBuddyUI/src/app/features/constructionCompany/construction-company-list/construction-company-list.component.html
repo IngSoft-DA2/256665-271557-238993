@@ -8,6 +8,7 @@
                 <th>Construction Company Name </th>
                 <th>Update Construction Company</th>
                 <th>View Construction Company Buildings</th>
+                <th>Create new Building</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +20,9 @@
                 </td>
                 <td>
                     <a class="btn btn-info btn-sm button" style="text-align: center;" [routerLink]="['/buildings/list']" >View Buildings</a>
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm button" style="text-align: center;" [routerLink]="['/buildings',constructionCompanyOfUser.id,'create']" >Create new Building</a>
                 </td>
             </tr>
         </tbody>

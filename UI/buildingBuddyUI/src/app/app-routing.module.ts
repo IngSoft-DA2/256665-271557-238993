@@ -73,7 +73,7 @@ const routes: Routes =
     component : ConstructionCompanyUpdateComponent
   },
   {
-    path: 'buildings/create',
+    path: 'buildings/:constructionCompanyId/create',
     component : BuildingCreateComponent
   },
   {

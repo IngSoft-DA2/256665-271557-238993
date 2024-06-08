@@ -193,6 +193,7 @@ public class BuildingAdapter : IBuildingAdapter
                     TotalBaths = flat.TotalBaths,
                     HasTerrace = flat.HasTerrace
                 }).ToList(),
+                Manager  = _managerService.GetManagerById(createBuildingRequest.ManagerId),
                 ManagerId = createBuildingRequest.ManagerId
             };
             _buildingService.CreateBuilding(buildingToCreate);
@@ -207,7 +208,7 @@ public class BuildingAdapter : IBuildingAdapter
 
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException("Construction Company or Owner not found");
+            throw new ObjectNotFoundAdapterException("Construction Company,Owner or Manager were not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
