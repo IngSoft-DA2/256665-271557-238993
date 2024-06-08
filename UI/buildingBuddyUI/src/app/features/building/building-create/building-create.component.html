@@ -1,6 +1,6 @@
 <div class="container">
 
-    <h1 class="mt-3">Create Invitation</h1>
+    <h1 class="mt-3">Building Creation</h1>
 
     <form #form="ngForm" (ngSubmit)="createBuilding()">
         <div class="form-control mt-2">
@@ -94,10 +94,13 @@
                 </div>
 
                 <div class="mt-3">
-                    <button type="button" class="btn btn-success">Create new Owner + </button>
-                    <select name="possibleOwners" id="possibleOwners"  (change)="onChange($event)" >
+                    <label class="form-label">Available Owners</label>
+                    <select name="possibleOwners" id="possibleOwners" (change)="onChange($event)" class="form-select">
+                        <option selected disabled>Press click to select a owner</option>
                         <option *ngFor="let owner of availableOwners" [value]="owner.id"> {{owner.firstname}}</option>
                     </select>
+
+                    <button type="button" class="btn btn-info mt-3">Create new Owner + </button>
                 </div>
 
                 <div class="mt-3">
@@ -116,10 +119,9 @@
                 </div>
 
                 <div class="mt-3">
-                    <label class="form-label">Has terrace</label>
-                    <br>
-                    <input type="text" id="flatHasTerrace" class="form-control" name="flatHasTerrace"
-                        [(ngModel)]="flatToCreate.hasTerrace">
+                    <label class="form-check-label" for="hasTerraceCheck">Has terrace</label>
+                    <input class="form-check-input ms-2" type="checkbox" [(ngModel)]="flatToCreate.hasTerrace"
+                        id="hasTerraceCheck" name="hasTerraceCheck">
                 </div>
 
                 <div class="mt-3">

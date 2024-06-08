@@ -11,8 +11,7 @@ export class FlatService {
  
   constructor(private http : HttpClient) { }
 
-  createFlat(flatToCreate: CreateFlatRequest) : Observable<string>
-  {
-    return this.http.post<string>(`${environment.apiBaseUrl}/api/v2/flats`,flatToCreate)
+  createFlat(flatToCreate: CreateFlatRequest): Observable<string> {
+    return this.http.post<string>(`${environment.apiBaseUrl}/api/v2/flats`, flatToCreate);
   }
 }

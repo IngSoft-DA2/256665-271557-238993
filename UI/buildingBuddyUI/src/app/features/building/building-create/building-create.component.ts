@@ -32,7 +32,7 @@ export class BuildingCreateComponent {
 
     floor: 0,
     roomNumber: '1B',
-    ownerAssignedId: '',
+    ownerAssignedId: undefined,
     totalRooms: 0,
     totalBaths: 0,
     hasTerrace: true
@@ -42,7 +42,7 @@ export class BuildingCreateComponent {
 
 
   constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private router: Router) {
-    
+    this.loadOwners();
   }
 
   createBuilding() {
@@ -59,11 +59,16 @@ export class BuildingCreateComponent {
   }
 
   createFlat(): void {
+    console.log(this.flatToCreate);
     this.flatService.createFlat(this.flatToCreate)
       .subscribe({
         next: () => {
           alert("Flat created with success");
           this.buildingToCreate.flats.push(this.flatToCreate)
+          this.resetFlatValues();
+        },
+        error: (errorMessage) => {
+          alert(errorMessage.error);
           this.resetFlatValues();
         }
       })
@@ -76,26 +81,38 @@ export class BuildingCreateComponent {
   private resetFlatValues(): void {
 
     this.flatToCreate.floor = 0,
-      this.flatToCreate.roomNumber = '',
-      this.flatToCreate.ownerAssignedId = '',
+      this.flatToCreate.roomNumber = '1A',
+      this.flatToCreate.ownerAssignedId = undefined,
       this.flatToCreate.totalRooms = 0,
       this.flatToCreate.totalBaths = 0,
       this.flatToCreate.hasTerrace = true
   };
 
-  getFlatOwnerName(ownerId: string): string {
+  getFlatOwnerName(ownerId?: string): string {
     var ownerName = '';
 
-    this.ownerService.getOwnerById(ownerId)
+    if (ownerId) {
+      this.ownerService.getOwnerById(ownerId)
+        .subscribe({
+          next: (Response) => {
+            ownerName = Response.firstname;
+          },
+          error: () => {
+            ownerName = 'Not has';
+          }
+        })
+    }
+
+    return ownerName;
+  }
+
+  private loadOwners(): void {
+    this.ownerService.getOwners()
       .subscribe({
         next: (Response) => {
-          ownerName = Response.firstname;
-        },
-        error: () =>{
-          ownerName = 'Not has';
+          this.availableOwners = Response;
         }
-      })
-    return ownerName;
+      });
   }
 
 

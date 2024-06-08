@@ -32,7 +32,7 @@ public class FlatService : IFlatService
     {
         if (flatToAdd.OwnerAssigned is null)
         {
-            throw new ObjectErrorServiceException("Owner must be assigned");
+            throw new InvalidFlatException("Owner must be assigned");
         }
     }
 }

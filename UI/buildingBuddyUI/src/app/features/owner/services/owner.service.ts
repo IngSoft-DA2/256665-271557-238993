@@ -9,10 +9,16 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class OwnerService {
 
+
   constructor(private http: HttpClient) { }
 
   getOwnerById(ownerId : string) : Observable<Owner>
   {
     return this.http.get<Owner>(`${environment.apiBaseUrl}/api/v2/owners/${ownerId}`);
+  }
+
+  getOwners() : Observable<Owner[]>
+  {
+    return this.http.get<Owner[]>(`${environment.apiBaseUrl}/api/v2/owners`);
   }
 }
