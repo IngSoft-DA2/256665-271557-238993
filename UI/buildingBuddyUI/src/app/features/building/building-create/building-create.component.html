@@ -3,64 +3,76 @@
     <h1 class="mt-3">Create Invitation</h1>
 
     <form #form="ngForm" (ngSubmit)="createBuilding()">
-        <div class="mt-2">
+        <div class="form-control mt-2">
 
             <div class="mt-3">
-                <label class="form-label">Building Name</label>
+                <label for="buildingName" class="form-label">Building Name</label>
                 <br>
-                <input type="text" id="buildingName" class="form-control" 
-                name="buildingName" [(ngModel)]="buildingToCreate.name"> 
+                <input type="text" id="buildingName" class="form-control" name="buildingName"
+                    [(ngModel)]="buildingToCreate.name">
             </div>
 
             <div class="mt-3">
-                <label class="form-label">Building Address</label>
+                <label for="buildingAddress" class="form-label">Building Address</label>
                 <br>
                 <input type="text" id="buildingAddress" class="form-control" name="buildingAddress"
-                [(ngModel)]= "buildingToCreate.address">
+                    [(ngModel)]="buildingToCreate.address">
             </div>
 
             <div class="mt-3">
-                <label class="form-label">Building Location</label>
-                <br>
-        
-                <label class="form-label"> + Building Latitude</label>
-                <input type="text" id="buildingLocationLatitude" class="form-control" name="buildingLocationLatitude"
-                [(ngModel)]= "buildingToCreate.location.latitude">
+                <label for="buildingLocation" class="form-label">Building Location</label>
                 <br>
 
-                <label class="form-label"> + Building Longitude</label>
-                <input type="text" id="buildingLocationLongitude" class="form-control" name="buildingLocationLongitude"
-                [(ngModel)]= "buildingToCreate.location.longitude">
-            </div>
+                <div class="ms-4">
+                    <label for="buildingLocationLatitude" class="form-label">- Building Latitude</label>
+                    <input type="text" id="buildingLocationLatitude" class="form-control"
+                        name="buildingLocationLatitude" [(ngModel)]="buildingToCreate.location.latitude">
+                    <br>
 
-            <div class="mt-3">
-                <label class="form-label">Building Common Expenses</label>
-                <input type="text" id="buildingCommonExpenses" class="form-control" name="buildingCommonExpenses"
-                [(ngModel)]= "buildingToCreate.commonExpenses">
-            </div>
-
-
-            <div class="container form-control mt-4">
-
-                <h2>Flat Creation Section</h2> 
-
-                <div class="mt-2">
-
-                    <label class="form-label">Building Common Expenses</label>
-                    <input type="text" id="buildingCommonExpenses" class="form-control" name="buildingCommonExpenses"
-                    [(ngModel)]= "buildingToCreate.commonExpenses">
-
+                    <label for="buildingLocationLongitude" class="form-label">- Building Longitude</label>
+                    <input type="text" id="buildingLocationLongitude" class="form-control"
+                        name="buildingLocationLongitude" [(ngModel)]="buildingToCreate.location.longitude">
                 </div>
-
             </div>
 
-           
             <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <label for="buildingCommonExpenses" class="form-label">Building Common Expenses</label>
+                <input type="text" id="buildingCommonExpenses" class="form-control" name="buildingCommonExpenses"
+                    [(ngModel)]="buildingToCreate.commonExpenses">
+            </div>
+
+            <div class="container mt-4">
+                <table class="table table-striped mt-4" *ngIf="buildingToCreate.flats.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Floor</th>
+                            <th>Room Number</th>
+                            <th>Owner Assigned</th>
+                            <th>Total Rooms</th>
+                            <th>Total Baths</th>
+                            <th>Terrace</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let flat of buildingToCreate.flats">
+                            <td>{{ flat.floor }}</td>
+                            <td>{{ flat.roomNumber }}</td>
+                            <td>{{ getFlatOwner(flat.ownerAssignedId) }}</td>
+                            <td>{{ flat.totalRooms }}</td>
+                            <td>{{ flat.totalBaths }}</td>
+                            <td>{{ flat.hasTerrace }}</td>
+                            <td><button class="btn btn-danger" (click)="removeFlat(flat.indexOf())">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="buildingToCreate.flats.length === 0" class="alert alert-warning mt-3">No flats added yet.</div>
             </div>
         </div>
     </form>
-
 </div>
 
 
+
+<div class="mt-3">
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</div>

@@ -1,8 +1,10 @@
+import { Owner } from "../../owner/interfaces/owner";
+
 export interface CreateFlatRequest 
 {
     floor : number,
     roomNumber : string,
-    ownerId : string,
+    ownerAssignedId : string,
     totalRooms : number,
     totalBaths : number,
     hasTerrace : boolean

@@ -4,6 +4,8 @@ import { BuildingService } from '../services/building.service';
 import { CreateBuildingRequest } from '../interfaces/building-create-request';
 import { CreateFlatRequest } from '../../flat/interfaces/flat-create-request';
 import { FlatService } from '../../flat/services/flat.service';
+import { Flat } from '../../flat/interfaces/flat';
+import { OwnerService } from '../../owner/services/owner.service';
 
 @Component({
   selector: 'app-building-create',
@@ -11,7 +13,6 @@ import { FlatService } from '../../flat/services/flat.service';
   styleUrl: './building-create.component.css'
 })
 export class BuildingCreateComponent {
-
 
   buildingToCreate: CreateBuildingRequest = {
     managerId: '',
@@ -30,14 +31,14 @@ export class BuildingCreateComponent {
 
     floor: 0,
     roomNumber: '',
-    ownerId: '',
+    ownerAssignedId: '',
     totalRooms: 0,
     totalBaths: 0,
     hasTerrace: true
   };
 
 
-  constructor(private buildingService: BuildingService,private flatService : FlatService, private router: Router) {
+  constructor(private buildingService: BuildingService, private flatService : FlatService, private ownerService: OwnerService, private router: Router) {
 
   }
 
@@ -65,15 +66,34 @@ export class BuildingCreateComponent {
       })
   }
 
+  removeFlat(positionOnArrayOfFlatToDelete : number) : void 
+  {
+    const flatToRemove = this.buildingToCreate.flats[positionOnArrayOfFlatToDelete];
+    this.buildingToCreate.flats = this.buildingToCreate.flats.filter(flat => flat !== flatToRemove);
+  }
+
   private resetFlatValues(): void {
 
     this.flatToCreate.floor = 0,
     this.flatToCreate.roomNumber = '',
-    this.flatToCreate.ownerId = '',
+    this.flatToCreate.ownerAssignedId = '',
     this.flatToCreate.totalRooms = 0,
     this.flatToCreate.totalBaths = 0,
     this.flatToCreate.hasTerrace = true
   };
+
+  getFlatOwnerName(ownerId : string) : string
+  {
+    var ownerName = '';
+
+    this.ownerService.getOwnerById(ownerId)
+    .subscribe({
+      next: (Response) => {
+        ownerName = Response.firstname
+      }
+    })
+    return ownerName;
+  }
 
 }
 
