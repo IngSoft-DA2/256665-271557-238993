@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Owner } from '../interfaces/owner';
 import { environment } from '../../../../environments/environment.development';
+import { OwnerCreateResponse } from '../interfaces/owner-create-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class OwnerService {
     return this.http.get<Owner[]>(`${environment.apiBaseUrl}/api/v2/owners`);
   }
 
-  createOwner(ownerToCreate: any) : Observable<CreateOwnerResponse>
+  createOwner(ownerToCreate: OwnerCreateResponse) : Observable<OwnerCreateResponse>
   {
-    return this.http.post<CreateOwnerResponse>(`${environment.apiBaseUrl}/api/v2/owners`);
+    return this.http.post<OwnerCreateResponse>(`${environment.apiBaseUrl}/api/v2/owners`,ownerToCreate);
   }
-  }
+
 }
