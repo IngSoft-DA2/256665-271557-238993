@@ -17,8 +17,8 @@ export class BuildingCreateComponent {
   showOwnerCreation: boolean = false;
 
   buildingToCreate: BuildingCreateRequest = {
-    managerId: '00000000-0000-0000-0000-000000000000',
-    constructionCompanyId: '00000000-0000-0000-0000-000000000000',
+    managerId: '',
+    constructionCompanyId: '',
     name: '',
     address: '',
     location: {
@@ -33,7 +33,7 @@ export class BuildingCreateComponent {
 
     floor: 0,
     roomNumber: '1B',
-    ownerAssignedId: '00000000-0000-0000-0000-000000000000',
+    ownerAssignedId: '',
     totalRooms: 0,
     totalBaths: 0,
     hasTerrace: true
@@ -48,35 +48,44 @@ export class BuildingCreateComponent {
   }
 
   createBuilding() {
-    this.ensureGuid(this.buildingToCreate.constructionCompanyId);
-    this.ensureGuid(this.buildingToCreate.managerId);
-    this.buildingService.createBuilding(this.buildingToCreate)
-      .subscribe({
-        next: () => {
-          alert("Building created with success!");
-          this.router.navigateByUrl('buildings/list');
-        },
-        error: (errorMessage) => {
-          alert(errorMessage.error);
-        }
-      })
+
+    if (this.buildingToCreate.constructionCompanyId !== '' && this.buildingToCreate.managerId !== '') {
+      this.buildingService.createBuilding(this.buildingToCreate)
+        .subscribe({
+          next: () => {
+            alert("Building created with success!");
+            this.router.navigateByUrl('buildings/list');
+          },
+          error: (errorMessage) => {
+            alert(errorMessage.error);
+          }
+        })
+    }
+    else {
+      alert("Please check that all select values has been selected");
+    }
   }
 
   createFlat(): void {
     this.flatToInsert = this.flatToAddWithValues()
-    this.ensureGuid(this.flatToInsert.ownerAssignedId);
-    this.flatService.createFlat(this.flatToInsert)
-      .subscribe({
-        next: () => {
-          alert("Flat created with success");
-          this.buildingToCreate.flats.push(this.flatToInsert!)
-          this.resetFlatMockUpValues();
-        },
-        error: (errorMessage) => {
-          alert(errorMessage.error);
-          this.resetFlatMockUpValues();
-        }
-      })
+    if (this.flatToInsert.ownerAssignedId !== '') {
+      this.flatService.createFlat(this.flatToInsert)
+        .subscribe({
+          next: () => {
+            alert("Flat created with success");
+            this.buildingToCreate.flats.push(this.flatToInsert!)
+            this.resetFlatMockUpValues();
+          },
+          error: (errorMessage) => {
+            alert(errorMessage.error);
+            this.resetFlatMockUpValues();
+          }
+        })
+    }
+    else {
+      alert("A owner must be selected");
+    }
+
   }
 
   removeFlat(index: number): void {
@@ -133,15 +142,4 @@ export class BuildingCreateComponent {
     this.flatMockUp.ownerAssignedId = value;
   }
 
-  isValidGuid(guid: string): boolean {
-    const guidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-    return guidPattern.test(guid);
-  }
-
-  ensureGuid(guid: string): string {
-    if (this.isValidGuid(guid)) {
-      return guid;
-    }
-    return '00000000-0000-0000-0000-000000000000';
-  }
 }
