@@ -21,6 +21,8 @@ import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/repo
 import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
 import { LoginComponent } from './features/login/login.component';
 import { HomeComponent } from './core/home/home.component';
+import { CreateMaintenanceRequestComponent } from './features/MaintenanceRequest/create-maintenance-request/create-maintenance-request.component';
+import { MaintenanceRequestsListComponent } from './features/MaintenanceRequest/maintenance-requests-list/maintenance-requests-list.component';
 
 
 const routes: Routes =
@@ -58,6 +60,14 @@ const routes: Routes =
   {
     path: 'admins/create',
     component : AdminCreateComponent
+  },
+  {
+    path: 'maintenance-requests/list',
+    component : MaintenanceRequestsListComponent
+  },
+  {
+    path: 'maintenance-requests/create',
+    component : CreateMaintenanceRequestComponent
   },
   {
   path: 'reports/list',

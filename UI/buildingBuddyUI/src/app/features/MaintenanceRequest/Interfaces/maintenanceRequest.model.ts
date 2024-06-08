@@ -1,12 +1,12 @@
-import { Building } from "../../Building/Interfaces/Building.model";
+import { StatusEnum } from "../../invitation/interfaces/enums/status-enum";
 
 export interface MaintenanceRequest {
     id: string;
     description: string;
-    //flat: Flat;
-    //status: StatusEnum;
+    flatId: string;
+    category: string;
     openedDate:  string;
-    closedRequests: string;
-    onAttendanceRequests: number; 
-    buildingId: string; 
+    closedDate: string;
+    requestHandlerId: string; 
+    requestStatus: StatusEnum;
 }
