@@ -54,18 +54,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let flat of buildingToCreate.flats">
+                        <tr *ngFor="let flat of buildingToCreate.flats; let i = index">
                             <td>{{ flat.floor }}</td>
                             <td>{{ flat.roomNumber }}</td>
-                            <td>{{ getFlatOwner(flat.ownerAssignedId) }}</td>
+                            <td>{{ getOwnerFlat(flat.ownerAssigned) }}</td>
                             <td>{{ flat.totalRooms }}</td>
                             <td>{{ flat.totalBaths }}</td>
                             <td>{{ flat.hasTerrace }}</td>
-                            <td><button class="btn btn-danger" (click)="removeFlat(flat.indexOf())">Remove</button></td>
+                            <td><button class="btn btn-danger" (click)="removeFlat(i)">Remove</button></td>
                         </tr>
                     </tbody>
                 </table>
-                <div *ngIf="buildingToCreate.flats.length === 0" class="alert alert-warning mt-3">No flats added yet.</div>
+                <div *ngIf="buildingToCreate.flats.length === 0" class="alert alert-warning mt-3">No flats added yet.
+                </div>
             </div>
         </div>
     </form>
