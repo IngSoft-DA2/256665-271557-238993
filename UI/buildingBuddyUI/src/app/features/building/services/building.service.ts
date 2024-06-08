@@ -16,17 +16,17 @@ export class BuildingService {
 
   getAllBuildings() : Observable<Building[]>
   {
-    return this.http.get<Building[]>(`${environment.apiBaseUrl}/api/v2/buildings`)
+    return this.http.get<Building[]>(`${environment.apiBaseUrl}/api/v2/buildings`);
   }
 
   getBuildingById(buildingId: string) : Observable<Building>
   {
-    return this.http.get<Building>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`)
+    return this.http.get<Building>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`);
   }
 
   deleteBuilding(buildingId: string) : Observable<void>
   {
-    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`)
+    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`);
   }
 
   updateBuilding(buildingId: string, buildingToUpdate: BuildingUpdateRequest) : Observable<void>

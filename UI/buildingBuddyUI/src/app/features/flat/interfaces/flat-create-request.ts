@@ -4,6 +4,6 @@ export interface CreateFlatRequest
     roomNumber : string,
     ownerId : string,
     totalRooms : number,
-    totalBath : number,
+    totalBaths : number,
     hasTerrace : boolean
 }

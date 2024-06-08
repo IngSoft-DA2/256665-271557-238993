@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BuildingService } from '../services/building.service';
+import { CreateBuildingRequest } from '../interfaces/building-create-request';
+import { CreateFlatRequest } from '../../flat/interfaces/flat-create-request';
+import { FlatService } from '../../flat/services/flat.service';
 
 @Component({
   selector: 'app-building-create',
@@ -23,7 +26,7 @@ export class BuildingCreateComponent {
     flats: [],
   }
 
-  flatToCreate: CreatFlatRequest = {
+  flatToCreate: CreateFlatRequest = {
 
     floor: 0,
     roomNumber: '',
