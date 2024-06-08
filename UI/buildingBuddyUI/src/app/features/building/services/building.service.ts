@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Building } from '../interfaces/building';
 import { environment } from '../../../../environments/environment.development';
 import { BuildingUpdateRequest } from '../interfaces/building-update-request';
+import { CreateBuildingRequest } from '../interfaces/building-create-request';
+import { CreateBuildingResponse } from '../interfaces/building-create-response';
 
 @Injectable({
   providedIn: 'root'
@@ -32,9 +34,9 @@ export class BuildingService {
     return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`,buildingToUpdate);
   }
 
-  createBuilding(buildingToCreate: CreateBuildingRequest) 
+  createBuilding(buildingToCreate: CreateBuildingRequest) : Observable<CreateBuildingResponse>
   {
-    throw new Error('Method not implemented.');
+    return this.http.post<CreateBuildingResponse>(`${environment.apiBaseUrl}/api/v2/buildings/`,buildingToCreate);
   }
 
 }
