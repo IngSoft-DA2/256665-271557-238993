@@ -118,4 +118,13 @@ export class MaintenanceRequestsListComponent implements OnInit{
         }
       });
   }
+
+  getCategoryName(categoryId: string): string {
+    const categoryFound = this.categories.find(r => r.id === categoryId);
+    if (categoryFound) {
+      return categoryFound.name;
+    }
+    return "";
+  }
+  
 }

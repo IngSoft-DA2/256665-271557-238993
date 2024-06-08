@@ -21,6 +21,7 @@
         <br>
         <select class="form-select" name="categorySelected" (change)="onChange($event)">
           <option value="default" selected disabled>Select a category</option>
+          <option value="default">View All</option>
           <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
         </select>
       </div>
@@ -33,28 +34,25 @@
                 <tr>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Category</th>
                     <th>Opened date</th>
                     <th>Closed date</th>
                     <th>Flat number</th>
                     <th>Request Handler</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                
+                    <th>Assignments</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let maintenanceRequest of maintenanceRequests">
                     <td>{{maintenanceRequest.description}}</td>
                     <td>{{getStatusString(maintenanceRequest.requestStatus)}}</td>
+                    <td>{{getCategoryName(maintenanceRequest.category)}}</td>
                     <td>{{maintenanceRequest.openedDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{getMaintenanceRequestClosedDate(maintenanceRequest)}}</td>
                     <td>{{maintenanceRequest.flat.roomNumber}}</td>
                     <td>{{getRequestHandlerName(maintenanceRequest)}}</td>
                     <td>
-                        <button class="btn btn-info btn-sm button" (click)="goToMaintenanceRequestUpdateForm(maintenanceRequest.id)"> Update </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger btn-sm button" (click)="goToMaintenanceRequestCreationForm()"> Delete </button>
+                        <button class="btn btn-info btn-sm button" (click)="goToMaintenanceRequestUpdateForm(maintenanceRequest.id)"> Assign Handler </button>
                     </td>
                 </tr>
             </tbody>
