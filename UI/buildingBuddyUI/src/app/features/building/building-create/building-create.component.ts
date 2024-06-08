@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BuildingService } from '../services/building.service';
 import { CreateBuildingRequest } from '../interfaces/building-create-request';
-import { CreateFlatRequest, FlatCreateRequest } from '../../flat/interfaces/flat-create-request';
 import { FlatService } from '../../flat/services/flat.service';
-import { Flat } from '../../flat/interfaces/flat';
 import { OwnerService } from '../../owner/services/owner.service';
 import { Owner } from '../../owner/interfaces/owner';
+import { OwnerCreateRequest } from '../../owner/interfaces/owner-create-request';
+import { FlatCreateRequest } from '../../flat/interfaces/flat-create-request';
 
 @Component({
   selector: 'app-building-create',
@@ -28,6 +28,13 @@ export class BuildingCreateComponent {
     flats: [],
   }
 
+  ownerToCreate: OwnerCreateRequest = {
+    firstname : '',
+    lastname : '',
+    email : '',
+    password : ''
+  }
+
   flatMockUp: FlatCreateRequest = {
 
     floor: 0,
@@ -38,7 +45,7 @@ export class BuildingCreateComponent {
     hasTerrace: true
   };
 
-  flatToInsert? : CreateFlatRequest 
+  flatToInsert? : FlatCreateRequest 
 
   availableOwners: Owner[] = []
 
@@ -91,13 +98,12 @@ export class BuildingCreateComponent {
     })
   }
 
-  getFlatOwnerName(ownerId?: string): string {
-    var ownerName = '';
-    
+  getFlatOwnerFirstname(ownerId?: string): string {
+    return this.availableOwners.find(owner => owner.id === ownerId)?.firstname ?? "Not found"
   }
 
 
-  private flatToAddWithValues(): CreateFlatRequest {
+  private flatToAddWithValues(): FlatCreateRequest {
     return {
       floor: this.flatMockUp.floor,
       roomNumber: this.flatMockUp.roomNumber,
@@ -116,6 +122,14 @@ export class BuildingCreateComponent {
       this.flatMockUp.totalRooms = 0,
       this.flatMockUp.totalBaths = 0,
       this.flatMockUp.hasTerrace = true
+  };
+
+  private resetOwnerValues(): void {
+
+    this.ownerToCreate.firstname = '';
+    this.ownerToCreate.lastname = '';
+    this.ownerToCreate.email = '';
+    this.ownerToCreate.password = '';
   };
 
   private loadOwners(): void {

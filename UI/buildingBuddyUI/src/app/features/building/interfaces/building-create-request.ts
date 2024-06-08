@@ -1,4 +1,4 @@
-import { CreateFlatRequest } from "../../flat/interfaces/flat-create-request";
+import { FlatCreateRequest } from "../../flat/interfaces/flat-create-request";
 import { LocationRequest } from "./location/location-request";
 
 export interface CreateBuildingRequest 
@@ -9,6 +9,6 @@ export interface CreateBuildingRequest
     location : LocationRequest,
     constructionCompanyId : string,
     commonExpenses : number,
-    flats : CreateFlatRequest[]
+    flats : FlatCreateRequest[]
 }
 

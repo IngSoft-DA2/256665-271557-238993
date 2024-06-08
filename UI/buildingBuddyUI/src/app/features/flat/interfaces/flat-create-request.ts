@@ -1,4 +1,3 @@
-import { Owner } from "../../owner/interfaces/owner";
 
 export interface FlatCreateRequest 
 {
@@ -8,5 +7,4 @@ export interface FlatCreateRequest
     totalRooms : number,
     totalBaths : number,
     hasTerrace : boolean
-
 }

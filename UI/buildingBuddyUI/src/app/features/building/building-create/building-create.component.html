@@ -57,7 +57,7 @@
                         <tr *ngFor="let flat of buildingToCreate.flats; let i = index">
                             <td>{{ flat.floor }}</td>
                             <td>{{ flat.roomNumber }}</td>
-                            <td>{{ getFlatOwnerName(flat.ownerAssignedId)}}</td>
+                            <td>{{ getFlatOwnerFirstname(flat.ownerAssignedId)}}</td>
                             <td>{{ flat.totalRooms }}</td>
                             <td>{{ flat.totalBaths }}</td>
                             <td>{{ flat.hasTerrace }}</td>
