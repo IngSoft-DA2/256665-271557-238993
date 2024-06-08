@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Building } from '../interfaces/building';
@@ -14,9 +14,10 @@ export class BuildingService {
 
   constructor(private http : HttpClient) { }
 
-  getAllBuildings() : Observable<Building[]>
+  getAllBuildings(userId : string) : Observable<Building[]>
   {
-    return this.http.get<Building[]>(`${environment.apiBaseUrl}/api/v2/buildings`);
+    const params = new HttpParams().set('userId', userId);
+    return this.http.get<Building[]>(`${environment.apiBaseUrl}/api/v2/buildings`,{params});
   }
 
   getBuildingById(buildingId: string) : Observable<Building>
