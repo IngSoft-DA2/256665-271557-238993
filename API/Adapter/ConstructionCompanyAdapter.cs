@@ -69,7 +69,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction company was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -132,7 +132,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction company was not found");
         }
         catch (Exception exceptionCaught)
         {

@@ -30,9 +30,7 @@ public class FlatAdapter : IFlatAdapter
     {
         try
         {
-            Owner ownerAssigned = null;
-
-            ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId);
+            Owner ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId);
 
             Flat flatToCreate = new Flat
             {
@@ -53,7 +51,7 @@ public class FlatAdapter : IFlatAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Flat was not created because the owner assigned was not found.");
         }
         catch (Exception exceptionCaught)
         {

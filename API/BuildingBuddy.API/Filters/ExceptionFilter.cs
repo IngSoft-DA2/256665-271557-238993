@@ -13,9 +13,9 @@ public class ExceptionFilter : ExceptionFilterAttribute
         {
             context.Result = new BadRequestObjectResult(exceptionCaught.Message);
         }
-        else if (context.Exception is ObjectNotFoundAdapterException)
+        else if (context.Exception is ObjectNotFoundAdapterException exceptionNotFoundCaught)
         {
-            context.Result = new NotFoundObjectResult("Value that you are looking for was not found");
+            context.Result = new NotFoundObjectResult(exceptionNotFoundCaught.Message);
         }
         else if (context.Exception is ObjectRepeatedAdapterException)
         {

@@ -17,8 +17,8 @@ export class BuildingCreateComponent {
   showOwnerCreation: boolean = false;
 
   buildingToCreate: BuildingCreateRequest = {
-    managerId: '',
-    constructionCompanyId: '',
+    managerId: '00000000-0000-0000-0000-000000000000',
+    constructionCompanyId: '00000000-0000-0000-0000-000000000000',
     name: '',
     address: '',
     location: {
@@ -33,7 +33,7 @@ export class BuildingCreateComponent {
 
     floor: 0,
     roomNumber: '1B',
-    ownerAssignedId: undefined,
+    ownerAssignedId: '00000000-0000-0000-0000-000000000000',
     totalRooms: 0,
     totalBaths: 0,
     hasTerrace: true
@@ -48,6 +48,8 @@ export class BuildingCreateComponent {
   }
 
   createBuilding() {
+    this.ensureGuid(this.buildingToCreate.constructionCompanyId);
+    this.ensureGuid(this.buildingToCreate.managerId);
     this.buildingService.createBuilding(this.buildingToCreate)
       .subscribe({
         next: () => {
@@ -62,6 +64,7 @@ export class BuildingCreateComponent {
 
   createFlat(): void {
     this.flatToInsert = this.flatToAddWithValues()
+    this.ensureGuid(this.flatToInsert.ownerAssignedId);
     this.flatService.createFlat(this.flatToInsert)
       .subscribe({
         next: () => {
@@ -99,7 +102,7 @@ export class BuildingCreateComponent {
 
     this.flatMockUp.floor = 0,
       this.flatMockUp.roomNumber = '1A',
-      this.flatMockUp.ownerAssignedId = undefined,
+      this.flatMockUp.ownerAssignedId = '',
       this.flatMockUp.totalRooms = 0,
       this.flatMockUp.totalBaths = 0,
       this.flatMockUp.hasTerrace = true
@@ -130,7 +133,15 @@ export class BuildingCreateComponent {
     this.flatMockUp.ownerAssignedId = value;
   }
 
+  isValidGuid(guid: string): boolean {
+    const guidPattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+    return guidPattern.test(guid);
+  }
 
-
+  ensureGuid(guid: string): string {
+    if (this.isValidGuid(guid)) {
+      return guid;
+    }
+    return '00000000-0000-0000-0000-000000000000';
+  }
 }
-

@@ -66,7 +66,7 @@ public class ManagerAdapter : IManagerAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Manager was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -104,7 +104,7 @@ public class ManagerAdapter : IManagerAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Invitation was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

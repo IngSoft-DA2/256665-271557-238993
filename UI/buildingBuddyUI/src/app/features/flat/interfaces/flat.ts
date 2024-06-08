@@ -6,7 +6,7 @@ export interface Flat
     buildingId : string,
     floor : number,
     roomNumber : string,
-    ownerAssigned? : Owner,
+    ownerAssigned : Owner,
     ownerId : string,
     totalRooms : number,
     totalBath : number,

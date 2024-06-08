@@ -152,7 +152,7 @@ public class BuildingAdapter : IBuildingAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Building was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -207,7 +207,7 @@ public class BuildingAdapter : IBuildingAdapter
 
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction Company or Owner not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
@@ -244,7 +244,7 @@ public class BuildingAdapter : IBuildingAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Building was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
@@ -268,7 +268,7 @@ public class BuildingAdapter : IBuildingAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Building was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

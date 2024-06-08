@@ -75,7 +75,7 @@ public class InvitationAdapter : IInvitationAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Invitation was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -108,7 +108,7 @@ public class InvitationAdapter : IInvitationAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Invitations for the email were not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -173,7 +173,7 @@ public class InvitationAdapter : IInvitationAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Invitation was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
@@ -201,7 +201,7 @@ public class InvitationAdapter : IInvitationAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Invitation was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

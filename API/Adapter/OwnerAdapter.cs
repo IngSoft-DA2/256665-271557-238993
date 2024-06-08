@@ -56,7 +56,7 @@ public class OwnerAdapter : IOwnerAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Owner was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -114,7 +114,7 @@ public class OwnerAdapter : IOwnerAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Owner was not found");
         }
         catch (ObjectRepeatedServiceException)
         {

@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { Building } from '../interfaces/building';
 import { environment } from '../../../../environments/environment.development';
 import { BuildingUpdateRequest } from '../interfaces/building-update-request';
-import { CreateBuildingRequest } from '../interfaces/building-create-request';
 import { CreateBuildingResponse } from '../interfaces/building-create-response';
+import { BuildingCreateRequest } from '../interfaces/building-create-request';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class BuildingService {
     return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`,buildingToUpdate);
   }
 
-  createBuilding(buildingToCreate: CreateBuildingRequest) : Observable<CreateBuildingResponse>
+  createBuilding(buildingToCreate: BuildingCreateRequest) : Observable<CreateBuildingResponse>
   {
     return this.http.post<CreateBuildingResponse>(`${environment.apiBaseUrl}/api/v2/buildings/`,buildingToCreate);
   }
