@@ -32,6 +32,7 @@ import { HomeComponent } from './core/home/home.component';
 import { CreateMaintenanceRequestComponent } from './features/MaintenanceRequest/create-maintenance-request/create-maintenance-request.component';
 import { MaintenanceRequestsListComponent } from './features/MaintenanceRequest/maintenance-requests-list/maintenance-requests-list.component';
 import { AssignMaintenanceRequestComponent } from './features/MaintenanceRequest/assign-maintenance-request/assign-maintenance-request.component';
+import { CreateRequestHandlerComponent } from './features/requestHandler/create-request-handler/create-request-handler.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { AssignMaintenanceRequestComponent } from './features/MaintenanceRequest
     HomeComponent,
     CreateMaintenanceRequestComponent,
     MaintenanceRequestsListComponent,
-    AssignMaintenanceRequestComponent
+    AssignMaintenanceRequestComponent,
+    CreateRequestHandlerComponent
   ],
   imports: [
     BrowserModule,

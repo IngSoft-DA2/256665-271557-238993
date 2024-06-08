@@ -24,6 +24,7 @@ import { HomeComponent } from './core/home/home.component';
 import { CreateMaintenanceRequestComponent } from './features/MaintenanceRequest/create-maintenance-request/create-maintenance-request.component';
 import { MaintenanceRequestsListComponent } from './features/MaintenanceRequest/maintenance-requests-list/maintenance-requests-list.component';
 import { AssignMaintenanceRequestComponent } from './features/MaintenanceRequest/assign-maintenance-request/assign-maintenance-request.component';
+import { CreateRequestHandlerComponent } from './features/requestHandler/create-request-handler/create-request-handler.component';
 
 
 const routes: Routes =
@@ -73,6 +74,10 @@ const routes: Routes =
   {
     path: 'maintenance-requests/assign',
     component : AssignMaintenanceRequestComponent
+  },
+  {
+    path: 'request-handler/create',
+    component : CreateRequestHandlerComponent
   },
   {
   path: 'reports/list',
