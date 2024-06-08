@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BuildingService } from '../services/building.service';
 import { FlatService } from '../../flat/services/flat.service';
 import { OwnerService } from '../../owner/services/owner.service';
@@ -47,8 +47,8 @@ export class BuildingCreateComponent {
 
   availableManagers: Manager[] = []
 
-  constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private managerService: ManagerService, private router: Router) {
-
+  constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private managerService: ManagerService, private router: Router, private route : ActivatedRoute) {
+    this.obtainConstructionCompanyId();
     this.loadOwners();
     this.loadManagers();
   }
@@ -100,6 +100,23 @@ export class BuildingCreateComponent {
 
   getFlatOwnerFirstname(ownerId?: string): string {
     return this.availableOwners.find(owner => owner.id === ownerId)?.firstname ?? "Not found"
+  }
+
+  private obtainConstructionCompanyId() : void
+  {
+    this.route.paramMap
+    .subscribe({
+      next:(params) => {
+        this.buildingToCreate.constructionCompanyId = params.get('constructionCompanyId') ?? '';
+
+        if(this.buildingToCreate.constructionCompanyId == ''){
+          alert("Unprevisted error, redirecting.");
+          this.router.navigateByUrl('/construction-companies/list');
+        }
+      }
+    })
+
+    
   }
 
   private flatToAddWithValues(): FlatCreateRequest {
