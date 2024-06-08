@@ -180,6 +180,20 @@ public class MaintenaceRepositoryTest
         _mockDbContext.VerifyAll();
     }
 
+    [TestMethod]
+    public void GivenACategoryToFilterBy_ShouldReturnMaintenanceRequestsFilteredByThatCategory()
+    {
+        IEnumerable<MaintenanceRequest> expectedMaintenanceRequests = new List<MaintenanceRequest> { _maintenanceRequestInDb };
+
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb);
+        _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
+        _dbContext.SaveChanges();
+
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(_maintenanceRequestInDb.ManagerId, _maintenanceRequestInDb.CategoryId);
+
+        Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
+    }
+
     #endregion
 
     #region Get Maintenance Request By Category
