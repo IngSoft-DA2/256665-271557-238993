@@ -7,6 +7,8 @@ import { User } from '../../login/interfaces/user';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 import { HttpParams } from '@angular/common/http';
 import { MaintenanceStatusEnum } from '../Interfaces/enums/maintenance-status-enum';
+import { CategoryService } from '../../category/services/category.service';
+import { Category } from '../../category/interfaces/category';
 
 @Component({
   selector: 'app-maintenance-requests-list',
@@ -20,8 +22,10 @@ export class MaintenanceRequestsListComponent implements OnInit{
   SystemUserRoleEnumValues = SystemUserRoleEnum;
   managerId: string = "";
   maintenanceRequestId: string = "";
+  categoryId: string = "default";
+  categories: Category[] = [];
 
-  constructor(private router: Router, private maintenanceRequest: MaintenanceRequestService, private loginService: LoginService) { 
+  constructor(private router: Router, private maintenanceRequest: MaintenanceRequestService, private loginService: LoginService, private categoryService: CategoryService) { 
     loginService.getUser().subscribe({
       next: (response) => {
         this.userConnected = response;
@@ -38,10 +42,11 @@ export class MaintenanceRequestsListComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadMaintenanceRequests();
+    this.loadCategories();
   }
 
   loadMaintenanceRequests(): void {
-    this.maintenanceRequest.getAllMaintenanceRequests(this.managerId)
+    this.maintenanceRequest.getAllMaintenanceRequests(this.managerId, this.categoryId)
       .subscribe({
         next: (response) => {
           this.maintenanceRequests = response;
@@ -93,5 +98,24 @@ export class MaintenanceRequestsListComponent implements OnInit{
 
     this.router.navigateByUrl(`maintenance-requests/assign?${queryParams}`);
 
+  }
+
+  onChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+      this.categoryId = target.value;
+      this.loadMaintenanceRequests();
+  }
+
+  loadCategories(): void {
+    this.categoryService.getAllCategories()
+      .subscribe({
+        next: (response) => {
+          this.categories = response;
+          console.log(this.categories);
+        },
+        error: (error) => {
+          console.error("Error al cargar los request handlers:", error);
+        }
+      });
   }
 }

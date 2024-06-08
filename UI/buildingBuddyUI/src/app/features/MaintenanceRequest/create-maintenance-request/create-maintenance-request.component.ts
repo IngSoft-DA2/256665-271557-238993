@@ -43,7 +43,6 @@ export class CreateMaintenanceRequestComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
         this.managerId = params['managerId'];
-        alert("Se setea como " + this.managerId);
     });
     
     this.loadCategories();
@@ -51,7 +50,6 @@ export class CreateMaintenanceRequestComponent implements OnInit {
   }
 
   loadBuildings(): void {
-    alert(this.managerId);
     this.managerService.getManagerById(this.managerId).subscribe({
       next: (response) => {
         this.buildingsIdList = response.buildings;
@@ -120,27 +118,19 @@ export class CreateMaintenanceRequestComponent implements OnInit {
     this.maintenanceCreateRequest.flatId = this.flatId;
     this.maintenanceCreateRequest.category = this.category;
     this.maintenanceCreateRequest.managerId = this.managerId;
-
-    alert(this.maintenanceCreateRequest.description);
-    alert(this.maintenanceCreateRequest.flatId);
-    alert(this.maintenanceCreateRequest.category);
-    alert(this.maintenanceCreateRequest.managerId);
   
-
     this.maintenanceRequestService.createMaintenanceRequest(this.maintenanceCreateRequest).subscribe({
       next: (response) => {
-        console.log("Solicitud de mantenimiento creada con éxito:", response);
-        alert("Solicitud de mantenimiento creada con éxito");
+        alert("Maintenance request created successfully");
         this.router.navigate(['../list'], {relativeTo: this.route});
       },
       error: (error) => {
         alert("Error on maintenance request creation");
-        console.error("Error on creation: ", error);
       }
     });
   }
 
-  goToReportsList(): void {
+  goToReportsList(): void { 
     this.router.navigate(['../list'], {relativeTo: this.route});
   }
 }

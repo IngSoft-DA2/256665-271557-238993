@@ -44,15 +44,15 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
-                    RequestHandler = maintenanceRequestsInDb.Select(maintenanceRequest => new GetRequestHandlerResponse
+                    RequestHandler = maintenanceRequest.RequestHandler != null ? maintenanceRequestsInDb.Select(maintenanceRequest => new GetRequestHandlerResponse
                     {
                         Id = maintenanceRequest.RequestHandler.Id,
                         Name = maintenanceRequest.RequestHandler.Firstname,
                         LastName = maintenanceRequest.RequestHandler.LastName,
                         Email = maintenanceRequest.RequestHandler.Email,
-                    }).FirstOrDefault(),
+                    }).FirstOrDefault() : null,
                     FlatId = maintenanceRequest.FlatId,
-                    Flat = maintenanceRequestsInDb.Select(maintenanceRequest => new GetFlatResponse
+                    Flat = maintenanceRequest.Flat != null ? maintenanceRequestsInDb.Select(maintenanceRequest => new GetFlatResponse
                     {
                         Id = maintenanceRequest.Flat.Id,
                         Floor = maintenanceRequest.Flat.Floor,
@@ -60,14 +60,14 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                         TotalBaths = maintenanceRequest.Flat.TotalBaths,
                         HasTerrace = maintenanceRequest.Flat.HasTerrace,
                         RoomNumber = maintenanceRequest.Flat.RoomNumber,
-                        OwnerAssigned = maintenanceRequestsInDb.Select(mr => new GetOwnerResponse
+                        OwnerAssigned =maintenanceRequest.Flat.OwnerAssigned != null ? maintenanceRequestsInDb.Select(mr => new GetOwnerResponse
                         {
                             Id = mr.Flat.OwnerAssigned.Id,
                             Firstname = mr.Flat.OwnerAssigned.Firstname,
                             Lastname = mr.Flat.OwnerAssigned.Lastname,
                             Email = mr.Flat.OwnerAssigned.Email,
-                        }).FirstOrDefault(),
-                    }).FirstOrDefault()
+                        }).FirstOrDefault() : null,
+                    }).FirstOrDefault() : null
                 });
             return maintenanceRequestsToReturn;
         }

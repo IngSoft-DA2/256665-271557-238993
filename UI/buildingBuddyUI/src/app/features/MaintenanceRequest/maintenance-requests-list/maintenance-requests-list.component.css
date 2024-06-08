@@ -104,6 +104,11 @@ h4 label {
     margin-top: 10px;
 }
 
+.form-select-custom {
+    width: 40%;
+    margin-left: 4rem;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .tableClass, .alert-warning {

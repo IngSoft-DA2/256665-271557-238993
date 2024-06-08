@@ -18,9 +18,13 @@ export class MaintenanceRequestService {
       return this.http.post<MaintenanceCreateResponse>(`${environment.apiBaseUrl}/api/v2/maintenance`, maintenanceToCreate);
   }
 
-  getAllMaintenanceRequests(managerId: string): Observable<MaintenanceRequest[]> {
+  getAllMaintenanceRequests(managerId: string, categoryId: string): Observable<MaintenanceRequest[]> {
+
+    if(categoryId === "default") categoryId = "00000000-0000-0000-0000-000000000000";
+
     const params = new HttpParams()
     .set('managerId', managerId)
+    .set('categoryId', categoryId);
     return this.http.get<MaintenanceRequest[]>(`${environment.apiBaseUrl}/api/v2/maintenance/requests?`, {params});
   }
 

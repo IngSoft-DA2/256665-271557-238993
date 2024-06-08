@@ -33,6 +33,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
                         .Include(maintenanceRequest => maintenanceRequest.Category)
                         .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                         .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                        .Include(maintenanceRequest => maintenanceRequest.Manager)
                         .ToList();
                 }
                 else
@@ -42,6 +43,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
                         .Include(maintenanceRequest => maintenanceRequest.Category)
                         .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                         .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                        .Include(maintenanceRequest => maintenanceRequest.Manager)
                         .ToList();
                 }
             }
