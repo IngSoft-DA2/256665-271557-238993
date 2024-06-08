@@ -6,6 +6,7 @@ import { CreateFlatRequest } from '../../flat/interfaces/flat-create-request';
 import { FlatService } from '../../flat/services/flat.service';
 import { Flat } from '../../flat/interfaces/flat';
 import { OwnerService } from '../../owner/services/owner.service';
+import { Owner } from '../../owner/interfaces/owner';
 
 @Component({
   selector: 'app-building-create',
@@ -30,16 +31,18 @@ export class BuildingCreateComponent {
   flatToCreate: CreateFlatRequest = {
 
     floor: 0,
-    roomNumber: '',
+    roomNumber: '1B',
     ownerAssignedId: '',
     totalRooms: 0,
     totalBaths: 0,
     hasTerrace: true
   };
 
+  availableOwners: Owner[] = []
+
 
   constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private router: Router) {
-
+    
   }
 
   createBuilding() {
@@ -93,6 +96,13 @@ export class BuildingCreateComponent {
         }
       })
     return ownerName;
+  }
+
+
+  onChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const value = target?.value || '';
+    this.flatToCreate.ownerAssignedId = value;
   }
 
 }

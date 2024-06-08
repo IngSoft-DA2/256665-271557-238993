@@ -57,7 +57,7 @@
                         <tr *ngFor="let flat of buildingToCreate.flats; let i = index">
                             <td>{{ flat.floor }}</td>
                             <td>{{ flat.roomNumber }}</td>
-                            <td>{{ getOwnerFlat(flat.ownerAssigned) }}</td>
+                            <td>{{ getFlatOwnerName(flat.ownerAssignedId) }}</td>
                             <td>{{ flat.totalRooms }}</td>
                             <td>{{ flat.totalBaths }}</td>
                             <td>{{ flat.hasTerrace }}</td>
@@ -71,6 +71,67 @@
         </div>
     </form>
 </div>
+
+<div class="container form-control mt-4">
+
+    <div class="container">
+        <h2>Flat Creation Section</h2>
+
+        <form #form="ngForm" (ngSubmit)="createFlat()">
+            <div class="mt-2">
+                <div class="mt-3">
+                    <label class="form-label">Floor</label>
+                    <br>
+                    <input type="text" id="flatFloor" class="form-control" name="flatFloor"
+                        [(ngModel)]="flatToCreate.floor">
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Room Number</label>
+                    <br>
+                    <input type="text" id="flatRoomNumber" class="form-control" name="flatRoomNumber"
+                        [(ngModel)]="flatToCreate.roomNumber">
+                </div>
+
+                <div class="mt-3">
+                    <button type="button" class="btn btn-success">Create new Owner + </button>
+                    <select name="possibleOwners" id="possibleOwners"  (change)="onChange($event)" >
+                        <option *ngFor="let owner of availableOwners" [value]="owner.id"> {{owner.firstname}}</option>
+                    </select>
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Total Rooms</label>
+                    <br>
+                    <input type="text" id="flatTotalRooms" class="form-control" name="flatTotalRooms"
+                        [(ngModel)]="flatToCreate.totalRooms">
+                </div>
+
+
+                <div class="mt-3">
+                    <label class="form-label">Total Baths</label>
+                    <br>
+                    <input type="text" id="flatTotalBaths" class="form-control" name="flatTotalBaths"
+                        [(ngModel)]="flatToCreate.totalBaths">
+                </div>
+
+                <div class="mt-3">
+                    <label class="form-label">Has terrace</label>
+                    <br>
+                    <input type="text" id="flatHasTerrace" class="form-control" name="flatHasTerrace"
+                        [(ngModel)]="flatToCreate.hasTerrace">
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-success"> Create Flat +</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
 
 
 
