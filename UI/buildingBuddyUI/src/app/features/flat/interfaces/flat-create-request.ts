@@ -1,6 +1,6 @@
 import { Owner } from "../../owner/interfaces/owner";
 
-export interface CreateFlatRequest 
+export interface FlatCreateRequest 
 {
     floor : number,
     roomNumber : string,

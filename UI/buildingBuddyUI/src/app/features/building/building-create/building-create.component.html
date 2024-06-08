@@ -57,7 +57,7 @@
                         <tr *ngFor="let flat of buildingToCreate.flats; let i = index">
                             <td>{{ flat.floor }}</td>
                             <td>{{ flat.roomNumber }}</td>
-                            <td>{{ getFlatOwnerName(flat.ownerAssignedId) }}</td>
+                            <td>{{ getFlatOwnerName(flat.ownerAssignedId)}}</td>
                             <td>{{ flat.totalRooms }}</td>
                             <td>{{ flat.totalBaths }}</td>
                             <td>{{ flat.hasTerrace }}</td>
@@ -83,14 +83,14 @@
                     <label class="form-label">Floor</label>
                     <br>
                     <input type="text" id="flatFloor" class="form-control" name="flatFloor"
-                        [(ngModel)]="flatToCreate.floor">
+                        [(ngModel)]="flatMockUp.floor">
                 </div>
 
                 <div class="mt-3">
                     <label class="form-label">Room Number</label>
                     <br>
                     <input type="text" id="flatRoomNumber" class="form-control" name="flatRoomNumber"
-                        [(ngModel)]="flatToCreate.roomNumber">
+                        [(ngModel)]="flatMockUp.roomNumber">
                 </div>
 
                 <div class="mt-3">
@@ -107,7 +107,7 @@
                     <label class="form-label">Total Rooms</label>
                     <br>
                     <input type="text" id="flatTotalRooms" class="form-control" name="flatTotalRooms"
-                        [(ngModel)]="flatToCreate.totalRooms">
+                        [(ngModel)]="flatMockUp.totalRooms">
                 </div>
 
 
@@ -115,12 +115,12 @@
                     <label class="form-label">Total Baths</label>
                     <br>
                     <input type="text" id="flatTotalBaths" class="form-control" name="flatTotalBaths"
-                        [(ngModel)]="flatToCreate.totalBaths">
+                        [(ngModel)]="flatMockUp.totalBaths">
                 </div>
 
                 <div class="mt-3">
                     <label class="form-check-label" for="hasTerraceCheck">Has terrace</label>
-                    <input class="form-check-input ms-2" type="checkbox" [(ngModel)]="flatToCreate.hasTerrace"
+                    <input class="form-check-input ms-2" type="checkbox" [(ngModel)]="flatMockUp.hasTerrace"
                         id="hasTerraceCheck" name="hasTerraceCheck">
                 </div>
 

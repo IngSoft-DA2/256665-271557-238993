@@ -9,7 +9,6 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class OwnerService {
 
-
   constructor(private http: HttpClient) { }
 
   getOwnerById(ownerId : string) : Observable<Owner>
@@ -20,5 +19,11 @@ export class OwnerService {
   getOwners() : Observable<Owner[]>
   {
     return this.http.get<Owner[]>(`${environment.apiBaseUrl}/api/v2/owners`);
+  }
+
+  createOwner(ownerToCreate: any) : Observable<CreateOwnerResponse>
+  {
+    return this.http.post<CreateOwnerResponse>(`${environment.apiBaseUrl}/api/v2/owners`);
+  }
   }
 }

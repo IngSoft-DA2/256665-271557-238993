@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { BuildingService } from '../services/building.service';
 import { CreateBuildingRequest } from '../interfaces/building-create-request';
-import { CreateFlatRequest } from '../../flat/interfaces/flat-create-request';
+import { CreateFlatRequest, FlatCreateRequest } from '../../flat/interfaces/flat-create-request';
 import { FlatService } from '../../flat/services/flat.service';
 import { Flat } from '../../flat/interfaces/flat';
 import { OwnerService } from '../../owner/services/owner.service';
@@ -28,7 +28,7 @@ export class BuildingCreateComponent {
     flats: [],
   }
 
-  flatToCreate: CreateFlatRequest = {
+  flatMockUp: FlatCreateRequest = {
 
     floor: 0,
     roomNumber: '1B',
@@ -37,6 +37,8 @@ export class BuildingCreateComponent {
     totalBaths: 0,
     hasTerrace: true
   };
+
+  flatToInsert? : CreateFlatRequest 
 
   availableOwners: Owner[] = []
 
@@ -59,17 +61,17 @@ export class BuildingCreateComponent {
   }
 
   createFlat(): void {
-    console.log(this.flatToCreate);
-    this.flatService.createFlat(this.flatToCreate)
+    this.flatToInsert = this.flatToAddWithValues()
+    this.flatService.createFlat(this.flatToInsert)
       .subscribe({
         next: () => {
           alert("Flat created with success");
-          this.buildingToCreate.flats.push(this.flatToCreate)
-          this.resetFlatValues();
+          this.buildingToCreate.flats.push(this.flatToInsert!)
+          this.resetFlatMockUpValues();
         },
         error: (errorMessage) => {
           alert(errorMessage.error);
-          this.resetFlatValues();
+          this.resetFlatMockUpValues();
         }
       })
   }
@@ -78,33 +80,43 @@ export class BuildingCreateComponent {
     this.buildingToCreate.flats.splice(index, 1);
   }
 
-  private resetFlatValues(): void {
-
-    this.flatToCreate.floor = 0,
-      this.flatToCreate.roomNumber = '1A',
-      this.flatToCreate.ownerAssignedId = undefined,
-      this.flatToCreate.totalRooms = 0,
-      this.flatToCreate.totalBaths = 0,
-      this.flatToCreate.hasTerrace = true
-  };
+  createOwner(){
+    
+    this.ownerService.createOwner(this.ownerToCreate)
+    .subscribe({
+      next: () => {
+        alert('Owner create with sucess')
+        this.loadOwners();
+      }
+    })
+  }
 
   getFlatOwnerName(ownerId?: string): string {
     var ownerName = '';
-
-    if (ownerId) {
-      this.ownerService.getOwnerById(ownerId)
-        .subscribe({
-          next: (Response) => {
-            ownerName = Response.firstname;
-          },
-          error: () => {
-            ownerName = 'Not has';
-          }
-        })
-    }
-
-    return ownerName;
+    
   }
+
+
+  private flatToAddWithValues(): CreateFlatRequest {
+    return {
+      floor: this.flatMockUp.floor,
+      roomNumber: this.flatMockUp.roomNumber,
+      ownerAssignedId: this.flatMockUp.ownerAssignedId,
+      totalRooms: this.flatMockUp.totalRooms,
+      totalBaths: this.flatMockUp.totalBaths,
+      hasTerrace: this.flatMockUp.hasTerrace
+    };
+  }
+
+  private resetFlatMockUpValues(): void {
+
+    this.flatMockUp.floor = 0,
+      this.flatMockUp.roomNumber = '1A',
+      this.flatMockUp.ownerAssignedId = undefined,
+      this.flatMockUp.totalRooms = 0,
+      this.flatMockUp.totalBaths = 0,
+      this.flatMockUp.hasTerrace = true
+  };
 
   private loadOwners(): void {
     this.ownerService.getOwners()
@@ -119,7 +131,7 @@ export class BuildingCreateComponent {
   onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const value = target?.value || '';
-    this.flatToCreate.ownerAssignedId = value;
+    this.flatMockUp.ownerAssignedId = value;
   }
 
 }
