@@ -11,9 +11,6 @@ export interface Flat
     totalRooms : number,
     totalBath : number,
     hasTerrace : boolean
-
-
-
 }
 
 
