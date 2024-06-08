@@ -15,6 +15,8 @@ import { FlatCreateRequest } from '../../flat/interfaces/flat-create-request';
 })
 export class BuildingCreateComponent {
 
+  showOwnerCreation: boolean = false;
+
   buildingToCreate: CreateBuildingRequest = {
     managerId: '',
     constructionCompanyId: '',
@@ -28,13 +30,6 @@ export class BuildingCreateComponent {
     flats: [],
   }
 
-  ownerToCreate: OwnerCreateRequest = {
-    firstname : '',
-    lastname : '',
-    email : '',
-    password : ''
-  }
-
   flatMockUp: FlatCreateRequest = {
 
     floor: 0,
@@ -45,12 +40,9 @@ export class BuildingCreateComponent {
     hasTerrace: true
   };
 
-  flatToInsert? : FlatCreateRequest 
+  flatToInsert?: FlatCreateRequest
 
   availableOwners: Owner[] = []
-
-  showOwnerCreation : boolean = false;
-
 
   constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private router: Router) {
     this.loadOwners();
@@ -89,22 +81,9 @@ export class BuildingCreateComponent {
     this.buildingToCreate.flats.splice(index, 1);
   }
 
-  createOwner(){
-    
-    this.ownerService.createOwner(this.ownerToCreate)
-    .subscribe({
-      next: () => {
-        alert('Owner create with sucess')
-        this.loadOwners();
-        this.resetOwnerValues();
-      }
-    })
-  }
-
   getFlatOwnerFirstname(ownerId?: string): string {
     return this.availableOwners.find(owner => owner.id === ownerId)?.firstname ?? "Not found"
   }
-
 
   private flatToAddWithValues(): FlatCreateRequest {
     return {
@@ -127,14 +106,6 @@ export class BuildingCreateComponent {
       this.flatMockUp.hasTerrace = true
   };
 
-  private resetOwnerValues(): void {
-
-    this.ownerToCreate.firstname = '';
-    this.ownerToCreate.lastname = '';
-    this.ownerToCreate.email = '';
-    this.ownerToCreate.password = '';
-  };
-
   private loadOwners(): void {
     this.ownerService.getOwners()
       .subscribe({
@@ -144,21 +115,23 @@ export class BuildingCreateComponent {
       });
   }
 
-  deployOwnerPopUp()
-  {
+  deployOwnerPopUp(): void {
     this.showOwnerCreation = true;
   }
 
-  undeployOwnerPopup()
-{
-  this.showOwnerCreation = false;
-}
+  undeployOwnerPopup(): void {
+    this.showOwnerCreation = false;
+    this.loadOwners();
+  }
+
 
   onChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const value = target?.value || '';
     this.flatMockUp.ownerAssignedId = value;
   }
+
+
 
 }
 

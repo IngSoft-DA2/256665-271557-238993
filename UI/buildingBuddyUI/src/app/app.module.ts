@@ -26,6 +26,7 @@ import { ErrorInterceptor } from './core/interceptors/forbidden-handler.intercep
 import { HomeComponent } from './core/home/home.component';
 import { BuildingUpdateComponent } from './features/building/building-update/building-update.component';
 import { BuildingCreateComponent } from './features/building/building-create/building-create.component';
+import { OwnerCreateComponent } from './features/owner/owner-create/owner-create.component';
 
 
 
@@ -51,7 +52,8 @@ import { BuildingCreateComponent } from './features/building/building-create/bui
     LoginComponent,
     HomeComponent,
     BuildingUpdateComponent,
-    BuildingCreateComponent
+    BuildingCreateComponent,
+    OwnerCreateComponent
   ],
   imports: [
     BrowserModule,

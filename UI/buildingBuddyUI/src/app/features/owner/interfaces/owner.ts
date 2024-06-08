@@ -6,6 +6,5 @@ export interface Owner
     firstname : string,
     lastname : string,
     email : string,
-    password : string
     flats : Flat[]
 }

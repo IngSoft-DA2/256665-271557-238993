@@ -135,42 +135,11 @@
 </div>
 
 <div class="owner-container-popup" *ngIf="showOwnerCreation">
-    <div class="owner-popup-content">
-        <h2>Owner Creation</h2>
-        <form #form="ngForm" (ngSubmit)="createOwner()">
-            <div class="mt-2">
-                <div class="mt-3">
-                    <label class="form-label">Owner Firstname</label>
-                    <br>
-                    <input type="text" id="flatFloor" class="form-control" name="flatFloor" [(ngModel)]="ownerToCreate.firstname">
-                </div>
 
-                <div class="mt-3">
-                    <label class="form-label">Owner Lastname</label>
-                    <br>
-                    <input type="text" id="flatRoomNumber" class="form-control" name="flatRoomNumber" [(ngModel)]="ownerToCreate.lastname">
-                </div>
 
-                <div class="mt-3">
-                    <label class="form-label">Owner Email</label>
-                    <input type="text" id="flatRoomNumber" class="form-control" name="flatRoomNumber" [(ngModel)]="ownerToCreate.email">
-                </div>
-
-                <div class="mt-3">
-                    <label class="form-label">Owner Password</label>
-                    <br>
-                    <input type="text" id="flatTotalRooms" class="form-control" name="flatTotalRooms" [(ngModel)]="ownerToCreate.password">
-                </div>
-
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-success"> Create Owner +</button>
-                </div>
-
-                <div class="mt-3">
-                    <button type="submit" class="btn btn-info" (click)="undeployOwnerPopup()"> Go Back</button>
-                </div>
-            </div>
-        </form>
+    <div class="button-container">
+        <button type="button" class="close-button" (click)="undeployOwnerPopup()">Go Back</button>
+        <app-owner-create></app-owner-create>
     </div>
 </div>
 

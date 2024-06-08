@@ -69,5 +69,23 @@
     border-radius: 8px;
     width: 500px; 
 }
-  
-  
+
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.button-container button {
+  margin-left: 10px; 
+}
+
+.close-button {
+  background-color: #17a2b8;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
