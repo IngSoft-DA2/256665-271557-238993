@@ -5,7 +5,10 @@ using IAdapter;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
 using WebModel.Requests.MaintenanceRequests;
+using WebModel.Responses.FlatResponses;
 using WebModel.Responses.MaintenanceResponses;
+using WebModel.Responses.OwnerResponses;
+using WebModel.Responses.RequestHandlerResponses;
 
 namespace Adapter;
 
@@ -24,13 +27,13 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
 
     #region Get All Maintenance Requests
 
-    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid? managerId)
+    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
     {
         try
         {
             IEnumerable<MaintenanceRequest> maintenanceRequestsInDb =
-                _maintenanceRequestService.GetAllMaintenanceRequests(managerId);
-
+                _maintenanceRequestService.GetAllMaintenanceRequests(managerId, categoryId);
+    
             IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestsToReturn =
                 maintenanceRequestsInDb.Select(maintenanceRequest => new GetMaintenanceRequestResponse
                 {
@@ -41,7 +44,30 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
+                    RequestHandler = maintenanceRequestsInDb.Select(maintenanceRequest => new GetRequestHandlerResponse
+                    {
+                        Id = maintenanceRequest.RequestHandler.Id,
+                        Name = maintenanceRequest.RequestHandler.Firstname,
+                        LastName = maintenanceRequest.RequestHandler.LastName,
+                        Email = maintenanceRequest.RequestHandler.Email,
+                    }).FirstOrDefault(),
                     FlatId = maintenanceRequest.FlatId,
+                    Flat = maintenanceRequestsInDb.Select(maintenanceRequest => new GetFlatResponse
+                    {
+                        Id = maintenanceRequest.Flat.Id,
+                        Floor = maintenanceRequest.Flat.Floor,
+                        TotalRooms = maintenanceRequest.Flat.TotalRooms,
+                        TotalBaths = maintenanceRequest.Flat.TotalBaths,
+                        HasTerrace = maintenanceRequest.Flat.HasTerrace,
+                        RoomNumber = maintenanceRequest.Flat.RoomNumber,
+                        OwnerAssigned = maintenanceRequestsInDb.Select(mr => new GetOwnerResponse
+                        {
+                            Id = mr.Flat.OwnerAssigned.Id,
+                            Firstname = mr.Flat.OwnerAssigned.Firstname,
+                            Lastname = mr.Flat.OwnerAssigned.Lastname,
+                            Email = mr.Flat.OwnerAssigned.Email,
+                        }).FirstOrDefault(),
+                    }).FirstOrDefault()
                 });
             return maintenanceRequestsToReturn;
         }

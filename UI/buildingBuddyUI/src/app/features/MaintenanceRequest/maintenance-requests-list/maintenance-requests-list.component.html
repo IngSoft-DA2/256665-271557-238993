@@ -1,3 +1,65 @@
-<p>maintenance-requests-list works!</p>
+<br />
+<h1>Maintenance Requests Section</h1>
+<br />
+<br />
 
-<button class="btn btn-outline-primary btn-sm button" (click)="goToMaintenanceRequestCreationForm()"> Get Report of Maintenance Requests By Building </button>
+<div class="d-flex justify-content-end mb-4 me-3">
+    <button class="btn btn-success" type="button" (click)="goToMaintenanceRequestCreationForm()">Create +</button>
+</div>
+
+<head>
+    <h4>
+        <label style="text-decoration:underline">Maintenance Requests List</label>
+        <br />
+    </h4>
+</head>
+
+<main>
+
+    <ng-container *ngIf="maintenanceRequests; else NoMaintenanceRequest">
+
+        <table class="table table-striped table-bordered tableClass mt-4">
+            <thead>
+                <br />
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Opened date</th>
+                    <th>Closed date</th>
+                    <th>Flat number</th>
+                    <th>Request Handler</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let maintenanceRequest of maintenanceRequests">
+                    <td>{{maintenanceRequest.description}}</td>
+                    <td>{{getStatusString(maintenanceRequest.requestStatus)}}</td>
+                    <td>{{maintenanceRequest.openedDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{getMaintenanceRequestClosedDate(maintenanceRequest)}}</td>
+                    <td>{{maintenanceRequest.flat.roomNumber}}</td>
+                    <td>{{getRequestHandlerName(maintenanceRequest)}}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm button" (click)="goToMaintenanceRequestUpdateForm(maintenanceRequest.id)"> Update </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm button" (click)="goToMaintenanceRequestCreationForm()"> Delete </button>
+                    </td>
+                </tr>
+            </tbody>
+            <br />
+
+        </table>
+
+    </ng-container>
+
+</main>
+
+
+<ng-template #NoMaintenanceRequest>
+    <div class="alert alert-warning" role="alert">
+        <h4 style="text-align: center;">There are no invitations.</h4>
+    </div>
+</ng-template>

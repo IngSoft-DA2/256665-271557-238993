@@ -6,6 +6,9 @@ import { BuildingService } from '../../Building/Services/building.service';
 import { Building } from '../../Building/Interfaces/Building.model';
 import { ManagerService } from '../../manager/services/manager.service';
 import { NodeReportMaintenanceRequestsByFlat } from '../interfaces/node-report-maintenance-req-by-flat';
+import { LoginService } from '../../login/services/login.service';
+import { User } from '../../login/interfaces/user';
+import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 
 @Component({
   selector: 'app-report-maintenance-requests-by-building',
@@ -17,7 +20,10 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
   buildingIdSelected: string = "default";
   buildings: Building[] = [];
   buildingsIdList: string[] = [];
-  managerId: string = "e7503a12-821a-45f3-93f3-525ed1a79efd";
+  managerId: string = "";
+  userConnected?: User = undefined;
+  SystemUserRoleEnumValues = SystemUserRoleEnum;
+
 
   constructor(
     private reportService: ReportService,
@@ -31,6 +37,9 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['buildingId']) {
         this.buildingIdSelected = params['buildingId'];
+      }
+      if(params['managerId']){
+        this.managerId = params['managerId'];
       }
       this.loadBuildings();
     });
@@ -90,7 +99,6 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
     }
     
     return "";
-
   }
 
   onChange(event: Event) {

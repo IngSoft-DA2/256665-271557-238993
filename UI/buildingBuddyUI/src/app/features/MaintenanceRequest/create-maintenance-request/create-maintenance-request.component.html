@@ -33,7 +33,7 @@
             <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
         </select>
 
-    <button class="btn btn-danger mt-5" (click)="createMaintenanceRequest()">Cancel</button>
+    <button class="btn btn-danger mt-5" (click)="goToReportsList()">Cancel</button>
     <button class="btn btn-primary mt-5" (click)="createMaintenanceRequest()">Create</button>
   </div>    
 </div>

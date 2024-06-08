@@ -27,12 +27,20 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
             if (managerId != null)
             {
                 return _context.Set<MaintenanceRequest>()
-                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId).ToList();
+                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId)
+                    .Include(maintenanceRequest => maintenanceRequest.Category)
+                    .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
+                    .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                    .ToList();
             }
             else
             {
                 return _context.Set<MaintenanceRequest>()
-                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == Guid.Empty).ToList();
+                    .Where(maintenanceRequest => maintenanceRequest.ManagerId == Guid.Empty)
+                    .Include(maintenanceRequest => maintenanceRequest.Category)
+                    .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
+                    .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                    .ToList();
             }
         }
         catch (Exception exceptionCaught)

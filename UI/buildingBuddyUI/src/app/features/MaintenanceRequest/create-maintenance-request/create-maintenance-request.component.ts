@@ -25,42 +25,33 @@ export class CreateMaintenanceRequestComponent implements OnInit {
   buildings: Building[] = [];
   buildingsIdList: string[] = [];
   managerId: string = "";
-  userConnected?: User = undefined;
-  SystemUserRoleEnumValues = SystemUserRoleEnum;
   showFlats: boolean = false;
   flats: Flat[] = [];
   maintenanceCreateRequest: MaintenanceCreateRequest = {} as MaintenanceCreateRequest;
   categories: Category[] = [];
 
   constructor(
-    private loginService: LoginService, 
     private maintenanceRequestService: MaintenanceRequestService,
     private managerService: ManagerService, 
     private categoryService: CategoryService,
     private buildingService: BuildingService, 
     private router: Router, 
     private route: ActivatedRoute
-  ) { 
-    loginService.getUser().subscribe({
-      next: (response) => {
-        this.userConnected = response;
-        if (this.userConnected) {
-          this.managerId = this.userConnected.userId;
-        }
-        console.log("Usuario encontrado, valores: " + this.userConnected);
-      },
-      error: () => {
-        this.userConnected = undefined;
-      }
-    });
+  ) {
   }
 
   ngOnInit(): void {
-    this.loadBuildings();
+    this.route.queryParams.subscribe(params => {
+        this.managerId = params['managerId'];
+        alert("Se setea como " + this.managerId);
+    });
+    
     this.loadCategories();
+    this.loadBuildings();
   }
 
   loadBuildings(): void {
+    alert(this.managerId);
     this.managerService.getManagerById(this.managerId).subscribe({
       next: (response) => {
         this.buildingsIdList = response.buildings;
@@ -147,5 +138,9 @@ export class CreateMaintenanceRequestComponent implements OnInit {
         console.error("Error on creation: ", error);
       }
     });
+  }
+
+  goToReportsList(): void {
+    this.router.navigate(['../list'], {relativeTo: this.route});
   }
 }
