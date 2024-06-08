@@ -1,7 +1,9 @@
+import { Flat } from "./Flat.model";
+
 export interface Building {
     id: string;
     name: string;
     managerId: string;
-    //Ojo, faltan props aca
+    flats: Flat[];
 
 }
