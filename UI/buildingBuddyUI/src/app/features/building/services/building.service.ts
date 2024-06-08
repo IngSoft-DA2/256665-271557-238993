@@ -31,4 +31,10 @@ export class BuildingService {
   {
     return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/buildings/${buildingId}`,buildingToUpdate);
   }
+
+  createBuilding(buildingToCreate: CreateBuildingRequest) 
+  {
+    throw new Error('Method not implemented.');
+  }
+
 }

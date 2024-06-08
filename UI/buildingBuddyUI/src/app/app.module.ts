@@ -25,6 +25,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ErrorInterceptor } from './core/interceptors/forbidden-handler.interceptor';
 import { HomeComponent } from './core/home/home.component';
 import { BuildingUpdateComponent } from './features/building/building-update/building-update.component';
+import { BuildingCreateComponent } from './features/building/building-create/building-create.component';
 
 
 
@@ -49,7 +50,8 @@ import { BuildingUpdateComponent } from './features/building/building-update/bui
     CategoryTreeComponent,
     LoginComponent,
     HomeComponent,
-    BuildingUpdateComponent
+    BuildingUpdateComponent,
+    BuildingCreateComponent
   ],
   imports: [
     BrowserModule,
