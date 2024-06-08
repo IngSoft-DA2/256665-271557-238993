@@ -6,6 +6,8 @@ import { OwnerService } from '../../owner/services/owner.service';
 import { Owner } from '../../owner/interfaces/owner';
 import { FlatCreateRequest } from '../../flat/interfaces/flat-create-request';
 import { BuildingCreateRequest } from '../interfaces/building-create-request';
+import { Manager } from '../../manager/interfaces/manager';
+import { ManagerService } from '../../manager/services/manager.service';
 
 @Component({
   selector: 'app-building-create',
@@ -43,8 +45,12 @@ export class BuildingCreateComponent {
 
   availableOwners: Owner[] = []
 
-  constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private router: Router) {
+  availableManagers: Manager[] = []
+
+  constructor(private buildingService: BuildingService, private flatService: FlatService, private ownerService: OwnerService, private managerService: ManagerService, private router: Router) {
+
     this.loadOwners();
+    this.loadManagers();
   }
 
   createBuilding() {
@@ -126,6 +132,16 @@ export class BuildingCreateComponent {
       });
   }
 
+  private loadManagers(): void {
+    this.managerService.getAllManagers()
+      .subscribe({
+        next: (Response) => {
+          this.availableManagers = Response;
+        }
+      });
+  }
+
+
   deployOwnerPopUp(): void {
     this.showOwnerCreation = true;
   }
@@ -136,10 +152,16 @@ export class BuildingCreateComponent {
   }
 
 
-  onChange(event: Event): void {
+  onChangeOwner(event: Event): void {
     const target = event.target as HTMLSelectElement;
     const value = target?.value || '';
     this.flatMockUp.ownerAssignedId = value;
+  }
+
+  onChangeManager(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const value = target?.value || '';
+    this.buildingToCreate.managerId = value;
   }
 
 }

@@ -41,6 +41,15 @@
                     [(ngModel)]="buildingToCreate.commonExpenses">
             </div>
 
+
+            <div class="mt-3">
+                <label class="form-label">Available Managers</label>
+                <select name="possibleManagers" id="possibleManagers" (change)="onChangeManager($event)" class="form-select">
+                    <option selected disabled value="default">Press click to select a manager</option>
+                    <option *ngFor="let manager of availableManagers" [value]="manager.id"> {{manager.name}}</option>
+                </select>
+            </div>
+
             <div class="container mt-4">
                 <table class="table table-striped mt-4" *ngIf="buildingToCreate.flats.length > 0">
                     <thead>
@@ -99,7 +108,7 @@
 
                 <div class="mt-3">
                     <label class="form-label">Available Owners</label>
-                    <select name="possibleOwners" id="possibleOwners" (change)="onChange($event)" class="form-select">
+                    <select name="possibleOwners" id="possibleOwners" (change)="onChangeOwner($event)" class="form-select">
                         <option selected disabled value="default">Press click to select a owner</option>
                         <option *ngFor="let owner of availableOwners" [value]="owner.id"> {{owner.firstname}}</option>
                     </select>
