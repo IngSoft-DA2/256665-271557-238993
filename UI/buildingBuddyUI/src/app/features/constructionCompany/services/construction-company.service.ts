@@ -27,4 +27,11 @@ export class ConstructionCompanyService {
    {
     return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${idOfConstructionCompany}`);
   }
+
+  getConstructionCompanyByUserCreator(userId: string) 
+  {
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${userId}`);
+  }
+
+
 }

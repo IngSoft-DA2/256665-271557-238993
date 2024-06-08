@@ -3,6 +3,12 @@ import { Building } from '../interfaces/building';
 import { BuildingService } from '../services/building.service';
 import { Manager } from '../../manager/interfaces/manager';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../../login/services/login.service';
+import { User } from '../../login/interfaces/user';
+import { ConstructionCompanyAdminService } from '../../constructionCompanyAdmin/services/construction-company-admin.service';
+import { ConstructionCompanyAdmin } from '../../constructionCompanyAdmin/interfaces/construction-company-admin';
+import { ConstructionCompany } from '../../constructionCompany/interfaces/construction-company';
+import { ConstructionCompanyService } from '../../constructionCompany/services/construction-company.service';
 
 @Component({
   selector: 'app-building-list',
@@ -13,19 +19,31 @@ export class BuildingListComponent {
 
   buildings: Building[] = [];
   hasManager: boolean = false;
-  userId: string = '';
+  userLogged?: User = undefined;
+  constructionCompanyOfUser : ConstructionCompany | undefined = undefined;
+  hasConstructionCompany : boolean = true;
 
-  constructor(private buildingService: BuildingService, private router: Router, private route: ActivatedRoute) {
+  constructor(private buildingService: BuildingService,private constructionCompanyService : ConstructionCompanyService, private loginService : LoginService,private router: Router) {
 
-    this.route.queryParams
-      .subscribe({
-        next: (queryParams) => {
-          this.userId = queryParams['userId'];
-        }
-      })
-
-    if (this.userId !== undefined) {
-      this.buildingService.getAllBuildings(this.userId)
+     this.loginService.getUser()
+     .subscribe({
+      next : (Response) => {
+        this.userLogged = Response
+        if(this.userLogged)
+        this.constructionCompanyService.getConstructionCompanyByUserCreator(this.userLogged.userId)
+        .subscribe({
+          next : (Response) => {
+            this.constructionCompanyOfUser = Response;
+          }
+        })
+        if(this.constructionCompanyOfUser === undefined)
+          {
+            this.hasConstructionCompany = false;
+          }
+      }
+     })
+    if (this.userLogged !== undefined) {
+      this.buildingService.getAllBuildings(this.userLogged.userId)
         .subscribe({
           next: (Response) => {
             this.buildings = Response
