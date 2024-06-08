@@ -4,7 +4,7 @@ namespace IServiceLogic;
 
 public interface IMaintenanceRequestService
 {
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId);
+    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId);
     public IEnumerable<MaintenanceRequest> GetMaintenanceRequestByCategory(Guid id);
     public void CreateMaintenanceRequest(MaintenanceRequest maintenanceRequest);
     public void UpdateMaintenanceRequest(Guid idToUpdate, MaintenanceRequest maintenanceRequest);

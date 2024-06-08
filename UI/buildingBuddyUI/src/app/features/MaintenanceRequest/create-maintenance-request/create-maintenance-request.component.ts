@@ -25,39 +25,28 @@ export class CreateMaintenanceRequestComponent implements OnInit {
   buildings: Building[] = [];
   buildingsIdList: string[] = [];
   managerId: string = "";
-  userConnected?: User = undefined;
-  SystemUserRoleEnumValues = SystemUserRoleEnum;
   showFlats: boolean = false;
   flats: Flat[] = [];
   maintenanceCreateRequest: MaintenanceCreateRequest = {} as MaintenanceCreateRequest;
   categories: Category[] = [];
 
   constructor(
-    private loginService: LoginService, 
     private maintenanceRequestService: MaintenanceRequestService,
     private managerService: ManagerService, 
     private categoryService: CategoryService,
     private buildingService: BuildingService, 
     private router: Router, 
     private route: ActivatedRoute
-  ) { 
-    loginService.getUser().subscribe({
-      next: (response) => {
-        this.userConnected = response;
-        if (this.userConnected) {
-          this.managerId = this.userConnected.userId;
-        }
-        console.log("Usuario encontrado, valores: " + this.userConnected);
-      },
-      error: () => {
-        this.userConnected = undefined;
-      }
-    });
+  ) {
   }
 
   ngOnInit(): void {
-    this.loadBuildings();
+    this.route.queryParams.subscribe(params => {
+        this.managerId = params['managerId'];
+    });
+    
     this.loadCategories();
+    this.loadBuildings();
   }
 
   loadBuildings(): void {
@@ -129,23 +118,19 @@ export class CreateMaintenanceRequestComponent implements OnInit {
     this.maintenanceCreateRequest.flatId = this.flatId;
     this.maintenanceCreateRequest.category = this.category;
     this.maintenanceCreateRequest.managerId = this.managerId;
-
-    alert(this.maintenanceCreateRequest.description);
-    alert(this.maintenanceCreateRequest.flatId);
-    alert(this.maintenanceCreateRequest.category);
-    alert(this.maintenanceCreateRequest.managerId);
   
-
     this.maintenanceRequestService.createMaintenanceRequest(this.maintenanceCreateRequest).subscribe({
       next: (response) => {
-        console.log("Solicitud de mantenimiento creada con éxito:", response);
-        alert("Solicitud de mantenimiento creada con éxito");
+        alert("Maintenance request created successfully");
         this.router.navigate(['../list'], {relativeTo: this.route});
       },
       error: (error) => {
         alert("Error on maintenance request creation");
-        console.error("Error on creation: ", error);
       }
     });
+  }
+
+  goToReportsList(): void { 
+    this.router.navigate(['../list'], {relativeTo: this.route});
   }
 }

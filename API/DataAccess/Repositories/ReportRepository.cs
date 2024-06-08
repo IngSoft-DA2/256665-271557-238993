@@ -55,12 +55,12 @@ public class ReportRepository : IReportRepository
 
     #region Get Maintenance Report By Request Handler
 
-    public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid requestHandlerId, Guid buildingId,
+    public IEnumerable<MaintenanceRequest> GetMaintenanceReportByRequestHandler(Guid? requestHandlerId, Guid buildingId,
         Guid personId)
     {
         try
         {
-            if (!(Guid.Empty == requestHandlerId))
+            if (requestHandlerId != null && !(Guid.Empty == requestHandlerId))
             {
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr =>

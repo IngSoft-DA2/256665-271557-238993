@@ -35,6 +35,7 @@ export class InvitationCreateComponent {
     if (this.selectedRole != "Select a role") {
 
       this.invitationToCreate.role = Number(this.selectedRole);
+      console.log(this.invitationToCreate);
       this.invitationService.createInvitation(this.invitationToCreate)
         .subscribe({
           next: () => {

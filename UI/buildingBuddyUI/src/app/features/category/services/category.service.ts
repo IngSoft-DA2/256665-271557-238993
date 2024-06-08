@@ -18,6 +18,11 @@ export class CategoryService {
     return this.http.get<Category[]>(`${environment.apiBaseUrl}/api/v2/categories?addAuth=true`)
   }
 
+  getCategoryById(categoryId : string) : Observable<Category>
+  {
+    return this.http.get<Category>(`${environment.apiBaseUrl}/api/v2/categories/${categoryId}?addAuth=true`)
+  }
+
   createCategory(categoryToCreate : CategoryCreateRequest) : Observable<CategoryCreateResponse>
   {
     return this.http.post<CategoryCreateResponse>(`${environment.apiBaseUrl}/api/v2/categories?addAuth=true`,categoryToCreate)

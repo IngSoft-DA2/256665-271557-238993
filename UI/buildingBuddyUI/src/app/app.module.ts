@@ -31,6 +31,7 @@ import { ErrorInterceptor } from './core/interceptors/forbidden-handler.intercep
 import { HomeComponent } from './core/home/home.component';
 import { CreateMaintenanceRequestComponent } from './features/MaintenanceRequest/create-maintenance-request/create-maintenance-request.component';
 import { MaintenanceRequestsListComponent } from './features/MaintenanceRequest/maintenance-requests-list/maintenance-requests-list.component';
+import { AssignMaintenanceRequestComponent } from './features/MaintenanceRequest/assign-maintenance-request/assign-maintenance-request.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { MaintenanceRequestsListComponent } from './features/MaintenanceRequest/
     LoginComponent,
     HomeComponent,
     CreateMaintenanceRequestComponent,
-    MaintenanceRequestsListComponent
+    MaintenanceRequestsListComponent,
+    AssignMaintenanceRequestComponent
   ],
   imports: [
     BrowserModule,
