@@ -8,6 +8,7 @@ using WebModel.Responses.ConstructionCompanyAdminResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [Route("api/v2/ConstructionCompanyAdmins")]
+    [ExceptionFilter]
     [ApiController]
     public class ConstructionCompanyAdminController : ControllerBase
     {

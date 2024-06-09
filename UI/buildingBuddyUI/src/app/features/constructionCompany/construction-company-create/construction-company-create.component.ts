@@ -37,10 +37,9 @@ export class ConstructionCompanyCreateComponent {
           this.router.navigateByUrl('construction-companies/list')
         },
         error: (errorMessage) => {
-          alert("asd" +errorMessage.error)
+          alert(errorMessage.error)
         }
       })
-
   }
 
   obtainUserId(): string {

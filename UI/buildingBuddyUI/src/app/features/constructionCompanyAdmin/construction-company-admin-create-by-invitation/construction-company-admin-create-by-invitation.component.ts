@@ -43,10 +43,6 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
     .subscribe({
       next: (Response) => {
         this.userLogged = Response;
-      },
-      error:() => {
-        alert("User was not found, redirecting");
-        this.router.navigateByUrl('/login');
       }
     })
 
@@ -95,8 +91,6 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   }
 
   createConstructionCompanyAdmin(): void {
-    alert(this.invitationOfUser);
-    alert(this.userLogged?.userRole);
     if (this.invitationOfUser || this.userLogged?.userRole == SystemUserRoleEnum.ConstructionCompanyAdmin) {
       this.constructionCompanyAdminService.createConstructionCompanyAdmin(this.constructionCompanyAdminToCreate)
         .subscribe({
@@ -104,7 +98,7 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
             alert("You are now a construction company admin!");
             this.router.navigateByUrl('/');
           },
-          error(errorMessage) {
+          error: (errorMessage) => {
             alert(errorMessage.error);
           }
         });
