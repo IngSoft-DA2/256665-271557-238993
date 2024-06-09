@@ -19,7 +19,7 @@
     </select>
   </div>
 
-  <ng-container *ngIf="reportOfMaintenanceRequestsByRequestHandler && reportOfMaintenanceRequestsByRequestHandler.length > 0; else NoData">
+  <ng-container *ngIf="reportOfMaintenanceRequestsByRequestHandler?.length != 0; else NoData">
     <table class="table table-bordered mt-3">
       <thead>
         <tr>

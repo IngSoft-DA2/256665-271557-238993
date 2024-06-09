@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { MaintenanceCreateRequest } from '../Interfaces/maintenance-create-request';
 import { MaintenanceRequest } from '../Interfaces/maintenanceRequest.model';
 import { ActivatedRoute } from '@angular/router';
+import { MaintenanceCompleteRequest } from '../Interfaces/maintenance-complete-request';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,10 @@ export class MaintenanceRequestService {
     return this.http.get<MaintenanceRequest>(`${environment.apiBaseUrl}/api/v2/maintenance/requests/${maintenanceRequestId}`);
   }
 
+  getAllMaintenanceRequestsByRequestHandler(requestHandlerId: string): Observable<MaintenanceRequest[]> {
+    return this.http.get<MaintenanceRequest[]>(`${environment.apiBaseUrl}/api/v2/maintenance/request-handler/${requestHandlerId}/requests`);
+  }
+
   assignMaintenanceRequest(maintenanceRequestIdFromParam: string, requestHandlerIdFromParam: string): Observable<MaintenanceRequest> {
     const params = new HttpParams()
     .set('idOfRequestToUpdate', maintenanceRequestIdFromParam)
@@ -40,6 +45,10 @@ export class MaintenanceRequestService {
     const url = `${environment.apiBaseUrl}/api/v2/maintenance/request-handler/requests`;
     
     return this.http.put<MaintenanceRequest>(url, {}, { params });
+  }
+
+  completeMaintenanceRequest(maintenanceRequestIdFromParam: string, request: MaintenanceCompleteRequest): Observable<MaintenanceRequest> {
+    return this.http.put<MaintenanceRequest>(`${environment.apiBaseUrl}/api/v2/maintenance/requests/${maintenanceRequestIdFromParam}`, request);
   }
 
 }

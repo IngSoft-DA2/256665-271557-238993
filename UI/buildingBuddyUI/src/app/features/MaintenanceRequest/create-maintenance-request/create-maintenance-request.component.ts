@@ -1,16 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ManagerService } from '../../manager/services/manager.service';
-import { LoginService } from '../../login/services/login.service';
-import { User } from '../../login/interfaces/user';
-import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
-import { MaintenanceCreateRequest } from '../Interfaces/maintenance-create-request';
-import { MaintenanceRequestService } from '../Services/maintenance-request.service';
-import { Category } from '../../category/interfaces/category';
-import { CategoryService } from '../../category/services/category.service';
-import { Building } from '../../building/interfaces/building';
-import { Flat } from '../../flat/interfaces/flat';
-import { BuildingService } from '../../building/services/building.service';
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { Building } from "../../building/interfaces/building";
+import { BuildingService } from "../../building/services/building.service";
+import { Category } from "../../category/interfaces/category";
+import { CategoryService } from "../../category/services/category.service";
+import { Flat } from "../../flat/interfaces/flat";
+import { ManagerService } from "../../manager/services/manager.service";
+import { MaintenanceCreateRequest } from "../Interfaces/maintenance-create-request";
+import { MaintenanceRequestService } from "../Services/maintenance-request.service";
+
 
 @Component({
   selector: 'app-create-maintenance-request',
@@ -52,7 +50,7 @@ export class CreateMaintenanceRequestComponent implements OnInit {
   loadBuildings(): void {
     this.managerService.getManagerById(this.managerId).subscribe({
       next: (response) => {
-        this.buildingsIdList = response.buildings;
+        this.buildingsIdList = response.buildingsId;
         this.buildingsIdList.forEach(id => {
           this.buildingService.getBuildingById(id).subscribe({
             next: (building) => {

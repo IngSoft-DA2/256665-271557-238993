@@ -10,7 +10,7 @@
         </select>
     </div>
 
-    <ng-container *ngIf="reportOfMaintenanceRequestsByFlat; else NoData">    
+    <ng-container *ngIf="reportOfMaintenanceRequestsByFlat?.length != 0; else NoData">    
         <table class="table table-bordered mt-3">
             <thead>
                 <tr>

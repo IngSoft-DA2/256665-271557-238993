@@ -52,7 +52,6 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
       }
 
       if(this.userConnected && this.userConnected.userId){
-        alert("Usuario encontrado, valores: " + this.userConnected);
         this.managerId = this.userConnected.userId;
       }
 
@@ -79,8 +78,8 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
     this.managerService.getManagerById(this.managerId)
       .subscribe({
         next: (response) => {
-          if (response && response.buildings) {
-            this.buildingsIdList = response.buildings;
+          if (response && response.buildingsId) {
+            this.buildingsIdList = response.buildingsId;
             this.buildingsIdList.forEach(id => {
               this.buildingService.getBuildingById(id).subscribe({
                 next: (building) => {

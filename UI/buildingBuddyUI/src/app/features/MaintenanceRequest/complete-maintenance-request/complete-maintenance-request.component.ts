@@ -1,33 +1,32 @@
-import { Component, OnInit, AfterContentInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Category } from "../../category/interfaces/category";
-import { CategoryService } from "../../category/services/category.service";
-import { RequestHandler } from "../../requestHandler/interfaces/RequestHandler.model";
-import { RequestHandlerService } from "../../requestHandler/services/request-handler.service";
-import { MaintenanceRequest } from "../Interfaces/maintenanceRequest.model";
-import { MaintenanceRequestService } from "../Services/maintenance-request.service";
-
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RequestHandlerService } from '../../requestHandler/services/request-handler.service';
+import { MaintenanceRequestService } from '../Services/maintenance-request.service';
+import { CategoryService } from '../../category/services/category.service';
+import { Category } from '../../category/interfaces/category';
+import { MaintenanceRequest } from '../Interfaces/maintenanceRequest.model';
+import { RequestHandler } from '../../requestHandler/interfaces/RequestHandler.model';
+import { MaintenanceCompleteRequest } from '../Interfaces/maintenance-complete-request';
 
 @Component({
-  selector: 'app-assign-maintenance-request',
-  templateUrl: './assign-maintenance-request.component.html',
-  styleUrl: './assign-maintenance-request.component.css'
+  selector: 'app-complete-maintenance-request',
+  templateUrl: './complete-maintenance-request.component.html',
+  styleUrl: './complete-maintenance-request.component.css'
 })
-export class AssignMaintenanceRequestComponent implements OnInit, AfterContentInit{
-
+export class CompleteMaintenanceRequestComponent {
   maintenanceRequestId: string = "";
   requestHandlerId: string = "default";
   requestHandlers : RequestHandler[] = [];
   maintenanceRequestToUpdate: MaintenanceRequest = {} as MaintenanceRequest;
   categoryOfMaintenanceRequest: Category = {} as Category;
 
+  maintenanceCompleteRequest: MaintenanceCompleteRequest = {} as MaintenanceCompleteRequest;
+
   constructor(private requestHandlerService: RequestHandlerService, private maintenanceRequestService: MaintenanceRequestService, private categoryService: CategoryService, 
     private route: ActivatedRoute, private router: Router) {
-    this.route.queryParams.subscribe(params => {
-      if (params['maintenanceRequestId']) {
+      this.route.queryParams.subscribe(params => {
         this.maintenanceRequestId = params['maintenanceRequestId'];
-      }
-  });
+      });
   }
 
   ngOnInit(): void {
@@ -63,7 +62,6 @@ export class AssignMaintenanceRequestComponent implements OnInit, AfterContentIn
           console.error("Error on category loading: ", error);
         }
       });
-
   }
 
   loadRequestHandlers(): void {
@@ -84,8 +82,11 @@ export class AssignMaintenanceRequestComponent implements OnInit, AfterContentIn
       this.requestHandlerId = target.value;
   }
 
-  assignMaintenanceRequest(): void {
-    this.maintenanceRequestService.assignMaintenanceRequest(this.maintenanceRequestToUpdate.id, this.requestHandlerId)
+  completeMaintenanceRequest(): void {
+
+    this.maintenanceCompleteRequest.requestStatus = 3;
+
+    this.maintenanceRequestService.completeMaintenanceRequest(this.maintenanceRequestToUpdate.id, this.maintenanceCompleteRequest)
       .subscribe({
         next: (response) => {
           alert(" Maintenance request updated successfully");
@@ -98,7 +99,7 @@ export class AssignMaintenanceRequestComponent implements OnInit, AfterContentIn
   }
 
   goToMaintenanceRequestList(): void {
-    this.router.navigate(['../list'], {relativeTo: this.route});
+    this.router.navigate(['../list-by-request-handler'], {relativeTo: this.route});
   }
 
 }

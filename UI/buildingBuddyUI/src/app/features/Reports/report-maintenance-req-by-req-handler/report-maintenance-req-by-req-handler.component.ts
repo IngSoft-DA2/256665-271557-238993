@@ -65,7 +65,7 @@ export class ReportMaintenanceReqByReqHandlerComponent implements OnInit {
     this.managerService.getManagerById(this.managerId)
       .subscribe({
         next: (response) => {
-          this.buildingsIdList = response.buildings;
+          this.buildingsIdList = response.buildingsId;
           this.buildingsIdList.forEach(id => {
             this.buildingService.getBuildingById(id).subscribe({
               next: (building) => {

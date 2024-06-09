@@ -55,7 +55,7 @@ export class ReportMaintenanceRequestsByBuildingComponent implements OnInit {
     this.managerService.getManagerById(this.managerId)
       .subscribe({
         next: (response) => {
-          this.buildingsIdList = response.buildings;
+          this.buildingsIdList = response.buildingsId;
           if (this.buildingIdSelected === "default" && this.buildings.length > 0) {
             this.buildingIdSelected = "default";
           }

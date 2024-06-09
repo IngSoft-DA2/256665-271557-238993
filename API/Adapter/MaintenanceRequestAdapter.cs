@@ -27,55 +27,57 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
 
     #region Get All Maintenance Requests
 
-    public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
+public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
+{
+    try
     {
-        try
-        {
-            IEnumerable<MaintenanceRequest> maintenanceRequestsInDb =
-                _maintenanceRequestService.GetAllMaintenanceRequests(managerId, categoryId);
-    
-            IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestsToReturn =
-                maintenanceRequestsInDb.Select(maintenanceRequest => new GetMaintenanceRequestResponse
+        IEnumerable<MaintenanceRequest> maintenanceRequestsInDb =
+            _maintenanceRequestService.GetAllMaintenanceRequests(managerId, categoryId);
+
+        IEnumerable<GetMaintenanceRequestResponse> maintenanceRequestsToReturn =
+            maintenanceRequestsInDb.Select(maintenanceRequest => new GetMaintenanceRequestResponse
+            {
+                Id = maintenanceRequest.Id,
+                Description = maintenanceRequest.Description,
+                RequestHandlerId = maintenanceRequest.RequestHandlerId,
+                Category = maintenanceRequest.CategoryId,
+                RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
+                OpenedDate = maintenanceRequest.OpenedDate,
+                ClosedDate = maintenanceRequest.ClosedDate,
+                RequestHandler = maintenanceRequest.RequestHandler != null ? new GetRequestHandlerResponse
                 {
-                    Id = maintenanceRequest.Id,
-                    Description = maintenanceRequest.Description,
-                    RequestHandlerId = maintenanceRequest.RequestHandlerId,
-                    Category = maintenanceRequest.CategoryId,
-                    RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
-                    OpenedDate = maintenanceRequest.OpenedDate,
-                    ClosedDate = maintenanceRequest.ClosedDate,
-                    RequestHandler = maintenanceRequest.RequestHandler != null ? maintenanceRequestsInDb.Select(maintenanceRequest => new GetRequestHandlerResponse
+                    Id = maintenanceRequest.RequestHandler.Id,
+                    Name = maintenanceRequest.RequestHandler.Firstname,
+                    LastName = maintenanceRequest.RequestHandler.LastName,
+                    Email = maintenanceRequest.RequestHandler.Email,
+                } : null,
+                FlatId = maintenanceRequest.FlatId,
+                Flat = maintenanceRequest.Flat != null ? new GetFlatResponse
+                {
+                    Id = maintenanceRequest.Flat.Id,
+                    Floor = maintenanceRequest.Flat.Floor,
+                    TotalRooms = maintenanceRequest.Flat.TotalRooms,
+                    TotalBaths = maintenanceRequest.Flat.TotalBaths,
+                    HasTerrace = maintenanceRequest.Flat.HasTerrace,
+                    RoomNumber = maintenanceRequest.Flat.RoomNumber,
+                    OwnerAssigned = maintenanceRequest.Flat.OwnerAssigned != null ? new GetOwnerResponse
                     {
-                        Id = maintenanceRequest.RequestHandler.Id,
-                        Name = maintenanceRequest.RequestHandler.Firstname,
-                        LastName = maintenanceRequest.RequestHandler.LastName,
-                        Email = maintenanceRequest.RequestHandler.Email,
-                    }).FirstOrDefault() : null,
-                    FlatId = maintenanceRequest.FlatId,
-                    Flat = maintenanceRequest.Flat != null ? maintenanceRequestsInDb.Select(maintenanceRequest => new GetFlatResponse
-                    {
-                        Id = maintenanceRequest.Flat.Id,
-                        Floor = maintenanceRequest.Flat.Floor,
-                        TotalRooms = maintenanceRequest.Flat.TotalRooms,
-                        TotalBaths = maintenanceRequest.Flat.TotalBaths,
-                        HasTerrace = maintenanceRequest.Flat.HasTerrace,
-                        RoomNumber = maintenanceRequest.Flat.RoomNumber,
-                        OwnerAssigned =maintenanceRequest.Flat.OwnerAssigned != null ? maintenanceRequestsInDb.Select(mr => new GetOwnerResponse
-                        {
-                            Id = mr.Flat.OwnerAssigned.Id,
-                            Firstname = mr.Flat.OwnerAssigned.Firstname,
-                            Lastname = mr.Flat.OwnerAssigned.Lastname,
-                            Email = mr.Flat.OwnerAssigned.Email,
-                        }).FirstOrDefault() : null,
-                    }).FirstOrDefault() : null
-                });
-            return maintenanceRequestsToReturn;
-        }
-        catch (Exception exceptionCaught)
-        {
-            throw new Exception(exceptionCaught.Message);
-        }
+                        Id = maintenanceRequest.Flat.OwnerAssigned.Id,
+                        Firstname = maintenanceRequest.Flat.OwnerAssigned.Firstname,
+                        Lastname = maintenanceRequest.Flat.OwnerAssigned.Lastname,
+                        Email = maintenanceRequest.Flat.OwnerAssigned.Email,
+                    } : null,
+                } : null
+            });
+
+        return maintenanceRequestsToReturn;
     }
+    catch (Exception exceptionCaught)
+    {
+        throw new Exception(exceptionCaught.Message);
+    }
+}
+
 
     #endregion
 
@@ -213,12 +215,35 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
                 {
                     Id = maintenanceRequest.Id,
                     Description = maintenanceRequest.Description,
-                    FlatId = maintenanceRequest.FlatId,
                     RequestHandlerId = maintenanceRequest.RequestHandlerId,
                     Category = maintenanceRequest.CategoryId,
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
+                    RequestHandler = maintenanceRequest.RequestHandler != null ? new GetRequestHandlerResponse
+                    {
+                        Id = maintenanceRequest.RequestHandler.Id,
+                        Name = maintenanceRequest.RequestHandler.Firstname,
+                        LastName = maintenanceRequest.RequestHandler.LastName,
+                        Email = maintenanceRequest.RequestHandler.Email,
+                    } : null,
+                    FlatId = maintenanceRequest.FlatId,
+                    Flat = maintenanceRequest.Flat != null ? new GetFlatResponse
+                    {
+                        Id = maintenanceRequest.Flat.Id,
+                        Floor = maintenanceRequest.Flat.Floor,
+                        TotalRooms = maintenanceRequest.Flat.TotalRooms,
+                        TotalBaths = maintenanceRequest.Flat.TotalBaths,
+                        HasTerrace = maintenanceRequest.Flat.HasTerrace,
+                        RoomNumber = maintenanceRequest.Flat.RoomNumber,
+                        OwnerAssigned = maintenanceRequest.Flat.OwnerAssigned != null ? new GetOwnerResponse
+                        {
+                            Id = maintenanceRequest.Flat.OwnerAssigned.Id,
+                            Firstname = maintenanceRequest.Flat.OwnerAssigned.Firstname,
+                            Lastname = maintenanceRequest.Flat.OwnerAssigned.Lastname,
+                            Email = maintenanceRequest.Flat.OwnerAssigned.Email
+                        } : null,
+                    } : null
                 });
 
             return maintenanceRequestFromHandler;
