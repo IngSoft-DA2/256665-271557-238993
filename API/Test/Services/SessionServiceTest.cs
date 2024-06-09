@@ -261,4 +261,23 @@ public class SessionServiceTest
     }
 
     #endregion
+
+    #region GetUserIdBySessionString
+    
+    [TestMethod]
+    public void GetUserIdBySessionString_UserIsFound()
+    {
+        Session dummySession = new Session();
+        dummySession.UserId = _sampleUserGuid;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        Guid userId = _sessionService.GetUserIdBySessionString(It.IsAny<Guid>());
+        _sessionRepository.VerifyAll();
+
+        Assert.AreEqual(dummySession.UserId, userId);
+    }
+
+    #endregion
 }
