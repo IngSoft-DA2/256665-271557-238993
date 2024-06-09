@@ -153,7 +153,7 @@ public class ConstructionCompanyServiceTest
 
         Assert.AreEqual(constructionCompanyInDb, constructionCompanyObtained);
     }
-
+    
     #region Get Construction Company By User Creator Id, Repository Validations
 
     [TestMethod]

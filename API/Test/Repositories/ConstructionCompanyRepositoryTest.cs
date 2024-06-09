@@ -99,6 +99,25 @@ public class ConstructionCompanyRepositoryTest
     }
 
     [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ConstructionCompanyIsReturn()
+    {
+        ConstructionCompany constructionCompanyInDb = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "ConstructionCompany1",
+            UserCreatorId = Guid.NewGuid(),
+            Buildings = new List<Building>()
+        };
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
+        _dbContext.SaveChanges();
+        
+        ConstructionCompany constructionCompanyResponse =
+            _constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(constructionCompanyInDb.UserCreatorId);
+        
+        Assert.AreEqual(constructionCompanyInDb, constructionCompanyResponse);
+    }
+
+    [TestMethod]
     public void CreateConstructionCompany_ConstructionCompanyIsCreated()
     {
         ConstructionCompany constructionCompanyToAdd = new ConstructionCompany
