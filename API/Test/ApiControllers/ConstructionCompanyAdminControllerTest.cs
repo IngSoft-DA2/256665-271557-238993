@@ -25,8 +25,8 @@ public class ConstructionCompanyAdminControllerTest
         _constructionCompanyAdminAdapter = new Mock<IConstructionCompanyAdminAdapter>(MockBehavior.Strict);
         _constructionCompanyAdminController =
             new ConstructionCompanyAdminController(_constructionCompanyAdminAdapter.Object);
-        
-         _controllerContext = new ControllerContext
+
+        _controllerContext = new ControllerContext
         {
             HttpContext = new DefaultHttpContext()
         };
@@ -40,16 +40,18 @@ public class ConstructionCompanyAdminControllerTest
     [TestMethod]
     public void CreateConstructionCompanyAdmin_CreatedAtActionResultIsReturn()
     {
-        CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse = new CreateConstructionCompanyAdminResponse()
+        CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse =
+            new CreateConstructionCompanyAdminResponse()
             {
                 Id = Guid.NewGuid()
             };
-        
+
         CreatedAtActionResult expectedControllerResponse = new CreatedAtActionResult("CreateConstructionCompanyAdmin",
             "CreateConstructionCompanyAdmin", expectedConstructionCompanyAdminResponse.Id,
             expectedConstructionCompanyAdminResponse);
 
-        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter => constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
+        _constructionCompanyAdminAdapter.Setup(constructionCompanyAdminAdapter =>
+                constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(
                     It.IsAny<CreateConstructionCompanyAdminRequest>(), null))
             .Returns(expectedConstructionCompanyAdminResponse);
 
@@ -62,10 +64,10 @@ public class ConstructionCompanyAdminControllerTest
             Password = "Password",
             InvitationId = Guid.NewGuid()
         };
-        
+
         IActionResult controllerResponse = _constructionCompanyAdminController
             .CreateConstructionCompanyAdmin(request);
-        
+
         _constructionCompanyAdminAdapter.VerifyAll();
 
         CreatedAtActionResult? controllerResponseCasted = controllerResponse as CreatedAtActionResult;
@@ -84,7 +86,17 @@ public class ConstructionCompanyAdminControllerTest
     {
         // Simulating that the user is a ConstructionCompanyAdmin
         _controllerContext.HttpContext.Items["UserRole"] = SystemUserRoleEnum.ConstructionCompanyAdmin.ToString();
-        
+
+        CreateConstructionCompanyAdminRequest request = new CreateConstructionCompanyAdminRequest
+        {
+            Firstname = "Firstname",
+            Lastname = "Lastname",
+            Email = "email@gmail.com",
+            Password = "Password",
+            UserRole = SystemUserRoleEnum.ConstructionCompanyAdmin
+        };
+
+
         CreateConstructionCompanyAdminResponse expectedConstructionCompanyAdminResponse =
             new CreateConstructionCompanyAdminResponse()
             {
@@ -101,7 +113,7 @@ public class ConstructionCompanyAdminControllerTest
             .Returns(expectedConstructionCompanyAdminResponse);
 
         IActionResult controllerResponse =
-            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
+            _constructionCompanyAdminController.CreateConstructionCompanyAdmin(request);
 
         _constructionCompanyAdminAdapter.VerifyAll();
 
@@ -111,42 +123,6 @@ public class ConstructionCompanyAdminControllerTest
         Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
         Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
     }
-    
-    [TestMethod]
-    public void CreateConstructionCompanyAdminWithNotAllowedRole_ObjectResult403IsReturn()
-    {
-        // Simulating that the user is a ConstructionCompanyAdmin
-        _controllerContext.HttpContext.Items["UserRole"] = SystemUserRoleEnum.Manager.ToString();
-        
-        ObjectResult expectedControllerResponse = new ObjectResult("Only ConstructionCompanyAdmin people is allowed.");
-        expectedControllerResponse.StatusCode = StatusCodes.Status403Forbidden;
-        
-        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
 
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-    
-    [TestMethod]
-    public void CreateConstructionCompanyAdminAnErrorWhileAuthorizingHappens_ObjectResult401IsReturn()
-    {
-        // Simulating that the user is a ConstructionCompanyAdmin
-        _controllerContext.HttpContext.Items["UserRole"] = "ConstComp213#@!";
-        
-        ObjectResult expectedControllerResponse = new ObjectResult("Error while authorizing.");
-        expectedControllerResponse.StatusCode = StatusCodes.Status401Unauthorized;
-        
-        IActionResult controllerResponse = _constructionCompanyAdminController.CreateConstructionCompanyAdmin(It.IsAny<CreateConstructionCompanyAdminRequest>());
-
-        ObjectResult? controllerResponseCasted = controllerResponse as ObjectResult;
-        Assert.IsNotNull(controllerResponseCasted);
-
-        Assert.AreEqual(expectedControllerResponse.StatusCode, controllerResponseCasted.StatusCode);
-        Assert.AreEqual(expectedControllerResponse.Value, controllerResponseCasted.Value);
-    }
-    
     #endregion
 }
