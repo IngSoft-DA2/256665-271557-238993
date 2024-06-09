@@ -278,6 +278,18 @@ public class SessionServiceTest
 
         Assert.AreEqual(dummySession.UserId, userId);
     }
+    
+    [TestMethod]
+    public void GetUserIdBySessionString_UserIsNotFound()
+    {
+        Session dummySession = null;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Returns(dummySession);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() => _sessionService.GetUserIdBySessionString(It.IsAny<Guid>()));
+        _sessionRepository.VerifyAll();
+    }
 
     #endregion
 }
