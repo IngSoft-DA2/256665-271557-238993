@@ -153,11 +153,32 @@ public class ConstructionCompanyService : IConstructionCompanyService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-
-
     }
-    
-    
+
+    public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid ifOfUserCreator)
+    {
+        try
+        {
+            ConstructionCompany constructionCompanyFound =
+                _constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(ifOfUserCreator);
+
+            if (constructionCompanyFound is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+
+            return constructionCompanyFound;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw;
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
     private void CheckIfNameIsAlreadyUsed(ConstructionCompany constructionCompanyToCreate)
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();
@@ -198,7 +219,6 @@ public class ConstructionCompanyService : IConstructionCompanyService
             }
         }
     }
-    
 
     #endregion
 }

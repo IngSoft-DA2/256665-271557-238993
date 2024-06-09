@@ -28,9 +28,9 @@ namespace BuildingBuddy.API.Controllers
         [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         [HttpGet]
         [Route("requests")]
-        public IActionResult GetAllMaintenanceRequests([FromQuery] Guid? managerId)
+        public IActionResult GetAllMaintenanceRequests([FromQuery] Guid? managerId, [FromQuery] Guid categoryId)
         {
-            return Ok(_maintenanceAdapter.GetAllMaintenanceRequests(managerId));
+            return Ok(_maintenanceAdapter.GetAllMaintenanceRequests(managerId, categoryId));
         }
 
         #endregion
@@ -68,10 +68,8 @@ namespace BuildingBuddy.API.Controllers
         [Route("request-handler/requests")]
         public IActionResult AssignMaintenanceRequest([FromQuery] Guid idOfRequestToUpdate, [FromQuery] Guid idOfWorker)
         {
-
             _maintenanceAdapter.AssignMaintenanceRequest(idOfRequestToUpdate, idOfWorker);
             return NoContent();
-
         }
 
         #endregion

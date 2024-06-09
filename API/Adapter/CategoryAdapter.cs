@@ -83,7 +83,7 @@ public class CategoryAdapter : ICategoryAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Category was not found");
         }
         catch (Exception exceptionCaught)
         {

@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BuildingService } from '../../Building/Services/building.service';
-import { Building } from '../../Building/Interfaces/Building.model';
 import { ManagerService } from '../../manager/services/manager.service';
 import { NodeReportMaintenanceRequestsByFlat } from '../interfaces/node-report-maintenance-req-by-flat';
+import { LoginService } from '../../login/services/login.service';
+import { User } from '../../login/interfaces/user';
+import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
+import { Building } from '../../building/interfaces/building';
+import { BuildingService } from '../../building/services/building.service';
 
 @Component({
-  selector: 'app-report-maintenance-requests-by-building',
+  selector: 'app-report-maintenance-requests-by-flat',
   templateUrl: './report-maintenance-requests-by-flat.component.html',
   styleUrls: ['./report-maintenance-requests-by-flat.component.css']
 })
@@ -17,21 +19,42 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
   buildingIdSelected: string = "default";
   buildings: Building[] = [];
   buildingsIdList: string[] = [];
-  managerId: string = "e7503a12-821a-45f3-93f3-525ed1a79efd";
+  managerId: string = "";
+  userConnected?: User = undefined;
+  SystemUserRoleEnumValues = SystemUserRoleEnum;
 
   constructor(
     private reportService: ReportService,
     private managerService: ManagerService,
     private buildingService: BuildingService,
     private router: Router,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private loginService: LoginService
+  ) { 
+    loginService.getUser().subscribe({
+      next: (response) => {
+        this.userConnected = response;
+        if (this.userConnected) {
+          this.managerId = this.userConnected.userId;
+        }
+        console.log("Usuario encontrado, valores: " + this.userConnected);
+      },
+      error: () => {
+        this.userConnected = undefined;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       if (params['buildingId']) {
         this.buildingIdSelected = params['buildingId'];
       }
+
+      if(this.userConnected && this.userConnected.userId){
+        this.managerId = this.userConnected.userId;
+      }
+
       this.loadBuildings();
     });
   }
@@ -55,27 +78,28 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
     this.managerService.getManagerById(this.managerId)
       .subscribe({
         next: (response) => {
-          this.buildingsIdList = response.buildings;
-          if (this.buildingIdSelected === "default" && this.buildings.length > 0) {
-            this.buildingIdSelected = "default";
-          }
-          this.buildingsIdList.forEach(id => {
-            this.buildingService.getBuildingById(id).subscribe({
-              next: (building) => {
-                this.buildings.push(building);
-                if (this.buildingIdSelected === "default" && this.buildings.length > 0) {
-                  this.buildingIdSelected = this.buildings[0].id;
+          if (response && response.buildingsId) {
+            this.buildingsIdList = response.buildingsId;
+            this.buildingsIdList.forEach(id => {
+              this.buildingService.getBuildingById(id).subscribe({
+                next: (building) => {
+                  this.buildings.push(building);
+                  if (this.buildingIdSelected === "default" && this.buildings.length > 0) {
+                    this.buildingIdSelected = this.buildings[0].id;
+                  }
+                  console.log("Edificios cargados: ");
+                  this.loadReport();
+                },
+                error: (error) => {
+                  console.error("Error al cargar el edificio:", error);
                 }
-                console.log("Edificios cargados: ");
-                this.loadReport();
-              },
-              error: (error) => {
-                console.error("Error al cargar el edificio:", error);
-              }
+              });
             });
-          });
-          console.log(this.buildings);
-          this.loadReport();
+            console.log(this.buildings);
+            this.loadReport();
+          } else {
+            console.error("No se encontraron edificios en la respuesta del gestor.");
+          }
         },
         error: (error) => {
           console.error("Error al cargar los edificios:", error);
@@ -88,9 +112,7 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
     if (buildingFound) {
       return buildingFound.name;
     }
-    
     return "";
-
   }
 
   onChange(event: Event) {

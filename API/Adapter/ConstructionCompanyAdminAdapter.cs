@@ -65,7 +65,7 @@ public class ConstructionCompanyAdminAdapter : IConstructionCompanyAdminAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction company admin was not found");
         }
         catch (Exception exceptionCaught)
         {

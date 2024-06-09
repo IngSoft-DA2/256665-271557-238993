@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { User } from '../../features/login/interfaces/user';
-import { LoginService } from '../../features/login/services/login.service';
-import { SystemUserRoleEnum } from '../../features/invitation/interfaces/enums/system-user-role-enum';
+import { Component } from "@angular/core";
+import { SystemUserRoleEnum } from "../../features/invitation/interfaces/enums/system-user-role-enum";
+import { User } from "../../features/login/interfaces/user";
+import { LoginService } from "../../features/login/services/login.service";
 
 
 @Component({

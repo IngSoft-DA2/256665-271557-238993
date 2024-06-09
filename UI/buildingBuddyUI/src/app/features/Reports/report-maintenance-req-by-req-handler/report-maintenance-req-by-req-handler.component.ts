@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
-import { Building } from '../../Building/Interfaces/Building.model';
 import { ReportService } from '../services/report.service';
 import { ManagerService } from '../../manager/services/manager.service';
-import { BuildingService } from '../../Building/Services/building.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NodeReportMaintenanceRequestsByRequestHandler } from '../interfaces/node-report-maintenance-req-by-req-handler';
 import { RequestHandler } from '../../requestHandler/interfaces/RequestHandler.model';
 import { RequestHandlerService } from '../../requestHandler/services/request-handler.service';
+import { BuildingService } from '../../building/services/building.service';
+import { Building } from '../../building/interfaces/building';
 
 @Component({
   selector: 'app-report-maintenance-req-by-req-handler',
@@ -65,7 +65,7 @@ export class ReportMaintenanceReqByReqHandlerComponent implements OnInit {
     this.managerService.getManagerById(this.managerId)
       .subscribe({
         next: (response) => {
-          this.buildingsIdList = response.buildings;
+          this.buildingsIdList = response.buildingsId;
           this.buildingsIdList.forEach(id => {
             this.buildingService.getBuildingById(id).subscribe({
               next: (building) => {

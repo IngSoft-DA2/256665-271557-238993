@@ -5,8 +5,7 @@ export interface Manager
     id : string,
     name : string,
     email: string,
-    password : string,
     role : SystemUserRoleEnum.Manager,
-    buildings : string[],
-    requests : string[]
-};
+    buildingsId : string[],
+    maintenanceRequestsId : string[]
+};  

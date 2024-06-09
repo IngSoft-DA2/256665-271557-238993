@@ -67,4 +67,16 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+
+    public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid idOfUserCreator)
+    {
+        try
+        {
+            return _dbContext.Set<ConstructionCompany>().FirstOrDefault(constructionCompany => constructionCompany.UserCreatorId == idOfUserCreator);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
+    }
 }

@@ -13,17 +13,13 @@ public class ExceptionFilter : ExceptionFilterAttribute
         {
             context.Result = new BadRequestObjectResult(exceptionCaught.Message);
         }
-        else if (context.Exception is ObjectNotFoundAdapterException)
+        else if (context.Exception is ObjectNotFoundAdapterException exceptionNotFoundCaught)
         {
-            context.Result = new NotFoundResult();
-        }
-        else if (context.Exception is ObjectNotFoundAdapterException)
-        {
-            context.Result = new NotFoundResult();
+            context.Result = new NotFoundObjectResult(exceptionNotFoundCaught.Message);
         }
         else if (context.Exception is ObjectRepeatedAdapterException)
         {
-            context.Result = new ObjectResult(new { Message = "Object already exists" }) { StatusCode = 304 };
+            context.Result = new ConflictObjectResult("This already exists");
         }
         else if (context.Exception is InvalidCredentialException)
         {

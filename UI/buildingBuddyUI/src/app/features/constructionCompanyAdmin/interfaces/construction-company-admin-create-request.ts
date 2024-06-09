@@ -1,3 +1,5 @@
+import { SystemUserRoleEnum } from "../../invitation/interfaces/enums/system-user-role-enum"
+
 export interface constructionCompanyAdminCreateRequest 
 {
     firstname : string,
@@ -5,4 +7,5 @@ export interface constructionCompanyAdminCreateRequest
     email : string,
     password : string,
     invitationId? : string
+    userRole? : SystemUserRoleEnum
 };

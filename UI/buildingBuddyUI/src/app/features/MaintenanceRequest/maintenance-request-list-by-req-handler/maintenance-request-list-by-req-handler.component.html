@@ -1,0 +1,53 @@
+<br />
+<h1>Maintenance Requests Section</h1>
+
+<main>
+    <ng-container *ngIf="maintenanceRequests.length != 0; else NoMaintenanceRequest">
+
+        <table class="table table-striped table-bordered tableClass mt-4">
+            <thead>
+                <br />
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Category</th>
+                    <th>Opened date</th>
+                    <th>Closed date</th>
+                    <th>Flat number</th>
+                    <th>Request Handler</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let maintenanceRequest of maintenanceRequests">
+                    <td>{{maintenanceRequest.description}}</td>
+                    <td>{{getStatusString(maintenanceRequest.requestStatus)}}</td>
+                    <td>{{getCategoryName(maintenanceRequest.category)}}</td>
+                    <td>{{getMaintenanceRequestOpenedDate(maintenanceRequest)}}</td>
+                    <td>{{getMaintenanceRequestClosedDate(maintenanceRequest)}}</td>
+                    <td>{{maintenanceRequest.flat.roomNumber}}</td>
+                    <td>{{getRequestHandlerName(maintenanceRequest)}}</td>
+                    <td *ngIf="maintenanceRequest.requestStatus === 2; else NoAction">
+                        <button class="btn btn-info btn-sm button" (click)="completeMaintenanceRequest(maintenanceRequest.id)"> Close Request </button>
+                    </td>
+                </tr>
+            </tbody>
+            <br />
+
+        </table>
+
+    </ng-container>
+
+</main>
+
+
+<ng-template #NoMaintenanceRequest>
+    <div class="alert alert-warning" role="alert">
+        <h4 style="text-align: center;">There are no Maitenance Requests.</h4>
+    </div>
+</ng-template>
+
+
+<ng-template #NoAction>
+    <td>No Actions Required</td>
+</ng-template>

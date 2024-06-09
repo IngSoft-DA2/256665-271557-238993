@@ -12,7 +12,7 @@ namespace Adapter;
 public class FlatAdapter : IFlatAdapter
 {
     #region Constructor and attributes
-    
+
     private readonly IOwnerService _ownerService;
     private readonly IFlatService _flatService;
 
@@ -21,21 +21,17 @@ public class FlatAdapter : IFlatAdapter
         _ownerService = ownerService;
         _flatService = flatService;
     }
-    
+
     #endregion
-    
+
     #region Create Flat
 
     public void CreateFlat(CreateFlatRequest flat)
     {
-
         try
         {
-            Owner? ownerAssigned = null;
-            if (flat.OwnerAssignedId != null)
-            {
-                ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId.Value);
-            }
+            Owner ownerAssigned = _ownerService.GetOwnerById(flat.OwnerAssignedId);
+
             Flat flatToCreate = new Flat
             {
                 Id = Guid.NewGuid(),
@@ -55,13 +51,13 @@ public class FlatAdapter : IFlatAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Flat was not created because the owner assigned was not found.");
         }
         catch (Exception exceptionCaught)
         {
             throw new Exception(exceptionCaught.Message);
         }
     }
-    
+
     #endregion
 }

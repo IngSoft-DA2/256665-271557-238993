@@ -1,6 +1,4 @@
-using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
-using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyRequests;
@@ -10,7 +8,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [Route("api/v2/construction-companies")]
+    [Route("api/v2")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
     {
@@ -26,8 +24,8 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region Get all Construction Companies
-
         [HttpGet]
+        [Route("construction-companies")]
         [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllConstructionCompanies()
         {
@@ -36,13 +34,25 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region Get Construction Company By User Creator Id
+        #region Get Construction Company By Id
 
         [HttpGet]
-        [Route("{constructionCompanyId:Guid}")]
+        
+        [Route("construction-companies/{constructionCompanyId:Guid}")]
         public IActionResult GetConstructionCompanyById([FromRoute] Guid constructionCompanyId)
         {
             return Ok(_constructionCompanyAdapter.GetConstructionCompanyById(constructionCompanyId));
+        }
+
+        #endregion
+        
+        #region Get Construction Company By User Creator Id
+
+        [HttpGet]
+        [Route("user-id/{userId:Guid}/construction-companies")]
+        public IActionResult GetConstructionCompanyByUserCreatorId([FromRoute] Guid userId)
+        {
+            return Ok(_constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(userId));
         }
 
         #endregion
@@ -50,6 +60,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Construction Company
 
         [HttpPost]
+        [Route("construction-companies")]
         [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany(
             [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
@@ -65,7 +76,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPut]
         [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
-        [Route("{id:Guid}")]
+        [Route("construction-companies/{id:Guid}")]
         public IActionResult UpdateConstructionCompany([FromRoute] Guid id,[FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
         {
             _constructionCompanyAdapter.UpdateConstructionCompany(id,updateConstructionCompanyRequest);

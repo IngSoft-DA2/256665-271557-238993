@@ -11,6 +11,7 @@ using WebModel.Requests.OwnerRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
+using WebModel.Responses.ManagerResponses;
 using WebModel.Responses.OwnerResponses;
 
 namespace Test.ApiControllers;
@@ -103,6 +104,14 @@ public class BuildingControllerTest
         GetBuildingResponse expectedBuildingValue = new GetBuildingResponse()
         {
             Name = "Building 1",
+            Manager = new GetManagerResponse
+            {
+                Id = Guid.NewGuid(),
+                Name = "ManagerName",
+                Email = "email@gmail.com",
+                BuildingsId = new List<Guid> {Guid.NewGuid()},
+                MaintenanceRequestsId = new List<Guid> {Guid.NewGuid()}
+            },
             Address = "North Avenue",
             Location = new LocationResponse
             {

@@ -7,6 +7,7 @@ using WebModel.Requests.BuildingRequests;
 using WebModel.Responses.BuildingResponses;
 using WebModel.Responses.ConstructionCompanyResponses;
 using WebModel.Responses.FlatResponses;
+using WebModel.Responses.ManagerResponses;
 using WebModel.Responses.OwnerResponses;
 
 namespace Adapter;
@@ -33,14 +34,22 @@ public class BuildingAdapter : IBuildingAdapter
 
     #region Get all buildings
 
-    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid managerId)
+    public IEnumerable<GetBuildingResponse> GetAllBuildings(Guid constructionCompanyAdminId)
     {
         try
         {
-            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(managerId);
+            IEnumerable<Building> buildingsInDb = _buildingService.GetAllBuildings(constructionCompanyAdminId);
             List<GetBuildingResponse> buildingsToReturn = buildingsInDb.Select(building => new GetBuildingResponse
             {
                 Id = building.Id,
+                Manager = new GetManagerResponse
+                {
+                    Id = building.Manager.Id,
+                    Name = building.Manager.Firstname,
+                    Email = building.Manager.Email,
+                    BuildingsId = building.Manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = building.Manager.Requests.Select(maintenance => maintenance.Id).ToList(),
+                },
                 Name = building.Name,
                 Address = building.Address,
                 Location = new LocationResponse()
@@ -96,6 +105,14 @@ public class BuildingAdapter : IBuildingAdapter
             GetBuildingResponse buildingToReturn = new GetBuildingResponse
             {
                 Id = buildingInDb.Id,
+                Manager = new GetManagerResponse
+                {
+                    Id = buildingInDb.Manager.Id,
+                    Name = buildingInDb.Manager.Firstname,
+                    Email = buildingInDb.Manager.Email,
+                    BuildingsId = buildingInDb.Manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = buildingInDb.Manager.Requests.Select(maintenance => maintenance.Id).ToList(),
+                },
                 Name = buildingInDb.Name,
                 Address = buildingInDb.Address,
                 Location = new LocationResponse()
@@ -135,7 +152,7 @@ public class BuildingAdapter : IBuildingAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Building was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -171,13 +188,12 @@ public class BuildingAdapter : IBuildingAdapter
                     Id = Guid.NewGuid(),
                     Floor = flat.Floor,
                     RoomNumber = flat.RoomNumber,
-                    OwnerAssigned = flat.OwnerAssignedId != null
-                        ? _ownerService.GetOwnerById(flat.OwnerAssignedId.Value)
-                        : null,
+                    OwnerAssigned =_ownerService.GetOwnerById(flat.OwnerAssignedId),
                     TotalRooms = flat.TotalRooms,
                     TotalBaths = flat.TotalBaths,
                     HasTerrace = flat.HasTerrace
                 }).ToList(),
+                Manager  = _managerService.GetManagerById(createBuildingRequest.ManagerId),
                 ManagerId = createBuildingRequest.ManagerId
             };
             _buildingService.CreateBuilding(buildingToCreate);
@@ -192,7 +208,7 @@ public class BuildingAdapter : IBuildingAdapter
 
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction Company,Owner or Manager were not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
@@ -214,9 +230,8 @@ public class BuildingAdapter : IBuildingAdapter
 
     public void UpdateBuildingById(Guid buildingIdToUpd, UpdateBuildingRequest updateBuildingRequest)
     {
-
         Manager managerFound = _managerService.GetManagerById(updateBuildingRequest.ManagerId);
-        
+
         try
         {
             Building buildingToUpd = new Building
@@ -230,7 +245,7 @@ public class BuildingAdapter : IBuildingAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Building was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {
@@ -254,7 +269,7 @@ public class BuildingAdapter : IBuildingAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Building was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

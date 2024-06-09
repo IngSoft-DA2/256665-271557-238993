@@ -8,4 +8,5 @@ public interface IConstructionCompanyService
     public ConstructionCompany GetConstructionCompanyById(Guid idOfConstructionCompany);
     public void CreateConstructionCompany(ConstructionCompany constructionCompanyToAdd);
     public void UpdateConstructionCompany(ConstructionCompany constructionCompanyWithUpdates);
+    public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid idOfUserCreator);
 }
