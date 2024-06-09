@@ -18,7 +18,10 @@ public class ManagerRepository : IManagerRepository
     {
         try
         {
-            return _dbContext.Set<Manager>().Include(manager => manager.Buildings).ToList();
+            return _dbContext.Set<Manager>()
+                .Include(manager => manager.Buildings)
+                .Include(manager => manager.Requests)
+                .ToList();
         }
         catch (Exception exceptionCaught)
         {
@@ -30,7 +33,10 @@ public class ManagerRepository : IManagerRepository
     {
         try
         {
-            return _dbContext.Set<Manager>().Find(managerId);
+            return _dbContext.Set<Manager>()
+                .Where(manager => manager.Id == managerId)
+                .Include(manager => manager.Buildings)
+                .Include(manager => manager.Requests).First();
         }
         catch (Exception exceptionCaught)
         {

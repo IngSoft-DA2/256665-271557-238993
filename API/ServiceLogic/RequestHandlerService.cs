@@ -49,8 +49,11 @@ public class RequestHandlerService : IRequestHandlerService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
+    }
 
-        
+    public IEnumerable<RequestHandler> GetAllRequestHandlers()
+    {
+        return _requestHandlerRepository.GetAllRequestHandlers();
     }
 
     private void CheckIfEmailIsAlreadyRegistered(RequestHandler requestHandler)

@@ -33,7 +33,7 @@ public class LoaderController : ControllerBase
     #region Create All Buildings From Load
     
     [HttpPost]
-    [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+    //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
     public IActionResult CreateAllBuildingsFromLoad([FromBody] CreateLoaderRequest createLoaderRequest)
     {
         List<CreateBuildingFromLoadResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);

@@ -1,0 +1,110 @@
+import { Component } from '@angular/core';
+import { ReportService } from '../services/report.service';
+import { AdminService } from '../../administrator/services/admin.service';
+import { Category } from '../../category/interfaces/category';
+import { NodeReportMaintenanceRequestsByCategory } from '../interfaces/node-report-maintenance-request-by-category';
+import { CategoryService } from '../../category/services/category.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BuildingService } from '../../building/services/building.service';
+import { Building } from '../../building/interfaces/building';
+
+@Component({
+  selector: 'app-report-maintenance-req-by-category',
+  templateUrl: './report-maintenance-req-by-category.component.html',
+  styleUrl: './report-maintenance-req-by-category.component.css'
+})
+export class ReportMaintenanceReqByCategoryComponent {
+  reportOfMaintenanceRequestsByCategory?: NodeReportMaintenanceRequestsByCategory[];
+  buildingIdSelected: string = "default";
+  buildings: Building[] = [];
+  buildingsIdList: string[] = [];
+  managerId: string = "";
+  categoryId: string = "default";
+  categories: Category[] = [];
+
+  emptyGuid: string = '00000000-0000-0000-0000-000000000000';
+
+  constructor(
+    private reportService: ReportService,
+    private adminService: AdminService,
+    private buildingService: BuildingService,
+    private categoryService: CategoryService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['buildingId']) {
+        this.buildingIdSelected = params['buildingId'];
+      }
+      if (params['categoryId']) {
+        this.categoryId = params['categoryId'];
+      }
+      this.loadBuildings();
+      this.loadCategories();
+    });
+  }
+
+  loadReport(): void {
+    if (this.buildingIdSelected !== "default" && this.categoryId !== "default") {
+      this.reportService.getReportMaintenanceRequestsByCategory(this.buildingIdSelected, this.categoryId)
+        .subscribe({
+          next: (response) => {
+            this.reportOfMaintenanceRequestsByCategory = response;
+            console.log(this.reportOfMaintenanceRequestsByCategory);
+          },
+          error: (error) => {
+            console.error("Error al cargar el reporte:", error);
+          }
+        });
+    }
+  }
+
+  loadBuildings(): void {
+    this.buildingService.getAllBuildings(this.emptyGuid)
+      .subscribe({
+        next: (response) => {
+          this.buildings = response;
+                this.loadReport();
+              }, 
+              error: (error) => {
+                console.error("Error al cargar los edificios:", error);
+              }
+            });
+      
+  }
+
+  loadCategories(): void {
+    this.categoryService.getAllCategories()
+      .subscribe({
+        next: (response) => {
+          this.categories = response;
+          console.log(this.categories);
+        },
+        error: (error) => {
+          console.error("Error al cargar los request handlers:", error);
+        }
+      });
+  }
+
+  getCategoryName(categoryId: string): string {
+    const categoryFound = this.categories.find(r => r.id === categoryId);
+    if (categoryFound) {
+      return categoryFound.name;
+    }
+    return "";
+  }
+
+  onChange(event: Event, type: 'building' | 'category') {
+    const target = event.target as HTMLSelectElement;
+    if (type === 'building') {
+      this.buildingIdSelected = target.value;
+    } else if (type === 'category') {
+      this.categoryId = target.value;
+    }
+    this.loadReport();
+  }
+
+
+}

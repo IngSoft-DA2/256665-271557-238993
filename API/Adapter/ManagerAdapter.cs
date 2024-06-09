@@ -55,6 +55,37 @@ public class ManagerAdapter : IManagerAdapter
     }
 
     #endregion
+    
+    #region Get Manager By Id
+
+    public GetManagerResponse GetManagerById(Guid managerId)
+    {
+        try
+        {
+            Manager managerFound = _managerServiceLogic.GetManagerById(managerId);
+
+            GetManagerResponse adapterResponse = new GetManagerResponse
+            {
+                Id = managerFound.Id,
+                Email = managerFound.Email,
+                Name = managerFound.Firstname,
+                BuildingsId = managerFound.Buildings.Select(building => building.Id).ToList(),
+                MaintenanceRequestsId = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+            };
+
+            return adapterResponse;
+        }
+        catch (ObjectNotFoundServiceException exceptionCaught)
+        {
+            throw new ObjectNotFoundAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new Exception(exceptionCaught.Message);
+        }
+    }
+
+    #endregion
 
     #region Delete Manager By Id
 
@@ -115,6 +146,6 @@ public class ManagerAdapter : IManagerAdapter
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
-
+    
     #endregion
 }

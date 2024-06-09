@@ -108,7 +108,8 @@ public class ReportAdapter : IReportAdapter
                     ClosedRequests = report.ClosedRequests,
                     OpenRequests = report.OpenRequests,
                     OnAttendanceRequests = report.OnAttendanceRequests,
-                    OwnerName = report.OwnerName
+                    OwnerName = report.OwnerName,
+                    FlatNumber = report.FlatNumber
                 });
 
             return flatReportResponses;

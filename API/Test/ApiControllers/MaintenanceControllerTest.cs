@@ -60,12 +60,12 @@ public class MaintenanceControllerTest
                     RequestStatus = StatusEnumMaintenanceResponse.Closed
                 }
             };
-        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests(It.IsAny<Guid>()))
+        _maintenanceAdapter.Setup(adapter => adapter.GetAllMaintenanceRequests(It.IsAny<Guid>(),It.IsAny<Guid>()))
             .Returns(expectedMaintenanceRequests.ToList());
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedMaintenanceRequests);
 
-        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests(It.IsAny<Guid>());
+        IActionResult controllerResponse = _maintenanceController.GetAllMaintenanceRequests(It.IsAny<Guid>(), It.IsAny<Guid>());
 
         _maintenanceAdapter.VerifyAll();
 

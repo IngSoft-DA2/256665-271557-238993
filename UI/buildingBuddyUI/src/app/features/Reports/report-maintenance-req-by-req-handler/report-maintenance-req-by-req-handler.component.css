@@ -1,0 +1,108 @@
+/* General container styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Heading styles */
+  h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    margin-top: 20px; /* Añade espacio arriba */
+    font-size: 28px;  /* Ajusta el tamaño de fuente */
+  }
+  
+  /* Form label styles */
+  .form-label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Form select styles */
+  .form-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Table styles */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 16px;
+  }
+  
+  .table th {
+    background-color: #007bff;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #e9ecef;
+  }
+  
+  /* Alert styles */
+  .alert {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+  }
+  
+  /* Responsive design adjustments */
+  @media (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .form-select {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    .table th,
+    .table td {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    h1 {
+      font-size: 24px;
+    }
+  }
+  

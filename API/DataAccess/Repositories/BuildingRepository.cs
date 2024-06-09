@@ -18,19 +18,29 @@ public class BuildingRepository : IBuildingRepository
     {
         try
         {
-            return _dbContext.Set<Building>()
-                .Include(building => building.Flats).ThenInclude(flat => flat.OwnerAssigned)
-                .Include(building => building.ConstructionCompany)
-                .Include(building => building.Manager)
-                .Include(building => building.Location)
-                .Where(building => building.ConstructionCompany.UserCreatorId == userId).ToList();
+            if (Guid.Empty == userId)
+            {
+                return _dbContext.Set<Building>()
+                    .Include(building => building.Flats).ThenInclude(flat => flat.OwnerAssigned)
+                    .Include(building => building.ConstructionCompany)
+                    .Include(building => building.Manager)
+                    .Include(building => building.Location).ToList();
+            }
+            else
+            {
+                return _dbContext.Set<Building>()
+                    .Include(building => building.Flats).ThenInclude(flat => flat.OwnerAssigned)
+                    .Include(building => building.ConstructionCompany)
+                    .Include(building => building.Manager)
+                    .Include(building => building.Location)
+                    .Where(building => building.ConstructionCompany.UserCreatorId == userId).ToList();
+            }
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
-
     public Building GetBuildingById(Guid buildingId)
     {
         try

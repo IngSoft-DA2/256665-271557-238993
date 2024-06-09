@@ -1,5 +1,6 @@
 using System.Reflection;
 using Domain;
+using Domain.Enums;
 using IRepository;
 using IServiceLogic;
 using ServiceLogic.CustomExceptions;
@@ -19,12 +20,12 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     #endregion
 
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId)
+    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
     {
         try
         {
             IEnumerable<MaintenanceRequest> maintenanceRequests =
-                _maintenanceRequestRepository.GetAllMaintenanceRequests(managerId);
+                _maintenanceRequestRepository.GetAllMaintenanceRequests(managerId, categoryId);
             return maintenanceRequests;
         }
         catch (Exception exceptionCaught)
@@ -76,7 +77,11 @@ public class MaintenanceRequestService : IMaintenanceRequestService
             if (maintenanceRequestNotUpdated is null) throw new ObjectNotFoundServiceException();
             MapProperties(maintenanceRequestUpdated, maintenanceRequestNotUpdated);
             maintenanceRequestUpdated.MaintenanceRequestValidator();
-            _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequestUpdated);
+            if(maintenanceRequestUpdated.RequestStatus == RequestStatusEnum.Closed)
+            {
+                maintenanceRequestUpdated.ClosedDate = DateTime.Now;
+            }
+            _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequestUpdated);//
         }
         catch (ObjectNotFoundServiceException)
         {
