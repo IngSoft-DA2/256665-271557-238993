@@ -1,0 +1,43 @@
+<div class="container" *ngIf="constructionCompanyOfUser !== undefined; else noCompany">
+
+    <table class="table table-striped table-bordered tableClass">
+        <thead>
+            <br />
+            <tr>
+                <th>Construction Company Name </th>
+                <th>Update Construction Company</th>
+                <th>View Construction Company Buildings</th>
+                <th>Create new Building</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{constructionCompanyOfUser.name}}</td>
+                <td>
+                    <a class="btn btn-info btn-sm button" [routerLink]="['/construction-companies', constructionCompanyOfUser.id, 'update']"> Update Company </a>
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm button" style="text-align: center;" [routerLink]="['/buildings/list']" >View Buildings</a>
+                </td>
+                <td>
+                    <a class="btn btn-info btn-sm button" style="text-align: center;" [routerLink]="['/buildings',constructionCompanyOfUser.id,'create']" >Create new Building</a>
+                </td>
+            </tr>
+        </tbody>
+        <br />
+    </table>
+  
+</div>
+
+<ng-template #noCompany>
+    <div class="container mt-3">
+    </div>
+  
+    <div class="alert alert-warning mt-5 container d-flex flex-column align-items-center">
+        <h4>No construction company registered</h4>
+        <br>
+        <a type="button" class="btn btn-success mt-2" [routerLink]="['/construction-companies/create']" routerLinkActive="router-link-active" >Create +</a>
+    </div>
+    
+</ng-template>
+

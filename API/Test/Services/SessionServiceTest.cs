@@ -32,7 +32,8 @@ public class SessionServiceTest
         _constructionCompanyAdminRepository = new Mock<IConstructionCompanyAdminRepository>(MockBehavior.Strict);
 
         _sessionService = new SessionService(_sessionRepository.Object, _managerRepository.Object,
-            _administratorRepository.Object, _requestHandlerRepository.Object,_constructionCompanyAdminRepository.Object);
+            _administratorRepository.Object, _requestHandlerRepository.Object,
+            _constructionCompanyAdminRepository.Object);
     }
 
     #endregion
@@ -99,7 +100,7 @@ public class SessionServiceTest
 
         Assert.AreEqual(dummySession.UserRole, role);
     }
-    
+
     [TestMethod]
     public void GetUserRoleBySessionString_SessionStringIsNotFound()
     {
@@ -141,23 +142,26 @@ public class SessionServiceTest
             Password = "Password2003",
             Role = SystemUserRoleEnum.Admin
         };
-        
+
         Manager manager = new Manager();
-        RequestHandler requestHandler= new RequestHandler();
+        RequestHandler requestHandler = new RequestHandler();
+        ConstructionCompanyAdmin constructionCompanyAdmin = new ConstructionCompanyAdmin();
         Session dummySession = new Session();
+        
         dummySession.UserId = _sampleUserGuid;
 
         _administratorRepository.Setup(administratorRepository => administratorRepository.GetAllAdministrators())
             .Returns(new List<Administrator> { user });
-        
+
         _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
-            .Returns(new List<Manager>{manager});
+            .Returns(new List<Manager> { manager });
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
-            .Returns(new List<RequestHandler>{requestHandler});
-        
-        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository => constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
-            .Returns(new List<ConstructionCompanyAdmin>());
+            .Returns(new List<RequestHandler> { requestHandler });
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin> {constructionCompanyAdmin});
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.CreateSession(It.IsAny<Session>()));
 
@@ -176,7 +180,7 @@ public class SessionServiceTest
     public void Authenticate_UserIsNotAuthenticated()
     {
         Session dummySession = null;
-        
+
         _administratorRepository.Setup(administratorRepository => administratorRepository.GetAllAdministrators())
             .Returns(new List<Administrator>());
 
@@ -185,8 +189,9 @@ public class SessionServiceTest
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
             .Returns(new List<RequestHandler>());
-        
-        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository => constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
             .Returns(new List<ConstructionCompanyAdmin>());
 
         _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
@@ -194,7 +199,7 @@ public class SessionServiceTest
 
         Assert.ThrowsException<InvalidCredentialException>(() =>
             _sessionService.Authenticate(It.IsAny<string>(), It.IsAny<string>()));
-        
+
         _administratorRepository.VerifyAll();
         _managerRepository.VerifyAll();
         _requestHandlerRepository.VerifyAll();
@@ -214,23 +219,62 @@ public class SessionServiceTest
 
         _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
             .Returns(new List<RequestHandler>());
-        
+
         Assert.ThrowsException<UnknownServiceException>(() =>
             _sessionService.Authenticate(It.IsAny<string>(), It.IsAny<string>()));
-        
+
         _administratorRepository.VerifyAll();
         _managerRepository.VerifyAll();
         _requestHandlerRepository.VerifyAll();
         _sessionRepository.VerifyAll();
     }
 
-    #endregion
+    [TestMethod]
+    public void CheckIfUserIsAuthenticated_ReturnsTrue()
+    {
+        Manager manager = new Manager();
+        manager.Email = "example@gmail.com";
 
+        _administratorRepository.Setup(administratorRepository => administratorRepository.GetAllAdministrators())
+            .Returns(new List<Administrator>());
+
+        _managerRepository.Setup(managerRepository => managerRepository.GetAllManagers())
+            .Returns(new List<Manager> { manager });
+
+        _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
+            .Returns(new List<RequestHandler>());
+
+        _constructionCompanyAdminRepository.Setup(constructionCompanyAdminRepository =>
+                constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins())
+            .Returns(new List<ConstructionCompanyAdmin>());
+
+        Assert.IsTrue(_sessionService.IsUserAuthenticated("example@gmail.com"));
+
+        _administratorRepository.VerifyAll();
+        _managerRepository.VerifyAll();
+        _requestHandlerRepository.VerifyAll();
+        _constructionCompanyAdminRepository.VerifyAll();
+    }
+
+    [TestMethod]
+    public void CheckIfUserIsAuthenticated_ReturnsUnknownServiceException()
+    {
+        Manager manager = new Manager();
+        manager.Email = "example@gmail.com";
+
+        _requestHandlerRepository.Setup(requestHandlerRepository => requestHandlerRepository.GetAllRequestHandlers())
+            .Throws<Exception>();
+
+        Assert.ThrowsException<UnknownServiceException>(() => _sessionService.IsUserAuthenticated("example@gmail.com"));
+
+        _requestHandlerRepository.VerifyAll();
+    }
+    
+    #endregion
+    
     #region Logout user
 
-    
     [TestMethod]
-    
     public void Logout_UserIsLoggedOut()
     {
         Session dummySession = new Session();
@@ -244,7 +288,7 @@ public class SessionServiceTest
         _sessionService.Logout(dummySession.UserId);
         _sessionRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void Logout_UserIsNotFound()
     {
@@ -256,7 +300,7 @@ public class SessionServiceTest
         Assert.ThrowsException<ObjectNotFoundServiceException>(() => _sessionService.Logout(It.IsAny<Guid>()));
         _sessionRepository.VerifyAll();
     }
-    
+
     [TestMethod]
     public void Logout_UnknownExceptionIsThrown()
     {

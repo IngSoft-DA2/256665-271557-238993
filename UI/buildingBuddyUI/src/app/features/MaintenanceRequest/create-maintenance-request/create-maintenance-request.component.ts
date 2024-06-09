@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BuildingService } from '../../Building/Services/building.service';
 import { ManagerService } from '../../manager/services/manager.service';
-import { Building } from '../../Building/Interfaces/Building.model';
 import { LoginService } from '../../login/services/login.service';
 import { User } from '../../login/interfaces/user';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
-import { Flat } from '../../Building/Interfaces/Flat.model';
 import { MaintenanceCreateRequest } from '../Interfaces/maintenance-create-request';
 import { MaintenanceRequestService } from '../Services/maintenance-request.service';
 import { Category } from '../../category/interfaces/category';
 import { CategoryService } from '../../category/services/category.service';
+import { Building } from '../../building/interfaces/building';
+import { Flat } from '../../flat/interfaces/flat';
+import { BuildingService } from '../../building/services/building.service';
 
 @Component({
   selector: 'app-create-maintenance-request',

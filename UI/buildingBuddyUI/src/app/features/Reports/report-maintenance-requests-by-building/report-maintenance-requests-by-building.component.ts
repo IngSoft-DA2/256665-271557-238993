@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BuildingService } from '../../Building/Services/building.service';
-import { Building } from '../../Building/Interfaces/Building.model';
 import { ManagerService } from '../../manager/services/manager.service';
+import { Building } from '../../building/interfaces/building';
+import { BuildingService } from '../../building/services/building.service';
 
 @Component({
   selector: 'app-report-maintenance-requests-by-building',

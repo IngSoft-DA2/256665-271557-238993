@@ -99,6 +99,38 @@ public class ConstructionCompanyRepositoryTest
     }
 
     [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ConstructionCompanyIsReturn()
+    {
+        ConstructionCompany constructionCompanyInDb = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "ConstructionCompany1",
+            UserCreatorId = Guid.NewGuid(),
+            Buildings = new List<Building>()
+        };
+        _dbContext.Set<ConstructionCompany>().Add(constructionCompanyInDb);
+        _dbContext.SaveChanges();
+        
+        ConstructionCompany constructionCompanyResponse =
+            _constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(constructionCompanyInDb.UserCreatorId);
+        
+        Assert.AreEqual(constructionCompanyInDb, constructionCompanyResponse);
+    }
+    
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ThrowsUnknownException()
+    {
+        var _mockDbContext = new Mock<DbContext>(MockBehavior.Strict);
+        _mockDbContext.Setup(m => m.Set<ConstructionCompany>()).Throws(new Exception());
+
+        ConstructionCompanyRepository constructionCompanyRepository =
+            new ConstructionCompanyRepository(_mockDbContext.Object);
+
+        Assert.ThrowsException<UnknownRepositoryException>(() =>
+            constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(Guid.NewGuid()));
+    }
+
+    [TestMethod]
     public void CreateConstructionCompany_ConstructionCompanyIsCreated()
     {
         ConstructionCompany constructionCompanyToAdd = new ConstructionCompany

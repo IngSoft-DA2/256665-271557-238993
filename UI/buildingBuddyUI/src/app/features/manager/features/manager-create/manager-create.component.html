@@ -1,0 +1,53 @@
+
+<div class="container" *ngIf="invitationToOperate; else invitationNotFound">
+
+    <h1 class="mt-3">Create Manager Process</h1>
+        <div class="mt-2">
+            
+            <div class="mt-3">
+                <label class="form-label" for="invitationOfUser">User Firstname</label>
+                <br>
+                <input type="text" id="invitationOfUser" class="form-control" name="invitationFirstname" disabled [(ngModel)]="invitationToOperate.firstname">
+            </div>
+            
+            <div class="mt-3">
+                <label class="form-label" for="invitationOfUser">Do you want to register as a manager?</label>
+                <br>
+                <button type="submit" class="btn btn-success me-2" (click)="wantsToCreate()">Accept</button>
+                <a type="submit" class="btn btn-info" [routerLink]="['/invitations/guests/list']" [queryParams]="{ email: invitationToOperate.email }">Go Back</a>
+            </div>
+        </div>
+</div>
+
+<div class="container" [ngClass]="{'d-block': executeCreation, 'd-none': !executeCreation}">
+
+    <br>
+    <h4> Lets configure your values!</h4>
+
+    <div class="mt-3">
+        <label class="form-label" for="emailOfUser">Insert the same email as before</label>
+        <br>
+        <input type="text" id="emailOfUser" class="form-control" name="emailOfUser" [(ngModel)]="managerToCreate.email">
+    </div>
+    
+    <div class="mt-3">
+        <label class="form-label" for="passwordOfUser">Insert your password</label>
+        <br>
+        <input type="password" id="passwordOfUser" class="form-control" name="passwordOfUser" [(ngModel)]="managerToCreate.password">
+    </div>
+    
+    <div class="mt-3">
+        <button type="submit" class="btn btn-success me-2" (click)="createManager()">End setup and create it</button>
+    </div>
+
+
+</div>
+
+
+
+<ng-template #invitationNotFound>
+    <div class="alert alert-warning" role="alert">
+        <h4 style="text-align: center;">There are no invitations.</h4>
+    </div>
+</ng-template>
+

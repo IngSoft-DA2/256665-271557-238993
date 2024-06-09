@@ -39,7 +39,7 @@ public class FlatAdapterTest
         dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
 
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()));
-        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId)).Returns(It.IsAny<Owner>());
 
         _flatAdapter.CreateFlat(dummyCreateRequest);
         _flatService.VerifyAll();
@@ -52,7 +52,7 @@ public class FlatAdapterTest
         CreateFlatRequest dummyCreateRequest = new CreateFlatRequest();
         dummyCreateRequest.OwnerAssignedId = Guid.NewGuid();
         
-        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value))
+        _ownerService.Setup(ownerService => ownerService.GetOwnerById(dummyCreateRequest.OwnerAssignedId))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
@@ -67,7 +67,7 @@ public class FlatAdapterTest
         
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
             .Throws(new ObjectErrorServiceException("Specific Flat Error"));
-        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId)).Returns(It.IsAny<Owner>());
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _flatService.VerifyAll();
@@ -82,7 +82,7 @@ public class FlatAdapterTest
         
         _flatService.Setup(service => service.CreateFlat(It.IsAny<Flat>()))
             .Throws(new Exception("Unknown Error"));
-        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId.Value)).Returns(It.IsAny<Owner>());
+        _ownerService.Setup(ownerSetup => ownerSetup.GetOwnerById(dummyCreateRequest.OwnerAssignedId)).Returns(It.IsAny<Owner>());
 
         Assert.ThrowsException<Exception>(() => _flatAdapter.CreateFlat(dummyCreateRequest));
         _flatService.VerifyAll();

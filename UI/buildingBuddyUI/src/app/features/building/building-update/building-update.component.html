@@ -1,0 +1,44 @@
+<div class="container mt-5" *ngIf="buildingToUpdate; else buildingNotFound">
+
+    <form #form="ngForm" (onSubmmit)="updateBuilding()">
+
+        <div class="form-control mt-2">
+            <label for="buildingName"> Building Name</label>
+            <input type="text" class="form-control me-3" id="buildingName" name="buildingName" disabled [(ngModel)]="buildingToUpdate.name">
+        </div>
+
+        <div class="form-control mt-2">
+            <label for="buildingManager"> Current Manager Of The Building</label>
+            <input type="text" class="form-control me-3" id="buildingManager" name="buildingManager" disabled [(ngModel)]="buildingToUpdate.manager.name">
+        </div>
+
+        <div class="form-control mt-2">
+            <label for="commonExpenses"> Common Expenses</label>
+            <input type="text" class="form-control me-3" id="commonExpenses" name="commonExpenses" [(ngModel)]="buildingToUpdate.commonExpenses">
+        </div>
+
+        <div class="form-control mt-2">
+            <label for="newManagerToSelect">{{availableManagerMessage}}</label>
+            <select class="form-select" name="newManagerToSelect" id="newManagerToSelect" (change)="onChange($event)"
+                [ngClass]="{'d-block': areAvailableManagers, 'd-none' : !areAvailableManagers}">
+                <option disabled selected> If wanted, select a new manager.</option>
+                <option [value] ="manager.id" *ngFor="let manager of availableManagers"> {{manager.name}}</option>
+            </select>
+        </div>
+
+        <div class="mt-2">
+            <button type="submit" class="btn btn-success" (click)="updateBuilding()">Save changes</button>
+        </div>
+    </form>
+
+    <br>
+    <a type="button" class="btn btn-info" [routerLink]="['/buildings/list']"> Go Back </a>
+</div>
+
+<ng-template #buildingNotFound>
+
+    <div class="alert alert-warning">
+        <h4> Building was not found</h4>
+    </div>
+</ng-template>
+

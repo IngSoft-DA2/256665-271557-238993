@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ReportService } from '../services/report.service';
 import { AdminService } from '../../administrator/services/admin.service';
-import { Building } from '../../Building/Interfaces/Building.model';
 import { Category } from '../../category/interfaces/category';
 import { NodeReportMaintenanceRequestsByCategory } from '../interfaces/node-report-maintenance-request-by-category';
-import { BuildingService } from '../../Building/Services/building.service';
 import { CategoryService } from '../../category/services/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BuildingService } from '../../building/services/building.service';
+import { Building } from '../../building/interfaces/building';
 
 @Component({
   selector: 'app-report-maintenance-req-by-category',

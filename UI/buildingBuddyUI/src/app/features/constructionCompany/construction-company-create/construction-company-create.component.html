@@ -1,0 +1,22 @@
+<div class="container">
+    <h1 class="mt-3">Create Construction Company</h1>
+
+    <form #form="ngForm" (ngSubmit)="createConstructionCompany()">
+
+        <div class="mt-2">
+            <div class="mt-3">
+                <label class="form-label" for="constructionName">Construction Company Name</label>
+                <br>
+                <input type="text" id="constructionName" class="form-control" name="constructionName"
+                    [(ngModel)]="constructionCompanyToCreate.name" placeholder="nameExample">
+            </div>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Create construction company</button>
+            </div>
+
+            <div class="mt-3">
+                <a class="btn btn-primary" [routerLink]="['/construction-companies/list']">Go back</a>
+            </div>
+        </div>
+    </form>
+</div>

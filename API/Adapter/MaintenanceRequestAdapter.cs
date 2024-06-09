@@ -104,7 +104,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -171,7 +171,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -191,7 +191,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -254,7 +254,7 @@ public class MaintenanceRequestAdapter : IMaintenanceRequestAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {

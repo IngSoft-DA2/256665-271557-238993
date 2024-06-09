@@ -1,0 +1,48 @@
+
+<div class="container" *ngIf="hasInvitation || hasValidRole; else invitationNotFound">
+
+    <h1 class="mt-3">Create Construction Company Admin Process</h1>
+        <div class="mt-2">
+            
+            <div class="mt-3">
+                <label class="form-label" for="constructionCompanyAdminFirstname">User Firstname</label>
+                <br>
+                <input type="text" id="constructionCompanyAdminFirstname" class="form-control" name="constructionCompanyAdminFirstname" [disabled]="hasInvitation"  [(ngModel)]="constructionCompanyAdminToCreate.firstname">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="constructionCompanyAdminLastname">User Lastname</label>
+                <br>
+                <input type="text" id="constructionCompanyAdminLastname" class="form-control" name="constructionCompanyAdminLastname" [disabled]="hasInvitation"  [(ngModel)]="constructionCompanyAdminToCreate.lastname">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="constructionCompanyAdminEmail">User Email</label>
+                <br>
+                <input type="text" id="constructionCompanyAdminEmail" class="form-control" name="constructionCompanyAdminEmail" [disabled]="hasInvitation"  [(ngModel)]="constructionCompanyAdminToCreate.email">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="constructionCompanyAdminPassword">User Password</label>
+                <br>
+                <input type="text" id="constructionCompanyAdminPassword" class="form-control" name="constructionCompanyAdminPassword" [(ngModel)]="constructionCompanyAdminToCreate.password">
+            </div>
+
+            <div class="mt-3">
+                <label class="form-label" for="invitationOfUser">Do you want to register as a construction company admin?</label>
+                <br>
+                <button type="submit" class="btn btn-success me-2" (click)="createConstructionCompanyAdmin()">Accept</button>
+                
+                <a type="submit" *ngIf="hasInvitation" class="btn btn-info" [routerLink]="['/invitations/guests/list']" [queryParams]="{ email: constructionCompanyAdminToCreate.email }">Go Back</a>
+                <a type="submit" *ngIf="hasValidRole" class="btn btn-info" [routerLink]="['/']">Go Back</a>
+            </div>
+        </div>
+</div>
+
+
+<ng-template #invitationNotFound>
+    <div class="alert alert-warning" role="alert">
+        <h4 style="text-align: center;">There are no invitations.</h4>
+    </div>
+</ng-template>
+

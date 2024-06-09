@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NodeReportMaintenanceRequestsByBuilding } from '../interfaces/node-report-maintenance-requests-by-building';
 import { ReportService } from '../services/report.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BuildingService } from '../../Building/Services/building.service';
-import { Building } from '../../Building/Interfaces/Building.model';
 import { ManagerService } from '../../manager/services/manager.service';
 import { NodeReportMaintenanceRequestsByFlat } from '../interfaces/node-report-maintenance-req-by-flat';
 import { LoginService } from '../../login/services/login.service';
 import { User } from '../../login/interfaces/user';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
+import { Building } from '../../building/interfaces/building';
+import { BuildingService } from '../../building/services/building.service';
 
 @Component({
   selector: 'app-report-maintenance-requests-by-flat',

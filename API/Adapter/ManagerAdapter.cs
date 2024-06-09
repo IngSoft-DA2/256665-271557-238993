@@ -42,8 +42,8 @@ public class ManagerAdapter : IManagerAdapter
                     Id = manager.Id,
                     Email = manager.Email,
                     Name = manager.Firstname,
-                    Buildings = manager.Buildings.Select(building => building.Id).ToList(),
-                    MaintenanceRequests = manager.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+                    BuildingsId = manager.Buildings.Select(building => building.Id).ToList(),
+                    MaintenanceRequestsId = manager.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
                 }
             ).ToList();
             return adapterResponse;
@@ -69,15 +69,15 @@ public class ManagerAdapter : IManagerAdapter
                 Id = managerFound.Id,
                 Email = managerFound.Email,
                 Name = managerFound.Firstname,
-                Buildings = managerFound.Buildings.Select(building => building.Id).ToList(),
-                MaintenanceRequests = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
+                BuildingsId = managerFound.Buildings.Select(building => building.Id).ToList(),
+                MaintenanceRequestsId = managerFound.Requests.Select(maintenanceRequest => maintenanceRequest.Id).ToList()
             };
 
             return adapterResponse;
         }
-        catch (ObjectNotFoundServiceException)
+        catch (ObjectNotFoundServiceException exceptionCaught)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException(exceptionCaught.Message);
         }
         catch (Exception exceptionCaught)
         {
@@ -97,7 +97,7 @@ public class ManagerAdapter : IManagerAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Manager was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -135,7 +135,7 @@ public class ManagerAdapter : IManagerAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Invitation was not found");
         }
         catch (ObjectErrorServiceException exceptionCaught)
         {

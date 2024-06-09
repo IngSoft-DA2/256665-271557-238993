@@ -13,11 +13,13 @@ public class FlatServiceTest
     #region Initialize
 
     private FlatService _flatService;
+    private Mock<IOwnerService> _ownerService;
 
     [TestInitialize]
     public void Initialize()
     {
-        _flatService = new FlatService();
+        _ownerService = new Mock<IOwnerService>(MockBehavior.Strict);
+        _flatService = new FlatService(_ownerService.Object);
     }
 
     #endregion
@@ -28,17 +30,24 @@ public class FlatServiceTest
     [TestMethod]
     public void CreateFlat_FlatIsCreated()
     {
+
+        Owner ownerToAssign = new Owner();
+        
         Flat flatToAdd = new Flat
         {
             Id = Guid.NewGuid(),
             Floor = 1,
             RoomNumber = "101",
-            OwnerAssigned = new Owner(),
+            OwnerAssigned = ownerToAssign,
             TotalRooms = 2,
             TotalBaths = 1,
             HasTerrace = true
         };
+
+        _ownerService.Setup(ownerService => ownerService.GetAllOwners()).Returns(new List<Owner> {ownerToAssign});
+        
         _flatService.CreateFlat(flatToAdd);
+        
     }
 
     #region Create Flat, Domain Validations
