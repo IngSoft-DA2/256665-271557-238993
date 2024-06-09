@@ -27,7 +27,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Buildings
 
         [HttpGet]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllBuildings([FromQuery] Guid userId)
         {
             return Ok(_buildingAdapter.GetAllBuildings(userId));
@@ -39,7 +39,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpGet]
         [Route("{buildingId:Guid}")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager)]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             return Ok(_buildingAdapter.GetBuildingById(buildingId));

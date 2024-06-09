@@ -13,6 +13,8 @@ namespace BuildingBuddy.API.Controllers
     [ApiController]
     public class ConstructionCompanyAdminController : ControllerBase
     {
+        #region Constructor And Dependency Injector
+
         private IConstructionCompanyAdminAdapter _constructionCompanyAdminAdapter;
 
         public ConstructionCompanyAdminController(IConstructionCompanyAdminAdapter constructionCompanyAdminAdapter)
@@ -20,12 +22,14 @@ namespace BuildingBuddy.API.Controllers
             _constructionCompanyAdminAdapter = constructionCompanyAdminAdapter;
         }
 
-        [HttpPost]
+        #endregion
 
+        #region Create Construction Company Admin
+
+        [HttpPost]
         public IActionResult CreateConstructionCompanyAdmin(
             [FromBody] CreateConstructionCompanyAdminRequest createRequest)
         {
-
             if (createRequest.UserRole != null && createRequest.UserRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
             {
                 var notAllowedResponse = new ObjectResult("Only ConstructionCompanyAdmin people are allowed.")
@@ -39,5 +43,7 @@ namespace BuildingBuddy.API.Controllers
                 _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, createRequest.UserRole);
             return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
         }
+
+        #endregion
     }
 }

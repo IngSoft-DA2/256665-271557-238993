@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyRequests;
@@ -8,6 +9,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
+    [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
     [Route("api/v2")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase
@@ -26,7 +28,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get all Construction Companies
         [HttpGet]
         [Route("construction-companies")]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+
         public IActionResult GetAllConstructionCompanies()
         {
             return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
@@ -61,7 +63,6 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPost]
         [Route("construction-companies")]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany(
             [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
@@ -75,7 +76,6 @@ namespace BuildingBuddy.API.Controllers
         #region Update Construction Company
 
         [HttpPut]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         [Route("construction-companies/{id:Guid}")]
         public IActionResult UpdateConstructionCompany([FromRoute] Guid id,[FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
         {
