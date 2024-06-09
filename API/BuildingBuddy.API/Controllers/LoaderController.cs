@@ -34,9 +34,10 @@ public class LoaderController : ControllerBase
     
     [HttpPost]
     [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
-    public IActionResult CreateAllBuildingsFromLoad([FromBody] CreateLoaderRequest createLoaderRequest)
+    public IActionResult CreateAllBuildingsFromLoad([FromBody] ImportBuildingFromFileRequest importBuildingFromFileRequest)
     {
-        List<CreateBuildingFromLoadResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);
+        Guid sessionStringOfUser = Guid.Parse(HttpContext.Request.Headers["Authorization"]);
+        List<CreateBuildingFromLoadResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(importBuildingFromFileRequest, sessionStringOfUser);
         return Ok(response);
     }
     

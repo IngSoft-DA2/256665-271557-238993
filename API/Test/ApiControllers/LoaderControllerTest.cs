@@ -2,6 +2,7 @@
 using IAdapter;
 using ILoaders;
 using IServiceLogic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebModel.Requests.BuildingRequests;
@@ -39,13 +40,30 @@ public class LoaderControllerTest
     [TestMethod]
     public void CreateAllBuildingsFromLoad_ReturnsOkResponse()
     {
-        CreateLoaderRequest createLoaderRequest = new CreateLoaderRequest();
-        List<CreateBuildingFromLoadResponse> createBuildingRequestList = new List<CreateBuildingFromLoadResponse>();
+        ImportBuildingFromFileRequest importBuildingFromFileRequest = new ImportBuildingFromFileRequest()
+        {
+            FilePath = "building/file/path.xml"
+        };
+        List<CreateBuildingFromLoadResponse> createBuildingRequestList = new List<CreateBuildingFromLoadResponse>()
+        {
+            new CreateBuildingFromLoadResponse()
+            {
+                Details = "building name",
+                idOfBuildingCreated = new Guid()
+            }
+        };
+        
+        _loaderController.ControllerContext = new ControllerContext()
+        {
+            HttpContext = new DefaultHttpContext()
+        };
 
-        _loaderAdapter.Setup(adapter => adapter.CreateAllBuildingsFromLoad(createLoaderRequest))
+        _loaderController.HttpContext.Request.Headers["Authorization"] = new Guid().ToString();
+        
+        _loaderAdapter.Setup(adapter => adapter.CreateAllBuildingsFromLoad(importBuildingFromFileRequest, It.IsAny<Guid>()))
             .Returns(createBuildingRequestList);
-
-        IActionResult controllerResponse = _loaderController.CreateAllBuildingsFromLoad(createLoaderRequest);
+        
+        IActionResult controllerResponse = _loaderController.CreateAllBuildingsFromLoad(importBuildingFromFileRequest);
         
         OkObjectResult okObjectResult = controllerResponse as OkObjectResult;
         Assert.IsNotNull(okObjectResult);
