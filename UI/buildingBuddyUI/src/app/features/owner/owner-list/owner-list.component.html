@@ -19,7 +19,8 @@
                 <td>{{owner.lastname}}</td>
                 <td>{{owner.email}}</td>
                 <td>
-                    <button class="btn btn-info" [routerLink]="['/owners', owner.id, 'update']"> Update Owner</button>
+                    <button class="btn btn-info" [routerLink]="['/owners', owner.id, 'update']"
+                        [queryParams]="{ buildingId: buildingId}"> Update Owner</button>
                 </td>
             </tr>
         </tbody>
