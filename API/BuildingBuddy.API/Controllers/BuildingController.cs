@@ -51,7 +51,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPut]
         [Route("{buildingId:Guid}")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult UpdateBuildingById([FromRoute] Guid buildingId,
             [FromBody] UpdateBuildingRequest buildingWithUpdates)
         {
@@ -64,7 +64,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Building
 
         [HttpPost]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
         {
             CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
@@ -76,7 +76,7 @@ namespace BuildingBuddy.API.Controllers
         #region Delete Building
 
         [HttpDelete]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         [Route("{buildingId:Guid}")]
         public IActionResult DeleteBuildingById([FromRoute] Guid buildingId)
         {

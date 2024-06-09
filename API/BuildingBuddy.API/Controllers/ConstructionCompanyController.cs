@@ -26,7 +26,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get all Construction Companies
         [HttpGet]
         [Route("construction-companies")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllConstructionCompanies()
         {
             return Ok(_constructionCompanyAdapter.GetAllConstructionCompanies());
@@ -61,7 +61,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPost]
         [Route("construction-companies")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompany(
             [FromBody] CreateConstructionCompanyRequest createConstructionCompanyRequest)
         {
@@ -75,8 +75,8 @@ namespace BuildingBuddy.API.Controllers
         #region Update Construction Company
 
         [HttpPut]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         [Route("construction-companies/{id:Guid}")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult UpdateConstructionCompany([FromRoute] Guid id,[FromBody] UpdateConstructionCompanyRequest updateConstructionCompanyRequest)
         {
             _constructionCompanyAdapter.UpdateConstructionCompany(id,updateConstructionCompanyRequest);
