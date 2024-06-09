@@ -18,7 +18,7 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
 
   invitationOfUser?: Invitation
   hasInvitation : boolean = false;
-  hasValidRole : boolean = true;
+  hasValidRole : boolean = false;
   invitationId: string = '';
   userLogged? : User;
 

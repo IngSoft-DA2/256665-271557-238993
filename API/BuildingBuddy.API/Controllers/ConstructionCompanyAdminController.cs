@@ -20,7 +20,6 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpPost]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompanyAdmin(
             [FromBody] CreateConstructionCompanyAdminRequest createRequest)
         {
