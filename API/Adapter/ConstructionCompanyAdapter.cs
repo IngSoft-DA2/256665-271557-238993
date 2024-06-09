@@ -77,6 +77,11 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
     }
 
+    
+
+    #endregion
+
+    #region Get construction company response by user creator id
     public GetConstructionCompanyResponse GetConstructionCompanyByUserCreatorId(Guid userId)
     {
         try
@@ -99,7 +104,16 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         {
             throw new ObjectNotFoundAdapterException("Construction company was not found");
         }
+        catch (UnknownServiceException exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
     }
+    
 
     #endregion
 

@@ -186,6 +186,17 @@ public class ConstructionCompanyAdapterTest
             _constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()));
         _constructionCompanyService.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ThrowsUnknownAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
+            .Throws(new UnknownServiceException("Specific derror"));
+
+        Assert.ThrowsException<UnknownAdapterException>(() =>
+            _constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()));
+        _constructionCompanyService.VerifyAll();
+    }
 
     #endregion
 
