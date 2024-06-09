@@ -290,6 +290,19 @@ public class SessionServiceTest
         Assert.ThrowsException<ObjectNotFoundServiceException>(() => _sessionService.GetUserIdBySessionString(It.IsAny<Guid>()));
         _sessionRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetUserIdBySessionString_UnknownExceptionIsThrown()
+    {
+        Session dummySession = new Session();
+        dummySession.UserId = _sampleUserGuid;
+
+        _sessionRepository.Setup(sessionRepository => sessionRepository.GetSessionBySessionString(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() => _sessionService.GetUserIdBySessionString(It.IsAny<Guid>()));
+        _sessionRepository.VerifyAll();
+    }
 
     #endregion
 }
