@@ -442,6 +442,9 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
+        
+        _managerService.Setup(ownerService => ownerService.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
@@ -452,6 +455,8 @@ public class BuildingAdapterTest
 
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
+        
     }
 
     #endregion
