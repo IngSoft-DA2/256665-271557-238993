@@ -18,43 +18,40 @@ export class BuildingListComponent {
   buildings: Building[] = [];
   hasManager: boolean = false;
   userLogged?: User = undefined;
-  constructionCompanyOfUser : ConstructionCompany | undefined = undefined;
-  hasConstructionCompany : boolean = true;
+  constructionCompanyOfUser: ConstructionCompany | undefined = undefined;
+  hasConstructionCompany: boolean = true;
 
-  constructor(private buildingService: BuildingService,private constructionCompanyService : ConstructionCompanyService, private loginService : LoginService,private router: Router) {
+  constructor(private buildingService: BuildingService, private constructionCompanyService: ConstructionCompanyService, private loginService: LoginService, private router: Router) {
 
-     this.loginService.getUser()
-     .subscribe({
-      next : (Response) => {
-        this.userLogged = Response
-        if(this.userLogged)
-        this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
-        .subscribe({
-          next : (Response) => {
-            this.constructionCompanyOfUser = Response;
+    this.loginService.getUser()
+      .subscribe({
+        next: (Response) => {
+          this.userLogged = Response
+          if (this.userLogged) {
+            this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
+              .subscribe({
+                next: (Response) => {
+                  this.constructionCompanyOfUser = Response;
+                  this.hasConstructionCompany = this.constructionCompanyOfUser !== undefined;
+                }
+              });
+
+            this.buildingService.getAllBuildings(this.userLogged.userId)
+              .subscribe({
+                next: (Response) => {
+                  this.buildings = Response
+                  console.log(this.buildings)
+                }
+              })
           }
-        })
-        if(this.constructionCompanyOfUser === undefined)
-          {
-            this.hasConstructionCompany = false;
+          else {
+            alert("User was not found, redirecting")
+            this.router.navigateByUrl('/login');
           }
-      }
-     })
-    if (this.userLogged !== undefined) {
-      this.buildingService.getAllBuildings(this.userLogged.userId)
-        .subscribe({
-          next: (Response) => {
-            this.buildings = Response
-            console.log(this.buildings)
-          }
-        })
+        }
+      });
     }
-    else {
-      alert("User was not found, redirecting")
-      this.router.navigateByUrl('/login');
-    }
-
-  }
+    
 
   checkIfItHasManager(manager?: Manager): string {
     return manager ? manager.name : 'No manager at the moment';
