@@ -12,12 +12,16 @@ namespace BuildingBuddy.API.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        #region Constructor and Dependency Injector
+
         private ICategoryAdapter _categoryAdapter;
 
         public CategoryController(ICategoryAdapter categoryAdapter)
         {
             _categoryAdapter = categoryAdapter;
         }
+
+        #endregion
 
         #region Get All Categories
 
@@ -29,7 +33,6 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-
 
         #region Get Category By Id
 
