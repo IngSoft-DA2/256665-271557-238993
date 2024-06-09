@@ -70,7 +70,13 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
 
     public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid idOfUserCreator)
     {
-        return _dbContext.Set<ConstructionCompany>()
-            .FirstOrDefault(constructionCompany => constructionCompany.UserCreatorId == idOfUserCreator);
+        try
+        {
+            return _dbContext.Set<ConstructionCompany>().FirstOrDefault(constructionCompany => constructionCompany.UserCreatorId == idOfUserCreator);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownRepositoryException(exceptionCaught.Message);
+        }
     }
 }
