@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { Category } from '../interfaces/category';
+import { Component, Input } from "@angular/core";
+import { Category } from "../interfaces/category";
+
 
 @Component({
   selector: 'app-category-tree',

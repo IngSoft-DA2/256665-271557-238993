@@ -1,4 +1,4 @@
-import { Flat } from "../../Building/Interfaces/Flat.model";
+import { Flat } from "../../flat/interfaces/flat";
 import { StatusEnum } from "../../invitation/interfaces/enums/status-enum";
 import { RequestHandler } from "../../requestHandler/interfaces/RequestHandler.model";
 import { MaintenanceStatusEnum } from "./enums/maintenance-status-enum";

@@ -41,12 +41,10 @@
                                 <hr class="dropdown-divider">
                             </li>
 
-                            <li><a class="dropdown-item" [routerLink]="['reports/list']">Reports Section</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['reports']">Reports Section</a></li>
                         </ul>
                     </li>
                 </ng-container>
-
-
 
                 <ng-container *ngIf="userConnected.userRole === SystemUserRoleEnumValues.ConstructionCompanyAdmin">
 
@@ -76,7 +74,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" [routerLink]="['reports/list']">Reports Section</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['reports']">Reports Section</a></li>
                         </ul>
                     </li>
 
@@ -134,9 +132,6 @@
                         </ul>
                     </li>
                 </ng-container>
-
-
-
 
             </ul>
 

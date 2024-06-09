@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { InvitationService } from '../../../invitation/services/invitation.service';
-import { ManagerService } from '../../services/manager.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Invitation } from '../../../invitation/interfaces/invitation';
-import { ManagerCreateRequest } from '../../interfaces/manager-create-request';
-import { HttpParams } from '@angular/common/http';
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Invitation } from "../../../invitation/interfaces/invitation";
+import { InvitationService } from "../../../invitation/services/invitation.service";
+import { ManagerCreateRequest } from "../../interfaces/manager-create-request";
+import { ManagerService } from "../../services/manager.service";
+
 
 @Component({
   selector: 'app-manager-create',
@@ -60,7 +60,7 @@ export class ManagerCreateComponent
       .subscribe({
         next: () => {
           alert("You are now a manager");
-          this.router.navigateByUrl('invitations/list');
+          this.router.navigateByUrl('/home');
         },
         error(errorMessage)
         {

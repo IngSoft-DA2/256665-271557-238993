@@ -33,39 +33,49 @@ public class SessionService : ISessionService
 
     #endregion
 
+    #region Load Users
+
+    private List<SystemUser> LoadUsers()
+    {
+        IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
+        IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
+        IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
+        IEnumerable<ConstructionCompanyAdmin> constructionCompanyAdmins =
+            _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
+
+        List<SystemUser> users = new List<SystemUser>();
+        foreach (var requestHandler in requestHandlers)
+        {
+            users.Add(requestHandler);
+        }
+
+        foreach (var manager in managers)
+        {
+            users.Add(manager);
+        }
+
+        foreach (var administrator in administrators)
+        {
+            users.Add(administrator);
+        }
+
+        foreach (var constructionCompanyAdmin in constructionCompanyAdmins)
+        {
+            users.Add(constructionCompanyAdmin);
+        }
+
+        return users;
+    }
+
+    #endregion
+
     #region Authenticate
 
     public Session Authenticate(string email, string password)
     {
         try
         {
-            IEnumerable<RequestHandler> requestHandlers = _requestHandlerRepository.GetAllRequestHandlers();
-            IEnumerable<Manager> managers = _managerRepository.GetAllManagers();
-            IEnumerable<Administrator> administrators = _administratorRepository.GetAllAdministrators();
-            IEnumerable<ConstructionCompanyAdmin> constructionCompanyAdmins = _constructionCompanyAdminRepository.GetAllConstructionCompanyAdmins();
-            
-
-            //cast entities to system user type
-            List<SystemUser> users = new List<SystemUser>();
-            foreach (var requestHandler in requestHandlers)
-            {
-                users.Add(requestHandler);
-            }
-
-            foreach (var manager in managers)
-            {
-                users.Add(manager);
-            }
-
-            foreach (var administrator in administrators)
-            {
-                users.Add(administrator);
-            }  
-            foreach (var constructionCompanyAdmin in constructionCompanyAdmins)
-            {
-                users.Add(constructionCompanyAdmin);
-            }
-            //find user with matching email and password
+            List<SystemUser> users = LoadUsers();
             SystemUser user = users.FirstOrDefault(u => u.Email == email && u.Password == password);
 
             if (user is null) throw new InvalidCredentialException("Invalid credentials");
@@ -83,6 +93,21 @@ public class SessionService : ISessionService
         catch (InvalidCredentialException exceptionCaught)
         {
             throw new InvalidCredentialException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    public bool IsUserAuthenticated(string email)
+    {
+        try
+        {
+            var users = LoadUsers();
+            SystemUser user = users.FirstOrDefault(u => u.Email == email);
+
+            return user != null;
         }
         catch (Exception exceptionCaught)
         {
@@ -117,7 +142,7 @@ public class SessionService : ISessionService
     }
 
     #endregion
-    
+
     #region Get user role by session string
 
     public SystemUserRoleEnum GetUserRoleBySessionString(Guid sessionStringOfUser)

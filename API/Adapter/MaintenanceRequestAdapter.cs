@@ -106,7 +106,7 @@ public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -173,7 +173,7 @@ public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -193,7 +193,7 @@ public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {
@@ -279,7 +279,7 @@ public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Maintenance request was not found");
         }
         catch (Exception exceptionCaught)
         {

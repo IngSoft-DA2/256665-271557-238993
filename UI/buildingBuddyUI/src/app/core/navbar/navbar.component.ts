@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Route, Router } from '@angular/router';
-import { LoginService } from '../../features/login/services/login.service';
-import { User } from '../../features/login/interfaces/user';
-import { SystemUserRoleEnum } from '../../features/invitation/interfaces/enums/system-user-role-enum';
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { SystemUserRoleEnum } from "../../features/invitation/interfaces/enums/system-user-role-enum";
+import { User } from "../../features/login/interfaces/user";
+import { LoginService } from "../../features/login/services/login.service";
+
 
 @Component({
   selector: 'app-navbar',

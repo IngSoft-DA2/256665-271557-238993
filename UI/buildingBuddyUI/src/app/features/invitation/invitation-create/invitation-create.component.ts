@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { InvitationService } from '../services/invitation.service';
-import { SystemUserRoleEnum } from '../interfaces/enums/system-user-role-enum';
-import { invitationCreateRequest } from '../interfaces/invitation-create';
-import { StatusEnum } from '../interfaces/enums/status-enum';
-import { Router } from '@angular/router';
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { SystemUserRoleEnum } from "../interfaces/enums/system-user-role-enum";
+import { invitationCreateRequest } from "../interfaces/invitation-create";
+import { InvitationService } from "../services/invitation.service";
+
 
 @Component({
   selector: 'app-invitation-create',
@@ -35,7 +35,6 @@ export class InvitationCreateComponent {
     if (this.selectedRole != "Select a role") {
 
       this.invitationToCreate.role = Number(this.selectedRole);
-      console.log(this.invitationToCreate);
       this.invitationService.createInvitation(this.invitationToCreate)
         .subscribe({
           next: () => {

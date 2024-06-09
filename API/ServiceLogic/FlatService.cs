@@ -7,16 +7,18 @@ namespace ServiceLogic;
 
 public class FlatService : IFlatService
 {
-    public FlatService()
+    private readonly IOwnerService _ownerService;
+    public FlatService(IOwnerService ownerService)
     {
+        _ownerService = ownerService;
     }
 
     public void CreateFlat(Flat flatToAdd)
     {
         try
         {
-            ValidateOwnerAssigned(flatToAdd);
             flatToAdd.FlatValidator();
+            ValidateOwnerAssigned(flatToAdd);
         }
         catch (InvalidFlatException exceptionCaught)
         {
@@ -28,11 +30,15 @@ public class FlatService : IFlatService
         }
     }
 
-    private static void ValidateOwnerAssigned(Flat flatToAdd)
+    private void ValidateOwnerAssigned(Flat flatToAdd)
     {
-        if (flatToAdd.OwnerAssigned is null)
+
+        IEnumerable<Owner> ownersInDb = _ownerService.GetAllOwners();
+        bool ownerExists = ownersInDb.Any(owner => owner.Id == flatToAdd.OwnerAssigned.Id);
+        
+        if (!ownerExists)
         {
-            throw new ObjectErrorServiceException("Owner must be assigned");
+             throw new ObjectErrorServiceException("Owner is not authenticated to let him be assigned to the flat.");
         }
     }
 }

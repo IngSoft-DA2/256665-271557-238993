@@ -1,4 +1,4 @@
- using Adapter.CustomExceptions;
+using Adapter.CustomExceptions;
 using BuildingBuddy.API.Filters;
 using Domain.Enums;
 using IAdapter;
@@ -27,7 +27,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Buildings
 
         [HttpGet]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)] // añadir al admin comun sino mal
+        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllBuildings([FromQuery] Guid userId)
         {
             return Ok(_buildingAdapter.GetAllBuildings(userId));

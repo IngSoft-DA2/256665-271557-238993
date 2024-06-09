@@ -1,11 +1,12 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
-import { RequestHandlerService } from '../../requestHandler/services/request-handler.service';
-import { RequestHandler } from '../../requestHandler/interfaces/RequestHandler.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MaintenanceRequestService } from '../Services/maintenance-request.service';
-import { MaintenanceRequest } from '../Interfaces/maintenanceRequest.model';
-import { CategoryService } from '../../category/services/category.service';
-import { Category } from '../../category/interfaces/category';
+import { Component, OnInit, AfterContentInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Category } from "../../category/interfaces/category";
+import { CategoryService } from "../../category/services/category.service";
+import { RequestHandler } from "../../requestHandler/interfaces/RequestHandler.model";
+import { RequestHandlerService } from "../../requestHandler/services/request-handler.service";
+import { MaintenanceRequest } from "../Interfaces/maintenanceRequest.model";
+import { MaintenanceRequestService } from "../Services/maintenance-request.service";
+
 
 @Component({
   selector: 'app-assign-maintenance-request',

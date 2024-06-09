@@ -38,8 +38,8 @@ public class ManagerControllerTest
                 Id = Guid.NewGuid(),
                 Name = "Michael Kent",
                 Email = "michael@gmail.com",
-                Buildings = new List<Guid>(),
-                MaintenanceRequests = new List<Guid>()
+                BuildingsId = new List<Guid>(),
+                MaintenanceRequestsId = new List<Guid>()
             }
         };
 
@@ -124,8 +124,8 @@ public class ManagerControllerTest
             Id = Guid.NewGuid(),
             Name = "Michael Kent",
             Email = "michael@gmail.com!",
-            Buildings = new List<Guid>(),
-            MaintenanceRequests = new List<Guid>()
+            BuildingsId = new List<Guid>(),
+            MaintenanceRequestsId = new List<Guid>()
         };
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(dummyResponse);

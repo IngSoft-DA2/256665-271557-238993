@@ -69,13 +69,51 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction company was not found");
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownAdapterException(exceptionCaught.Message);
         }
     }
+
+    
+
+    #endregion
+
+    #region Get construction company response by user creator id
+    public GetConstructionCompanyResponse GetConstructionCompanyByUserCreatorId(Guid userId)
+    {
+        try
+        {
+            ConstructionCompany constructionCompanyFound =
+                _constructionCompanyService.GetConstructionCompanyByUserCreatorId(userId);
+
+
+            GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
+            {
+                Id = constructionCompanyFound.Id,
+                Name = constructionCompanyFound.Name,
+                UserCreatorId = constructionCompanyFound.UserCreatorId,
+                BuildingsId = constructionCompanyFound.Buildings.Select(building => building.Id).ToList()
+            };
+
+            return constructionCompanyToReturn;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException("Construction company was not found");
+        }
+        catch (UnknownServiceException exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownAdapterException(exceptionCaught.Message);
+        }
+    }
+    
 
     #endregion
 
@@ -90,7 +128,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
             {
                 Id = Guid.NewGuid(),
                 Name = createConstructionCompanyRequest.Name,
-                UserCreatorId = createConstructionCompanyRequest.UserCreator
+                UserCreatorId = createConstructionCompanyRequest.UserCreatorId
             };
 
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);
@@ -132,7 +170,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
         catch (ObjectNotFoundServiceException)
         {
-            throw new ObjectNotFoundAdapterException();
+            throw new ObjectNotFoundAdapterException("Construction company was not found");
         }
         catch (Exception exceptionCaught)
         {

@@ -33,6 +33,8 @@ public static class ServiceExtension
         services.AddScoped<IMaintenanceRequestRepository, MaintenanceRequestRepository>();
         services.AddScoped<IBuildingAdapter, BuildingAdapter>();
         services.AddScoped<IBuildingService, BuildingService>();
+        services.AddScoped<IFlatAdapter, FlatAdapter>();
+        services.AddScoped<IFlatService, FlatService>();
         services.AddScoped<IBuildingRepository, BuildingRepository>();
         services.AddScoped<IAdministratorAdapter, AdministratorAdapter>();
         services.AddScoped<IAdministratorService, AdministratorService>();
