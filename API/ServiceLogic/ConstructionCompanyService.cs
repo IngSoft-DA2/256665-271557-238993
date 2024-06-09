@@ -156,8 +156,13 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
 
     }
-    
-    
+
+    public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid ifOfUserCreator)
+    {
+        throw new NotImplementedException();
+    }
+
+
     private void CheckIfNameIsAlreadyUsed(ConstructionCompany constructionCompanyToCreate)
     {
         IEnumerable<ConstructionCompany> constructionCompaniesInDb = GetAllConstructionCompanies();

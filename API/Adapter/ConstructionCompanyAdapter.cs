@@ -77,9 +77,21 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
     }
 
-    public GetConstructionCompanyResponse GetConstructionCompanyByUserCreator(Guid userId)
+    public GetConstructionCompanyResponse GetConstructionCompanyByUserCreatorId(Guid userId)
     {
-        throw new NotImplementedException();
+        ConstructionCompany constructionCompanyFound =
+            _constructionCompanyService.GetConstructionCompanyByUserCreatorId(userId);
+
+
+        GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
+        {
+            Id = constructionCompanyFound.Id,
+            Name = constructionCompanyFound.Name,
+            UserCreatorId = constructionCompanyFound.UserCreatorId,
+            BuildingsId = constructionCompanyFound.Buildings.Select(building => building.Id).ToList()
+        };
+        
+        return constructionCompanyToReturn;
     }
 
     #endregion
@@ -146,4 +158,5 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
     }
 
     #endregion
+    
 }

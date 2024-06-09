@@ -54,7 +54,7 @@ namespace BuildingBuddy.API.Controllers
         [Route("user-id/{userId:Guid}/construction-companies")]
         public IActionResult GetConstructionCompanyByUserCreatorId([FromRoute] Guid userId)
         {
-            return Ok(_constructionCompanyAdapter.GetConstructionCompanyByUserCreator(userId));
+            return Ok(_constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(userId));
         }
 
         #endregion

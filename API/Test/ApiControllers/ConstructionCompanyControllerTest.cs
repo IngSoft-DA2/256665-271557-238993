@@ -172,7 +172,7 @@ public class ConstructionCompanyControllerTest
 
         OkObjectResult expectedControllerResponse = new OkObjectResult(expectedConstructionCompany);
         
-        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanyByUserCreator(It.IsAny<Guid>())).Returns(expectedConstructionCompany);
+        _constructionCompanyAdapter.Setup(adapter => adapter.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>())).Returns(expectedConstructionCompany);
         
         IActionResult controllerResponse = _constructionCompanyController.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>());
 

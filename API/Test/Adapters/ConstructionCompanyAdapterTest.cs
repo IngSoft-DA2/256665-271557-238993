@@ -143,6 +143,40 @@ public class ConstructionCompanyAdapterTest
 
     #endregion
 
+    #region Get construction company by user creator id
+
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ReturnsConstructionCompanyResponses()
+    {
+        Guid userCreatorIdDummy = Guid.NewGuid();
+
+        ConstructionCompany expectedServiceResponse = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Company 1",
+            UserCreatorId = userCreatorIdDummy,
+            Buildings = new List<Building>()
+        };
+        
+        GetConstructionCompanyResponse expectedAdapterResponse =
+            new GetConstructionCompanyResponse
+            {
+                Id = expectedServiceResponse.Id,
+                Name = expectedServiceResponse.Name,
+                UserCreatorId = expectedServiceResponse.UserCreatorId,
+                BuildingsId = expectedServiceResponse.Buildings.Select(building => building.Id).ToList(),
+            };
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
+            .Returns(expectedServiceResponse);
+
+        GetConstructionCompanyResponse adapterResponse = _constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(userCreatorIdDummy);
+        _constructionCompanyService.VerifyAll();
+        
+        Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
+
+    #endregion
+
     #region Create construction company
 
     [TestMethod]
@@ -204,7 +238,7 @@ public class ConstructionCompanyAdapterTest
         {
             Name = "Construction Company 1"
         };
-        
+
         _constructionCompanyService.Setup(constructionCompanyService =>
             constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()));
 
@@ -214,7 +248,7 @@ public class ConstructionCompanyAdapterTest
         _constructionCompanyService.Verify(constructionCompanyService => constructionCompanyService
             .UpdateConstructionCompany(It.IsAny<ConstructionCompany>()), Times.Once);
     }
-    
+
     [TestMethod]
     public void UpdateConstructionCompanyById_ThrowsUnknownAdapterException()
     {
@@ -223,18 +257,18 @@ public class ConstructionCompanyAdapterTest
         {
             Name = "Construction Company 1"
         };
-        
+
         _constructionCompanyService.Setup(constructionCompanyService =>
-            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+                constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
             .Throws(new Exception("Internal server error"));
 
         Assert.ThrowsException<UnknownAdapterException>(() =>
             _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
                 updateConstructionCompanyRequestDummy));
-        
+
         _constructionCompanyService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void UpdateConstructionCompanyById_ThrowsObjectNotFoundAdapterException()
     {
@@ -243,18 +277,18 @@ public class ConstructionCompanyAdapterTest
         {
             Name = "Construction Company 1"
         };
-        
+
         _constructionCompanyService.Setup(constructionCompanyService =>
-            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+                constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
             .Throws(new ObjectNotFoundServiceException());
 
         Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
             _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
                 updateConstructionCompanyRequestDummy));
-        
+
         _constructionCompanyService.VerifyAll();
     }
-    
+
     [TestMethod]
     public void UpdateConstructionCompanyById_ThrowsObjectErrorAdapterException()
     {
@@ -263,15 +297,15 @@ public class ConstructionCompanyAdapterTest
         {
             Name = ""
         };
-        
+
         _constructionCompanyService.Setup(constructionCompanyService =>
-            constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
+                constructionCompanyService.UpdateConstructionCompany(It.IsAny<ConstructionCompany>()))
             .Throws(new ObjectErrorServiceException("Specific construction company error"));
 
         Assert.ThrowsException<ObjectErrorAdapterException>(() =>
             _constructionCompanyAdapter.UpdateConstructionCompany(constructionCompanyIdDummy,
                 updateConstructionCompanyRequestDummy));
-        
+
         _constructionCompanyService.VerifyAll();
     }
 
