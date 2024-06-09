@@ -157,7 +157,7 @@ public class ConstructionCompanyAdapterTest
             UserCreatorId = userCreatorIdDummy,
             Buildings = new List<Building>()
         };
-        
+
         GetConstructionCompanyResponse expectedAdapterResponse =
             new GetConstructionCompanyResponse
             {
@@ -169,10 +169,22 @@ public class ConstructionCompanyAdapterTest
         _constructionCompanyService.Setup(service => service.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
             .Returns(expectedServiceResponse);
 
-        GetConstructionCompanyResponse adapterResponse = _constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(userCreatorIdDummy);
+        GetConstructionCompanyResponse adapterResponse =
+            _constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(userCreatorIdDummy);
         _constructionCompanyService.VerifyAll();
-        
+
         Assert.IsTrue(expectedAdapterResponse.Equals(adapterResponse));
+    }
+
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ThrowsObjectNotFoundAdapterException()
+    {
+        _constructionCompanyService.Setup(service => service.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
+            .Throws(new ObjectNotFoundServiceException());
+
+        Assert.ThrowsException<ObjectNotFoundAdapterException>(() =>
+            _constructionCompanyAdapter.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()));
+        _constructionCompanyService.VerifyAll();
     }
 
     #endregion

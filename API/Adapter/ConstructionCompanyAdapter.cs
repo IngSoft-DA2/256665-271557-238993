@@ -79,19 +79,26 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
 
     public GetConstructionCompanyResponse GetConstructionCompanyByUserCreatorId(Guid userId)
     {
-        ConstructionCompany constructionCompanyFound =
-            _constructionCompanyService.GetConstructionCompanyByUserCreatorId(userId);
-
-
-        GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
+        try
         {
-            Id = constructionCompanyFound.Id,
-            Name = constructionCompanyFound.Name,
-            UserCreatorId = constructionCompanyFound.UserCreatorId,
-            BuildingsId = constructionCompanyFound.Buildings.Select(building => building.Id).ToList()
-        };
-        
-        return constructionCompanyToReturn;
+            ConstructionCompany constructionCompanyFound =
+                _constructionCompanyService.GetConstructionCompanyByUserCreatorId(userId);
+
+
+            GetConstructionCompanyResponse constructionCompanyToReturn = new GetConstructionCompanyResponse
+            {
+                Id = constructionCompanyFound.Id,
+                Name = constructionCompanyFound.Name,
+                UserCreatorId = constructionCompanyFound.UserCreatorId,
+                BuildingsId = constructionCompanyFound.Buildings.Select(building => building.Id).ToList()
+            };
+
+            return constructionCompanyToReturn;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundAdapterException("Construction company was not found");
+        }
     }
 
     #endregion
@@ -158,5 +165,4 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
     }
 
     #endregion
-    
 }
