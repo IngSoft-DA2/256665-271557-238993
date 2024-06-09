@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.OwnerRequests;
@@ -7,7 +8,7 @@ using WebModel.Responses.OwnerResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(SystemUserRoleEnum.Manager)] 
+   
     [Route("api/v2/owners")]
     [ApiController]
     public class OwnerController : ControllerBase
@@ -26,6 +27,7 @@ namespace BuildingBuddy.API.Controllers
         #region GetAllOwners
 
         [HttpGet]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)] 
         public IActionResult GetAllOwners()
         {
             return Ok(_ownerAdapter.GetAllOwners());
@@ -34,8 +36,10 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region CreateOwner
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)] 
 
         [HttpPost]
+        
         public IActionResult CreateOwner([FromBody] CreateOwnerRequest createOwnerRequest)
         {
             CreateOwnerResponse response = _ownerAdapter.CreateOwner(createOwnerRequest);
@@ -47,6 +51,7 @@ namespace BuildingBuddy.API.Controllers
         #region UpdateOwner
 
         [HttpPut("{id:Guid}")]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)] 
         public IActionResult UpdateOwnerById([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
         {
             _ownerAdapter.UpdateOwnerById(id, updateOwnerRequest);
@@ -59,6 +64,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpGet]
         [Route("{ownerId:Guid}")]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager)] 
         public IActionResult GetOwnerById(Guid ownerId)
         {
             return Ok(_ownerAdapter.GetOwnerById(ownerId));

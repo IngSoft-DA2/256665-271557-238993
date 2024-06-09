@@ -32,7 +32,7 @@ namespace BuildingBuddy.API.Controllers
         }
 
         #endregion
-    
+
         #region GetMaintenanceRequestsByRequestHandler
 
         [AuthenticationFilter(SystemUserRoleEnum.Manager)]
@@ -48,9 +48,9 @@ namespace BuildingBuddy.API.Controllers
 
         #region GetMaintenanceRequestsByCategory
 
+        [HttpGet]
         [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("categories/maintenance-requests/reports")]
-        [HttpGet]
         public IActionResult GetMaintenanceRequestsByCategory([FromQuery] Guid buildingId, [FromQuery] Guid categoryId)
         {
             return Ok(_reportAdapter.GetMaintenanceReportByCategory(buildingId, categoryId));
@@ -58,9 +58,11 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
-        [Route("flats/maintenance-requests/reports")]
+        #region GetFlatRequestsByBuildingReport
+
         [HttpGet]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [Route("flats/maintenance-requests/reports")]
         public IActionResult GetFlatRequestsByBuildingReport([FromQuery] Guid buildingId)
         {
             try
@@ -72,5 +74,7 @@ namespace BuildingBuddy.API.Controllers
                 return BadRequest(exceptionCaught.Message);
             }
         }
+
+        #endregion
     }
 }
