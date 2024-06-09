@@ -22,8 +22,6 @@ export class ConstructionCompanyListComponent implements OnInit {
     .subscribe({
       next: (Response) => {
         this.userLogged = Response;
-        alert("hola");
-        console.log("El usuario se loggea?"+ this.userLogged?.email);
       },
       error: () => {
         alert("User was not found, redirecting");
@@ -32,9 +30,7 @@ export class ConstructionCompanyListComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    console.log("Primer console log" + this.userLogged);
     if (this.userLogged !== undefined) {
-      alert("PASE HASTA ACA")
       this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
         .subscribe({
           next: (Response) => {

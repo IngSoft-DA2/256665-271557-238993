@@ -4,7 +4,6 @@
         <thead>
             <br />
             <tr>
-                <th>Construction Company Id </th>
                 <th>Construction Company Name </th>
                 <th>Update Construction Company</th>
                 <th>View Construction Company Buildings</th>
@@ -13,7 +12,6 @@
         </thead>
         <tbody>
             <tr>
-                <td>{{constructionCompanyOfUser.id}}</td>
                 <td>{{constructionCompanyOfUser.name}}</td>
                 <td>
                     <a class="btn btn-info btn-sm button" [routerLink]="['/construction-companies', constructionCompanyOfUser.id, 'update']"> Update Company </a>

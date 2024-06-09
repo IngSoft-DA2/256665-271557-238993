@@ -30,7 +30,6 @@ export class ConstructionCompanyService {
 
   getConstructionCompanyByUserCreatorId(userId: string) 
   {
-    alert("Llegue aca");
     return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/user-id/${userId}/construction-companies`);
   }  
 
