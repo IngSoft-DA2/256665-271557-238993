@@ -9,11 +9,13 @@ import { HttpParams } from '@angular/common/http';
 import { MaintenanceStatusEnum } from '../Interfaces/enums/maintenance-status-enum';
 import { CategoryService } from '../../category/services/category.service';
 import { Category } from '../../category/interfaces/category';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-maintenance-requests-list',
   templateUrl: './maintenance-requests-list.component.html',
-  styleUrl: './maintenance-requests-list.component.css'
+  styleUrl: './maintenance-requests-list.component.css',
+  providers: [DatePipe]
 })
 export class MaintenanceRequestsListComponent implements OnInit{
 
@@ -25,7 +27,8 @@ export class MaintenanceRequestsListComponent implements OnInit{
   categoryId: string = "default";
   categories: Category[] = [];
 
-  constructor(private router: Router, private maintenanceRequest: MaintenanceRequestService, private loginService: LoginService, private categoryService: CategoryService) { 
+  constructor(private router: Router, private maintenanceRequest: MaintenanceRequestService, private loginService: LoginService, private categoryService: CategoryService
+    , private datePipe : DatePipe){ 
     loginService.getUser().subscribe({
       next: (response) => {
         this.userConnected = response;
@@ -59,10 +62,17 @@ export class MaintenanceRequestsListComponent implements OnInit{
   }
 
   getMaintenanceRequestClosedDate(maintenanceRequest: MaintenanceRequest): string {
-    if(maintenanceRequest.closedDate){
-      return maintenanceRequest.closedDate.toString();
+    if (maintenanceRequest.closedDate) {
+      return this.datePipe.transform(maintenanceRequest.closedDate, 'medium') ?? 'Invalid Date';
     } 
-    return "Not closed  yet";
+    return "Not closed yet";
+  }
+
+  getMaintenanceRequestOpenedDate(maintenanceRequest: MaintenanceRequest): string {
+    if (maintenanceRequest.openedDate) {
+      return this.datePipe.transform(maintenanceRequest.openedDate, 'medium') ?? 'Invalid Date';
+    } 
+    return "Not opened yet";
   }
 
   getRequestHandlerName(maintenanceRequest: MaintenanceRequest): string {
@@ -128,3 +138,4 @@ export class MaintenanceRequestsListComponent implements OnInit{
   }
   
 }
+

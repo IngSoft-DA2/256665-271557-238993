@@ -9,11 +9,13 @@ import { MaintenanceStatusEnum } from '../Interfaces/enums/maintenance-status-en
 import { Category } from '../../category/interfaces/category';
 import { CategoryService } from '../../category/services/category.service';
 import { HttpParams } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-maintenance-request-list-by-req-handler',
   templateUrl: './maintenance-request-list-by-req-handler.component.html',
-  styleUrl: './maintenance-request-list-by-req-handler.component.css'
+  styleUrl: './maintenance-request-list-by-req-handler.component.css',
+  providers: [DatePipe]
 })
 export class MaintenanceRequestListByReqHandlerComponent implements OnInit{
   maintenanceRequests: MaintenanceRequest[] = [];
@@ -23,8 +25,10 @@ export class MaintenanceRequestListByReqHandlerComponent implements OnInit{
   maintenanceRequestId: string = "";
   categoryId: string = "default";
   categories: Category[] = [];
+  SystemMaintenanceRequestStatus = MaintenanceStatusEnum;
 
-  constructor(private router: Router, private maintenanceRequest: MaintenanceRequestService, private loginService: LoginService, private categoryService: CategoryService) { 
+  constructor(private router: Router, private maintenanceRequest: MaintenanceRequestService, private loginService: LoginService, private categoryService: CategoryService
+    , private datePipe : DatePipe) { 
     loginService.getUser().subscribe({
       next: (response) => {
         this.userConnected = response;
@@ -55,13 +59,6 @@ export class MaintenanceRequestListByReqHandlerComponent implements OnInit{
           console.error("Error al cargar las solicitudes de mantenimiento:", error);
         }
       });
-  }
-
-  getMaintenanceRequestClosedDate(maintenanceRequest: MaintenanceRequest): string {
-    if(maintenanceRequest.closedDate){
-      return maintenanceRequest.closedDate.toString();
-    } 
-    return "Not closed  yet";
   }
 
   getRequestHandlerName(maintenanceRequest: MaintenanceRequest): string {
@@ -111,5 +108,17 @@ export class MaintenanceRequestListByReqHandlerComponent implements OnInit{
     this.router.navigateByUrl(`maintenance-requests/complete?${queryParams}`);
   }
 
+  getMaintenanceRequestClosedDate(maintenanceRequest: MaintenanceRequest): string {
+    if (maintenanceRequest.closedDate) {
+      return this.datePipe.transform(maintenanceRequest.closedDate, 'medium') ?? 'Invalid Date';
+    } 
+    return "Not closed yet";
+  }
 
+  getMaintenanceRequestOpenedDate(maintenanceRequest: MaintenanceRequest): string {
+    if (maintenanceRequest.openedDate) {
+      return this.datePipe.transform(maintenanceRequest.openedDate, 'medium') ?? 'Invalid Date';
+    } 
+    return "Not opened yet";
+  }
 }
