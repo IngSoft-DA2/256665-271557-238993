@@ -215,12 +215,35 @@ public IEnumerable<GetMaintenanceRequestResponse> GetAllMaintenanceRequests(Guid
                 {
                     Id = maintenanceRequest.Id,
                     Description = maintenanceRequest.Description,
-                    FlatId = maintenanceRequest.FlatId,
                     RequestHandlerId = maintenanceRequest.RequestHandlerId,
                     Category = maintenanceRequest.CategoryId,
                     RequestStatus = (StatusEnumMaintenanceResponse)maintenanceRequest.RequestStatus,
                     OpenedDate = maintenanceRequest.OpenedDate,
                     ClosedDate = maintenanceRequest.ClosedDate,
+                    RequestHandler = maintenanceRequest.RequestHandler != null ? new GetRequestHandlerResponse
+                    {
+                        Id = maintenanceRequest.RequestHandler.Id,
+                        Name = maintenanceRequest.RequestHandler.Firstname,
+                        LastName = maintenanceRequest.RequestHandler.LastName,
+                        Email = maintenanceRequest.RequestHandler.Email,
+                    } : null,
+                    FlatId = maintenanceRequest.FlatId,
+                    Flat = maintenanceRequest.Flat != null ? new GetFlatResponse
+                    {
+                        Id = maintenanceRequest.Flat.Id,
+                        Floor = maintenanceRequest.Flat.Floor,
+                        TotalRooms = maintenanceRequest.Flat.TotalRooms,
+                        TotalBaths = maintenanceRequest.Flat.TotalBaths,
+                        HasTerrace = maintenanceRequest.Flat.HasTerrace,
+                        RoomNumber = maintenanceRequest.Flat.RoomNumber,
+                        OwnerAssigned = maintenanceRequest.Flat.OwnerAssigned != null ? new GetOwnerResponse
+                        {
+                            Id = maintenanceRequest.Flat.OwnerAssigned.Id,
+                            Firstname = maintenanceRequest.Flat.OwnerAssigned.Firstname,
+                            Lastname = maintenanceRequest.Flat.OwnerAssigned.Lastname,
+                            Email = maintenanceRequest.Flat.OwnerAssigned.Email
+                        } : null,
+                    } : null
                 });
 
             return maintenanceRequestFromHandler;

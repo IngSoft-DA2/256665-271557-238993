@@ -25,6 +25,8 @@ import { CreateMaintenanceRequestComponent } from './features/MaintenanceRequest
 import { MaintenanceRequestsListComponent } from './features/MaintenanceRequest/maintenance-requests-list/maintenance-requests-list.component';
 import { AssignMaintenanceRequestComponent } from './features/MaintenanceRequest/assign-maintenance-request/assign-maintenance-request.component';
 import { CreateRequestHandlerComponent } from './features/requestHandler/create-request-handler/create-request-handler.component';
+import { MaintenanceRequestListByReqHandlerComponent } from './features/MaintenanceRequest/maintenance-request-list-by-req-handler/maintenance-request-list-by-req-handler.component';
+import { CompleteMaintenanceRequestComponent } from './features/MaintenanceRequest/complete-maintenance-request/complete-maintenance-request.component';
 
 
 const routes: Routes =
@@ -68,12 +70,20 @@ const routes: Routes =
     component : MaintenanceRequestsListComponent
   },
   {
+    path: 'maintenance-requests/list-by-request-handler',
+    component : MaintenanceRequestListByReqHandlerComponent
+  },
+  {
     path: 'maintenance-requests/create',
     component : CreateMaintenanceRequestComponent
   },
   {
     path: 'maintenance-requests/assign',
     component : AssignMaintenanceRequestComponent
+  },
+  {
+    path: 'maintenance-requests/complete',
+    component : CompleteMaintenanceRequestComponent
   },
   {
     path: 'request-handler/create',

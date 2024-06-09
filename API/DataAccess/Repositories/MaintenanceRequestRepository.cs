@@ -122,11 +122,16 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     #region Get Maintenance Request By Id
 
-    public MaintenanceRequest GetMaintenanceRequestById(Guid idToUpdate)
+    public MaintenanceRequest GetMaintenanceRequestById(Guid id)
     {
         try
         {
-            return _context.Set<MaintenanceRequest>().Find(idToUpdate);
+            return _context.Set<MaintenanceRequest>()
+                .Where(maintenanceRequest => maintenanceRequest.Id == id)
+                .Include(maintenanceRequest => maintenanceRequest.Category)
+                .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
+                .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                .Include(maintenanceRequest => maintenanceRequest.Manager).First();
         }
         catch (Exception exceptionCaught)
         {
@@ -143,7 +148,12 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
         try
         {
             return _context.Set<MaintenanceRequest>()
-                .Where(maintenanceRequest => maintenanceRequest.RequestHandlerId == requestHandlerId).ToList();
+                .Where(maintenanceRequest => maintenanceRequest.RequestHandlerId == requestHandlerId)
+                .Include(maintenanceRequest => maintenanceRequest.Category)
+                .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
+                .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
+                .Include(maintenanceRequest => maintenanceRequest.Manager)
+                .ToList();
         }
         catch (Exception exceptionCaught)
         {

@@ -1,0 +1,122 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Title Styles */
+h1 {
+    font-size: 2em;
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+}
+
+h4 label {
+    text-decoration: underline;
+    font-size: 1.5em;
+    color: #555;
+}
+
+/* Button Styles */
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-size: 1em;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-info.btn-sm {
+    background-color: #17a2b8;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.btn-info.btn-sm:hover {
+    background-color: #138496;
+}
+
+.btn-danger.btn-sm {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.btn-danger.btn-sm:hover {
+    background-color: #c82333;
+}
+
+/* Table Styles */
+.tableClass {
+    width: 95%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.tableClass th, .tableClass td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.tableClass th {
+    background-color: #007bff;
+    color: white;
+}
+
+.tableClass tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.tableClass tr:hover {
+    background-color: #ddd;
+}
+
+/* Alert Styles */
+.alert-warning {
+    margin: 20px auto;
+    padding: 20px;
+    width: 50%;
+    background-color: #ffcc00;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    text-align: center;
+}
+
+/* Spacing Adjustments */
+.d-flex {
+    margin-bottom: 20px;
+}
+
+.head {
+    margin-top: 10px;
+}
+
+.form-select-custom {
+    width: 40%;
+    margin-left: 4rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .tableClass, .alert-warning {
+        width: 100%;
+    }
+
+    .btn-success, .btn-info.btn-sm, .btn-danger.btn-sm {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

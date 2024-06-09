@@ -119,6 +119,23 @@
 
                 </ng-container>
 
+                <ng-container *ngIf="userConnected.userRole === SystemUserRoleEnumValues.RequestHandler ">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Request Handler Features
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" [routerLink]="['maintenance-requests/list-by-request-handler']">Maintenance Requests Section</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                        </ul>
+                    </li>
+                </ng-container>
+
+
 
 
             </ul>

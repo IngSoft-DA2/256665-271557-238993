@@ -122,15 +122,28 @@ public class MaintenanceRequestService : IMaintenanceRequestService
 
     public void AssignMaintenanceRequest(Guid idToUpdate, Guid idOfWorker)
     {
-        MaintenanceRequest maintenanceRequest = GetMaintenanceRequestById(idToUpdate);
         try
         {
+            MaintenanceRequest maintenanceRequest = GetMaintenanceRequestById(idToUpdate);
+            
+            ValidateStatusOfRequestInDb(maintenanceRequest); 
+            
             maintenanceRequest.RequestHandlerId = idOfWorker;
+            maintenanceRequest.RequestStatus = RequestStatusEnum.InProgress;
+            maintenanceRequest.OpenedDate = DateTime.Now;
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
         }
         catch (Exception exceptionCaught)
         {
             throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+
+    private static void ValidateStatusOfRequestInDb(MaintenanceRequest maintenanceRequest)
+    {
+        if (maintenanceRequest.RequestStatus == RequestStatusEnum.InProgress || maintenanceRequest.RequestStatus == RequestStatusEnum.Closed)
+        {
+            throw new ObjectErrorServiceException("Request is already in progress by other request handler or the request is closed");
         }
     }
 
