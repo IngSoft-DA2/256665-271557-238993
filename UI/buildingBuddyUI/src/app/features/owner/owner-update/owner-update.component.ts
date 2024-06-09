@@ -3,6 +3,7 @@ import { Owner } from '../interfaces/owner';
 import { OwnerUpdateRequest } from '../interfaces/owner-update-request';
 import { OwnerService } from '../services/owner.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 
 @Component({
   selector: 'app-owner-update',
@@ -12,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class OwnerUpdateComponent {
   ownerId?: string;
   buildingId?: string;
-
   ownerToUpdate: OwnerUpdateRequest = {
     firstname: '',
     lastname: '',
