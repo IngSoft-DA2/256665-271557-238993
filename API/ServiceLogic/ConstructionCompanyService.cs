@@ -173,6 +173,10 @@ public class ConstructionCompanyService : IConstructionCompanyService
         {
             throw;
         }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
     }
 
     private void CheckIfNameIsAlreadyUsed(ConstructionCompany constructionCompanyToCreate)

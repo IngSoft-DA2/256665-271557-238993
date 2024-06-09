@@ -167,6 +167,18 @@ public class ConstructionCompanyServiceTest
             _constructionCompanyService.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()));
         _constructionCompanyRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_UnknownServiceExceptionIsThrown()
+    {
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
+            .Throws(new Exception());
+
+        Assert.ThrowsException<UnknownServiceException>(() =>
+            _constructionCompanyService.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()));
+        _constructionCompanyRepository.VerifyAll();
+    }
 
     #endregion
 
