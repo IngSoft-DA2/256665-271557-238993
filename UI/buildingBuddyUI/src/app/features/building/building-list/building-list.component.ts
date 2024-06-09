@@ -45,8 +45,8 @@ export class BuildingListComponent {
               })
           }
           else {
-            alert("User was not found, redirecting")
-            this.router.navigateByUrl('/login');
+            //alert("User was not found, redirecting")
+            //this.router.navigateByUrl('/login');
           }
         }
       });
@@ -64,7 +64,7 @@ export class BuildingListComponent {
         next: () => {
           this.buildings = this.buildings.filter(b => b.id !== buildingId);
         },
-        error: (errorMessage) => {
+        error: () => {
           alert("Cannot delete this building, communicate with an admin")
         }
       })

@@ -7,10 +7,10 @@ namespace ServiceLogic;
 
 public class FlatService : IFlatService
 {
-    private readonly ISessionService _sessionService;
-    public FlatService(ISessionService sessionService)
+    private readonly IOwnerService _ownerService;
+    public FlatService(IOwnerService ownerService)
     {
-        _sessionService = sessionService;
+        _ownerService = ownerService;
     }
 
     public void CreateFlat(Flat flatToAdd)
@@ -32,7 +32,11 @@ public class FlatService : IFlatService
 
     private void ValidateOwnerAssigned(Flat flatToAdd)
     {
-        if (!_sessionService.IsUserAuthenticated(flatToAdd.OwnerAssigned.Email))
+
+        IEnumerable<Owner> ownersInDb = _ownerService.GetAllOwners();
+        bool ownerExists = ownersInDb.Any(owner => owner.Id == flatToAdd.OwnerAssigned.Id);
+        
+        if (!ownerExists)
         {
              throw new ObjectErrorServiceException("Owner is not authenticated to let him be assigned to the flat.");
         }
