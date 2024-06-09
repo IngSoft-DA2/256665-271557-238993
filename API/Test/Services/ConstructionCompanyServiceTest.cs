@@ -130,6 +130,7 @@ public class ConstructionCompanyServiceTest
 
     #region Get Construction Company By User Creator Id
 
+    //happy path
     [TestMethod]
     public void GetConstructionCompanyByUserCreatorId_ReturnsConstructionCompany()
     {
@@ -152,7 +153,22 @@ public class ConstructionCompanyServiceTest
 
         Assert.AreEqual(constructionCompanyInDb, constructionCompanyObtained);
     }
-    
+
+    #region Get Construction Company By User Creator Id, Repository Validations
+
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ObjectNotFoundServiceExceptionIsThrown()
+    {
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
+            .Returns(() => null);
+
+        Assert.ThrowsException<ObjectNotFoundServiceException>(() =>
+            _constructionCompanyService.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()));
+        _constructionCompanyRepository.VerifyAll();
+    }
+
+    #endregion
 
     #endregion
 
@@ -302,7 +318,7 @@ public class ConstructionCompanyServiceTest
     #endregion
 
     #endregion
-    
+
     #region Update Construction Company
 
     //happy path
@@ -452,8 +468,8 @@ public class ConstructionCompanyServiceTest
     public void UpdateConstructionCompany_UnknownExceptionIsThrown()
     {
         _constructionCompanyRepository.Setup(constructionCompanyRepository =>
-                constructionCompanyRepository.GetConstructionCompanyById(It.IsAny<Guid>())).Throws(new Exception());
-        
+            constructionCompanyRepository.GetConstructionCompanyById(It.IsAny<Guid>())).Throws(new Exception());
+
         Assert.ThrowsException<UnknownServiceException>(() =>
             _constructionCompanyService.UpdateConstructionCompany(new ConstructionCompany()));
     }

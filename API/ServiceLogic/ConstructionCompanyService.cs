@@ -157,17 +157,23 @@ public class ConstructionCompanyService : IConstructionCompanyService
 
     public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid ifOfUserCreator)
     {
-        ConstructionCompany constructionCompanyFound =
-            _constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(ifOfUserCreator);
-
-        if (constructionCompanyFound is null)
+        try
         {
-            throw new ObjectNotFoundServiceException();
+            ConstructionCompany constructionCompanyFound =
+                _constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(ifOfUserCreator);
+
+            if (constructionCompanyFound is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+
+            return constructionCompanyFound;
         }
-
-        return constructionCompanyFound;
+        catch (ObjectNotFoundServiceException)
+        {
+            throw;
+        }
     }
-
 
     private void CheckIfNameIsAlreadyUsed(ConstructionCompany constructionCompanyToCreate)
     {
