@@ -125,13 +125,21 @@ public class MaintenanceRequestService : IMaintenanceRequestService
         try
         {
             MaintenanceRequest maintenanceRequest = GetMaintenanceRequestById(idToUpdate);
-            
-            ValidateStatusOfRequestInDb(maintenanceRequest); 
-            
+
+            ValidateStatusOfRequestInDb(maintenanceRequest);
+
             maintenanceRequest.RequestHandlerId = idOfWorker;
             maintenanceRequest.RequestStatus = RequestStatusEnum.InProgress;
             maintenanceRequest.OpenedDate = DateTime.Now;
             _maintenanceRequestRepository.UpdateMaintenanceRequest(idToUpdate, maintenanceRequest);
+        }
+        catch (ObjectErrorServiceException exceptionCaught)
+        {
+            throw new ObjectErrorServiceException(exceptionCaught.Message);
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
         }
         catch (Exception exceptionCaught)
         {
