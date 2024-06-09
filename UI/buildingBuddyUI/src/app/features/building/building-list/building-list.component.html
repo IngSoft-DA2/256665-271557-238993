@@ -44,7 +44,7 @@
             <div class="alert alert-warning mt-5" style="text-align: center;">
                 <h4>There are no buildings at the moment</h4>
             </div>
-            <a [routerLink]="constructionCompanyOfUser ? ['/buildings', constructionCompanyOfUser.id, 'create'] : ['construction-companies/create']"
+            <a [routerLink]="constructionCompanyOfUser ? ['/buildings', constructionCompanyOfUser.id, 'create'] : ['/construction-companies/create']"
                 class="btn btn-success">Create Building +</a>
         </div>
 
