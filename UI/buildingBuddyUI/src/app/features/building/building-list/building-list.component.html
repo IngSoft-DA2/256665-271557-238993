@@ -1,15 +1,13 @@
-
-
 <div class="container" *ngIf="buildings.length > 0 && userLogged !== undefined; else noBuildings">
 
     <div class="mt-5">
         <h1> Building List</h1>
-        <a class="btn btn-success" style="float: right;" *ngIf="!hasConstructionCompany" 
-        [routerLink]="constructionCompanyOfUser ? ['/buildings', constructionCompanyOfUser.id, 'create'] : ['construction-companies/create']">
-        Create Building +</a>
+        <a class="btn btn-success" style="float: right;" *ngIf="!hasConstructionCompany"
+            [routerLink]="constructionCompanyOfUser ? ['/buildings', constructionCompanyOfUser.id, 'create'] : ['construction-companies/create']">
+            Create Building +</a>
     </div>
 
-   
+
 
     <table class="table table-striped table-bordered tableClass mt-4">
         <thead>
@@ -27,7 +25,8 @@
                 <td>{{building.address}}</td>
                 <td>{{checkIfItHasManager(building.manager)}}</td>
                 <td>
-                    <button class="btn btn-info" [routerLink]="['/buildings', building.id, 'update']"> Update Building </button>
+                    <button class="btn btn-info" [routerLink]="['/buildings', building.id, 'update']"> Update Building
+                    </button>
                 </td>
                 <td>
                     <button class="btn btn-danger" (click)="deleteBuilding(building.id)"> Delete Building </button>
@@ -39,20 +38,22 @@
 
 <ng-template #noBuildings>
     <div class="d-flex justify-content-center" *ngIf="userLogged">
-        
+
         <div *ngIf="hasConstructionCompany">
             <div class="alert alert-warning mt-5" style="text-align: center;">
-                <h4 >There are no buildings at the moment</h4>
+                <h4>There are no buildings at the moment</h4>
             </div>
-            <a [routerLink]="['/buildings',userLogged.userId,'create']" class="btn btn-success">Create Building +</a>
+            <a [routerLink]="constructionCompanyOfUser ? ['/buildings', constructionCompanyOfUser.id, 'create'] : ['construction-companies/create']"
+                class="btn btn-success">Create Building +</a>
         </div>
 
         <div *ngIf="!hasConstructionCompany">
             <div class="alert alert-warning mt-5" style="text-align: center;">
-                <h4 >To create a building you must create a construction company first</h4>
+                <h4>To create a building you must create a construction company first</h4>
             </div>
-            <a [routerLink]="['/construction-companies/create']" class="btn btn-success">Create Construction Company +</a>
+            <a [routerLink]="['/construction-companies/create']" class="btn btn-success">Create Construction Company
+                +</a>
         </div>
-        
+
     </div>
 </ng-template>
