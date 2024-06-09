@@ -1,5 +1,4 @@
 using BuildingBuddy.API.Filters;
-using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.OwnerRequests;
@@ -29,9 +28,7 @@ namespace BuildingBuddy.API.Controllers
         [HttpGet]
         public IActionResult GetAllOwners()
         {
-           
             return Ok(_ownerAdapter.GetAllOwners());
-            
         }
 
         #endregion
@@ -52,10 +49,8 @@ namespace BuildingBuddy.API.Controllers
         [HttpPut("{id:Guid}")]
         public IActionResult UpdateOwnerById([FromRoute] Guid id, [FromBody] UpdateOwnerRequest updateOwnerRequest)
         {
-           
             _ownerAdapter.UpdateOwnerById(id, updateOwnerRequest);
             return NoContent();
-           
         }
 
         #endregion
@@ -66,9 +61,7 @@ namespace BuildingBuddy.API.Controllers
         [Route("{ownerId:Guid}")]
         public IActionResult GetOwnerById(Guid ownerId)
         {
-           
             return Ok(_ownerAdapter.GetOwnerById(ownerId));
-           
         }
 
         #endregion

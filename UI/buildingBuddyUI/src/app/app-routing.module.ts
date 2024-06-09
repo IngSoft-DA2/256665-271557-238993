@@ -29,6 +29,7 @@ import { ReportMaintenanceRequestsByBuildingComponent } from './features/Reports
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
 import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
+import { OwnerListComponent } from './features/owner/owner-list/owner-list.component';
 
 
 const routes: Routes =
@@ -151,7 +152,10 @@ const routes: Routes =
     path: 'home',
     component : HomeComponent
   },
-
+  {
+    path: 'buildings/:buildingId/owners',
+    component : OwnerListComponent
+  },
   { path: '**', 
     redirectTo: 'login'
   }
