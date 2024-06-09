@@ -5,8 +5,6 @@ import { Manager } from '../../manager/interfaces/manager';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../../login/services/login.service';
 import { User } from '../../login/interfaces/user';
-import { ConstructionCompanyAdminService } from '../../constructionCompanyAdmin/services/construction-company-admin.service';
-import { ConstructionCompanyAdmin } from '../../constructionCompanyAdmin/interfaces/construction-company-admin';
 import { ConstructionCompany } from '../../constructionCompany/interfaces/construction-company';
 import { ConstructionCompanyService } from '../../constructionCompany/services/construction-company.service';
 

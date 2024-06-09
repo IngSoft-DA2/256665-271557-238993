@@ -90,7 +90,7 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
             {
                 Id = Guid.NewGuid(),
                 Name = createConstructionCompanyRequest.Name,
-                UserCreatorId = createConstructionCompanyRequest.UserCreator
+                UserCreatorId = createConstructionCompanyRequest.UserCreatorId
             };
 
             _constructionCompanyService.CreateConstructionCompany(constructionCompanyToCreate);

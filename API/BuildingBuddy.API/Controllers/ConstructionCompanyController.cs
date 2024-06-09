@@ -36,7 +36,7 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region Get Construction Company By User Creator Id
+        #region Get Construction Company By Id
 
         [HttpGet]
         [Route("{constructionCompanyId:Guid}")]

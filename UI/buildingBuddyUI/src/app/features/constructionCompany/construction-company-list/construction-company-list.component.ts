@@ -3,6 +3,10 @@ import { ConstructionCompany } from '../interfaces/construction-company';
 import { Router } from '@angular/router';
 import { ConstructionCompanyAdmin } from '../../constructionCompanyAdmin/interfaces/construction-company-admin';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
+import { User } from '../../login/interfaces/user';
+import { ConstructionCompanyService } from '../services/construction-company.service';
+import { LoginService } from '../../login/services/login.service';
+import { ConstructionCompanyAdminService } from '../../constructionCompanyAdmin/services/construction-company-admin.service';
 
 @Component({
   selector: 'app-construction-company-list',
@@ -10,57 +14,36 @@ import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-use
   styleUrls: ['./construction-company-list.component.css']
 })
 export class ConstructionCompanyListComponent {
-  // I declared it with values because this is a temporal variable, it is only to test if this works.
-  // We need to pass the logged user between components.
-  private constructionCompanyTest: ConstructionCompany = {
-    id: '123123adawsfsfs',
-    name: 'Construction Company 1',
-    userCreatorId: 'ad23213da123dassacfrsgth',
-    buildingsId: []
-  };
+  userLogged?: User;
+  constructionCompanyOfUser: ConstructionCompany | undefined = undefined;
 
-  private constructionCompanyAdminObtainedFromLogin: ConstructionCompanyAdmin = {
-    id: 'ad23213da123dassacfrsgth',
-    firstname: 'testFirstname',
-    lastname: 'testLastname',
-    email: 'test@gmail.com',
-    password: 'test2003!',
-    role: SystemUserRoleEnum.ConstructionCompanyAdmin,
-    constructionCompany: this.constructionCompanyTest
-  };
-  // <-------- Removed things from above when we have the user passed down to here... --------->
+  constructor(private constructionCompanyAdminService: ConstructionCompanyAdminService, private loginService: LoginService, private router: Router) {
 
-    //This is the correct way to work with, but these will be obtain in a diferent way (which is not done yet). 
-    userId : string | undefined = undefined;
-    userRole : SystemUserRoleEnum | undefined = undefined;
-    //getUser
-    //constructionCompanyOfUser = getUser(userId).constructionCompany
+    this.loginService.getUser()
+      .subscribe({
+        next: (Response) => {
+          this.userLogged = Response;
 
-  constructionCompanyOfUser?: ConstructionCompany;
-
-  constructor(private router: Router) {
-    this.setProperties();
+          if (this.userLogged !== undefined) {
+            this.constructionCompanyAdminService.getConstructionCompanyAdmin(this.userLogged.userId)
+            .subscribe({
+              next : (Response) => {
+                this.constructionCompanyOfUser = Response.constructionCompany
+                console.log(this.constructionCompanyOfUser);
+              }
+            })
+          }
+          else {
+            alert("User was not found, redirecting");
+            this.router.navigateByUrl('/login');
+          }
+        },
+        error: () => {
+          alert("User was not found, redirecting");
+          this.router.navigateByUrl('/login');
+        }
+      })
+      console.log(this.constructionCompanyOfUser);
   }
 
-  checkIfItHasBuildings(constructionCompany: ConstructionCompany): void {
-    if (constructionCompany !== undefined
-      && constructionCompany.buildingsId.length > 0) {
-      this.router.navigateByUrl('buildings/list');
-    }
-    else {
-      alert('No buildings at the moment');
-    }
-  }
-
-  private setProperties() {
-    if (this.constructionCompanyAdminObtainedFromLogin.constructionCompany !== undefined) {
-
-      this.constructionCompanyOfUser = {
-        id: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.id,
-        name: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.name,
-        userCreatorId: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.userCreatorId,
-        buildingsId: this.constructionCompanyAdminObtainedFromLogin.constructionCompany.buildingsId,
-      };
-    }
-  }
 }
