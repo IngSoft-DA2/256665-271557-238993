@@ -52,7 +52,6 @@ export class ReportMaintenanceRequestsByFlatComponent implements OnInit {
       }
 
       if(this.userConnected && this.userConnected.userId){
-        alert("Usuario encontrado, valores: " + this.userConnected);
         this.managerId = this.userConnected.userId;
       }
 

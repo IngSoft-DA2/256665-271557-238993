@@ -51,7 +51,6 @@ export class CreateMaintenanceRequestComponent implements OnInit {
     this.managerService.getManagerById(this.managerId).subscribe({
       next: (response) => {
         this.buildingsIdList = response.buildingsId;
-        alert("Edificios cargados: " + this.buildingsIdList);
         this.buildingsIdList.forEach(id => {
           this.buildingService.getBuildingById(id).subscribe({
             next: (building) => {

@@ -26,7 +26,6 @@ export class CompleteMaintenanceRequestComponent {
     private route: ActivatedRoute, private router: Router) {
       this.route.queryParams.subscribe(params => {
         this.maintenanceRequestId = params['maintenanceRequestId'];
-        alert("Maintenance Request ID: " + this.maintenanceRequestId);
       });
   }
 

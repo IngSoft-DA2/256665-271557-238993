@@ -15,13 +15,12 @@ export class CreateRequestHandlerComponent{
   constructor(private requestHandlerService: RequestHandlerService, private router: Router) { }
 
   createRequestHandler(): void { 
-    alert("Creating RequestHandler: " + this.requestHandlerToCreate.firstname);
     this.requestHandlerService.createRequestHandler(this.requestHandlerToCreate).subscribe({
       next: (response) => {
-        console.log("RequestHandler created: " + response);
+        alert("RequestHandler created: " + response);
       },
       error: (error) => {
-        console.log("Error creating RequestHandler: " + error);
+        alert("Error creating RequestHandler: " + error);
       }
     });
   }
