@@ -19,33 +19,28 @@ namespace BuildingBuddy.API.Controllers
         }
 
         [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateConstructionCompanyAdmin(
             [FromBody] CreateConstructionCompanyAdminRequest createRequest)
         {
             SystemUserRoleEnum? userRole = null;
 
-            if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj) && userRoleObj is string userRoleStr)
+            if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj))
             {
-                ObjectResult notAllowedResponse = new ObjectResult("");
-                if (Enum.TryParse(userRoleStr, out SystemUserRoleEnum parsedUserRole))
-                {
-                    if (parsedUserRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
-                    {
-                        notAllowedResponse.Value = "Only ConstructionCompanyAdmin people is allowed.";
-                        notAllowedResponse.StatusCode = 403;
-                        return notAllowedResponse;
-                    }
-                    userRole = parsedUserRole;
-                }
-                else
-                {
-                    notAllowedResponse.Value = "Error while authorizing.";
-                    notAllowedResponse.StatusCode = 401;
-                    return notAllowedResponse;
-                }
+                if (userRoleObj is SystemUserRoleEnum enumValue) userRole = enumValue;
             }
 
-            CreateConstructionCompanyAdminResponse response = _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, userRole);
+            if (userRole != null && userRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
+            {
+                var notAllowedResponse = new ObjectResult("Only ConstructionCompanyAdmin people are allowed.")
+                {
+                    StatusCode = 403
+                };
+                return notAllowedResponse;
+            }
+
+            CreateConstructionCompanyAdminResponse response =
+                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, userRole);
             return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
         }
     }

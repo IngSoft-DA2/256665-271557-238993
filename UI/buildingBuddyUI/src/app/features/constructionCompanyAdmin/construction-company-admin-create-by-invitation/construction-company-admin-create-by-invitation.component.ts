@@ -6,6 +6,8 @@ import { constructionCompanyAdminCreateRequest } from '../interfaces/constructio
 import { ConstructionCompanyAdminService } from '../services/construction-company-admin.service';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 import { StatusEnum } from '../../invitation/interfaces/enums/status-enum';
+import { LoginService } from '../../login/services/login.service';
+import { User } from '../../login/interfaces/user';
 
 @Component({
   selector: 'app-construction-company-admin-create-by-invitation',
@@ -17,9 +19,8 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   invitationOfUser?: Invitation
   hasInvitation : boolean = false;
   hasValidRole : boolean = true;
-  
   invitationId: string = '';
-  userRole?: SystemUserRoleEnum = SystemUserRoleEnum.ConstructionCompanyAdmin; //To do: We need to implement how to get the user role.
+  userLogged? : User;
 
   constructionCompanyAdminToCreate: constructionCompanyAdminCreateRequest =
     {
@@ -33,13 +34,25 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   constructor(
     private invitationService: InvitationService,
     private constructionCompanyAdminService: ConstructionCompanyAdminService,
-    private router: Router, private route: ActivatedRoute
+    private router: Router, 
+    private route: ActivatedRoute,
+    private loginService : LoginService
   ) {
+
+    this.loginService.getUser()
+    .subscribe({
+      next: (Response) => {
+        this.userLogged = Response;
+      },
+      error:() => {
+        alert("User was not found, redirecting");
+        this.router.navigateByUrl('/login');
+      }
+    })
 
     this.route.queryParams.subscribe({
       next: (queryParams) => {
         this.invitationId = queryParams['idOfInvitationAccepted']    
-        alert(this.invitationId)
       }
     });
 
@@ -71,9 +84,8 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
           }
         })
     }
-    else if (this.userRole === SystemUserRoleEnum.ConstructionCompanyAdmin) {
+    else if (this.userLogged?.userRole === SystemUserRoleEnum.ConstructionCompanyAdmin) {
       this.hasValidRole = true;
-      
     }
     else{
       alert("You do not have the necessary role to enter here, redirecting");
@@ -83,7 +95,9 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   }
 
   createConstructionCompanyAdmin(): void {
-    if (this.invitationOfUser || this.userRole == SystemUserRoleEnum.ConstructionCompanyAdmin) {
+    alert(this.invitationOfUser);
+    alert(this.userLogged?.userRole);
+    if (this.invitationOfUser || this.userLogged?.userRole == SystemUserRoleEnum.ConstructionCompanyAdmin) {
       this.constructionCompanyAdminService.createConstructionCompanyAdmin(this.constructionCompanyAdminToCreate)
         .subscribe({
           next: () => {
