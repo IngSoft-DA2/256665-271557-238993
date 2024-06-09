@@ -28,7 +28,7 @@ export class BuildingListComponent {
       next : (Response) => {
         this.userLogged = Response
         if(this.userLogged)
-        this.constructionCompanyService.getConstructionCompanyByUserCreator(this.userLogged.userId)
+        this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
         .subscribe({
           next : (Response) => {
             this.constructionCompanyOfUser = Response;

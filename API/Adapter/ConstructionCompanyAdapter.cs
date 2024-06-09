@@ -77,6 +77,11 @@ public class ConstructionCompanyAdapter : IConstructionCompanyAdapter
         }
     }
 
+    public GetConstructionCompanyResponse GetConstructionCompanyByUserCreator(Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 
     #region Create construction company response

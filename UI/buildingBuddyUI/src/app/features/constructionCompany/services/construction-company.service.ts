@@ -28,10 +28,11 @@ export class ConstructionCompanyService {
     return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${idOfConstructionCompany}`);
   }
 
-  getConstructionCompanyByUserCreator(userId: string) 
+  getConstructionCompanyByUserCreatorId(userId: string) 
   {
-    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${userId}`);
-  }
+    alert("Llegue aca");
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/user-id/${userId}/construction-companies`);
+  }  
 
 
 }
