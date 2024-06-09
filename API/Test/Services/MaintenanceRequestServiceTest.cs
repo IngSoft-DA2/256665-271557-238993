@@ -361,6 +361,29 @@ public class MaintenanceRequestServiceTest
 
         _maintenanceRequestRepository.VerifyAll();
     }
+    
+    [TestMethod]
+    public void AssignMaintenanceRequest_RequestIsAlreadyClosed_ObjectErrorServiceExceptionIsThrown()
+    {
+        MaintenanceRequest maintenanceRequest = new MaintenanceRequest
+        {
+            Id = Guid.NewGuid(),
+            Description = "Fix the door",
+            FlatId = Guid.NewGuid(),
+            OpenedDate = DateTime.Now,
+            RequestHandlerId = Guid.NewGuid(),
+            CategoryId = Guid.NewGuid(),
+            RequestStatus = RequestStatusEnum.Closed
+        };
+
+        _maintenanceRequestRepository.Setup(maintenanceRequestRepository =>
+            maintenanceRequestRepository.GetMaintenanceRequestById(It.IsAny<Guid>())).Returns(maintenanceRequest);
+
+        Assert.ThrowsException<ObjectErrorServiceException>(() =>
+            _maintenanceRequestService.AssignMaintenanceRequest(Guid.NewGuid(), Guid.NewGuid()));
+
+        _maintenanceRequestRepository.VerifyAll();
+    }
 
     #endregion
     
