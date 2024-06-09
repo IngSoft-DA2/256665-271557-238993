@@ -31,7 +31,7 @@ public class OwnerRepository : IOwnerRepository
     {
         try
         {
-            return _dbContext.Set<Owner>().Find(ownerIdToObtain);
+            return _dbContext.Set<Owner>().Include(owner => owner.Flats).FirstOrDefault(x => x.Id == ownerIdToObtain);
         }
         catch (Exception exceptionCaught)
         {
@@ -61,7 +61,6 @@ public class OwnerRepository : IOwnerRepository
             if (ownerInDb != null)
             {
                 _dbContext.Set<Owner>().Entry(ownerInDb).CurrentValues.SetValues(ownerWithUpdates);
-                ownerInDb.Flats = ownerWithUpdates.Flats;
                 _dbContext.SaveChanges();
             }
         }
@@ -69,6 +68,5 @@ public class OwnerRepository : IOwnerRepository
         {
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
-     
     }
 }

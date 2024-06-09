@@ -7,11 +7,13 @@ import { LoginService } from '../../login/services/login.service';
 import { User } from '../../login/interfaces/user';
 import { ConstructionCompany } from '../../constructionCompany/interfaces/construction-company';
 import { ConstructionCompanyService } from '../../constructionCompany/services/construction-company.service';
+import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
+import { ManagerService } from '../../manager/services/manager.service';
 
 @Component({
   selector: 'app-building-list',
   templateUrl: './building-list.component.html',
-  styleUrl: './building-list.component.css'
+  styleUrls: ['./building-list.component.css']
 })
 export class BuildingListComponent {
 
@@ -20,43 +22,69 @@ export class BuildingListComponent {
   userLogged?: User = undefined;
   constructionCompanyOfUser: ConstructionCompany | undefined = undefined;
   hasConstructionCompany: boolean = true;
+  SystemUserRoleEnumValues = SystemUserRoleEnum;
 
-  constructor(private buildingService: BuildingService, private constructionCompanyService: ConstructionCompanyService, private loginService: LoginService, private router: Router) {
+  constructor(
+    private buildingService: BuildingService,
+    private constructionCompanyService: ConstructionCompanyService,
+    private loginService: LoginService,
+    private router: Router,
+    private managerService: ManagerService
+  ) {
 
     this.loginService.getUser()
       .subscribe({
-        next: (Response) => {
-          this.userLogged = Response
-          if (this.userLogged) {
-            this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
-              .subscribe({
-                next: (Response) => {
-                  this.constructionCompanyOfUser = Response;
-                  this.hasConstructionCompany = this.constructionCompanyOfUser !== undefined;
-                }
-              });
+        next: (response) => {
+          this.userLogged = response;
 
-            this.buildingService.getAllBuildings(this.userLogged.userId)
-              .subscribe({
-                next: (Response) => {
-                  this.buildings = Response
-                  console.log(this.buildings)
-                }
-              })
-          }
-          else {
-            //alert("User was not found, redirecting")
-            //this.router.navigateByUrl('/login');
+          if (this.userLogged) {
+            if (this.userLogged.userRole === SystemUserRoleEnum.ConstructionCompanyAdmin) {
+              this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
+                .subscribe({
+                  next: (response) => {
+                    this.constructionCompanyOfUser = response;
+                    this.hasConstructionCompany = this.constructionCompanyOfUser !== undefined;
+                  }
+                });
+
+              this.buildingService.getAllBuildings(this.userLogged.userId)
+                .subscribe({
+                  next: (response) => {
+                    this.buildings = response;
+                  }
+                });
+            } 
+            else {
+              this.managerService.getManagerById(this.userLogged?.userId)
+                .subscribe({
+                  next: (Response) => {
+                    Response.buildingsId.forEach(buildingId => {
+                      this.buildingService.getBuildingById(buildingId)
+                        .subscribe({
+                          next: (Response) => {
+                            console.log(Response);
+                            this.buildings.push(Response);
+                          }
+                        })
+                    });
+                  },
+                  error: (errorMessage) => {
+                    alert(errorMessage.error);
+                    this.router.navigateByUrl('/home');
+                  }
+                });
+            }
+          } else {
+            alert("User not found, redirecting");
+            this.router.navigateByUrl('/home');
           }
         }
       });
-    }
-    
+  }
 
   checkIfItHasManager(manager?: Manager): string {
     return manager ? manager.name : 'No manager at the moment';
   }
-
 
   deleteBuilding(buildingId: string): void {
     this.buildingService.deleteBuilding(buildingId)
@@ -65,8 +93,8 @@ export class BuildingListComponent {
           this.buildings = this.buildings.filter(b => b.id !== buildingId);
         },
         error: () => {
-          alert("Cannot delete this building, communicate with an admin")
+          alert("Cannot delete this building, communicate with an admin");
         }
-      })
+      });
   }
 }
