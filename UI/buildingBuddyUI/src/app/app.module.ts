@@ -33,6 +33,11 @@ import { ManagerCreateComponent } from "./features/manager/features/manager-crea
 import { ManagerListComponent } from "./features/manager/features/manager-list/manager-list.component";
 import { OwnerCreateComponent } from "./features/owner/owner-create/owner-create.component";
 import { CreateRequestHandlerComponent } from "./features/requestHandler/create-request-handler/create-request-handler.component";
+import { ReportsListComponent } from "./features/Reports/reports-list/reports-list.component";
+import { ReportMaintenanceRequestsByBuildingComponent } from "./features/Reports/report-maintenance-requests-by-building/report-maintenance-requests-by-building.component";
+import { ReportMaintenanceReqByReqHandlerComponent } from "./features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component";
+import { ReportMaintenanceReqByCategoryComponent } from "./features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component";
+import { ReportMaintenanceRequestsByFlatComponent } from "./features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component";
 
 
 
@@ -66,7 +71,12 @@ import { CreateRequestHandlerComponent } from "./features/requestHandler/create-
     CompleteMaintenanceRequestComponent,
     BuildingUpdateComponent,
     BuildingCreateComponent,
-    OwnerCreateComponent
+    OwnerCreateComponent,
+    ReportsListComponent,
+    ReportMaintenanceRequestsByBuildingComponent,
+    ReportMaintenanceReqByReqHandlerComponent,
+    ReportMaintenanceReqByCategoryComponent,
+    ReportMaintenanceRequestsByFlatComponent
   ],
   imports: [
     BrowserModule,

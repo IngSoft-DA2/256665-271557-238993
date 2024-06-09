@@ -50,7 +50,8 @@ export class CreateMaintenanceRequestComponent implements OnInit {
   loadBuildings(): void {
     this.managerService.getManagerById(this.managerId).subscribe({
       next: (response) => {
-        this.buildingsIdList = response.buildings;
+        this.buildingsIdList = response.buildingsId;
+        alert("Edificios cargados: " + this.buildingsIdList);
         this.buildingsIdList.forEach(id => {
           this.buildingService.getBuildingById(id).subscribe({
             next: (building) => {
