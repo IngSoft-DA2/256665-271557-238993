@@ -67,4 +67,9 @@ public class ConstructionCompanyRepository : IConstructionCompanyRepository
             throw new UnknownRepositoryException(exceptionCaught.Message);
         }
     }
+
+    public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid idOfUserCreator)
+    {
+        throw new NotImplementedException();
+    }
 }

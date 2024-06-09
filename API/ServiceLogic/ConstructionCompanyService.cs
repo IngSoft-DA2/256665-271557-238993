@@ -153,13 +153,19 @@ public class ConstructionCompanyService : IConstructionCompanyService
         {
             throw new UnknownServiceException(exceptionCaught.Message);
         }
-
-
     }
 
     public ConstructionCompany GetConstructionCompanyByUserCreatorId(Guid ifOfUserCreator)
     {
-        throw new NotImplementedException();
+        ConstructionCompany constructionCompanyFound =
+            _constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(ifOfUserCreator);
+
+        if (constructionCompanyFound is null)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+
+        return constructionCompanyFound;
     }
 
 
@@ -203,7 +209,6 @@ public class ConstructionCompanyService : IConstructionCompanyService
             }
         }
     }
-    
 
     #endregion
 }

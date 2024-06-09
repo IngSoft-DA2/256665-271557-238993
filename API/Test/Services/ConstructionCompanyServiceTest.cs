@@ -128,6 +128,34 @@ public class ConstructionCompanyServiceTest
 
     #endregion
 
+    #region Get Construction Company By User Creator Id
+
+    [TestMethod]
+    public void GetConstructionCompanyByUserCreatorId_ReturnsConstructionCompany()
+    {
+        ConstructionCompany constructionCompanyInDb = new ConstructionCompany
+        {
+            Id = Guid.NewGuid(),
+            Name = "Company 1",
+            UserCreatorId = Guid.NewGuid(),
+            Buildings = new List<Building>()
+        };
+
+        _constructionCompanyRepository.Setup(constructionCompanyRepository =>
+                constructionCompanyRepository.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>()))
+            .Returns(constructionCompanyInDb);
+
+        ConstructionCompany constructionCompanyObtained =
+            _constructionCompanyService.GetConstructionCompanyByUserCreatorId(It.IsAny<Guid>());
+
+        _constructionCompanyRepository.VerifyAll();
+
+        Assert.AreEqual(constructionCompanyInDb, constructionCompanyObtained);
+    }
+    
+
+    #endregion
+
     #region Create Construction Company
 
     //Happy path
@@ -274,8 +302,7 @@ public class ConstructionCompanyServiceTest
     #endregion
 
     #endregion
-
-
+    
     #region Update Construction Company
 
     //happy path
