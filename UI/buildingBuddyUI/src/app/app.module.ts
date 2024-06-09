@@ -39,6 +39,7 @@ import { ReportMaintenanceReqByReqHandlerComponent } from "./features/Reports/re
 import { ReportMaintenanceReqByCategoryComponent } from "./features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component";
 import { ReportMaintenanceRequestsByFlatComponent } from "./features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component";
 import { OwnerListComponent } from './features/owner/owner-list/owner-list.component';
+import { OwnerUpdateComponent } from './features/owner/owner-update/owner-update.component';
 
 
 
@@ -78,7 +79,8 @@ import { OwnerListComponent } from './features/owner/owner-list/owner-list.compo
     ReportMaintenanceReqByReqHandlerComponent,
     ReportMaintenanceReqByCategoryComponent,
     ReportMaintenanceRequestsByFlatComponent,
-    OwnerListComponent
+    OwnerListComponent,
+    OwnerUpdateComponent
   ],
   imports: [
     BrowserModule,
