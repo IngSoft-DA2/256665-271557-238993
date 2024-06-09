@@ -30,14 +30,14 @@ export class ConstructionCompanyCreateComponent {
 
   createConstructionCompany(): void {
 
-    alert(this.constructionCompanyToCreate.userCreatorId);
+    console.log(this.constructionCompanyToCreate)
     this.constructionCompanyService.createConstructionCompany(this.constructionCompanyToCreate)
       .subscribe({
         next: () => {
           this.router.navigateByUrl('construction-companies/list')
         },
         error: (errorMessage) => {
-          alert(errorMessage.error)
+          alert("asd" +errorMessage.error)
         }
       })
 

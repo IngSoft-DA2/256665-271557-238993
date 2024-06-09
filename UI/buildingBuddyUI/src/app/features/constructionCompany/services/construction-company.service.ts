@@ -12,26 +12,22 @@ import { ConstructionCompanyUpdateRequest } from '../interfaces/construction-com
 })
 export class ConstructionCompanyService {
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  createConstructionCompany(constructionCompanyToCreate : ConstructionCompanyCreateRequest) : Observable<ConstructionCompanyCreateResponse> 
-  {
-    return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true`,constructionCompanyToCreate)
-  }
-  
-  updateConstructionCompany(id:string,constructionCompanyToUpd: ConstructionCompanyUpdateRequest) : Observable<void>
-   {
-    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${id}`,constructionCompanyToUpd);
-  }
-  getConstructionCompanyById(idOfConstructionCompany: string) : Observable<ConstructionCompany>
-   {
-    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true/${idOfConstructionCompany}`);
+  createConstructionCompany(constructionCompanyToCreate: ConstructionCompanyCreateRequest): Observable<ConstructionCompanyCreateResponse> {
+    return this.http.post<ConstructionCompanyCreateResponse>(`${environment.apiBaseUrl}/api/v2/construction-companies?addAuth=true`, constructionCompanyToCreate)
   }
 
-  getConstructionCompanyByUserCreatorId(userId: string) 
-  {
-    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/user-id/${userId}/construction-companies`);
-  }  
+  updateConstructionCompany(id: string, constructionCompanyToUpd: ConstructionCompanyUpdateRequest): Observable<void> {
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/construction-companies/${id}?addAuth=true`, constructionCompanyToUpd);
+  }
+  getConstructionCompanyById(idOfConstructionCompany: string): Observable<ConstructionCompany> {
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/construction-companies/${idOfConstructionCompany}?addAuth=true`);
+  }
+
+  getConstructionCompanyByUserCreatorId(userId: string) {
+    return this.http.get<ConstructionCompany>(`${environment.apiBaseUrl}/api/v2/user-id/${userId}/construction-companies?addAuth=true`);
+  }
 
 
 }

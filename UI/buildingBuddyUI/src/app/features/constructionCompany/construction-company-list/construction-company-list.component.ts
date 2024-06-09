@@ -34,10 +34,10 @@ export class ConstructionCompanyListComponent implements OnInit {
       this.constructionCompanyService.getConstructionCompanyByUserCreatorId(this.userLogged.userId)
         .subscribe({
           next: (Response) => {
-            console.log("La respuesta la consigue?"+ Response);
             this.constructionCompanyOfUser = Response;
-            alert(this.constructionCompanyOfUser.name);
-            alert(this.constructionCompanyOfUser.id);
+          },
+          error:() => {
+            
           }
         });
     }
