@@ -16,22 +16,22 @@ export class OwnerService {
 
   getOwnerById(ownerId : string) : Observable<Owner>
   {
-    return this.http.get<Owner>(`${environment.apiBaseUrl}/api/v2/owners/${ownerId}`);
+    return this.http.get<Owner>(`${environment.apiBaseUrl}/api/v2/owners/${ownerId}?addAuth=true`);
   }
 
   getOwners() : Observable<Owner[]>
   {
-    return this.http.get<Owner[]>(`${environment.apiBaseUrl}/api/v2/owners`);
+    return this.http.get<Owner[]>(`${environment.apiBaseUrl}/api/v2/owners?addAuth=true`);
   }
 
   createOwner(ownerToCreate: OwnerCreateRequest) : Observable<OwnerCreateResponse>
   {
-    return this.http.post<OwnerCreateResponse>(`${environment.apiBaseUrl}/api/v2/owners`,ownerToCreate);
+    return this.http.post<OwnerCreateResponse>(`${environment.apiBaseUrl}/api/v2/owners?addAuth=true`,ownerToCreate);
   }
 
   updateOwner(id : string, ownerWithUpdates : OwnerUpdateRequest) : Observable<void>
   {
-    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/owners/${id}`,ownerWithUpdates);
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/owners/${id}?addAuth=true`,ownerWithUpdates);
   }
 
 }

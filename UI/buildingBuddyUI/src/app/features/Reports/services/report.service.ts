@@ -21,7 +21,7 @@ export class ReportService {
         .set('managerId', userId)
         .set('buildingId', buildingIdSelected);
 
-      return this.http.get<NodeReportMaintenanceRequestsByBuilding[]>(`${environment.apiBaseUrl}/api/v2/buildings/maintenance-requests/reports`, {params});
+      return this.http.get<NodeReportMaintenanceRequestsByBuilding[]>(`${environment.apiBaseUrl}/api/v2/buildings/maintenance-requests/reports?addAuth=true`, {params});
   }
 
   getReportMaintenanceRequestsByRequestHandler(userId: string, buildingIdSelected: string, requestHandlerId: string): Observable<NodeReportMaintenanceRequestsByRequestHandler[]> {
@@ -31,7 +31,7 @@ export class ReportService {
     .set('buildingId', buildingIdSelected)
     .set('managerId', userId);
 
-    return this.http.get<NodeReportMaintenanceRequestsByRequestHandler[]>(`${environment.apiBaseUrl}/api/v2/request-handler/maintenance-requests/reports`, {params});
+    return this.http.get<NodeReportMaintenanceRequestsByRequestHandler[]>(`${environment.apiBaseUrl}/api/v2/request-handler/maintenance-requests/reports?addAuth=true`, {params});
   }
 
   getReportMaintenanceRequestsByCategory(buildingIdSelected: string, categoryId: string): Observable<NodeReportMaintenanceRequestsByCategory[]> {
@@ -40,13 +40,13 @@ export class ReportService {
     .set('categoryId', categoryId)
     .set('buildingId', buildingIdSelected);
 
-    return this.http.get<NodeReportMaintenanceRequestsByCategory[]>(`${environment.apiBaseUrl}/api/v2/categories/maintenance-requests/reports`, {params});
+    return this.http.get<NodeReportMaintenanceRequestsByCategory[]>(`${environment.apiBaseUrl}/api/v2/categories/maintenance-requests/reports?addAuth=true`, {params});
   } 
 
   getReportMaintenanceRequestsByFlat(buildingIdSelected: string): Observable<NodeReportMaintenanceRequestsByFlat[]> {
 
     const params = new HttpParams()
     .set('buildingId', buildingIdSelected);
-    return this.http.get<NodeReportMaintenanceRequestsByFlat[]>(`${environment.apiBaseUrl}/api/v2/flats/maintenance-requests/reports`, {params});
+    return this.http.get<NodeReportMaintenanceRequestsByFlat[]>(`${environment.apiBaseUrl}/api/v2/flats/maintenance-requests/reports?addAuth=true`, {params});
   }
 }

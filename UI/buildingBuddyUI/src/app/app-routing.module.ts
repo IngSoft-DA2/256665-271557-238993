@@ -47,13 +47,13 @@ const routes: Routes =
     path: 'invitations/update/:id',
     component: InvitationUpdateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Admin} 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
   {
     path : 'invitations/create',
     component : InvitationCreateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Admin} 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
   {
     path: 'invitations/guests/list',
@@ -63,13 +63,13 @@ const routes: Routes =
     path: 'managers/create',
     component : ManagerCreateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Admin} 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
   {
     path: 'constructionCompanyAdmin/create',
     component : ConstructionCompanyAdminCreateByInvitationComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.ConstructionCompanyAdmin} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
   },
   {
     path: '',
@@ -79,7 +79,7 @@ const routes: Routes =
     path: 'admins/create',
     component : AdminCreateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Admin} 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
   {
     path: 'maintenance-requests/list',
@@ -93,13 +93,13 @@ const routes: Routes =
     path: 'maintenance-requests/create',
     component : CreateMaintenanceRequestComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Manager} 
+    data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
     path: 'maintenance-requests/assign',
     component : AssignMaintenanceRequestComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Manager} 
+    data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
     path: 'maintenance-requests/complete',
@@ -109,7 +109,7 @@ const routes: Routes =
     path: 'request-handler/create',
     component : CreateRequestHandlerComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Manager} 
+    data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
   path: 'reports/list',
@@ -119,7 +119,7 @@ const routes: Routes =
   path: 'reports/requests-by-building',
   component: ReportMaintenanceRequestsByBuildingComponent,
   canActivate: [AuthGuard], 
-  data: { role: SystemUserRoleEnum.Manager} 
+  data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
     path: 'reports/requests-by-request-handler',
@@ -137,49 +137,49 @@ const routes: Routes =
     path: 'managers/list',
     component : ManagerListComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Admin} 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
   {
     path : 'construction-companies/create',
     component : ConstructionCompanyCreateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.ConstructionCompanyAdmin} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
   },
   {
     path: 'construction-companies/list',
     component : ConstructionCompanyListComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.ConstructionCompanyAdmin} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
   },
   {
     path: 'construction-companies/:id/update',
     component : ConstructionCompanyUpdateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.ConstructionCompanyAdmin} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
   },
   {
     path: 'buildings/:constructionCompanyId/create',
     component : BuildingCreateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.ConstructionCompanyAdmin} 
+    data: { role: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
   },
   {
     path : 'buildings/list',
     component : BuildingListComponent,
     canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Admin, SystemUserRoleEnum.Manager]} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin, SystemUserRoleEnum.Manager]} 
   },
   {
     path : 'buildings/:buildingId/update',
     component : BuildingUpdateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.ConstructionCompanyAdmin}
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]}
   },
   {
     path: 'categories/create',
     component : CategoryCreateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Admin}
+    data: { roles: [SystemUserRoleEnum.Admin]}
   },
   {
     path: 'login',
@@ -193,16 +193,16 @@ const routes: Routes =
     path: 'buildings/:buildingId/owners',
     component : OwnerListComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Manager}
+    data: { roles: [SystemUserRoleEnum.Manager]}
   },
   {
     path: 'owners/:ownerId/update',
     component : OwnerUpdateComponent,
     canActivate: [AuthGuard], 
-    data: { role: SystemUserRoleEnum.Manager}
+    data: { roles: [SystemUserRoleEnum.Manager]}
   },
   { path: '**', 
-    redirectTo: 'login'
+    redirectTo: 'home'
   }
 
 

@@ -18,7 +18,7 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/v2/sessions?addAuth=true`, loginRequest);
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/v2/sessions`, loginRequest);
   }
 
   storageUserValues(loginRequestValues: LoginRequest, responseOfApi: LoginResponse) {

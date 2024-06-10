@@ -21,10 +21,12 @@ export class AuthGuard implements CanActivate {
 
     return this.loginService.getUser().pipe(
       map(user => {
+        console.log(roles);
+        console.log(user?.userRole)
         if (user && (!roles || roles.includes(user.userRole as SystemUserRoleEnum))) {
           return true;
         } else {
-          return this.router.createUrlTree(['/login']);
+          return this.router.createUrlTree(['/home']);
         }
       })
     );

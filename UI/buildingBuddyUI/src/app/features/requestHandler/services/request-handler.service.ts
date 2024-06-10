@@ -14,11 +14,11 @@ export class RequestHandlerService {
   constructor(private http: HttpClient) { }
 
   getAllRequestHandlers() : Observable<RequestHandler[]> {
-    return this.http.get<RequestHandler[]>(`${environment.apiBaseUrl}/api/v2/request-handlers`);  
+    return this.http.get<RequestHandler[]>(`${environment.apiBaseUrl}/api/v2/request-handlers?addAuth=true`);  
   }
 
   createRequestHandler(requestHandler: CreateRequestHandlerRequest) : Observable<CreateRequestHandlerResponse> {
-    return this.http.post<CreateRequestHandlerResponse>(`${environment.apiBaseUrl}/api/v2/request-handlers`, requestHandler);
+    return this.http.post<CreateRequestHandlerResponse>(`${environment.apiBaseUrl}/api/v2/request-handlers?addAuth=true`, requestHandler);
   }
 
   
