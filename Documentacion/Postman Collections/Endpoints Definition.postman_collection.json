@@ -1,0 +1,965 @@
+{
+	"info": {
+		"_postman_id": "60f46a62-7a89-4c56-a024-d639f4b81bae",
+		"name": "Endpoints Definition",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24218913",
+		"_collection_link": "https://lunar-crescent-502372.postman.co/workspace/Team-Workspace~2009ce0b-9f83-4607-82a6-d339c2ab7d2e/collection/24218913-60f46a62-7a89-4c56-a024-d639f4b81bae?action=share&source=collection_link&creator=24218913"
+	},
+	"item": [
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "CreateCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Electricist\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/categories",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/categories",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategoryById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/categories/{{category_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "CreateBuilding",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"managerId\": \"421ca018-3d0e-412f-89bb-0ae382532062\",\r\n  \"name\": \"Building Tower state\",\r\n  \"address\": \"Nt street 3243234\",\r\n  \"location\": {\r\n    \"latitude\": 3,\r\n    \"longitude\": 1\r\n  },\r\n  \"constructionCompanyId\": \"539ad92d-b942-40a0-bbde-72e759574864\",\r\n  \"commonExpenses\": 2700,\r\n  \"flats\": [\r\n    {\r\n      \"floor\": 3,\r\n      \"roomNumber\": \"3C\",\r\n      \"ownerAssignedId\": \"2211d84b-f015-4ec7-48dc-08dc871c56dc\",\r\n      \"totalRooms\": 2,\r\n      \"totalBaths\": 1,\r\n      \"hasTerrace\": true\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/buildings",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllBuildings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/buildings",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"buildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBuildingById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/buildings/{{building_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"buildings",
+								"{{building_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateBuilding",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"constructionCompanyId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"commonExpenses\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/buildings/{{building_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"buildings",
+								"{{building_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBuilding",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/buildings/{{building_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"buildings",
+								"{{building_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administrator",
+			"item": [
+				{
+					"name": "CreateAdministrator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Marcela\",\r\n    \"lastname\": \"Gonzalez\",\r\n    \"email\": \"marcela@gmail.com\",\r\n    \"password\": \"marcela1234\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/administrators",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"administrators"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ConstructionCompany",
+			"item": [
+				{
+					"name": "GetAllConstructionCompanies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/construction-companies",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"construction-companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateConstructionCompany",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Builder Cat Company\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/construction-companies",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"construction-companies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flats",
+			"item": [
+				{
+					"name": "CreateFlat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"floor\": 2,\r\n  \"roomNumber\": 202,\r\n  \"ownerAssignedId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"totalRooms\": 4,\r\n  \"totalBaths\": 1,\r\n  \"hasTerrace\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/flats",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"flats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invitations",
+			"item": [
+				{
+					"name": "GetAllInvitations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/invitations?email=\"person@gmail.com\"",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"invitations"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "\"person@gmail.com\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateInvitation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"Someone\",\r\n  \"lastname\": \"Example\",\r\n  \"email\": \"someone@example.com\",\r\n  \"expirationDate\": \"2026-05-02T19:42:43.963Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/invitations",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"invitations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetInvitationByid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/invitations/{{invitation_Id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"invitations",
+								"{{invitation_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateInvitation",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/invitations/{{invitation_Id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"invitations",
+								"{{invitation_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteInvitationById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/invitations/{{invitation_Id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"invitations",
+								"{{invitation_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateInvitation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"invitation_id\", pm.response.json().id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Maria\",\r\n    \"lastname\": \"Alvarez\",\r\n    \"email\": \"some@gmail.com\",\r\n    \"expirationDate\": \"2025-08-02T19:42:43.963Z\",\r\n    \"Role\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/invitations",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"invitations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MaintenanceRequests",
+			"item": [
+				{
+					"name": "GetMaintenanceRequestByManagerId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/Maintenance/{{request_Id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"Maintenance",
+								"{{request_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMaintenanceRequestsByCategoryId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/maintenance/category/requests/{{category_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"maintenance",
+								"category",
+								"requests",
+								"{{category_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateMaintenanceRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Problem with cables on base\",\r\n  \"flatId\": \"075ab4a7-1304-4b0b-b83c-ff8035aee4cb\",\r\n  \"category\": \"a91e4b2f-f5e4-41e3-82d1-625ebf25f509\",\r\n  \"managerId\": \"e7503a12-821a-45f3-93f3-525ed1a79efd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/maintenance",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"maintenance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AssignMaintenanceRequest",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/maintenance/request-handler/requests?idOfRequestToUpdate=b1d9ff9d-ae9f-4fb2-a207-0415e3bc849c&idOfWorker=fe2e14d1-573a-4a8c-a665-03b5b2bc6fa3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"maintenance",
+								"request-handler",
+								"requests"
+							],
+							"query": [
+								{
+									"key": "idOfRequestToUpdate",
+									"value": "b1d9ff9d-ae9f-4fb2-a207-0415e3bc849c"
+								},
+								{
+									"key": "idOfWorker",
+									"value": "fe2e14d1-573a-4a8c-a665-03b5b2bc6fa3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMaintenanceRequestByRequestHandler",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/maintenance/request-handler/{{handler_id}}/requests",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"maintenance",
+								"request-handler",
+								"{{handler_id}}",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateMaintenanceRequestStatus",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"requestStatus\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/maintenance/requests/cbac019f-4e71-48fd-98d4-8a663a01f9d3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"maintenance",
+								"requests",
+								"cbac019f-4e71-48fd-98d4-8a663a01f9d3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMaintenanceRequestById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/maintenance/requests/{{request_Id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"maintenance",
+								"requests",
+								"{{request_Id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manager",
+			"item": [
+				{
+					"name": "CreateManager",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Maria\",\r\n  \"email\": \"some@gmail.com\",\r\n  \"password\": \"maria2009\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/managers?idOfInvitationAccepted=70f41d5a-7e3f-462b-8c90-aab31ed30870",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"managers"
+							],
+							"query": [
+								{
+									"key": "idOfInvitationAccepted",
+									"value": "70f41d5a-7e3f-462b-8c90-aab31ed30870"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllManagers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/managers",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"managers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteManager",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/managers/{{manager_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"managers",
+								"{{manager_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Owner",
+			"item": [
+				{
+					"name": "GetAllOwners",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/owners",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateOwner",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstname\": \"Olivia\",\r\n    \"lastname\": \"Brown\",\r\n    \"email\": \"olivia.brown@gmail.com\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/owners",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"owners"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateOwner",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"stringv\",\r\n  \"lastname\": \"stringe\",\r\n  \"email\": \"stringd@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/owners/{{owner_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"owners",
+								"{{owner_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOwnerById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/owners/{{owner_id}}",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"owners",
+								"{{owner_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "GetReportByBuildings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/buildings/maintenance-requests/reports/?managerId=3b34e318-b948-448f-ae08-3dcd397ea519&buildingId=00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"buildings",
+								"maintenance-requests",
+								"reports",
+								""
+							],
+							"query": [
+								{
+									"key": "managerId",
+									"value": "3b34e318-b948-448f-ae08-3dcd397ea519"
+								},
+								{
+									"key": "buildingId",
+									"value": "00000000-0000-0000-0000-000000000000"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByRequestHandler",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/request-handler/maintenance-requests/reports?requestHandlerId=00000000-0000-0000-0000-000000000000&buildingId=00000000-0000-0000-0000-000000000000&personId=e7503a12-821a-45f3-93f3-525ed1a79efd",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"request-handler",
+								"maintenance-requests",
+								"reports"
+							],
+							"query": [
+								{
+									"key": "requestHandlerId",
+									"value": "00000000-0000-0000-0000-000000000000"
+								},
+								{
+									"key": "buildingId",
+									"value": "00000000-0000-0000-0000-000000000000"
+								},
+								{
+									"key": "personId",
+									"value": "e7503a12-821a-45f3-93f3-525ed1a79efd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetReportByCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/categories/maintenance-requests/reports?buildignId=\"Guid\"&&categoryId=\"Guid\"",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"categories",
+								"maintenance-requests",
+								"reports"
+							],
+							"query": [
+								{
+									"key": "buildignId",
+									"value": "\"Guid\""
+								},
+								{
+									"key": null,
+									"value": null
+								},
+								{
+									"key": "categoryId",
+									"value": "\"Guid\""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RequestHandler",
+			"item": [
+				{
+					"name": "CreateRequestHandler",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"string\",\r\n  \"lastname\": \"string\",\r\n  \"email\": \"stringz@gmail.com\",\r\n  \"password\": \"strin11233213222g\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/request-handlers",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"request-handlers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "domain",
+			"value": "http://localhost:5082/api/v2"
+		},
+		{
+			"key": "request_Id",
+			"value": "Guid"
+		},
+		{
+			"key": "manager_id",
+			"value": "Guid"
+		},
+		{
+			"key": "category_id",
+			"value": "Guid"
+		},
+		{
+			"key": "handler_id",
+			"value": "Guid"
+		},
+		{
+			"key": "owner_id",
+			"value": "Guid"
+		}
+	]
+}
