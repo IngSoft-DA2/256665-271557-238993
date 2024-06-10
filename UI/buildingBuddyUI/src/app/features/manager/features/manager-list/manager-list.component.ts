@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { ManagerService } from '../../services/manager.service';
 import { Router } from '@angular/router';
 import { Manager } from '../../interfaces/manager';
+import { HttpParams } from '@angular/common/http';
+import { LoginService } from '../../../login/services/login.service';
+import { User } from '../../../login/interfaces/user';
+import { SystemUserRoleEnum } from '../../../invitation/interfaces/enums/system-user-role-enum';
 
 @Component({
   selector: 'app-manager-list',
@@ -14,9 +18,20 @@ import { Manager } from '../../interfaces/manager';
 export class ManagerListComponent 
 {
   managers : Manager[] = [];
+  userConnected?: User = undefined;
+  SystemUserRoleEnumValues = SystemUserRoleEnum;
 
-  constructor(private managerService : ManagerService, private router : Router)
+  constructor(private managerService : ManagerService, private router : Router, private loginService : LoginService)
   {
+    loginService.getUser().subscribe({
+      next: (response) => {
+        this.userConnected = response;
+        console.log("Usuario encontrado, valores: " + this.userConnected);
+      },
+      error: () => {
+        this.userConnected = undefined;
+      }
+    });
     this.getAllManagers();
   }
 
@@ -37,8 +52,9 @@ export class ManagerListComponent
 
   getBuildingsWhereManagerIsWorking(managerId : string) : void
   {
-    this.router.navigateByUrl(`managers/${managerId}/buildings`);
-    alert("To implement");
+    const queryParams = new HttpParams()
+    .set('managerId', managerId);
+    this.router.navigateByUrl(`buildings/list?${queryParams}`);
   }
 
   deleteManager(managerIdToDelete : string) : void

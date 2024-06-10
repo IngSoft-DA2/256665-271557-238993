@@ -80,11 +80,16 @@ public class ReportService : IReportService
             List<MaintenanceRequest> maintenanceRequestsFilteredBySelectedBuilding =
                 _reportRepository.GetMaintenanceReportByRequestHandler(reportHandlerId, buildingId, personId).ToList();
 
-            Dictionary<Guid, RequestHandlerReport> reportsDictionary = new Dictionary<Guid, RequestHandlerReport>();
+                Dictionary<Guid, RequestHandlerReport> reportsDictionary = new Dictionary<Guid, RequestHandlerReport>();
 
             foreach (MaintenanceRequest request in maintenanceRequestsFilteredBySelectedBuilding)
             {
-                Guid requestHandlerId = (Guid)request.RequestHandlerId;
+                Guid requestHandlerId = Guid.NewGuid();
+                if (request.RequestHandler != null)
+                {
+                    requestHandlerId = (Guid)request.RequestHandlerId;
+                }
+                
                 if (!reportsDictionary.ContainsKey(requestHandlerId))
                 {
                     reportsDictionary[requestHandlerId] = new RequestHandlerReport
@@ -108,7 +113,6 @@ public class ReportService : IReportService
     private static void AddByCorrespondingStatusOnRequestHandlerReport(MaintenanceRequest request,
         RequestHandlerReport handlerReport)
     {
-        handlerReport.IdOfResourceToReport = (Guid)request.RequestHandlerId;
         if (request.RequestStatus == RequestStatusEnum.Closed && request.ClosedDate != null &&
             request.OpenedDate != null)
         {

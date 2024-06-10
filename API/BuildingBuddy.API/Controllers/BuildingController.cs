@@ -39,7 +39,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpGet]
         [Route("{buildingId:Guid}")]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager, SystemUserRoleEnum.Admin)]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             return Ok(_buildingAdapter.GetBuildingById(buildingId));

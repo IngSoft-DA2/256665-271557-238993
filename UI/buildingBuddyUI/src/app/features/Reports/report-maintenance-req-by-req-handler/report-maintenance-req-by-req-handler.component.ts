@@ -105,15 +105,21 @@ export class ReportMaintenanceReqByReqHandlerComponent implements OnInit {
     if (requestHandlerFound) {
       return requestHandlerFound.name;
     }
-    return "";
+    return "No request handler assigned yet";
   }
 
   onChange(event: Event, type: 'building' | 'requestHandler') {
+    console.log(event);
     const target = event.target as HTMLSelectElement;
     if (type === 'building') {
       this.buildingIdSelected = target.value;
     } else if (type === 'requestHandler') {
       this.requestHandlerId = target.value;
+      this.loadReport();
+    }
+    else{
+      this.buildingIdSelected = "default";
+      this.requestHandlerId = "default";
       this.loadReport();
     }
     this.loadReport();

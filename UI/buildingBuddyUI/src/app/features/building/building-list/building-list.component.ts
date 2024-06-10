@@ -9,6 +9,7 @@ import { ConstructionCompany } from '../../constructionCompany/interfaces/constr
 import { ConstructionCompanyService } from '../../constructionCompany/services/construction-company.service';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 import { ManagerService } from '../../manager/services/manager.service';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-building-list',
@@ -24,14 +25,20 @@ export class BuildingListComponent {
   hasConstructionCompany: boolean = true;
   SystemUserRoleEnumValues = SystemUserRoleEnum;
   isDisplayed: boolean = false;
+  managerId: string = "";
 
   constructor(
     private buildingService: BuildingService,
     private constructionCompanyService: ConstructionCompanyService,
     private loginService: LoginService,
     private router: Router,
-    private managerService: ManagerService
+    private managerService: ManagerService,
+    private route: ActivatedRoute
   ) {
+
+    this.route.queryParams.subscribe(params => {
+      this.managerId = params['managerId'];
+    });
 
     this.loginService.getUser()
       .subscribe({
@@ -56,25 +63,47 @@ export class BuildingListComponent {
                 });
             } 
             else {
-              this.managerService.getManagerById(this.userLogged?.userId)
-                .subscribe({
-                  next: (Response) => {
-                    Response.buildingsId.forEach(buildingId => {
-                      this.buildingService.getBuildingById(buildingId)
-                        .subscribe({
-                          next: (Response) => {
-                            console.log(Response);
-                            this.buildings.push(Response);
-                          }
-                        })
-                    });
-                  },
-                  error: (errorMessage) => {
-                    alert(errorMessage.error);
-                    this.router.navigateByUrl('/home');
-                  }
-                });
-            }
+              if(this.managerId == ""){
+                this.managerService.getManagerById(this.userLogged?.userId)
+                  .subscribe({
+                    next: (Response) => {
+                      Response.buildingsId.forEach(buildingId => {
+                        this.buildingService.getBuildingById(buildingId)
+                          .subscribe({
+                            next: (Response) => {
+                              console.log(Response);
+                              this.buildings.push(Response);
+                            }
+                          })
+                      });
+                    },
+                    error: (errorMessage) => {
+                      alert(errorMessage.error);
+                      this.router.navigateByUrl('/home');
+                    }
+                  });
+              }
+              else{
+                this.managerService.getManagerById(this.managerId)
+                  .subscribe({
+                    next: (Response) => {
+                      Response.buildingsId.forEach(buildingId => {
+                        this.buildingService.getBuildingById(buildingId)
+                          .subscribe({
+                            next: (Response) => {
+                              console.log(Response);
+                              this.buildings.push(Response);
+                            }
+                          })
+                      });
+                    },
+                    error: (errorMessage) => {
+                      alert(errorMessage.error);
+                      this.router.navigateByUrl('/home');
+                    }
+                  });
+              }
+          }
           } else {
             this.router.navigateByUrl('/login');
           }
@@ -96,5 +125,12 @@ export class BuildingListComponent {
           alert("Cannot delete this building, communicate with an admin");
         }
       });
+  }
+
+  getOwnersByManagerRouteOnAdmin(): void {
+    const queryParams = new HttpParams()
+    .set('managerId', this.managerId);
+    alert(`owners/list?${queryParams}`);
+
   }
 }

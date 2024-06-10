@@ -184,7 +184,7 @@ const routes: Routes =
     path : 'buildings/list',
     component : BuildingListComponent,
     canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin, SystemUserRoleEnum.Manager]} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin, SystemUserRoleEnum.Manager, SystemUserRoleEnum.Admin]} 
   },
   {
     path : 'buildings/:buildingId/update',
@@ -214,13 +214,19 @@ const routes: Routes =
     path: 'buildings/:buildingId/owners',
     component : OwnerListComponent,
     canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Manager]}
+    data: { roles: [SystemUserRoleEnum.Manager, SystemUserRoleEnum.Admin]}
   },
   {
     path: 'owners/:ownerId/update',
     component : OwnerUpdateComponent,
     canActivate: [AuthGuard], 
     data: { roles: [SystemUserRoleEnum.Manager]}
+  },
+  {
+    path: 'owners/list',
+    component : OwnerListComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Admin]}
   },
   { path: '**', 
     redirectTo: 'home'

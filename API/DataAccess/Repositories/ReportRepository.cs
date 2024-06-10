@@ -73,12 +73,24 @@ public class ReportRepository : IReportRepository
             }
             else
             {
-                return _dbContext.Set<MaintenanceRequest>()
-                    .Where(mr => mr.ManagerId == personId && mr.Flat.BuildingId == buildingId)
-                    .Include(mr => mr.Category)
-                    .Include(mr => mr.Flat)
-                    .Include(mr => mr.Manager)
-                    .Include(mr => mr.RequestHandler).ToList();
+                if (buildingId == Guid.Empty)
+                {
+                    return _dbContext.Set<MaintenanceRequest>()
+                        .Where(mr => mr.ManagerId == personId)
+                        .Include(mr => mr.Category)
+                        .Include(mr => mr.Flat)
+                        .Include(mr => mr.Manager)
+                        .Include(mr => mr.RequestHandler).ToList();
+                }
+                else
+                {
+                    return _dbContext.Set<MaintenanceRequest>()
+                        .Where(mr => mr.ManagerId == personId && mr.Flat.BuildingId == buildingId)
+                        .Include(mr => mr.Category)
+                        .Include(mr => mr.Flat)
+                        .Include(mr => mr.Manager)
+                        .Include(mr => mr.RequestHandler).ToList();   
+                }
             }
         }
         catch (Exception exceptionCaught)

@@ -31,7 +31,7 @@ namespace BuildingBuddy.API.Controllers
         public IActionResult CreateFlat([FromBody] CreateFlatRequest flatToCreate)
         {
             
-            _flatAdapter.CreateFlat(flatToCreate);
+            _flatAdapter.CreateFlat(flatToCreate);  
             return Accepted(new {message = "Flat accepted, and it will be processed on the building creation stage"});
             
         }

@@ -76,7 +76,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Get Maintenance Requests By Request Handler
         
-        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager, SystemUserRoleEnum.RequestHandler)]
         [HttpGet]
         [Route("request-handler/{handlerId:Guid}/requests")]
         public IActionResult GetMaintenanceRequestByRequestHandler([FromRoute] Guid handlerId)
@@ -106,7 +106,7 @@ namespace BuildingBuddy.API.Controllers
 
         #region Get Maintenance Request By Id
         
-        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager, SystemUserRoleEnum.RequestHandler)]
         [HttpGet]
         [Route("requests/{id:Guid}")]
         public IActionResult GetMaintenanceRequestById(Guid id)

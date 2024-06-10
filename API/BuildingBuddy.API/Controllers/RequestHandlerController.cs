@@ -8,7 +8,6 @@ using WebModel.Responses.RequestHandlerResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v2/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase
@@ -27,6 +26,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Request Handler
 
         [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.Manager)]
         public IActionResult CreateRequestHandler([FromBody] CreateRequestHandlerRequest requestHandlerRequest)
         {
             CreateRequestHandlerResponse response =
@@ -40,6 +40,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get all Request Handlers
 
         [HttpGet]
+        [AuthenticationFilter(SystemUserRoleEnum.RequestHandler, SystemUserRoleEnum.Manager)]
         public IActionResult GetAllRequestHandlers()
         {
             return Ok(_requestHandlerAdapter.GetAllRequestHandlers());

@@ -17,7 +17,7 @@ public class AuthenticationFilter : Attribute, IActionFilter
     
     public void OnActionExecuting(ActionExecutingContext context)
     {
-        string authHeader = context.HttpContext.Request.Headers["Authorization"];
+            string authHeader = context.HttpContext.Request.Headers["Authorization"];
 
         if (authHeader is null)
         {
