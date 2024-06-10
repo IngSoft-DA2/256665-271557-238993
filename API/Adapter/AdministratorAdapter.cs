@@ -32,7 +32,7 @@ public class AdministratorAdapter : IAdministratorAdapter
             {
                 Id = Guid.NewGuid(),
                 Firstname = request.Firstname,
-                LastName = request.Lastname,
+                Lastname = request.Lastname,
                 Email = request.Email,
                 Password = request.Password,
                 Role = SystemUserRoleEnum.Admin
