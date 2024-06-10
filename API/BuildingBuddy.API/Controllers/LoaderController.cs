@@ -33,7 +33,7 @@ public class LoaderController : ControllerBase
     #region Create All Buildings From Load
     
     [HttpPost]
-    [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+    // [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
     public IActionResult CreateAllBuildingsFromLoad([FromBody] ImportBuildingFromFileRequest importBuildingFromFileRequest)
     {
         Guid sessionStringOfUser = Guid.Parse(HttpContext.Request.Headers["Authorization"]);

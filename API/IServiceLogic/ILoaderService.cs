@@ -6,6 +6,5 @@ namespace IServiceLogic;
 
 public interface ILoaderService
 {
-    public CreateBuildingFromLoadResponse CreateBuildingFromLoad(CreateLoaderRequest createLoaderRequest);
-    public List<ILoader> GetAllImporters(); 
+    public List<ILoader> GetAllLoaders(); 
 }
