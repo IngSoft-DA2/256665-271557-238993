@@ -60,7 +60,7 @@ export class ManagerCreateComponent
       .subscribe({
         next: () => {
           alert("You are now a manager");
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/login');
         },
         error(errorMessage)
         {

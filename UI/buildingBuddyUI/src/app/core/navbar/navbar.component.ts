@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { SystemUserRoleEnum } from "../../features/invitation/interfaces/enums/system-user-role-enum";
 import { User } from "../../features/login/interfaces/user";
 import { LoginService } from "../../features/login/services/login.service";
+import { HttpParams } from "@angular/common/http";
 
 
 @Component({
@@ -40,5 +41,14 @@ export class NavbarComponent {
     this.loginService.removeUserConnected()
     this.router.navigateByUrl('/');
     this.InLoginPage = false;
+  }
+
+  goToBuildingCustomList(): void {
+    const queryParams = new HttpParams()
+    .set('managerId', this.userConnected?.userId ?? '');
+
+    this.router.navigateByUrl('/buildings/list?${queryParams}');
+
+    this.router.navigateByUrl(`/buildings/list?${queryParams}`);
   }
 }

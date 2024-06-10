@@ -78,8 +78,7 @@ export class BuildingListComponent {
                       });
                     },
                     error: (errorMessage) => {
-                      alert(errorMessage.error);
-                      this.router.navigateByUrl('/home');
+                      console.log(errorMessage.error);
                     }
                   });
               }
@@ -98,8 +97,7 @@ export class BuildingListComponent {
                       });
                     },
                     error: (errorMessage) => {
-                      alert(errorMessage.error);
-                      this.router.navigateByUrl('/home');
+                      console.log(errorMessage.error);
                     }
                   });
               }

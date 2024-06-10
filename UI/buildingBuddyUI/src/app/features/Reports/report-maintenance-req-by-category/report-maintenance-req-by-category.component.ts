@@ -80,7 +80,21 @@ export class ReportMaintenanceReqByCategoryComponent {
     this.categoryService.getAllCategories()
       .subscribe({
         next: (response) => {
-          this.categories = response;
+          // Obtener solo las categorías principales
+          const mainCategories = response.map(category => {
+            return {
+              id: category.id,
+              name: category.name,
+              // Puedes añadir más propiedades aquí si es necesario
+            };
+          });
+  
+          // Obtener todas las subcategorías y fusionarlas en una sola lista
+          const subcategories = response.flatMap(category => category.subCategories !== undefined ? category.subCategories : []);
+  
+          // Fusionar las categorías principales y las subcategorías en una sola lista
+          this.categories = [...mainCategories, ...subcategories];
+  
           console.log(this.categories);
         },
         error: (error) => {

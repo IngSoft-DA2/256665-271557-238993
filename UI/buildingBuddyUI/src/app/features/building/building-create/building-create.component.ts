@@ -135,7 +135,6 @@ export class BuildingCreateComponent {
 
     this.flatMockUp.floor = 0,
       this.flatMockUp.roomNumber = '1A',
-      this.flatMockUp.ownerAssignedId = 'default',
       this.flatMockUp.totalRooms = 0,
       this.flatMockUp.totalBaths = 0,
       this.flatMockUp.hasTerrace = true

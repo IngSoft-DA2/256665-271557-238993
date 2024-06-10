@@ -26,7 +26,7 @@ export class InvitationCreateComponent {
       firstname: '',
       lastname: '',
       email: '',
-      expirationDate: new Date('9999/12/30'),
+      expirationDate: new Date(new Date().setDate(new Date().getDate() + 1)),
       role: SystemUserRoleEnum.Manager
     }
   }

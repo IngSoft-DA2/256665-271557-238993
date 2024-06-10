@@ -41,9 +41,9 @@
 
     </div>
   
-    <div class="container"  *ngIf="userLogged.userRole === SystemUserRoleEnumValues.Manager || userLogged.userRole === SystemUserRoleEnumValues.Admin && buildings.length != 0; else noBuildingsForManager" >
+    <div class="container"  *ngIf="(userLogged.userRole === SystemUserRoleEnumValues.Manager || userLogged.userRole === SystemUserRoleEnumValues.Admin) && buildings.length != 0; else noBuildingsForManager" >
 
-        <table class="table table-striped table-bordered tableClass mt-4" >
+        <table class="table table-striped table-bordered tableClass mt-4">
             <thead>
                 <tr>
                     <th>Building Name</th>
@@ -55,7 +55,7 @@
                 <tr *ngFor="let building of buildings">
                     <td>{{building.name}}</td>
                     <td>{{building.address}}</td>
-                    <td >
+                    <td>
                         <button class="btn btn-info" [routerLink]="['/buildings', building.id, 'owners']"> View Owners
                         </button>
                     </td>

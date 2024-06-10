@@ -64,15 +64,11 @@ const routes: Routes =
   },
   {
     path: 'managers/create',
-    component : ManagerCreateComponent,
-    canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Admin]} 
+    component : ManagerCreateComponent
   },
   {
     path: 'constructionCompanyAdmin/create',
-    component : ConstructionCompanyAdminCreateByInvitationComponent,
-    canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
+    component : ConstructionCompanyAdminCreateByInvitationComponent
   },
   {
     path: '',
@@ -80,9 +76,7 @@ const routes: Routes =
   },
   {
     path: 'admins/create',
-    component : AdminCreateComponent,
-    canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Admin]} 
+    component : AdminCreateComponent
   },
   {
     path: 'maintenance-requests/list',
