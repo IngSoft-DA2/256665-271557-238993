@@ -8,6 +8,6 @@ namespace IAdapter;
 public interface ILoaderAdapter
 {
     public List<string> GetAllLoaders();
-    public List<CreateBuildingFromLoadResponse> CreateAllBuildingsFromLoad(CreateLoaderRequest createLoaderRequest);
-
+    public List<CreateBuildingFromLoadResponse> CreateAllBuildingsFromLoad(
+        ImportBuildingFromFileRequest importBuildingFromFileRequestWithSettings, Guid sessionStringOfUser);
 }

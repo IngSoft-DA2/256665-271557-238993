@@ -186,4 +186,31 @@ public class SessionService : ISessionService
     }
 
     #endregion
+    
+    #region Get user id by session string
+    
+    public Guid GetUserIdBySessionString(Guid sessionStringOfUser)
+    {
+        try
+        {
+            Session? session = _sessionRepository.GetSessionBySessionString(sessionStringOfUser);
+
+            if (session is null)
+            {
+                throw new ObjectNotFoundServiceException();
+            }
+
+            return session.UserId;
+        }
+        catch (ObjectNotFoundServiceException)
+        {
+            throw new ObjectNotFoundServiceException();
+        }
+        catch (Exception exceptionCaught)
+        {
+            throw new UnknownServiceException(exceptionCaught.Message);
+        }
+    }
+    
+    #endregion
 }

@@ -11,7 +11,7 @@ using WebModel.Responses.LoaderReponses;
 namespace BuildingBuddy.API.Controllers;
 
 [ExceptionFilter]
-[Route("api/v1/loaders")]
+[Route("api/v2/loaders/buildings")]
 [ApiController]
 public class LoaderController : ControllerBase
 {
@@ -34,9 +34,10 @@ public class LoaderController : ControllerBase
     
     [HttpPost]
     [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
-    public IActionResult CreateAllBuildingsFromLoad([FromBody] CreateLoaderRequest createLoaderRequest)
+    public IActionResult CreateAllBuildingsFromLoad([FromBody] ImportBuildingFromFileRequest importBuildingsFromFileRequest)
     {
-        List<CreateBuildingFromLoadResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(createLoaderRequest);
+        Guid sessionStringOfUser = Guid.Parse(HttpContext.Request.Headers["Authorization"]);
+        List<CreateBuildingFromLoadResponse> response = _loaderAdapter.CreateAllBuildingsFromLoad(importBuildingsFromFileRequest, sessionStringOfUser);
         return Ok(response);
     }
     

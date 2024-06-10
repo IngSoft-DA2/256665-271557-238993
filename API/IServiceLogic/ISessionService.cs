@@ -10,4 +10,5 @@ public interface ISessionService
     public bool IsSessionValid(Guid sessionString);
     public SystemUserRoleEnum GetUserRoleBySessionString(Guid sessionStringOfUser);
     public bool IsUserAuthenticated(string email);
+    public Guid GetUserIdBySessionString(Guid sessionStringOfUser);
 }

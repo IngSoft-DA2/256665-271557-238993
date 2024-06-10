@@ -1,4 +1,5 @@
-﻿using Adapter.CustomExceptions;
+﻿using Adapter;
+using Adapter.CustomExceptions;
 using ILoaders;
 using IServiceLogic;
 using Moq;
@@ -44,6 +45,8 @@ public class LoaderAdapterTest
         {
             createBuildingFromLoadResponse
         };
+        
+        
 
         _mockLoader.Setup(loader => loader.LoaderName()).Returns(loaderName);
         _mockLoader.Setup(loader => loader.LoadAllBuildings(filePath)).Returns(createBuildingFromLoadResponses);
