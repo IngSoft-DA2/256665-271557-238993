@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240529004916_AddingConstructionCompanyAdminDbSet")]
-    partial class AddingConstructionCompanyAdminDbSet
+    [Migration("20240610143320_Initial_Migration")]
+    partial class Initial_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,11 +87,19 @@ namespace DataAccess.Migrations
                     b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("Domain.Category", b =>
+            modelBuilder.Entity("Domain.CategoryComponent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CategoryFatherId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CategoryType")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -99,16 +107,19 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryFatherId");
+
                     b.ToTable("Categories");
+
+                    b.HasDiscriminator<string>("CategoryType").HasValue("CategoryComponent");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.ConstructionCompany", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ConstructionCompanyAdminId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -120,10 +131,6 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConstructionCompanyAdminId")
-                        .IsUnique()
-                        .HasFilter("[ConstructionCompanyAdminId] IS NOT NULL");
-
                     b.ToTable("ConstructionCompany");
                 });
 
@@ -131,6 +138,9 @@ namespace DataAccess.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ConstructionCompanyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -154,6 +164,8 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ConstructionCompanyId");
+
                     b.ToTable("ConstructionCompanyAdmins");
                 });
 
@@ -172,11 +184,12 @@ namespace DataAccess.Migrations
                     b.Property<bool>("HasTerrace")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("OwnerId")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("RoomNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("RoomNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TotalBaths")
                         .HasColumnType("int");
@@ -392,6 +405,20 @@ namespace DataAccess.Migrations
                     b.ToTable("Sessions");
                 });
 
+            modelBuilder.Entity("Domain.Category", b =>
+                {
+                    b.HasBaseType("Domain.CategoryComponent");
+
+                    b.HasDiscriminator().HasValue("Leaf");
+                });
+
+            modelBuilder.Entity("Domain.CategoryComposite", b =>
+                {
+                    b.HasBaseType("Domain.CategoryComponent");
+
+                    b.HasDiscriminator().HasValue("Composite");
+                });
+
             modelBuilder.Entity("Domain.Building", b =>
                 {
                     b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
@@ -411,11 +438,21 @@ namespace DataAccess.Migrations
                     b.Navigation("Manager");
                 });
 
-            modelBuilder.Entity("Domain.ConstructionCompany", b =>
+            modelBuilder.Entity("Domain.CategoryComponent", b =>
                 {
-                    b.HasOne("Domain.ConstructionCompanyAdmin", null)
-                        .WithOne("ConstructionCompany")
-                        .HasForeignKey("Domain.ConstructionCompany", "ConstructionCompanyAdminId");
+                    b.HasOne("Domain.CategoryComposite", null)
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryFatherId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Domain.ConstructionCompanyAdmin", b =>
+                {
+                    b.HasOne("Domain.ConstructionCompany", "ConstructionCompany")
+                        .WithMany()
+                        .HasForeignKey("ConstructionCompanyId");
+
+                    b.Navigation("ConstructionCompany");
                 });
 
             modelBuilder.Entity("Domain.Flat", b =>
@@ -428,7 +465,9 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Owner", "OwnerAssigned")
                         .WithMany("Flats")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OwnerAssigned");
                 });
@@ -502,11 +541,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Buildings");
                 });
 
-            modelBuilder.Entity("Domain.ConstructionCompanyAdmin", b =>
-                {
-                    b.Navigation("ConstructionCompany");
-                });
-
             modelBuilder.Entity("Domain.Manager", b =>
                 {
                     b.Navigation("Buildings");
@@ -517,6 +551,11 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Domain.Owner", b =>
                 {
                     b.Navigation("Flats");
+                });
+
+            modelBuilder.Entity("Domain.CategoryComposite", b =>
+                {
+                    b.Navigation("SubCategories");
                 });
 #pragma warning restore 612, 618
         }

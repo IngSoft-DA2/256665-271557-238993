@@ -124,7 +124,7 @@ const routes: Routes =
   path: 'reports/list',
   component: ReportsListComponent, 
   canActivate: [AuthGuard], 
-  data: { roles: [SystemUserRoleEnum.Admin,SystemUserRoleEnum.Manager]} 
+  data: { roles: [SystemUserRoleEnum.Admin, SystemUserRoleEnum.Manager]} 
   },
   {
   path: 'reports/requests-by-building',

@@ -181,7 +181,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("HasTerrace")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("OwnerId")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RoomNumber")
@@ -462,7 +462,9 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Domain.Owner", "OwnerAssigned")
                         .WithMany("Flats")
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OwnerAssigned");
                 });
