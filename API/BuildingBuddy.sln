@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDataAccess", "IDataAccess\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILoaders", "ILoaders\ILoaders.csproj", "{4EDE0FDF-84CA-4499-AD91-ACA9C501004F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoaderXML", "LoaderXML\LoaderXML.csproj", "{0008DEE4-9CCF-4408-AD35-559D29001401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoaderJSON", "LoaderJSON\LoaderJSON.csproj", "{21C2BCB5-5DF7-4C7F-B431-E891C85E492F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +88,13 @@ Global
 		{4EDE0FDF-84CA-4499-AD91-ACA9C501004F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EDE0FDF-84CA-4499-AD91-ACA9C501004F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EDE0FDF-84CA-4499-AD91-ACA9C501004F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0008DEE4-9CCF-4408-AD35-559D29001401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0008DEE4-9CCF-4408-AD35-559D29001401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0008DEE4-9CCF-4408-AD35-559D29001401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0008DEE4-9CCF-4408-AD35-559D29001401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21C2BCB5-5DF7-4C7F-B431-E891C85E492F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21C2BCB5-5DF7-4C7F-B431-E891C85E492F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21C2BCB5-5DF7-4C7F-B431-E891C85E492F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21C2BCB5-5DF7-4C7F-B431-E891C85E492F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
