@@ -18,14 +18,4 @@ export class ConstructionCompanyAdminService
     return this.http.post<ConstructionCompanyAdminCreateResponse>(`${environment.apiBaseUrl}/api/v2/ConstructionCompanyAdmins?addAuth=true`,createRequest);
   }
 
-  getConstructionCompanyAdmin(userId: string) 
-  {
-    return this.http.get<ConstructionCompanyAdmin>(`${environment.apiBaseUrl}/api/v2/ConstructionCompanyAdmins/${userId}`);
-  }
-
-
-
-
-
-
 }

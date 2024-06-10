@@ -15,7 +15,7 @@ export class InvitationService {
 
   getAllInvitations() : Observable<Invitation[]>
   {
-    return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/invitations`);
+    return this.http.get<Invitation[]>(`${environment.apiBaseUrl}/api/v2/invitations?addAuth=true`);
   }
 
   getInvitationsByEmail(email : string) : Observable<Invitation[]>
@@ -31,12 +31,12 @@ export class InvitationService {
 
   getInvitationById(id:string) : Observable<Invitation>
   {
-    return this.http.get<Invitation>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`)
+    return this.http.get<Invitation>(`${environment.apiBaseUrl}/api/v2/invitations/${id}?addAuth=true`)
   }
 
   updateInvitation(id:string, request : invitationUpdateRequest) : Observable<void>
   {
-    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/invitations/${id}`,request)
+    return this.http.put<void>(`${environment.apiBaseUrl}/api/v2/invitations/${id}?addAuth=true`,request)
   }
 
   createInvitation(request : invitationCreateRequest) : Observable<string>

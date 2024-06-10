@@ -6,7 +6,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./core/home/home.component";
 import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
-import { ErrorInterceptor } from "./core/interceptors/forbidden-handler.interceptor";
 import { NavbarComponent } from "./core/navbar/navbar.component";
 import { AssignMaintenanceRequestComponent } from "./features/MaintenanceRequest/assign-maintenance-request/assign-maintenance-request.component";
 import { CompleteMaintenanceRequestComponent } from "./features/MaintenanceRequest/complete-maintenance-request/complete-maintenance-request.component";
@@ -40,6 +39,7 @@ import { ReportMaintenanceReqByCategoryComponent } from "./features/Reports/repo
 import { ReportMaintenanceRequestsByFlatComponent } from "./features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component";
 import { OwnerListComponent } from './features/owner/owner-list/owner-list.component';
 import { OwnerUpdateComponent } from './features/owner/owner-update/owner-update.component';
+import ForbiddenHandlerInterceptor from "./core/interceptors/forbidden-handler.interceptor";
 
 
 
@@ -96,7 +96,7 @@ import { OwnerUpdateComponent } from './features/owner/owner-update/owner-update
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
+      useClass: ForbiddenHandlerInterceptor,
       multi: true
     }
   ],
