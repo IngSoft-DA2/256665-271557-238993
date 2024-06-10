@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_Migration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -282,6 +282,11 @@ namespace DataAccess.Migrations
                         principalTable: "RequestHandlers",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Administrators",
+                columns: new[] { "Id", "Email", "Firstname", "Lastname", "Password", "Role" },
+                values: new object[] { new Guid("e1a402b9-6760-46bc-8362-7cfdeda9f162"), "seedAdmin@example.com", "seedAdminName", "seedAdminLastName", "seedAdminPassword", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Buildings_ConstructionCompanyId",
