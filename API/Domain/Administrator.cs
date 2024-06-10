@@ -5,7 +5,7 @@ namespace Domain;
 public class Administrator : SystemUser
 {
     #region Properties
-    public string LastName { get; set; }
+    public string Lastname { get; set; }
     public IEnumerable<Invitation> Invitations { get; set; } = new List<Invitation>();
     
     #endregion
@@ -16,7 +16,7 @@ public class Administrator : SystemUser
         Administrator? administratorToCompare = objectToCompare as Administrator;
 
         return Id == administratorToCompare.Id && Firstname == administratorToCompare.Firstname &&
-               LastName == administratorToCompare.LastName && Email == administratorToCompare.Email;
+               Lastname == administratorToCompare.Lastname && Email == administratorToCompare.Email;
     }
 
     #region Validators
@@ -41,7 +41,7 @@ public class Administrator : SystemUser
 
     private void LastnameValidator()
     {
-        if (string.IsNullOrEmpty(LastName))
+        if (string.IsNullOrEmpty(Lastname))
         {
             throw new InvalidAdministratorException("Last name is required");
         }

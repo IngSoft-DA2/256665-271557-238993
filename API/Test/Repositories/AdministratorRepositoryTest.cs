@@ -38,7 +38,7 @@ public class AdministratorRepositoryTest
                 Id = Guid.NewGuid(),
                 Role = SystemUserRoleEnum.Admin,
                 Firstname = "Administrator1",
-                LastName = "Administrator1",
+                Lastname = "Administrator1",
                 Email = "administrator@gmail.com",
                 Password = "password",
                 Invitations = new List<Invitation>
@@ -59,7 +59,7 @@ public class AdministratorRepositoryTest
                 Id = Guid.NewGuid(),
                 Role = SystemUserRoleEnum.Admin,
                 Firstname = "Administrator2",
-                LastName = "Administrator2",
+                Lastname = "Administrator2",
                 Email = "administrato2@gmail.com",
                 Password = "password2",
             }
@@ -93,7 +93,7 @@ public class AdministratorRepositoryTest
             Id = Guid.NewGuid(),
             Role = SystemUserRoleEnum.Admin,
             Firstname = "Administrator1",
-            LastName = "Administrator1",
+            Lastname = "Administrator1",
             Email = "admin@gmail.com",
             Password = "password",
             Invitations = new List<Invitation>()

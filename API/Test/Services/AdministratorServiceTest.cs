@@ -25,7 +25,7 @@ public class AdministratorServiceTest
         {
             Id = Guid.NewGuid(),
             Firstname = "Administrator",
-            LastName = "AdministratorLastName",
+            Lastname = "AdministratorLastName",
             Email = "person@gmail.com",
             Password = "12345678"
         };
@@ -91,7 +91,7 @@ public class AdministratorServiceTest
     [TestMethod]
     public void GivenNullLastNameOnCreate_ShouldThrowObjectErrorServiceException()
     {
-        _genericAdministrator.LastName = null;
+        _genericAdministrator.Lastname = null;
 
         _administratorRepository.Setup(repo => repo.CreateAdministrator(_genericAdministrator))
             .Throws(new InvalidAdministratorException("Last name is required"));

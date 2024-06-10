@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DbContexts;
@@ -30,17 +31,31 @@ public class ApplicationDbContext : DbContext
             .WithMany(m => m.Requests)
             .HasForeignKey(mr => mr.ManagerId)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
         modelBuilder.Entity<CategoryComponent>()
             .HasDiscriminator<string>("CategoryType")
             .HasValue<Category>("Leaf")
             .HasValue<CategoryComposite>("Composite");
-        
+
         modelBuilder.Entity<CategoryComposite>()
             .HasMany(c => c.SubCategories)
             .WithOne()
             .HasForeignKey(c => c.CategoryFatherId)
             .OnDelete(DeleteBehavior.Restrict);
-      
-    }
+
+        var adminId = new Guid("E1A402B9-6760-46BC-8362-7CFDEDA9F162"); 
+        modelBuilder.Entity<Administrator>().HasData(
+            new Administrator()
+            {
+                Id = adminId,
+                Firstname = "seedAdminName",
+                Lastname = "seedAdminLastName",
+                Email = "seedAdmin@example.com",
+                Password = "seedAdminPassword",
+                Role = SystemUserRoleEnum.Admin,
+                Invitations = new List<Invitation>()
+            });
+        }
+    
+    
 }
