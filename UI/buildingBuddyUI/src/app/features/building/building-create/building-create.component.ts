@@ -17,6 +17,7 @@ import { ManagerService } from '../../manager/services/manager.service';
 export class BuildingCreateComponent {
 
   showOwnerCreation: boolean = false;
+  ownerId: string = 'default';
 
   buildingToCreate: BuildingCreateRequest = {
     managerId: '',
@@ -134,7 +135,7 @@ export class BuildingCreateComponent {
 
     this.flatMockUp.floor = 0,
       this.flatMockUp.roomNumber = '1A',
-      this.flatMockUp.ownerAssignedId = '',
+      this.flatMockUp.ownerAssignedId = 'default',
       this.flatMockUp.totalRooms = 0,
       this.flatMockUp.totalBaths = 0,
       this.flatMockUp.hasTerrace = true

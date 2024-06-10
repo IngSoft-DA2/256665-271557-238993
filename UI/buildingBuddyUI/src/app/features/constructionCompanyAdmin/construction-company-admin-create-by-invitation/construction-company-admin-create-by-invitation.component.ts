@@ -84,7 +84,7 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
     }
     else {
       alert("You do not have the necessary role to enter here, redirecting");
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/login');
     }
 
   }

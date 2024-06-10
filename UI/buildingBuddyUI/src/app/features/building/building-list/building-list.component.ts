@@ -23,6 +23,7 @@ export class BuildingListComponent {
   constructionCompanyOfUser: ConstructionCompany | undefined = undefined;
   hasConstructionCompany: boolean = true;
   SystemUserRoleEnumValues = SystemUserRoleEnum;
+  isDisplayed: boolean = false;
 
   constructor(
     private buildingService: BuildingService,
@@ -75,8 +76,7 @@ export class BuildingListComponent {
                 });
             }
           } else {
-            alert("User not found, redirecting");
-            this.router.navigateByUrl('/home');
+            this.router.navigateByUrl('/login');
           }
         }
       });

@@ -24,7 +24,6 @@ export class ConstructionCompanyListComponent implements OnInit {
         this.userLogged = Response;
       },
       error: () => {
-        alert("User was not found, redirecting");
         this.router.navigateByUrl('/login');
       }
     })

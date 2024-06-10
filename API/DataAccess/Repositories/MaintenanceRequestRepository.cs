@@ -45,6 +45,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
                         .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
                         .Include(maintenanceRequest => maintenanceRequest.Manager)
                         .ToList();
+
                 }
             }
             else

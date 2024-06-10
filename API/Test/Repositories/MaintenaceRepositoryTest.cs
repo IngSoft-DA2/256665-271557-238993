@@ -63,7 +63,15 @@ public class MaintenaceRepositoryTest
             {
                 Id = Guid.NewGuid(),
                 BuildingId = Guid.NewGuid(),
-                RoomNumber = "302"
+                RoomNumber = "302",
+                OwnerAssigned = new Owner()
+                {
+                    Id = Guid.NewGuid(), 
+                    Firstname= "Owner",
+                    Lastname = "Owner",
+                    Email = "some@gmail.com",
+                    Flats = new List<Flat>()
+                }
             },
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
@@ -98,7 +106,15 @@ public class MaintenaceRepositoryTest
             {
                 Id = Guid.NewGuid(),
                 BuildingId = Guid.NewGuid(),
-                RoomNumber = "301"
+                RoomNumber = "301",
+                OwnerAssigned = new Owner()
+                {
+                    Id = Guid.NewGuid(), 
+                    Firstname= "Ownerb",
+                    Lastname = "Ownerb",
+                    Email = "someb@gmail.com",
+                    Flats = new List<Flat>()
+                }
             },
             ClosedDate = DateTime.Now.AddDays(1),
             OpenedDate = DateTime.Now,
@@ -149,7 +165,7 @@ public class MaintenaceRepositoryTest
         _dbContext.Set<MaintenanceRequest>().Add(_maintenanceRequestInDb2);
         _dbContext.SaveChanges();
 
-        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(null, It.IsAny<Guid>());
+        IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(null, Guid.NewGuid());
 
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
     }
@@ -167,7 +183,7 @@ public class MaintenaceRepositoryTest
         IEnumerable<MaintenanceRequest> maintenanceRequestsResponse = _maintenanceRequestRepository.GetAllMaintenanceRequests(_maintenanceRequestInDb.ManagerId, It.IsAny<Guid>());
 
         Assert.IsTrue(expectedMaintenanceRequests.SequenceEqual(maintenanceRequestsResponse));
-    }
+    }   
 
     [TestMethod]
     public void GetAllMaintenanceRequests_ThrowsUnknownException()

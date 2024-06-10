@@ -23,16 +23,14 @@ public class MaintenanceRequest
         MaintenanceRequest? maintenanceRequestToCompare = obj as MaintenanceRequest;
 
         return Id == maintenanceRequestToCompare.Id &&
-               Description == maintenanceRequestToCompare.Description && FlatId == maintenanceRequestToCompare.FlatId &&
+               Description == maintenanceRequestToCompare.Description && 
+               FlatId == maintenanceRequestToCompare.FlatId &&
                OpenedDate == maintenanceRequestToCompare.OpenedDate &&
                ClosedDate == maintenanceRequestToCompare.ClosedDate &&
                RequestHandlerId == maintenanceRequestToCompare.RequestHandlerId &&
                CategoryId == maintenanceRequestToCompare.CategoryId &&
-               RequestStatus == maintenanceRequestToCompare.RequestStatus &&
-               Category == maintenanceRequestToCompare.Category &&
-               CategoryId == maintenanceRequestToCompare.CategoryId &&
-               RequestHandler == maintenanceRequestToCompare.RequestHandler &&
-               Manager == maintenanceRequestToCompare.Manager && ManagerId == maintenanceRequestToCompare.ManagerId;
+               ManagerId == maintenanceRequestToCompare.ManagerId && 
+               RequestStatus == maintenanceRequestToCompare.RequestStatus;
     }
 
     public void MaintenanceRequestValidator()
