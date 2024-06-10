@@ -6,7 +6,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./core/home/home.component";
 import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
-import { ErrorInterceptor } from "./core/interceptors/forbidden-handler.interceptor";
 import { NavbarComponent } from "./core/navbar/navbar.component";
 import { AssignMaintenanceRequestComponent } from "./features/MaintenanceRequest/assign-maintenance-request/assign-maintenance-request.component";
 import { CompleteMaintenanceRequestComponent } from "./features/MaintenanceRequest/complete-maintenance-request/complete-maintenance-request.component";
@@ -38,7 +37,13 @@ import { ReportMaintenanceRequestsByBuildingComponent } from "./features/Reports
 import { ReportMaintenanceReqByReqHandlerComponent } from "./features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component";
 import { ReportMaintenanceReqByCategoryComponent } from "./features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component";
 import { ReportMaintenanceRequestsByFlatComponent } from "./features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component";
+<<<<<<< HEAD
 import { BuildingImportComponent } from './features/building/building-import/building-import.component';
+=======
+import { OwnerListComponent } from './features/owner/owner-list/owner-list.component';
+import { OwnerUpdateComponent } from './features/owner/owner-update/owner-update.component';
+import ForbiddenHandlerInterceptor from "./core/interceptors/forbidden-handler.interceptor";
+>>>>>>> develop
 
 
 
@@ -78,7 +83,12 @@ import { BuildingImportComponent } from './features/building/building-import/bui
     ReportMaintenanceReqByReqHandlerComponent,
     ReportMaintenanceReqByCategoryComponent,
     ReportMaintenanceRequestsByFlatComponent,
+<<<<<<< HEAD
     BuildingImportComponent
+=======
+    OwnerListComponent,
+    OwnerUpdateComponent
+>>>>>>> develop
   ],
   imports: [
     BrowserModule,
@@ -94,7 +104,7 @@ import { BuildingImportComponent } from './features/building/building-import/bui
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
+      useClass: ForbiddenHandlerInterceptor,
       multi: true
     }
   ],

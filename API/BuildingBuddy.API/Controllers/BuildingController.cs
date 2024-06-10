@@ -27,7 +27,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Buildings
 
         [HttpGet]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllBuildings([FromQuery] Guid userId)
         {
             return Ok(_buildingAdapter.GetAllBuildings(userId));
@@ -39,7 +39,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpGet]
         [Route("{buildingId:Guid}")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager)]
         public IActionResult GetBuildingById([FromRoute] Guid buildingId)
         {
             return Ok(_buildingAdapter.GetBuildingById(buildingId));
@@ -51,7 +51,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpPut]
         [Route("{buildingId:Guid}")]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult UpdateBuildingById([FromRoute] Guid buildingId,
             [FromBody] UpdateBuildingRequest buildingWithUpdates)
         {
@@ -64,7 +64,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Building
 
         [HttpPost]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult CreateBuilding([FromBody] CreateBuildingRequest request)
         {
             CreateBuildingResponse response = _buildingAdapter.CreateBuilding(request);
@@ -76,7 +76,7 @@ namespace BuildingBuddy.API.Controllers
         #region Delete Building
 
         [HttpDelete]
-        //[AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
         [Route("{buildingId:Guid}")]
         public IActionResult DeleteBuildingById([FromRoute] Guid buildingId)
         {

@@ -1,6 +1,7 @@
 using BuildingBuddy.API.Filters;
 using Domain.Enums;
 using IAdapter;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ConstructionCompanyAdminRequests;
 using WebModel.Responses.ConstructionCompanyAdminResponses;
@@ -8,9 +9,12 @@ using WebModel.Responses.ConstructionCompanyAdminResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [Route("api/v2/ConstructionCompanyAdmins")]
+    [ExceptionFilter]
     [ApiController]
     public class ConstructionCompanyAdminController : ControllerBase
     {
+        #region Constructor And Dependency Injector
+
         private IConstructionCompanyAdminAdapter _constructionCompanyAdminAdapter;
 
         public ConstructionCompanyAdminController(IConstructionCompanyAdminAdapter constructionCompanyAdminAdapter)
@@ -18,35 +22,28 @@ namespace BuildingBuddy.API.Controllers
             _constructionCompanyAdminAdapter = constructionCompanyAdminAdapter;
         }
 
+        #endregion
+
+        #region Create Construction Company Admin
+
         [HttpPost]
         public IActionResult CreateConstructionCompanyAdmin(
             [FromBody] CreateConstructionCompanyAdminRequest createRequest)
         {
-            SystemUserRoleEnum? userRole = null;
-
-            if (HttpContext.Items.TryGetValue("UserRole", out var userRoleObj) && userRoleObj is string userRoleStr)
+            if (createRequest.UserRole != null && createRequest.UserRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
             {
-                ObjectResult notAllowedResponse = new ObjectResult("");
-                if (Enum.TryParse(userRoleStr, out SystemUserRoleEnum parsedUserRole))
+                var notAllowedResponse = new ObjectResult("Only ConstructionCompanyAdmin people are allowed.")
                 {
-                    if (parsedUserRole != SystemUserRoleEnum.ConstructionCompanyAdmin)
-                    {
-                        notAllowedResponse.Value = "Only ConstructionCompanyAdmin people is allowed.";
-                        notAllowedResponse.StatusCode = 403;
-                        return notAllowedResponse;
-                    }
-                    userRole = parsedUserRole;
-                }
-                else
-                {
-                    notAllowedResponse.Value = "Error while authorizing.";
-                    notAllowedResponse.StatusCode = 401;
-                    return notAllowedResponse;
-                }
+                    StatusCode = 403
+                };
+                return notAllowedResponse;
             }
 
-            CreateConstructionCompanyAdminResponse response = _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, userRole);
+            CreateConstructionCompanyAdminResponse response =
+                _constructionCompanyAdminAdapter.CreateConstructionCompanyAdmin(createRequest, createRequest.UserRole);
             return CreatedAtAction(nameof(CreateConstructionCompanyAdmin), new { id = response.Id }, response);
         }
+
+        #endregion
     }
 }

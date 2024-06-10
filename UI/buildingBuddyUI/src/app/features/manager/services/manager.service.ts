@@ -16,7 +16,7 @@ export class ManagerService {
   createManager(managerToCreate: ManagerCreateRequest, idOfInvitationAccepted : string) : Observable<ManagerCreateResponse>
   {
     const params = new HttpParams().set('idOfInvitationAccepted', idOfInvitationAccepted);
-    return this.http.post<ManagerCreateResponse>(`${environment.apiBaseUrl}/api/v2/managers?addAuth=true`,managerToCreate, {params});
+    return this.http.post<ManagerCreateResponse>(`${environment.apiBaseUrl}/api/v2/managers`,managerToCreate, {params});
   }
 
   getAllManagers() : Observable<Manager[]>
@@ -26,12 +26,12 @@ export class ManagerService {
 
   getManagerById(managerId: string) : Observable<Manager>
   {
-    return this.http.get<Manager>(`${environment.apiBaseUrl}/api/v2/managers/${managerId}`);
+    return this.http.get<Manager>(`${environment.apiBaseUrl}/api/v2/managers/${managerId}?addAuth=true`);
   }
 
   deleteManager(managerId: string)  : Observable<void>
   {
-    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/managers?addAuth=true/${managerId}`)
+    return this.http.delete<void>(`${environment.apiBaseUrl}/api/v2/managers?addAuth=true/${managerId}?addAuth=true`)
   }
 
 

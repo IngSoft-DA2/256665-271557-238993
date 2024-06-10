@@ -322,6 +322,9 @@ public class BuildingAdapterTest
             .Returns(new ConstructionCompany());
         _ownerService.Setup(ownerService => ownerService.GetOwnerById(It.IsAny<Guid>()))
             .Returns(new Owner());
+        
+        _managerService.Setup(ownerService => ownerService.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
@@ -345,6 +348,7 @@ public class BuildingAdapterTest
         _constructionCompanyService.VerifyAll();
         _ownerService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
 
         Assert.IsNotNull(buildingResponse);
         Assert.IsInstanceOfType<Guid>(buildingResponse.Id);
@@ -360,6 +364,8 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
+        _managerService.Setup(ownerService => ownerService.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
@@ -371,6 +377,7 @@ public class BuildingAdapterTest
 
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
     }
 
     [TestMethod]
@@ -383,6 +390,8 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
+        _managerService.Setup(ownerService => ownerService.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
@@ -393,6 +402,7 @@ public class BuildingAdapterTest
 
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
     }
 
     [TestMethod]
@@ -405,6 +415,9 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
+        
+        _managerService.Setup(ownerService => ownerService.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
@@ -416,6 +429,7 @@ public class BuildingAdapterTest
 
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
     }
 
     [TestMethod]
@@ -428,6 +442,9 @@ public class BuildingAdapterTest
             .Setup(constructionCompanyService =>
                 constructionCompanyService.GetConstructionCompanyById(It.IsAny<Guid>()))
             .Returns(new ConstructionCompany());
+        
+        _managerService.Setup(ownerService => ownerService.GetManagerById(It.IsAny<Guid>()))
+            .Returns(new Manager());
 
         CreateBuildingRequest dummyCreateRequest = new CreateBuildingRequest();
         LocationRequest dummyLocationRequest = new LocationRequest();
@@ -438,6 +455,8 @@ public class BuildingAdapterTest
 
         _constructionCompanyService.VerifyAll();
         _buildingService.VerifyAll();
+        _managerService.VerifyAll();
+        
     }
 
     #endregion

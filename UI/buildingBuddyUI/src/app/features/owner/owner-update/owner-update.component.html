@@ -1,0 +1,35 @@
+<div class="container">
+    <h1 class="mt-3">Update Owner</h1>
+
+    <form #form="ngForm" (ngSubmit)="updateOwner()">
+        <div class="mt-2">
+            <div class="mt-3">
+                <label for="ownerFirstname" class="form-label">Owner Firstname</label>
+                <br>
+                <input type="text" id="ownerFirstname" class="form-control" 
+                       name="ownerFirstname" [(ngModel)]="ownerToUpdate.firstname">
+            </div>
+
+            <div class="mt-3">
+                <label for="ownerLastname" class="form-label">Owner Lastname</label>
+                <br>
+                <input type="text" id="ownerLastname" class="form-control" 
+                       name="ownerLastname" [(ngModel)]="ownerToUpdate.lastname">
+            </div>
+
+            <div class="mt-3">
+                <label for="ownerEmail" class="form-label">Owner Email</label>
+                <br>
+                <input type="email" id="ownerEmail" name="ownerEmail" class="form-control"
+                       [(ngModel)]="ownerToUpdate.email">
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Update Owner</button>
+                <a type="button" class="btn btn-info ms-3" [routerLink]="['/buildings/' ,buildingId, 'owners']">Go back</a>
+            </div>
+        </div>
+    </form>
+    <br>
+    
+</div>                                   

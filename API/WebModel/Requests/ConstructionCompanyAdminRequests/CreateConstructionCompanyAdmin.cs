@@ -1,3 +1,5 @@
+using Domain.Enums;
+
 namespace WebModel.Requests.ConstructionCompanyAdminRequests;
 
 public class CreateConstructionCompanyAdminRequest
@@ -7,4 +9,6 @@ public class CreateConstructionCompanyAdminRequest
     public string Email { get; set; }
     public string Password { get; set; }
     public Guid? InvitationId { get; set; } = null;
+
+    public SystemUserRoleEnum? UserRole { get; set; } = null;
 }

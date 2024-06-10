@@ -8,17 +8,23 @@ using WebModel.Responses.RequestHandlerResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    //[AuthenticationFilter(SystemUserRoleEnum.Manager)]
+    [AuthenticationFilter(SystemUserRoleEnum.Manager)]
     [Route("api/v2/request-handlers")]
     [ApiController]
     public class RequestHandlerController : ControllerBase
     {
+        #region Constructor and Dependency Injector
+
         private readonly IRequestHandlerAdapter _requestHandlerAdapter;
 
         public RequestHandlerController(IRequestHandlerAdapter requestHandlerAdapter)
         {
             _requestHandlerAdapter = requestHandlerAdapter;
         }
+
+        #endregion
+
+        #region Create Request Handler
 
         [HttpPost]
         public IActionResult CreateRequestHandler([FromBody] CreateRequestHandlerRequest requestHandlerRequest)
@@ -28,11 +34,17 @@ namespace BuildingBuddy.API.Controllers
             return CreatedAtAction(nameof(CreateRequestHandler),
                 new { id = response.Id }, response);
         }
-        
+
+        #endregion
+
+        #region Get all Request Handlers
+
         [HttpGet]
         public IActionResult GetAllRequestHandlers()
         {
             return Ok(_requestHandlerAdapter.GetAllRequestHandlers());
         }
+
+        #endregion
     }
 }

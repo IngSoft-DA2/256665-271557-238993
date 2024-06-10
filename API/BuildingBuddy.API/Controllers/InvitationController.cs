@@ -27,13 +27,13 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Invitations
 
         [HttpGet]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         public IActionResult GetAllInvitations()
         {
             return Ok(_invitationAdapter.GetAllInvitations());
         }
 
         [HttpGet]
-        //[AllowAnonymous]
         [Route("guest")]
         public IActionResult GetInvitationsByEmail([FromQuery] string email)
         {
@@ -44,6 +44,8 @@ namespace BuildingBuddy.API.Controllers
 
         #region Get Invitation By Id
 
+        [AuthenticationFilter(SystemUserRoleEnum.Admin, SystemUserRoleEnum.ConstructionCompanyAdmin,
+            SystemUserRoleEnum.Manager)]
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetInvitationById([FromRoute] Guid id)
@@ -56,6 +58,7 @@ namespace BuildingBuddy.API.Controllers
         #region Create Invitation
 
         [HttpPost]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         public IActionResult CreateInvitation([FromBody] CreateInvitationRequest request)
         {
             CreateInvitationResponse response = _invitationAdapter.CreateInvitation(request);
@@ -67,6 +70,7 @@ namespace BuildingBuddy.API.Controllers
         #region Update Invitation
 
         [HttpPut]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("{id:Guid}")]
         public IActionResult UpdateInvitation([FromRoute] Guid id, [FromBody] UpdateInvitationRequest request)
         {
@@ -79,6 +83,7 @@ namespace BuildingBuddy.API.Controllers
         #region Delete Invitation
 
         [HttpDelete]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         [Route("{id:Guid}")]
         public IActionResult DeleteInvitation([FromRoute] Guid id)
         {

@@ -6,6 +6,8 @@ import { constructionCompanyAdminCreateRequest } from '../interfaces/constructio
 import { ConstructionCompanyAdminService } from '../services/construction-company-admin.service';
 import { SystemUserRoleEnum } from '../../invitation/interfaces/enums/system-user-role-enum';
 import { StatusEnum } from '../../invitation/interfaces/enums/status-enum';
+import { LoginService } from '../../login/services/login.service';
+import { User } from '../../login/interfaces/user';
 
 @Component({
   selector: 'app-construction-company-admin-create-by-invitation',
@@ -15,11 +17,10 @@ import { StatusEnum } from '../../invitation/interfaces/enums/status-enum';
 export class ConstructionCompanyAdminCreateByInvitationComponent {
 
   invitationOfUser?: Invitation
-  hasInvitation : boolean = false;
-  hasValidRole : boolean = true;
-  
+  hasInvitation: boolean = false;
+  hasValidRole: boolean = false;
   invitationId: string = '';
-  userRole?: SystemUserRoleEnum = SystemUserRoleEnum.ConstructionCompanyAdmin; //To do: We need to implement how to get the user role.
+  userLogged?: User;
 
   constructionCompanyAdminToCreate: constructionCompanyAdminCreateRequest =
     {
@@ -33,16 +34,23 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   constructor(
     private invitationService: InvitationService,
     private constructionCompanyAdminService: ConstructionCompanyAdminService,
-    private router: Router, private route: ActivatedRoute
+    private router: Router,
+    private route: ActivatedRoute,
+    private loginService: LoginService
   ) {
+
+    this.loginService.getUser()
+      .subscribe({
+        next: (Response) => {
+          this.userLogged = Response;
+        }
+      })
 
     this.route.queryParams.subscribe({
       next: (queryParams) => {
-        this.invitationId = queryParams['idOfInvitationAccepted']    
-        alert(this.invitationId)
+        this.invitationId = queryParams['idOfInvitationAccepted']
       }
     });
-
     if (this.invitationId !== undefined) {
       this.invitationService.getInvitationById(this.invitationId)
         .subscribe({
@@ -59,7 +67,7 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
               };
               this.hasInvitation = true;
             }
-            else{
+            else {
               alert("Invitation was found, but it status needs to be pending. Redirecting...");
               this.router.navigateByUrl('/');
             }
@@ -71,11 +79,10 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
           }
         })
     }
-    else if (this.userRole === SystemUserRoleEnum.ConstructionCompanyAdmin) {
+    else if (this.userLogged?.userRole === SystemUserRoleEnum.ConstructionCompanyAdmin) {
       this.hasValidRole = true;
-      
     }
-    else{
+    else {
       alert("You do not have the necessary role to enter here, redirecting");
       this.router.navigateByUrl('/');
     }
@@ -83,14 +90,19 @@ export class ConstructionCompanyAdminCreateByInvitationComponent {
   }
 
   createConstructionCompanyAdmin(): void {
-    if (this.invitationOfUser || this.userRole == SystemUserRoleEnum.ConstructionCompanyAdmin) {
+    if (this.invitationOfUser || this.userLogged?.userRole == SystemUserRoleEnum.ConstructionCompanyAdmin) {
+
+      if (this.invitationOfUser == undefined) {
+        this.constructionCompanyAdminToCreate.userRole = SystemUserRoleEnum.ConstructionCompanyAdmin;
+      }
+
       this.constructionCompanyAdminService.createConstructionCompanyAdmin(this.constructionCompanyAdminToCreate)
         .subscribe({
           next: () => {
             alert("You are now a construction company admin!");
             this.router.navigateByUrl('/');
           },
-          error(errorMessage) {
+          error: (errorMessage) => {
             alert(errorMessage.error);
           }
         });

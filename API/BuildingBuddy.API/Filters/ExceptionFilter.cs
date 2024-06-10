@@ -19,7 +19,7 @@ public class ExceptionFilter : ExceptionFilterAttribute
         }
         else if (context.Exception is ObjectRepeatedAdapterException)
         {
-            context.Result = new ObjectResult(new { Message = "Object already exists" }) { StatusCode = 304 };
+            context.Result = new ConflictObjectResult("This already exists");
         }
         else if (context.Exception is InvalidCredentialException)
         {

@@ -337,6 +337,7 @@ public class MaintenaceRepositoryTest
     }
 
     #endregion
+    
     [TestCleanup]
     public void TestCleanup()
     {

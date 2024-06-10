@@ -12,14 +12,13 @@ import { User } from '../interfaces/user';
 export class LoginService {
 
   private userConnected: User | undefined = undefined;
-
-  private userSubject = new BehaviorSubject<User | undefined>(this.userConnected);
+  private userSubject = new BehaviorSubject<User | undefined>(this.getUserFromLocalStorage());
   user$ = this.userSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/v2/sessions?addAuth=true`, loginRequest);
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/v2/sessions`, loginRequest);
   }
 
   storageUserValues(loginRequestValues: LoginRequest, responseOfApi: LoginResponse) {
@@ -31,8 +30,8 @@ export class LoginService {
       userRole: responseOfApi.userRole
     };
 
-
     this.userSubject.next(this.userConnected);
+    localStorage.setItem('user', JSON.stringify(this.userConnected)); 
     console.log(this.userConnected);
   }
 
@@ -50,10 +49,13 @@ export class LoginService {
         next: () => {
           this.userConnected = undefined;
           this.userSubject.next(this.userConnected);
+          localStorage.removeItem('user'); 
         }
-      })
-
+      });
   }
 
-
+  private getUserFromLocalStorage(): User | undefined {
+    const userJson = localStorage.getItem('user');
+    return userJson ? JSON.parse(userJson) : undefined;
+  }
 }

@@ -8,7 +8,7 @@ using WebModel.Responses.AdministratorResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    //[AuthenticationFilter(SystemUserRoleEnum.Admin)]
+    [AuthenticationFilter(SystemUserRoleEnum.Admin)]
     [Route("api/v2/administrators")]
     [ApiController]
     public class AdministratorController : ControllerBase

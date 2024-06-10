@@ -1,4 +1,5 @@
 using BuildingBuddy.API.Filters;
+using Domain.Enums;
 using IAdapter;
 using Microsoft.AspNetCore.Mvc;
 using WebModel.Requests.ManagerRequests;
@@ -25,6 +26,7 @@ namespace BuildingBuddy.API.Controllers
         #region Get All Managers
 
         [HttpGet]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin,SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetAllManagers()
         {
             return Ok(_managerAdapter.GetAllManagers());
@@ -33,9 +35,10 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region Delete Manager
-
+        
         [HttpDelete]
         [Route("{managerId:Guid}")]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin)]
         public IActionResult DeleteManagerById([FromRoute] Guid managerId)
         {
             _managerAdapter.DeleteManagerById(managerId);
@@ -47,7 +50,8 @@ namespace BuildingBuddy.API.Controllers
         #region Create Manager
 
         [HttpPost]
-        public IActionResult CreateManager([FromBody] CreateManagerRequest createRequest, [FromQuery] Guid idOfInvitationAccepted)
+        public IActionResult CreateManager([FromBody] CreateManagerRequest createRequest,
+            [FromQuery] Guid idOfInvitationAccepted)
         {
             CreateManagerResponse adapterResponse =
                 _managerAdapter.CreateManager(createRequest, idOfInvitationAccepted);
@@ -57,15 +61,16 @@ namespace BuildingBuddy.API.Controllers
 
         #endregion
 
-        #region  Get Manager By Id
-        
+        #region Get Manager By Id
+
         [HttpGet]
         [Route("{managerId:Guid}")]
+        [AuthenticationFilter(SystemUserRoleEnum.Admin,SystemUserRoleEnum.ConstructionCompanyAdmin)]
         public IActionResult GetManagerById([FromRoute] Guid managerId)
         {
             return Ok(_managerAdapter.GetManagerById(managerId));
         }
-        
+
         #endregion
     }
 }
