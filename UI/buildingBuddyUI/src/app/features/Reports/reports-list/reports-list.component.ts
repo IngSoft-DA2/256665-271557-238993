@@ -24,7 +24,6 @@ export class ReportsListComponent {
         this.userConnected = Response
         if(this.userConnected){
           this.managerId = this.userConnected.userId;
-          alert("Usuario encontrado, valores: " + this.managerId)
         }
         console.log("Usuario encontrado, valores: " + this.userConnected)
       },

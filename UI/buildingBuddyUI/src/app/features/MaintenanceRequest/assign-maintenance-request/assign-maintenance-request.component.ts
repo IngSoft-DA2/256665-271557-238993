@@ -85,16 +85,21 @@ export class AssignMaintenanceRequestComponent implements OnInit, AfterContentIn
   }
 
   assignMaintenanceRequest(): void {
+    if(this.requestHandlerId === "default") {
+      alert("Please select a request handler");
+    }
+    else{
     this.maintenanceRequestService.assignMaintenanceRequest(this.maintenanceRequestToUpdate.id, this.requestHandlerId)
       .subscribe({
         next: (response) => {
-          alert(" Maintenance request updated successfully");
+          alert(" Maintenance request assigned successfully");
           this.goToMaintenanceRequestList();
         },
         error: (error) => {
-          alert("Error on update, please check the request");
+          alert("Error on assign, please check the request");
         }
       });
+    }
   }
 
   goToMaintenanceRequestList(): void {

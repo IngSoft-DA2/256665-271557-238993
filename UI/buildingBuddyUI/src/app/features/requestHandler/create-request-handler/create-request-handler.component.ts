@@ -15,14 +15,19 @@ export class CreateRequestHandlerComponent{
   constructor(private requestHandlerService: RequestHandlerService, private router: Router) { }
 
   createRequestHandler(): void { 
+    if(!this.requestHandlerToCreate.firstname || !this.requestHandlerToCreate.email || !this.requestHandlerToCreate.password){
+      alert("Please fill all the fields");
+    }
+    else{
     this.requestHandlerService.createRequestHandler(this.requestHandlerToCreate).subscribe({
       next: (response) => {
-        alert("RequestHandler created: " + response);
+        alert("RequestHandler created successfully");
       },
       error: (error) => {
         alert("Error creating RequestHandler: " + error);
       }
     });
+  }
   }
 
   goToHome(): void {
