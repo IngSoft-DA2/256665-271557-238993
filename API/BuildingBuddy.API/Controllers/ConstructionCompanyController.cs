@@ -9,7 +9,7 @@ using WebModel.Responses.ConstructionCompanyResponses;
 namespace BuildingBuddy.API.Controllers
 {
     [ExceptionFilter]
-    [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
+    // [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin)]
     [Route("api/v2")]
     [ApiController]
     public class ConstructionCompanyController : ControllerBase

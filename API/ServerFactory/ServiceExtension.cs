@@ -53,6 +53,8 @@ public static class ServiceExtension
         services.AddScoped<IConstructionCompanyAdminAdapter, ConstructionCompanyAdminAdapter>();
         services.AddScoped<IConstructionCompanyAdminService, ConstructionCompanyAdminService>();
         services.AddScoped<IConstructionCompanyAdminRepository, ConstructionCompanyAdminRepository>();
+        services.AddScoped<ILoaderAdapter, LoaderAdapter>();
+        services.AddScoped<ILoaderService, LoaderService>();
     }
 
     public static void AddConnectionString(this IServiceCollection serviceCollection, string connectionString)

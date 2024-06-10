@@ -27,6 +27,7 @@ public class LoaderXML : ILoader
             {
                 Building newBuilding = new Building()
                 {
+                    Id = Guid.NewGuid(),
                     Name = building.Nombre,
                     Address =
                         $"{building.Direccion.CallePrincipal}, {building.Direccion.NumeroPuerta}, {building.Direccion.CalleSecundaria}",
@@ -39,13 +40,15 @@ public class LoaderXML : ILoader
                         Latitude = building.Gps.Latitud,
                         Longitude = building.Gps.Longitud
                     },
-                    CommonExpenses = building.GastosComunes
+                    CommonExpenses = building.GastosComunes,
+                    Flats = new List<Flat>()
                 };
 
                 foreach (FlatXML flat in building.Departamentos)
                 {
                     newBuilding.Flats.Append(new Flat()
                     {
+                        Id = Guid.NewGuid(),
                         Floor = flat.Piso,
                         RoomNumber = flat.NumeroPuerta.ToString(),
                         TotalRooms = flat.Habitaciones,
@@ -53,6 +56,7 @@ public class LoaderXML : ILoader
                         HasTerrace = flat.ConTerraza,
                         OwnerAssigned = new Owner()
                         {
+                            Id = Guid.NewGuid(),
                             Email = flat.PropietarioEmail
                         }
                     });

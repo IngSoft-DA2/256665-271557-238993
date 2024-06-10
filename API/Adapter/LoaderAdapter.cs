@@ -72,25 +72,30 @@ public class LoaderAdapter : ILoaderAdapter
 
                 foreach (Building building in buildingsFromFile)
                 {
-                    if (building.Manager != null)
+                    if (building.Manager.Email != null)
                     {
                         Manager buildingManager = new Manager()
                         {
+                            Id =Guid.NewGuid(),
                             Email = building.Manager.Email
                         };
-                            // managers.First(manager => manager.Email == building.Manager.Email);
                         
                         building.Manager = buildingManager;
+                        building.ManagerId = buildingManager.Id;
                         building.ConstructionCompany = adminConstructionCompany;
+                        building.ConstructionCompanyId = adminConstructionCompany.Id;
                         
                         foreach (Flat flat in building.Flats)
                         {
-                            // Owner flatOwner = owners.First(owner => owner.Email == flat.OwnerAssigned.Email);
-                            Owner flatOwner = new Owner()
+                            if (flat.OwnerAssigned.Email != null)
                             {
-                                Email = flat.OwnerAssigned.Email,
-                            };
-                            flat.OwnerAssigned = flatOwner;
+                                Owner flatOwner = new Owner()
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Email = flat.OwnerAssigned.Email,
+                                };
+                                flat.OwnerAssigned = flatOwner;
+                            }
                         }
                     
                         _buildingService.CreateBuilding(building);

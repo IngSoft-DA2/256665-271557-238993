@@ -31,6 +31,7 @@ public class LoaderJson : ILoader
             {
                 Building newBuilding = new Building()
                 {
+                    Id = Guid.NewGuid(),
                     Name = building.Nombre,
                     Address =
                         $"{building.Direccion.CallePrincipal}, {building.Direccion.NumeroPuerta}, {building.Direccion.CalleSecundaria}",
@@ -43,20 +44,24 @@ public class LoaderJson : ILoader
                         Latitude = building.Gps.Latitud,
                         Longitude = building.Gps.Longitud
                     },
-                    CommonExpenses = building.GastosComunes
+                    CommonExpenses = building.GastosComunes,
+                    Flats = new List<Flat>()
                 };
 
                 foreach (FlatJson flat in building.Departamentos)
                 {
                     newBuilding.Flats.Append(new Flat()
                     {
+                        Id =Guid.NewGuid(),
                         Floor = flat.Piso,
                         RoomNumber = flat.NumeroPuerta.ToString(),
                         TotalRooms = flat.Habitaciones,
                         TotalBaths = flat.Banos,
                         HasTerrace = flat.ConTerraza,
+                        BuildingId = newBuilding.Id,
                         OwnerAssigned = new Owner()
                         {
+                            Id = Guid.NewGuid(),
                             Email = flat.PropietarioEmail,
                         }
                     });
@@ -68,7 +73,7 @@ public class LoaderJson : ILoader
         }
         catch (Exception exceptionCaught)
         {
-            throw new Exception("Error loading buildings from JSON");
+            throw new Exception("Error loading buildings from JSON: " + exceptionCaught.Message);
         }
 
         return buildings;
