@@ -1,7 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpInterceptorFn } from '@angular/common/http';
 
-import { forbiddenHandlerInterceptor } from './forbidden-handler.interceptor';
+
+import { HttpInterceptorFn } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { ForbiddenHandlerInterceptor } from './forbidden-handler.interceptor';
 
 describe('forbiddenHandlerInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) => 

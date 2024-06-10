@@ -113,6 +113,11 @@ export class CreateMaintenanceRequestComponent implements OnInit {
 
   createMaintenanceRequest(): void {
     this.maintenanceCreateRequest.description = this.description;
+    if(this.flatId === "" || this.category === "" || this.managerId === "") {
+      alert("Please fill all the fields");
+      return;
+    }
+
     this.maintenanceCreateRequest.flatId = this.flatId;
     this.maintenanceCreateRequest.category = this.category;
     this.maintenanceCreateRequest.managerId = this.managerId;
@@ -123,7 +128,8 @@ export class CreateMaintenanceRequestComponent implements OnInit {
         this.router.navigate(['../list'], {relativeTo: this.route});
       },
       error: (error) => {
-        alert("Error on maintenance request creation");
+        console.error("Error on maintenance request creation:", error);
+        alert("Error on maintenance request creation " + error.error);
       }
     });
   }

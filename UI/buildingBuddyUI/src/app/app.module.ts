@@ -38,6 +38,7 @@ import { ReportMaintenanceRequestsByBuildingComponent } from "./features/Reports
 import { ReportMaintenanceReqByReqHandlerComponent } from "./features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component";
 import { ReportMaintenanceReqByCategoryComponent } from "./features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component";
 import { ReportMaintenanceRequestsByFlatComponent } from "./features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component";
+import { BuildingImportComponent } from './features/building/building-import/building-import.component';
 
 
 
@@ -76,7 +77,8 @@ import { ReportMaintenanceRequestsByFlatComponent } from "./features/Reports/rep
     ReportMaintenanceRequestsByBuildingComponent,
     ReportMaintenanceReqByReqHandlerComponent,
     ReportMaintenanceReqByCategoryComponent,
-    ReportMaintenanceRequestsByFlatComponent
+    ReportMaintenanceRequestsByFlatComponent,
+    BuildingImportComponent
   ],
   imports: [
     BrowserModule,
