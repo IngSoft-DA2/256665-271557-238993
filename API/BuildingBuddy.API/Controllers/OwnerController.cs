@@ -64,7 +64,7 @@ namespace BuildingBuddy.API.Controllers
 
         [HttpGet]
         [Route("{ownerId:Guid}")]
-        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager)] 
+        [AuthenticationFilter(SystemUserRoleEnum.ConstructionCompanyAdmin,SystemUserRoleEnum.Manager, SystemUserRoleEnum.Admin)] 
         public IActionResult GetOwnerById(Guid ownerId)
         {
             return Ok(_ownerAdapter.GetOwnerById(ownerId));

@@ -41,7 +41,7 @@
                                 <hr class="dropdown-divider">
                             </li>
 
-                            <li><a class="dropdown-item" [routerLink]="['reports']">Reports Section</a></li>
+                            <li><a class="dropdown-item" [routerLink]="['reports/list']">Reports Section</a></li>
                         </ul>
                     </li>
                 </ng-container>
@@ -89,7 +89,7 @@
                         </a>
                         <ul class="dropdown-menu">
 
-                            <li><a class="dropdown-item" [routerLink]="['buildings/list']">Building Section</a></li>
+                            <li><button class="dropdown-item" (click)="goToBuildingCustomList()">Building Section</button></li>
 
                             <li>
                                 <hr class="dropdown-divider">
@@ -123,9 +123,6 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" [routerLink]="['maintenance-requests/list-by-request-handler']">Maintenance Requests Section</a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                         </ul>
                     </li>
                 </ng-container>
@@ -136,7 +133,3 @@
         <button class="btn btn-outline-danger ms-3 " (click)="logout()"> Logout </button>
     </div>
 </nav>
-
-<div class="d-flex me-3" style="float: right;" *ngIf="!InLoginPage">
-    <button (click)="goToLoginPage()" class="btn btn-primary">Login</button>
-</div>

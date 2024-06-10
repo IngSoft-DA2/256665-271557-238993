@@ -7,5 +7,4 @@ import { FlatCreateRequest } from '../interfaces/flat-create-request';
   styleUrl: './flat-create.component.css'
 })
 export class FlatCreateComponent {
-
 }

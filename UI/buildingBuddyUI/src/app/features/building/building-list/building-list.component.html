@@ -1,12 +1,11 @@
 <div class="container"
-    *ngIf="buildings.length > 0 && userLogged !== undefined; else noBuildings">
+    *ngIf="userLogged !== undefined">
 
     <div class="mt-5">
         <h1> Building List</h1>
     </div>
-
     <div class="container" *ngIf="userLogged.userRole === SystemUserRoleEnumValues.ConstructionCompanyAdmin">
-        <table class="table table-striped table-bordered tableClass mt-4" *ngIf="constructionCompanyOfUser; else noBuildings">
+        <table class="table table-striped table-bordered tableClass mt-4" *ngIf="constructionCompanyOfUser && buildings.length != 0; else noBuildingsForConstructionCompanyAdmin">
             <thead>
                 <tr>
                     <th>Building Name</th>
@@ -34,20 +33,22 @@
             <div class="mt-3">
                 <a type="button" class="btn btn-success" [routerLink]="['/buildings',constructionCompanyOfUser.id,'create']">
                     Create Building + </a>
+
+                <a type="button" class="btn btn-success custom-button" [routerLink]="['/buildings/import']">
+                    Import Buildings + </a>
             </div>
         </table>
 
     </div>
   
-    <div class="container"  *ngIf="userLogged.userRole === SystemUserRoleEnumValues.Manager">
+    <div class="container"  *ngIf="(userLogged.userRole === SystemUserRoleEnumValues.Manager || userLogged.userRole === SystemUserRoleEnumValues.Admin) && buildings.length != 0; else noBuildingsForManager" >
 
-        <table class="table table-striped table-bordered tableClass mt-4" *ngIf="userLogged.userRole === SystemUserRoleEnumValues.Manager">
+        <table class="table table-striped table-bordered tableClass mt-4">
             <thead>
                 <tr>
                     <th>Building Name</th>
                     <th>Building Address</th>
                     <th>View Owners</th>
-                    <th>Maintenace Request Section</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,8 +66,8 @@
 </div>
 
 
-<ng-template #noBuildings>
-    <div class="d-flex justify-content-center" *ngIf="userLogged">
+<ng-template #noBuildingsForConstructionCompanyAdmin>
+    <div class="d-flex justify-content-center" *ngIf="userLogged && userLogged.userRole === SystemUserRoleEnumValues.ConstructionCompanyAdmin">
 
         <div *ngIf="hasConstructionCompany">
             <div class="alert alert-warning mt-5" style="text-align: center;">
@@ -74,6 +75,9 @@
             </div>
             <a [routerLink]="constructionCompanyOfUser ? ['/buildings', constructionCompanyOfUser.id, 'create'] : ['/construction-companies/create']"
                 class="btn btn-success">Create Building +</a>
+
+            <a type="button" class="btn btn-success custom-button" [routerLink]="['/buildings/import']">
+                Import Buildings + </a>
         </div>
 
         <div *ngIf="!hasConstructionCompany">
@@ -84,5 +88,17 @@
                 +</a>
         </div>
 
+    </div>
+</ng-template>
+
+
+<ng-template #noBuildingsForManager>
+    <div class="d-flex justify-content-center" *ngIf="userLogged  && userLogged.userRole === SystemUserRoleEnumValues.Manager">
+
+        <div *ngIf="hasConstructionCompany">
+            <div class="alert alert-warning mt-5" style="text-align: center;">
+                <h4>There are no buildings at the moment</h4>
+            </div>
+        </div>
     </div>
 </ng-template>

@@ -26,6 +26,7 @@ export class MaintenanceRequestService {
     const params = new HttpParams()
     .set('managerId', managerId)
     .set('categoryId', categoryId);
+
     return this.http.get<MaintenanceRequest[]>(`${environment.apiBaseUrl}/api/v2/maintenance/requests?addAuth=true`, {params});
   }
 

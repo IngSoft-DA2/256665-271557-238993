@@ -20,7 +20,7 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
 
     #region Get All Maintenance Requests
 
-    public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
+public IEnumerable<MaintenanceRequest> GetAllMaintenanceRequests(Guid? managerId, Guid categoryId)
     {
         try
         {
@@ -30,7 +30,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
                 {
                     return _context.Set<MaintenanceRequest>()
                         .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId && maintenanceRequest.CategoryId == categoryId)
-                        .Include(maintenanceRequest => maintenanceRequest.Category)
                         .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                         .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
                         .Include(maintenanceRequest => maintenanceRequest.Manager)
@@ -40,7 +39,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
                 {
                     return _context.Set<MaintenanceRequest>()
                         .Where(maintenanceRequest => maintenanceRequest.ManagerId == managerId)
-                        .Include(maintenanceRequest => maintenanceRequest.Category)
                         .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                         .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
                         .Include(maintenanceRequest => maintenanceRequest.Manager)
@@ -51,7 +49,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
             {
                 return _context.Set<MaintenanceRequest>()
                     .Where(maintenanceRequest => maintenanceRequest.ManagerId == Guid.Empty)
-                    .Include(maintenanceRequest => maintenanceRequest.Category)
                     .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                     .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
                     .ToList();
@@ -128,7 +125,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
         {
             return _context.Set<MaintenanceRequest>()
                 .Where(maintenanceRequest => maintenanceRequest.Id == id)
-                .Include(maintenanceRequest => maintenanceRequest.Category)
                 .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                 .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
                 .Include(maintenanceRequest => maintenanceRequest.Manager).First();
@@ -149,7 +145,6 @@ public class MaintenanceRequestRepository : IMaintenanceRequestRepository
         {
             return _context.Set<MaintenanceRequest>()
                 .Where(maintenanceRequest => maintenanceRequest.RequestHandlerId == requestHandlerId)
-                .Include(maintenanceRequest => maintenanceRequest.Category)
                 .Include(maintenanceRequest => maintenanceRequest.Flat).ThenInclude(flat => flat.OwnerAssigned)
                 .Include(maintenanceRequest => maintenanceRequest.RequestHandler)
                 .Include(maintenanceRequest => maintenanceRequest.Manager)

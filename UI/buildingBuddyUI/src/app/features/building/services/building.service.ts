@@ -40,4 +40,11 @@ export class BuildingService {
     return this.http.post<CreateBuildingResponse>(`${environment.apiBaseUrl}/api/v2/buildings?addAuth=true`,buildingToCreate);
   }
 
+  loadBuildings(file: File) : Observable<string>
+  {
+    const formData = new FormData();
+    formData.append('file',file);
+    return this.http.post<string>(`${environment.apiBaseUrl}/api/v2/buildings/upload`,formData);
+  }
+
 }

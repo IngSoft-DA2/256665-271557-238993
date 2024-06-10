@@ -10,7 +10,7 @@
     <div class="mt-3">
         <label class="form-label">Select a building</label>
         <br>
-        <select class="form-select" name="buildingSelected" (change)="onChange($event, 'building')">
+        <select class="form-select" name="buildingSelected" (change)="onChange($event, 'building')" requ>
             <option value="default" selected disabled>Select a building</option>   
             <option *ngFor="let building of buildings" [value]="building.id">{{ building.name }}</option>
         </select>

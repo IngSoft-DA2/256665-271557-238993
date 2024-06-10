@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.card {
+    width: 90%; /* Cambié el valor de max-width */
+    max-width: 500px; /* También puedes ajustar este valor según tus necesidades */
+    margin: auto;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.btn-dark {
+    width: 100%;
+}

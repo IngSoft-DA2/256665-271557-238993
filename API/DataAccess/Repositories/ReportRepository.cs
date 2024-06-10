@@ -29,7 +29,6 @@ public class ReportRepository : IReportRepository
             {
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr => mr.Flat.BuildingId == buildingId && mr.ManagerId == personId)
-                    .Include(mr => mr.Category)
                     .Include(mr => mr.Flat)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler)
@@ -39,7 +38,6 @@ public class ReportRepository : IReportRepository
             {
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr => mr.ManagerId == personId)
-                    .Include(mr => mr.Category)
                     .Include(mr => mr.Flat)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler).ToList();
@@ -60,25 +58,35 @@ public class ReportRepository : IReportRepository
     {
         try
         {
+            
             if (requestHandlerId != null && !(Guid.Empty == requestHandlerId))
             {
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr =>
                         mr.Flat.BuildingId == buildingId && mr.RequestHandlerId == requestHandlerId &&
                         mr.ManagerId == personId)
-                    .Include(mr => mr.Category)
                     .Include(mr => mr.Flat)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler).ToList();
             }
             else
             {
-                return _dbContext.Set<MaintenanceRequest>()
-                    .Where(mr => mr.ManagerId == personId && mr.Flat.BuildingId == buildingId)
-                    .Include(mr => mr.Category)
-                    .Include(mr => mr.Flat)
-                    .Include(mr => mr.Manager)
-                    .Include(mr => mr.RequestHandler).ToList();
+                if (buildingId == Guid.Empty)
+                {
+                    return _dbContext.Set<MaintenanceRequest>()
+                        .Where(mr => mr.ManagerId == personId)
+                        .Include(mr => mr.Flat)
+                        .Include(mr => mr.Manager)
+                        .Include(mr => mr.RequestHandler).ToList();
+                }
+                else
+                {
+                    return _dbContext.Set<MaintenanceRequest>()
+                        .Where(mr => mr.ManagerId == personId && mr.Flat.BuildingId == buildingId)
+                        .Include(mr => mr.Flat)
+                        .Include(mr => mr.Manager)
+                        .Include(mr => mr.RequestHandler).ToList();   
+                }
             }
         }
         catch (Exception exceptionCaught)
@@ -99,7 +107,6 @@ public class ReportRepository : IReportRepository
             {
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr => mr.Flat.BuildingId == buildingId && mr.CategoryId == categoryId)
-                    .Include(mr => mr.Category)
                     .Include(mr => mr.Flat)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler).ToList();
@@ -107,7 +114,6 @@ public class ReportRepository : IReportRepository
             else
             {
                 return _dbContext.Set<MaintenanceRequest>().Where(mr => mr.Flat.BuildingId == buildingId)
-                    .Include(mr => mr.Category)
                     .Include(mr => mr.Flat)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler).ToList();
@@ -131,7 +137,6 @@ public class ReportRepository : IReportRepository
             {
                 return _dbContext.Set<MaintenanceRequest>()
                     .Where(mr => mr.Flat.BuildingId == buildingId)
-                    .Include(mr => mr.Category)
                     .Include(mr => mr.Flat).ThenInclude(mr => mr.OwnerAssigned)
                     .Include(mr => mr.Manager)
                     .Include(mr => mr.RequestHandler).ToList();

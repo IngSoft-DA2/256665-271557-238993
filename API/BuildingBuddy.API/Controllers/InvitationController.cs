@@ -43,9 +43,7 @@ namespace BuildingBuddy.API.Controllers
         #endregion
 
         #region Get Invitation By Id
-
-        [AuthenticationFilter(SystemUserRoleEnum.Admin, SystemUserRoleEnum.ConstructionCompanyAdmin,
-            SystemUserRoleEnum.Manager)]
+        
         [HttpGet]
         [Route("{id:Guid}")]
         public IActionResult GetInvitationById([FromRoute] Guid id)

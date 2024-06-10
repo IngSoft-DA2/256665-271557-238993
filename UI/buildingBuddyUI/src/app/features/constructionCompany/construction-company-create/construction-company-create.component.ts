@@ -17,7 +17,6 @@ export class ConstructionCompanyCreateComponent {
 
     this.obtainUserId();
     if (this.constructionCompanyToCreate.userCreatorId == '') {
-      alert("User was not found, redirecting.");
       this.router.navigateByUrl('/login');
     }
 

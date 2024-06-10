@@ -88,11 +88,25 @@ export class CreateMaintenanceRequestComponent implements OnInit {
     this.categoryService.getAllCategories()
       .subscribe({
         next: (response) => {
-          this.categories = response;
+          // Obtener solo las categorías principales
+          const mainCategories = response.map(category => {
+            return {
+              id: category.id,
+              name: category.name,
+              // Puedes añadir más propiedades aquí si es necesario
+            };
+          });
+  
+          // Obtener todas las subcategorías y fusionarlas en una sola lista
+          const subcategories = response.flatMap(category => category.subCategories !== undefined ? category.subCategories : []);
+  
+          // Fusionar las categorías principales y las subcategorías en una sola lista
+          this.categories = [...mainCategories, ...subcategories];
+  
           console.log(this.categories);
         },
         error: (error) => {
-          console.error("Error on category loading:", error);
+          console.error("Error al cargar los request handlers:", error);
         }
       });
   }
@@ -113,6 +127,11 @@ export class CreateMaintenanceRequestComponent implements OnInit {
 
   createMaintenanceRequest(): void {
     this.maintenanceCreateRequest.description = this.description;
+    if(this.flatId === "" || this.category === "" || this.managerId === "") {
+      alert("Please fill all the fields");
+      return;
+    }
+
     this.maintenanceCreateRequest.flatId = this.flatId;
     this.maintenanceCreateRequest.category = this.category;
     this.maintenanceCreateRequest.managerId = this.managerId;
@@ -123,7 +142,8 @@ export class CreateMaintenanceRequestComponent implements OnInit {
         this.router.navigate(['../list'], {relativeTo: this.route});
       },
       error: (error) => {
-        alert("Error on maintenance request creation");
+        console.error("Error on maintenance request creation:", error);
+        alert("Error on maintenance request creation " + error.error);
       }
     });
   }

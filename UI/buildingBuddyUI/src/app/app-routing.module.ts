@@ -29,6 +29,7 @@ import { ReportMaintenanceRequestsByBuildingComponent } from './features/Reports
 import { ReportMaintenanceReqByReqHandlerComponent } from './features/Reports/report-maintenance-req-by-req-handler/report-maintenance-req-by-req-handler.component';
 import { ReportMaintenanceReqByCategoryComponent } from './features/Reports/report-maintenance-req-by-category/report-maintenance-req-by-category.component';
 import { ReportMaintenanceRequestsByFlatComponent } from './features/Reports/report-maintenance-requests-by-flat/report-maintenance-requests-by-flat.component';
+import { BuildingImportComponent } from './features/building/building-import/building-import.component';
 import { OwnerListComponent } from './features/owner/owner-list/owner-list.component';
 import { OwnerUpdateComponent } from './features/owner/owner-update/owner-update.component';
 import { AuthGuard } from './core/auth-guard/auth.guard';
@@ -63,15 +64,11 @@ const routes: Routes =
   },
   {
     path: 'managers/create',
-    component : ManagerCreateComponent,
-    canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Admin]} 
+    component : ManagerCreateComponent
   },
   {
     path: 'constructionCompanyAdmin/create',
-    component : ConstructionCompanyAdminCreateByInvitationComponent,
-    canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]} 
+    component : ConstructionCompanyAdminCreateByInvitationComponent
   },
   {
     path: '',
@@ -79,9 +76,7 @@ const routes: Routes =
   },
   {
     path: 'admins/create',
-    component : AdminCreateComponent,
-    canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Admin]} 
+    component : AdminCreateComponent
   },
   {
     path: 'maintenance-requests/list',
@@ -123,7 +118,7 @@ const routes: Routes =
   path: 'reports/list',
   component: ReportsListComponent, 
   canActivate: [AuthGuard], 
-  data: { roles: [SystemUserRoleEnum.Admin,SystemUserRoleEnum.Manager]} 
+  data: { roles: [SystemUserRoleEnum.Admin, SystemUserRoleEnum.Manager]} 
   },
   {
   path: 'reports/requests-by-building',
@@ -183,13 +178,17 @@ const routes: Routes =
     path : 'buildings/list',
     component : BuildingListComponent,
     canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin, SystemUserRoleEnum.Manager]} 
+    data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin, SystemUserRoleEnum.Manager, SystemUserRoleEnum.Admin]} 
   },
   {
     path : 'buildings/:buildingId/update',
     component : BuildingUpdateComponent,
     canActivate: [AuthGuard], 
     data: { roles: [SystemUserRoleEnum.ConstructionCompanyAdmin]}
+  },
+  {
+    path : 'buildings/import',
+    component : BuildingImportComponent
   },
   {
     path: 'categories/create',
@@ -209,13 +208,19 @@ const routes: Routes =
     path: 'buildings/:buildingId/owners',
     component : OwnerListComponent,
     canActivate: [AuthGuard], 
-    data: { roles: [SystemUserRoleEnum.Manager]}
+    data: { roles: [SystemUserRoleEnum.Manager, SystemUserRoleEnum.Admin]}
   },
   {
     path: 'owners/:ownerId/update',
     component : OwnerUpdateComponent,
     canActivate: [AuthGuard], 
     data: { roles: [SystemUserRoleEnum.Manager]}
+  },
+  {
+    path: 'owners/list',
+    component : OwnerListComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Admin]}
   },
   { path: '**', 
     redirectTo: 'home'

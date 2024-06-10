@@ -16,7 +16,7 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -32,11 +32,19 @@ namespace DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CategoryFatherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CategoryType = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_CategoryFatherId",
+                        column: x => x.CategoryFatherId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -45,7 +53,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserCreator = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserCreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,7 +124,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
@@ -130,6 +138,28 @@ namespace DataAccess.Migrations
                         name: "FK_Invitations_Administrators_AdministratorId",
                         column: x => x.AdministratorId,
                         principalTable: "Administrators",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConstructionCompanyAdmins",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConstructionCompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConstructionCompanyAdmins", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConstructionCompanyAdmins_ConstructionCompany_ConstructionCompanyId",
+                        column: x => x.ConstructionCompanyId,
+                        principalTable: "ConstructionCompany",
                         principalColumn: "Id");
                 });
 
@@ -169,7 +199,7 @@ namespace DataAccess.Migrations
                     BuildingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Floor = table.Column<int>(type: "int", nullable: false),
                     RoomNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalRooms = table.Column<int>(type: "int", nullable: false),
                     TotalBaths = table.Column<int>(type: "int", nullable: false),
                     HasTerrace = table.Column<bool>(type: "bit", nullable: false)
@@ -187,7 +217,8 @@ namespace DataAccess.Migrations
                         name: "FK_Flat_Owners_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Owners",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -252,6 +283,11 @@ namespace DataAccess.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "Administrators",
+                columns: new[] { "Id", "Email", "Firstname", "Lastname", "Password", "Role" },
+                values: new object[] { new Guid("e1a402b9-6760-46bc-8362-7cfdeda9f162"), "seedAdmin@example.com", "seedAdminName", "seedAdminLastName", "seedAdminPassword", 1 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Buildings_ConstructionCompanyId",
                 table: "Buildings",
@@ -261,6 +297,16 @@ namespace DataAccess.Migrations
                 name: "IX_Buildings_ManagerId",
                 table: "Buildings",
                 column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_CategoryFatherId",
+                table: "Categories",
+                column: "CategoryFatherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConstructionCompanyAdmins_ConstructionCompanyId",
+                table: "ConstructionCompanyAdmins",
+                column: "ConstructionCompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flat_BuildingId",
@@ -307,6 +353,9 @@ namespace DataAccess.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ConstructionCompanyAdmins");
+
             migrationBuilder.DropTable(
                 name: "Invitations");
 
