@@ -40,7 +40,9 @@ const routes: Routes =
 
   {
     path: 'invitations/list',
-    component: InvitationListComponent
+    component: InvitationListComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
 
   {
@@ -83,11 +85,15 @@ const routes: Routes =
   },
   {
     path: 'maintenance-requests/list',
-    component : MaintenanceRequestsListComponent
+    component : MaintenanceRequestsListComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
     path: 'maintenance-requests/list-by-request-handler',
-    component : MaintenanceRequestListByReqHandlerComponent
+    component : MaintenanceRequestListByReqHandlerComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.RequestHandler]} 
   },
   {
     path: 'maintenance-requests/create',
@@ -103,7 +109,9 @@ const routes: Routes =
   },
   {
     path: 'maintenance-requests/complete',
-    component : CompleteMaintenanceRequestComponent
+    component : CompleteMaintenanceRequestComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.RequestHandler]} 
   },
   {
     path: 'request-handler/create',
@@ -113,7 +121,9 @@ const routes: Routes =
   },
   {
   path: 'reports/list',
-  component: ReportsListComponent
+  component: ReportsListComponent, 
+  canActivate: [AuthGuard], 
+  data: { roles: [SystemUserRoleEnum.Admin,SystemUserRoleEnum.Manager]} 
   },
   {
   path: 'reports/requests-by-building',
@@ -123,15 +133,21 @@ const routes: Routes =
   },
   {
     path: 'reports/requests-by-request-handler',
-    component: ReportMaintenanceReqByReqHandlerComponent
+    component: ReportMaintenanceReqByReqHandlerComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
     path: 'reports/requests-by-category',
-    component: ReportMaintenanceReqByCategoryComponent
+    component: ReportMaintenanceReqByCategoryComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Admin]} 
   },
   {
     path: 'reports/requests-by-flat',
     component: ReportMaintenanceRequestsByFlatComponent,
+    canActivate: [AuthGuard], 
+    data: { roles: [SystemUserRoleEnum.Manager]} 
   },
   {
     path: 'managers/list',
