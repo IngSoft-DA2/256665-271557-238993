@@ -10,7 +10,7 @@
                 <th>Owners Firstname</th>
                 <th>Owners Lastname</th>
                 <th>Owners Email</th>
-                <th *ngIf="userConnected?.userRole != SystemUserRoleEnumValues.Manager">Update Owner Information</th>
+                <th *ngIf="userConnected?.userRole != SystemUserRoleEnumValues.Admin">Update Owner Information</th>
             </tr>
         </thead>
         <tbody>
@@ -18,14 +18,14 @@
                 <td>{{owner.firstname}}</td>
                 <td>{{owner.lastname}}</td>
                 <td>{{owner.email}}</td>
-                <td *ngIf="userConnected?.userRole != SystemUserRoleEnumValues.Manager">
+                <td *ngIf="userConnected?.userRole != SystemUserRoleEnumValues.Admin">
                     <button class="btn btn-info" [routerLink]="['/owners', owner.id, 'update']"
                         [queryParams]="{ buildingId: buildingId}"> Update Owner</button>
                 </td>
             </tr>
         </tbody>
     </table>
-    <a *ngIf="userConnected?.userRole != SystemUserRoleEnumValues.Manager" type="button" class="btn btn-info ms-3" [routerLink]="['/buildings/list']">Go back</a>
+    <a *ngIf="userConnected?.userRole != SystemUserRoleEnumValues.Admin" type="button" class="btn btn-info ms-3" [routerLink]="['/buildings/list']">Go back</a>
 </div>
 
 
