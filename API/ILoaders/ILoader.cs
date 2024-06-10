@@ -1,4 +1,5 @@
-﻿using WebModel.Requests.BuildingRequests;
+﻿using Domain;
+using WebModel.Requests.BuildingRequests;
 using WebModel.Responses.LoaderReponses;
 
 namespace ILoaders;
@@ -6,5 +7,7 @@ namespace ILoaders;
 public interface ILoader
 {
     public string LoaderName();
-    public IEnumerable<CreateBuildingFromLoadResponse> LoadAllBuildings(string filePath);
+    public List<Building> LoadAllBuildings(string filePath);
+    
+    
 }
